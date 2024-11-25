@@ -44,9 +44,10 @@ export function AboutSection() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl font-bold mb-4">{about.title}</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            {about.description}
-          </p>
+          <div 
+            className="text-muted-foreground max-w-2xl mx-auto prose prose-sm dark:prose-invert"
+            dangerouslySetInnerHTML={{ __html: about.description }}
+          />
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-16">
@@ -63,7 +64,10 @@ export function AboutSection() {
                 {iconMap[feature.icon] || <Star className="h-10 w-10" />}
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground">{feature.description}</p>
+              <div 
+                className="text-muted-foreground prose prose-sm dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: feature.description }}
+              />
             </motion.div>
           ))}
         </div>

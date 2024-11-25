@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -19,10 +19,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { About } from "@/types/about";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
+import { RichTextEditor } from "./rich-text-editor";
 
 const featureSchema = z.object({
   icon: z.string().min(1, "Icon is required"),
@@ -62,7 +62,8 @@ export function AboutDialog({
     },
   });
 
-  const { fields, append, remove } = form.useFieldArray({
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
     name: "features",
   });
 
@@ -102,10 +103,10 @@ export function AboutDialog({
                 <FormItem>
                   <FormLabel>Main Description</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <RichTextEditor
+                      content={field.value}
+                      onChange={field.onChange}
                       placeholder="Write about yourself..."
-                      className="min-h-[100px]"
-                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -178,9 +179,10 @@ export function AboutDialog({
                         <FormItem>
                           <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Textarea
-                              placeholder="Feature description"
-                              {...field}
+                            <RichTextEditor
+                              content={field.value}
+                              onChange={field.onChange}
+                              placeholder="Feature description..."
                             />
                           </FormControl>
                           <FormMessage />
