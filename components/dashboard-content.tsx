@@ -256,7 +256,7 @@ export function DashboardContent() {
   if (isLoading) {
     return (
       <div className="container mx-auto py-10">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mt-8 mb-8">
           <h1 className="text-3xl font-bold">Dashboard</h1>
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -273,7 +273,7 @@ export function DashboardContent() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center  mt-8  mb-8">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex gap-4">
           <Button onClick={() => setIsSEOOpen(true)} variant="outline">
