@@ -7,6 +7,8 @@ const projectSchema = new mongoose.Schema({
   tech: [{ type: String }],
   category: { type: String, required: true },
   userId: { type: String, required: true },
+  liveUrl: { type: String },
+  githubUrl: { type: String },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

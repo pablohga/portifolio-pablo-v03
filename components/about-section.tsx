@@ -1,27 +1,38 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Code2, Palette, Rocket } from "lucide-react";
+import { Code2, Palette, Rocket, Star } from "lucide-react";
+import { About } from "@/types/about";
 
-const features = [
-  {
-    icon: <Code2 className="h-10 w-10" />,
-    title: "Full-Stack Development",
-    description: "Experienced in building complete web applications from front to back.",
-  },
-  {
-    icon: <Palette className="h-10 w-10" />,
-    title: "UI/UX Design",
-    description: "Creating beautiful and intuitive user interfaces.",
-  },
-  {
-    icon: <Rocket className="h-10 w-10" />,
-    title: "Performance Optimization",
-    description: "Ensuring applications run smoothly and efficiently.",
-  },
-];
+const iconMap: { [key: string]: React.ReactNode } = {
+  Code2: <Code2 className="h-10 w-10" />,
+  Palette: <Palette className="h-10 w-10" />,
+  Rocket: <Rocket className="h-10 w-10" />,
+  Star: <Star className="h-10 w-10" />,
+};
 
 export function AboutSection() {
+  const [about, setAbout] = useState<About | null>(null);
+
+  useEffect(() => {
+    async function fetchAbout() {
+      try {
+        const response = await fetch("/api/about");
+        const data = await response.json();
+        if (data._id) {
+          setAbout(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch about data:", error);
+      }
+    }
+
+    fetchAbout();
+  }, []);
+
+  if (!about) return null;
+
   return (
     <section id="about" className="py-20 bg-background/50">
       <div className="container px-4 mx-auto">
@@ -32,16 +43,14 @@ export function AboutSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">About Me</h2>
+          <h2 className="text-4xl font-bold mb-4">{about.title}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            I'm a passionate full-stack developer with a keen eye for design and a
-            commitment to creating exceptional web experiences. My approach combines
-            technical expertise with creative problem-solving.
+            {about.description}
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-16">
-          {features.map((feature, index) => (
+          {about.features.map((feature, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -51,7 +60,7 @@ export function AboutSection() {
               className="text-center p-6 rounded-lg bg-card hover:shadow-lg hover:shadow-[#5221e6]/10 transition-shadow duration-300"
             >
               <div className="mb-4 inline-block p-4 rounded-full bg-[#5221e6]/10 text-[#5221e6]">
-                {feature.icon}
+                {iconMap[feature.icon] || <Star className="h-10 w-10" />}
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-muted-foreground">{feature.description}</p>

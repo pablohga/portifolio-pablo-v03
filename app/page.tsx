@@ -3,7 +3,7 @@ import { ProjectsSection } from '@/components/projects-section';
 import { AboutSection } from '@/components/about-section';
 
 export default function Home() {
-  // teste
+  // teste1
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />

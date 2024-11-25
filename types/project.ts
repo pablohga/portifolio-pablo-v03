@@ -8,4 +8,6 @@ export interface Project {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  liveUrl?: string;
+  githubUrl?: string;
 }
