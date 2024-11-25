@@ -5,7 +5,7 @@ import { DashboardContent } from "@/components/dashboard-content";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
-
+// valida a seção iniciada
   if (!session) {
     redirect("/auth/signin");
   }
