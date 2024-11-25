@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { ProjectDialog } from "@/components/project-dialog";
 import { ProjectCard } from "@/components/project-card";
 import { HeroDialog } from "@/components/hero-dialog";
+import { SEODialog } from "@/components/seo-dialog";
 import { Project } from "@/types/project";
 import { Hero } from "@/types/hero";
-import { Plus, Layout } from "lucide-react";
+import { SEO } from "@/types/seo";
+import { Plus, Layout, Search } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -20,16 +22,32 @@ const categories = [
 export function DashboardContent() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [hero, setHero] = useState<Hero | null>(null);
+  const [seo, setSEO] = useState<SEO | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isHeroOpen, setIsHeroOpen] = useState(false);
+  const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    Promise.all([fetchProjects(), fetchHero()]).finally(() => 
+    Promise.all([fetchProjects(), fetchHero(), fetchSEO()]).finally(() => 
       setIsLoading(false)
     );
   }, []);
+
+  async function fetchProjects() {
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      setProjects(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch projects",
+        variant: "destructive",
+      });
+    }
+  }
 
   async function fetchHero() {
     try {
@@ -47,15 +65,42 @@ export function DashboardContent() {
     }
   }
 
-  async function fetchProjects() {
+  async function fetchSEO() {
     try {
-      const res = await fetch("/api/projects");
+      const res = await fetch("/api/seo");
       const data = await res.json();
-      setProjects(data);
+      if (data._id) {
+        setSEO(data);
+      }
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to fetch projects",
+        description: "Failed to fetch SEO data",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleSEOSubmit(data: Partial<SEO>) {
+    try {
+      const res = await fetch("/api/seo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      const updatedSEO = await res.json();
+      setSEO(updatedSEO);
+      toast({
+        title: "Success",
+        description: "SEO settings updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update SEO settings",
         variant: "destructive",
       });
     }
@@ -183,6 +228,9 @@ export function DashboardContent() {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex gap-4">
+          <Button onClick={() => setIsSEOOpen(true)} variant="outline">
+            <Search className="mr-2 h-4 w-4" /> Edit SEO
+          </Button>
           <Button onClick={() => setIsHeroOpen(true)} variant="outline">
             <Layout className="mr-2 h-4 w-4" /> Edit Hero
           </Button>
@@ -230,6 +278,13 @@ export function DashboardContent() {
         open={isHeroOpen}
         onOpenChange={setIsHeroOpen}
         onSubmit={handleHeroSubmit}
+      />
+
+      <SEODialog
+        seo={seo || undefined}
+        open={isSEOOpen}
+        onOpenChange={setIsSEOOpen}
+        onSubmit={handleSEOSubmit}
       />
     </div>
   );

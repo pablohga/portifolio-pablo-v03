@@ -1,8 +1,9 @@
-import { HeroSection } from "@/components/hero-section";
-import { ProjectsSection } from "@/components/projects-section";
-import { AboutSection } from "@/components/about-section";
+import { HeroSection } from '@/components/hero-section';
+import { ProjectsSection } from '@/components/projects-section';
+import { AboutSection } from '@/components/about-section';
 
 export default function Home() {
+  // teste
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
