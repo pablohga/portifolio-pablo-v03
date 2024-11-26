@@ -23,6 +23,7 @@ import { About } from "@/types/about";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
 import { RichTextEditor } from "./rich-text-editor";
+import { useEffect } from "react";
 
 const featureSchema = z.object({
   icon: z.string().min(1, "Icon is required"),
@@ -52,9 +53,9 @@ export function AboutDialog({
   const form = useForm<z.infer<typeof aboutSchema>>({
     resolver: zodResolver(aboutSchema),
     defaultValues: {
-      title: about?.title || "",
-      description: about?.description || "",
-      features: about?.features || [
+      title: "",
+      description: "",
+      features: [
         { icon: "Code2", title: "", description: "" },
         { icon: "Palette", title: "", description: "" },
         { icon: "Rocket", title: "", description: "" },
@@ -67,17 +68,27 @@ export function AboutDialog({
     name: "features",
   });
 
+  // Update form when about data changes
+  useEffect(() => {
+    if (about) {
+      form.reset({
+        title: about.title,
+        description: about.description,
+        features: about.features,
+      });
+    }
+  }, [about, form]);
+
   function handleSubmit(values: z.infer<typeof aboutSchema>) {
     onSubmit(values);
     onOpenChange(false);
-    form.reset();
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit About Section</DialogTitle>
+          <DialogTitle>Edit Home Sections</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
