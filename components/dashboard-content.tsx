@@ -7,22 +7,26 @@ import { ProjectCard } from "@/components/project-card";
 import { HeroDialog } from "@/components/hero-dialog";
 import { SEODialog } from "@/components/seo-dialog";
 import { AboutDialog } from "@/components/about-dialog";
+import { CategoryDialog } from "@/components/category-dialog";
 import { Project } from "@/types/project";
 import { Hero } from "@/types/hero";
 import { SEO } from "@/types/seo";
 import { About } from "@/types/about";
-import { Plus, Layout, Search, FileText } from "lucide-react";
+import { Category } from "@/types/category";
+import { Plus, Layout, Search, FileText, FolderPlus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const categories = [
-  { id: "sites", name: "Sites" },
-  { id: "social", name: "Redes Sociais" },
-  { id: "apps", name: "Aplicativos" },
-];
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function DashboardContent() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [hero, setHero] = useState<Hero | null>(null);
   const [seo, setSEO] = useState<SEO | null>(null);
   const [about, setAbout] = useState<About | null>(null);
@@ -30,12 +34,15 @@ export function DashboardContent() {
   const [isHeroOpen, setIsHeroOpen] = useState(false);
   const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
     Promise.all([
       fetchProjects(),
+      fetchCategories(),
       fetchHero(),
       fetchSEO(),
       fetchAbout(),
@@ -51,6 +58,20 @@ export function DashboardContent() {
       toast({
         title: "Error",
         description: "Failed to fetch projects",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchCategories() {
+    try {
+      const res = await fetch("/api/categories");
+      const data = await res.json();
+      setCategories(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch categories",
         variant: "destructive",
       });
     }
@@ -179,6 +200,65 @@ export function DashboardContent() {
     }
   }
 
+  async function handleCategorySubmit(data: Partial<Category>) {
+    try {
+      const method = selectedCategory ? "PUT" : "POST";
+      const url = selectedCategory 
+        ? `/api/categories/${selectedCategory._id}`
+        : "/api/categories";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      const updatedCategory = await res.json();
+      
+      setCategories(prev => 
+        selectedCategory
+          ? prev.map(c => c._id === selectedCategory._id ? updatedCategory : c)
+          : [...prev, updatedCategory]
+      );
+
+      setSelectedCategory(null);
+      toast({
+        title: "Success",
+        description: `Category ${selectedCategory ? "updated" : "created"} successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Failed to ${selectedCategory ? "update" : "create"} category`,
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleCategoryDelete(id: string) {
+    try {
+      const res = await fetch(`/api/categories/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error();
+
+      setCategories(categories.filter(c => c._id !== id));
+      toast({
+        title: "Success",
+        description: "Category deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete category",
+        variant: "destructive",
+      });
+    }
+  }
+
   async function handleCreate(project: Partial<Project>) {
     try {
       const res = await fetch("/api/projects", {
@@ -273,7 +353,7 @@ export function DashboardContent() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center  mt-8  mb-8">
+      <div className="flex justify-between items-center mt-8 mb-8">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex gap-4">
           <Button onClick={() => setIsSEOOpen(true)} variant="outline">
@@ -285,14 +365,64 @@ export function DashboardContent() {
           <Button onClick={() => setIsAboutOpen(true)} variant="outline">
             <FileText className="mr-2 h-4 w-4" /> Edit About
           </Button>
+          <Button onClick={() => {
+            setSelectedCategory(null);
+            setIsCategoryOpen(true);
+          }} variant="outline">
+            <FolderPlus className="mr-2 h-4 w-4" /> Add Category
+          </Button>
           <Button onClick={() => setIsCreateOpen(true)}>
             <Plus className="mr-2 h-4 w-4" /> Add Project
           </Button>
         </div>
       </div>
 
-      <Tabs defaultValue="sites" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-8">
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Categories</CardTitle>
+          <CardDescription>Manage your project categories</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => (
+              <Card key={category._id} className="relative">
+                <CardHeader>
+                  <CardTitle>{category.name}</CardTitle>
+                  {category.description && (
+                    <CardDescription>
+                      <div dangerouslySetInnerHTML={{ __html: category.description }} />
+                    </CardDescription>
+                  )}
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        setIsCategoryOpen(true);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleCategoryDelete(category._id)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Tabs defaultValue={categories[0]?.id} className="w-full">
+        <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
           {categories.map((category) => (
             <TabsTrigger key={category.id} value={category.id}>
               {category.name}
@@ -343,6 +473,13 @@ export function DashboardContent() {
         open={isAboutOpen}
         onOpenChange={setIsAboutOpen}
         onSubmit={handleAboutSubmit}
+      />
+
+      <CategoryDialog
+        category={selectedCategory || undefined}
+        open={isCategoryOpen}
+        onOpenChange={setIsCategoryOpen}
+        onSubmit={handleCategorySubmit}
       />
     </div>
   );

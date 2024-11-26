@@ -55,7 +55,7 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
     editorProps: {
       attributes: {
         class: 'prose prose-sm dark:prose-invert max-w-none min-h-[100px] p-4 focus:outline-none',
-        placeholder: placeholder || 'Start typing...',
+        placeholder: placeholder,
       },
     },
   });

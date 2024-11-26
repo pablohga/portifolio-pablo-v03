@@ -6,43 +6,52 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Project } from "@/types/project";
+import { Category } from "@/types/category";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectDetailsModal } from "@/components/project-details-modal";
 
-const categories = [
-  { id: "sites", name: "Sites" },
-  { id: "social", name: "Redes Sociais" },
-  { id: "apps", name: "Aplicativos" },
-];
-
-const ITEMS_PER_PAGE = 6; // 3 columns x 2 rows
+const ITEMS_PER_PAGE = 6;
 
 export function ProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<Record<string, number>>({
-    sites: 1,
-    social: 1,
-    apps: 1,
-  });
+  const [currentPage, setCurrentPage] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await fetch("/api/projects");
-        const data = await response.json();
-        setProjects(data);
-      } catch (error) {
-        console.error("Failed to fetch projects:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchProjects();
+    Promise.all([
+      fetchProjects(),
+      fetchCategories()
+    ]).finally(() => setIsLoading(false));
   }, []);
+
+  async function fetchProjects() {
+    try {
+      const response = await fetch("/api/projects");
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+    }
+  }
+
+  async function fetchCategories() {
+    try {
+      const response = await fetch("/api/categories");
+      const data = await response.json();
+      setCategories(data);
+      // Initialize pagination for each category
+      const pages: Record<string, number> = {};
+      data.forEach((category: Category) => {
+        pages[category.id] = 1;
+      });
+      setCurrentPage(pages);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  }
 
   const getPageCount = (categoryId: string) => {
     const categoryProjects = projects.filter(project => project.category === categoryId);
@@ -67,7 +76,7 @@ export function ProjectsSection() {
     setIsModalOpen(true);
   };
 
-  if (isLoading) {
+  if (isLoading || categories.length === 0) {
     return (
       <section id="projects" className="py-20 bg-background">
         <div className="container px-4 mx-auto">
@@ -94,7 +103,7 @@ export function ProjectsSection() {
           <p className="text-muted-foreground">Some of my recent work</p>
         </motion.div>
 
-        <Tabs defaultValue="sites" className="w-full">
+        <Tabs defaultValue={categories[0]?.id} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             {categories.map((category) => (
               <TabsTrigger key={category.id} value={category.id}>
@@ -105,6 +114,13 @@ export function ProjectsSection() {
 
           {categories.map((category) => (
             <TabsContent key={category.id} value={category.id}>
+              {category.description && (
+                <div 
+                  className="prose dark:prose-invert max-w-none mb-8"
+                  dangerouslySetInnerHTML={{ __html: category.description }}
+                />
+              )}
+              
               <div className="grid md:grid-cols-3 gap-8">
                 {getPaginatedProjects(category.id).map((project, index) => (
                   <motion.div
