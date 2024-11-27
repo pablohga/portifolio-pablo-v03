@@ -13,7 +13,7 @@ import { Hero } from "@/types/hero";
 import { SEO } from "@/types/seo";
 import { About } from "@/types/about";
 import { Category } from "@/types/category";
-import { Plus, Layout, Search, FileText, FolderPlus } from "lucide-react";
+import { Plus, Layout, Search, FileText, FolderPlus, Folder } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -23,6 +23,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import * as Icons from "lucide-react";
 
 export function DashboardContent() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -37,6 +38,7 @@ export function DashboardContent() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<string>("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -48,6 +50,12 @@ export function DashboardContent() {
       fetchAbout(),
     ]).finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (categories.length > 0 && !activeTab) {
+      setActiveTab(categories[0].id);
+    }
+  }, [categories, activeTab]);
 
   async function fetchProjects() {
     try {
@@ -67,7 +75,9 @@ export function DashboardContent() {
     try {
       const res = await fetch("/api/categories");
       const data = await res.json();
-      setCategories(data);
+      // Sort categories by order
+      const sortedCategories = data.sort((a: Category, b: Category) => a.order - b.order);
+      setCategories(sortedCategories);
     } catch (error) {
       toast({
         title: "Error",
@@ -217,11 +227,11 @@ export function DashboardContent() {
 
       const updatedCategory = await res.json();
       
-      setCategories(prev => 
-        selectedCategory
-          ? prev.map(c => c._id === selectedCategory._id ? updatedCategory : c)
-          : [...prev, updatedCategory]
-      );
+      await fetchCategories(); // Refetch to get updated order
+
+      if (!activeTab && !selectedCategory) {
+        setActiveTab(updatedCategory.id);
+      }
 
       setSelectedCategory(null);
       toast({
@@ -245,7 +255,10 @@ export function DashboardContent() {
 
       if (!res.ok) throw new Error();
 
-      setCategories(categories.filter(c => c._id !== id));
+      await fetchCategories(); // Refetch to update order
+      if (activeTab === categories.find(c => c._id === id)?.id) {
+        setActiveTab(categories[0]?.id || "");
+      }
       toast({
         title: "Success",
         description: "Category deleted successfully",
@@ -351,6 +364,8 @@ export function DashboardContent() {
     );
   }
 
+  const maxOrder = Math.max(...categories.map(c => c.order), -1);
+
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mt-8 mb-8">
@@ -384,69 +399,94 @@ export function DashboardContent() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <Card key={category._id} className="relative">
-                <CardHeader>
-                  <CardTitle>{category.name}</CardTitle>
-                  {category.description && (
-                    <CardDescription>
-                      <div dangerouslySetInnerHTML={{ __html: category.description }} />
-                    </CardDescription>
-                  )}
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setIsCategoryOpen(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleCategoryDelete(category._id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            {categories.map((category) => {
+              const Icon = Icons[category.icon as keyof typeof Icons] || Folder;
+              return (
+                <Card key={category._id} className="relative">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Icon className="h-5 w-5" />
+                      {category.name}
+                    </CardTitle>
+                    {category.description && (
+                      <CardDescription>
+                        <div dangerouslySetInnerHTML={{ __html: category.description }} />
+                      </CardDescription>
+                    )}
+                    <div className="text-sm text-muted-foreground">
+                      Order: {category.order}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setSelectedCategory(category);
+                          setIsCategoryOpen(true);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleCategoryDelete(category._id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </CardContent>
       </Card>
 
-      <Tabs defaultValue={categories[0]?.id} className="w-full">
-        <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
-          {categories.map((category) => (
-            <TabsTrigger key={category.id} value={category.id}>
-              {category.name}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+      {categories.length > 0 ? (
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
+            {categories.map((category) => {
+              const Icon = Icons[category.icon as keyof typeof Icons] || Folder;
+              return (
+                <TabsTrigger 
+                  key={category.id} 
+                  value={category.id}
+                  className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
+                >
+                  <div className="flex items-center gap-2">
+                    <Icon className="h-4 w-4" />
+                    <span>{category.name}</span>
+                  </div>
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
 
-        {categories.map((category) => (
-          <TabsContent key={category.id} value={category.id}>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {projects
-                .filter((project) => project.category === category.id)
-                .map((project) => (
-                  <ProjectCard
-                    key={project._id}
-                    project={project}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                  />
-                ))}
-            </div>
-          </TabsContent>
-        ))}
-      </Tabs>
+          {categories.map((category) => (
+            <TabsContent key={category.id} value={category.id}>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {projects
+                  .filter((project) => project.category === category.id)
+                  .map((project) => (
+                    <ProjectCard
+                      key={project._id}
+                      project={project}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                    />
+                  ))}
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-mute d-foreground">No categories yet. Create one to get started!</p>
+        </div>
+      )}
 
       <ProjectDialog
         open={isCreateOpen}
@@ -480,6 +520,7 @@ export function DashboardContent() {
         open={isCategoryOpen}
         onOpenChange={setIsCategoryOpen}
         onSubmit={handleCategorySubmit}
+        maxOrder={maxOrder}
       />
     </div>
   );

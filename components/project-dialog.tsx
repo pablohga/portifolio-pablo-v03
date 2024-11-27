@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -28,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Project } from "@/types/project";
+import { Category } from "@/types/category";
 
 const projectSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -36,12 +38,6 @@ const projectSchema = z.object({
   tech: z.string(),
   category: z.string().min(1, "Please select a category"),
 });
-
-const categories = [
-  { id: "sites", name: "Sites" },
-  { id: "social", name: "Redes Sociais" },
-  { id: "apps", name: "Aplicativos" },
-];
 
 interface ProjectDialogProps {
   project?: Project;
@@ -56,6 +52,8 @@ export function ProjectDialog({
   onOpenChange,
   onSubmit,
 }: ProjectDialogProps) {
+  const [categories, setCategories] = useState<Category[]>([]);
+
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
@@ -67,12 +65,28 @@ export function ProjectDialog({
     },
   });
 
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await fetch("/api/categories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    }
+
+    if (open) {
+      fetchCategories();
+    }
+  }, [open]);
+
   function handleSubmit(values: z.infer<typeof projectSchema>) {
     onSubmit({
       ...project,
       ...values,
       tech: values.tech.split(",").map((t) => t.trim()),
-    });
+    } as Project);
     onOpenChange(false);
     form.reset();
   }

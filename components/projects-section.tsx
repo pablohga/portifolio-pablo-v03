@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Folder } from "lucide-react";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectDetailsModal } from "@/components/project-details-modal";
+import * as Icons from "lucide-react";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -41,10 +42,12 @@ export function ProjectsSection() {
     try {
       const response = await fetch("/api/categories");
       const data = await response.json();
-      setCategories(data);
+      // Sort categories by order
+      const sortedCategories = data.sort((a: Category, b: Category) => a.order - b.order);
+      setCategories(sortedCategories);
       // Initialize pagination for each category
       const pages: Record<string, number> = {};
-      data.forEach((category: Category) => {
+      sortedCategories.forEach((category: Category) => {
         pages[category.id] = 1;
       });
       setCurrentPage(pages);
@@ -104,12 +107,22 @@ export function ProjectsSection() {
         </motion.div>
 
         <Tabs defaultValue={categories[0]?.id} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            {categories.map((category) => (
-              <TabsTrigger key={category.id} value={category.id}>
-                {category.name}
-              </TabsTrigger>
-            ))}
+          <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
+            {categories.map((category) => {
+              const Icon = Icons[category.icon as keyof typeof Icons] || Folder;
+              return (
+                <TabsTrigger 
+                  key={category.id} 
+                  value={category.id}
+                  className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
+                >
+                  <div className="flex items-center gap-2">
+                    <Icon className="h-4 w-4" />
+                    <span>{category.name}</span>
+                  </div>
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
 
           {categories.map((category) => (
