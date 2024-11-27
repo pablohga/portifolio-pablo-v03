@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -30,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import * as Icons from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 const categorySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -46,9 +48,14 @@ interface CategoryDialogProps {
   maxOrder: number;
 }
 
-const iconList = Object.keys(Icons).filter(
-  (key) => typeof Icons[key as keyof typeof Icons] === "function"
-);
+// Filter out non-icon exports and commonly used utility functions
+const iconList = Object.keys(Icons).filter((key) => {
+  const value = Icons[key as keyof typeof Icons];
+  return (
+    typeof value === "function" &&
+    !["default", "createLucideIcon", "createElement"].includes(key)
+  );
+});
 
 export function CategoryDialog({
   category,
@@ -73,7 +80,12 @@ export function CategoryDialog({
     form.reset();
   }
 
-  const IconPreview = Icons[form.watch("icon") as keyof typeof Icons] || Icons.Folder;
+  const getIcon = (iconName: string): LucideIcon => {
+    return (Icons[iconName as keyof typeof Icons] as LucideIcon) || Icons.Folder;
+  };
+
+  const selectedIcon = form.watch("icon");
+  const SelectedIconComponent = getIcon(selectedIcon);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -105,25 +117,29 @@ export function CategoryDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Icon</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select an icon">
+                        <SelectValue>
                           <div className="flex items-center gap-2">
-                            <IconPreview className="h-4 w-4" />
+                            {React.createElement(SelectedIconComponent, {
+                              className: "h-4 w-4",
+                            })}
                             <span>{field.value}</span>
                           </div>
                         </SelectValue>
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="h-[300px]">
-                      {iconList.map((icon) => {
-                        const Icon = Icons[icon as keyof typeof Icons];
+                    <SelectContent className="h-[300px] overflow-y-auto">
+                      {iconList.map((iconName) => {
+                        const IconComponent = getIcon(iconName);
                         return (
-                          <SelectItem key={icon} value={icon}>
+                          <SelectItem key={iconName} value={iconName}>
                             <div className="flex items-center gap-2">
-                              <Icon className="h-4 w-4" />
-                              <span>{icon}</span>
+                              {React.createElement(IconComponent, {
+                                className: "h-4 w-4",
+                              })}
+                              <span>{iconName}</span>
                             </div>
                           </SelectItem>
                         );

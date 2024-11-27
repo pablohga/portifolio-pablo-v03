@@ -405,7 +405,7 @@ export function DashboardContent() {
                 <Card key={category._id} className="relative">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Icon className="h-5 w-5" />
+                      {/* <Icon className="h-5 w-5" /> */}
                       {category.name}
                     </CardTitle>
                     {category.description && (
@@ -457,7 +457,7 @@ export function DashboardContent() {
                   className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
                 >
                   <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4" />
+                    {/* <Icon className="h-4 w-4" /> */}
                     <span>{category.name}</span>
                   </div>
                 </TabsTrigger>

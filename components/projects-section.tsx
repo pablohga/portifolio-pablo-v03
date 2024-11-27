@@ -117,7 +117,7 @@ export function ProjectsSection() {
                   className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
                 >
                   <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4" />
+                    {/* <Icon className="h-4 w-4" /> */} 
                     <span>{category.name}</span>
                   </div>
                 </TabsTrigger>
