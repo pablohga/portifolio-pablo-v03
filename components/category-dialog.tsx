@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -67,17 +67,35 @@ export function CategoryDialog({
   const form = useForm<z.infer<typeof categorySchema>>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      name: category?.name || "",
-      description: category?.description || "",
-      icon: category?.icon || "Folder",
-      order: category?.order ?? maxOrder + 1,
+      name: "",
+      description: "",
+      icon: "Folder",
+      order: maxOrder + 1,
     },
   });
+
+  // Update form when category data changes
+  useEffect(() => {
+    if (category) {
+      form.reset({
+        name: category.name,
+        description: category.description || "",
+        icon: category.icon,
+        order: category.order,
+      });
+    } else {
+      form.reset({
+        name: "",
+        description: "",
+        icon: "Folder",
+        order: maxOrder + 1,
+      });
+    }
+  }, [category, form, maxOrder]);
 
   function handleSubmit(values: z.infer<typeof categorySchema>) {
     onSubmit(values);
     onOpenChange(false);
-    form.reset();
   }
 
   const getIcon = (iconName: string): LucideIcon => {

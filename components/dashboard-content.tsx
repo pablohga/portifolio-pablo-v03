@@ -8,12 +8,13 @@ import { HeroDialog } from "@/components/hero-dialog";
 import { SEODialog } from "@/components/seo-dialog";
 import { AboutDialog } from "@/components/about-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
+import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
 import { Project } from "@/types/project";
 import { Hero } from "@/types/hero";
 import { SEO } from "@/types/seo";
 import { About } from "@/types/about";
 import { Category } from "@/types/category";
-import { Plus, Layout, Search, FileText, FolderPlus, Folder } from "lucide-react";
+import { Plus, Layout, Search, FileText, FolderPlus, Folder, Mail } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -31,11 +32,13 @@ export function DashboardContent() {
   const [hero, setHero] = useState<Hero | null>(null);
   const [seo, setSEO] = useState<SEO | null>(null);
   const [about, setAbout] = useState<About | null>(null);
+  const [contactSettings, setContactSettings] = useState<any>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isHeroOpen, setIsHeroOpen] = useState(false);
   const [isSEOOpen, setIsSEOOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isContactSettingsOpen, setIsContactSettingsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string>("");
@@ -48,6 +51,7 @@ export function DashboardContent() {
       fetchHero(),
       fetchSEO(),
       fetchAbout(),
+      fetchContactSettings(),
     ]).finally(() => setIsLoading(false));
   }, []);
 
@@ -56,6 +60,47 @@ export function DashboardContent() {
       setActiveTab(categories[0].id);
     }
   }, [categories, activeTab]);
+
+  async function fetchContactSettings() {
+    try {
+      const res = await fetch("/api/contact/settings");
+      const data = await res.json();
+      if (data._id) {
+        setContactSettings(data);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch contact settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleContactSettingsSubmit(data: any) {
+    try {
+      const res = await fetch("/api/contact/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      const updatedSettings = await res.json();
+      setContactSettings(updatedSettings);
+      toast({
+        title: "Success",
+        description: "Contact settings updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update contact settings",
+        variant: "destructive",
+      });
+    }
+  }
 
   async function fetchProjects() {
     try {
@@ -380,6 +425,9 @@ export function DashboardContent() {
           <Button onClick={() => setIsAboutOpen(true)} variant="outline">
             <FileText className="mr-2 h-4 w-4" /> Edit About
           </Button>
+          <Button onClick={() => setIsContactSettingsOpen(true)} variant="outline">
+            <Mail className="mr-2 h-4 w-4" /> Contact Settings
+          </Button>
           <Button onClick={() => {
             setSelectedCategory(null);
             setIsCategoryOpen(true);
@@ -484,7 +532,7 @@ export function DashboardContent() {
         </Tabs>
       ) : (
         <div className="text-center py-8">
-          <p className="text-mute d-foreground">No categories yet. Create one to get started!</p>
+          <p className="text-muted-foreground">No categories yet. Create one to get started!</p>
         </div>
       )}
 
@@ -521,6 +569,13 @@ export function DashboardContent() {
         onOpenChange={setIsCategoryOpen}
         onSubmit={handleCategorySubmit}
         maxOrder={maxOrder}
+      />
+
+      <ContactSettingsDialog
+        settings={contactSettings}
+        open={isContactSettingsOpen}
+        onOpenChange={setIsContactSettingsOpen}
+        onSubmit={handleContactSettingsSubmit}
       />
     </div>
   );
