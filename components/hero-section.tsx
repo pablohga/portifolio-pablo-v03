@@ -5,13 +5,18 @@ import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { Hero } from "@/types/hero";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  userId?: string;
+}
+
+export function HeroSection({ userId }: HeroSectionProps) {
   const [hero, setHero] = useState<Hero | null>(null);
 
   useEffect(() => {
     async function fetchHero() {
       try {
-        const response = await fetch("/api/hero");
+        const url = userId ? `/api/hero?userId=${userId}` : "/api/hero";
+        const response = await fetch(url);
         const data = await response.json();
         if (data._id) {
           setHero(data);
@@ -22,7 +27,7 @@ export function HeroSection() {
     }
 
     fetchHero();
-  }, []);
+  }, [userId]);
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
