@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -16,12 +17,15 @@ import { Category } from "@/types/category";
 import { Hero } from "@/types/hero";
 import { SEO } from "@/types/seo";
 import { About } from "@/types/about";
+import { formatName } from "@/lib/utils";
 
 interface DashboardContentProps {
   userId: string;
 }
 
 export function DashboardContent({ userId }: DashboardContentProps) {
+  const { data: session } = useSession();
+  const { firstName, lastName } = formatName(session?.user?.name);
   const [projects, setProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [hero, setHero] = useState<Hero | undefined>();
@@ -378,16 +382,21 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-20">
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-20">
       <div className="mb-8 space-y-4">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <div className="text-lg font-medium">
+            Welcome, {firstName} <span className="text-primary">{lastName}</span>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-4">
           <Button onClick={() => setIsHeroDialogOpen(true)}>
             Edit Hero Section
@@ -428,7 +437,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                   size="sm"
                   onClick={() => {
                     setIsCategoryDialogOpen(true);
-                    // Add logic to edit category
                   }}
                 >
                   Edit
