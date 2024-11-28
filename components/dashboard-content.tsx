@@ -1,13 +1,41 @@
 "use client";
 
-// ... (keep existing imports)
+import { useState, useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { ProjectCard } from "@/components/project-card";
+import { ProjectDialog } from "@/components/project-dialog";
+import { CategoryDialog } from "@/components/category-dialog";
+import { HeroDialog } from "@/components/hero-dialog";
+import { SEODialog } from "@/components/seo-dialog";
+import { AboutDialog } from "@/components/about-dialog";
+import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
+import { Project } from "@/types/project";
+import { Category } from "@/types/category";
+import { Hero } from "@/types/hero";
+import { SEO } from "@/types/seo";
+import { About } from "@/types/about";
 
 interface DashboardContentProps {
   userId: string;
 }
 
 export function DashboardContent({ userId }: DashboardContentProps) {
-  // ... (keep existing state declarations)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [hero, setHero] = useState<Hero | undefined>();
+  const [seo, setSEO] = useState<SEO | undefined>();
+  const [about, setAbout] = useState<About | undefined>();
+  const [contactSettings, setContactSettings] = useState<any>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
+  const [isHeroDialogOpen, setIsHeroDialogOpen] = useState(false);
+  const [isSEODialogOpen, setIsSEODialogOpen] = useState(false);
+  const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
+  const [isContactSettingsDialogOpen, setIsContactSettingsDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     Promise.all([
@@ -18,7 +46,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       fetchAbout(),
       fetchContactSettings(),
     ]).finally(() => setIsLoading(false));
-  }, [userId]); // Add userId to dependency array
+  }, [userId]);
 
   async function fetchProjects() {
     try {
@@ -34,6 +62,450 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
-  // Update other fetch functions similarly to include userId
-  // ... (rest of the component remains the same)
+  async function fetchCategories() {
+    try {
+      const res = await fetch("/api/categories");
+      const data = await res.json();
+      setCategories(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch categories",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchHero() {
+    try {
+      const res = await fetch("/api/hero");
+      const data = await res.json();
+      if (data._id) {
+        setHero(data);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch hero data",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchSEO() {
+    try {
+      const res = await fetch("/api/seo");
+      const data = await res.json();
+      if (data._id) {
+        setSEO(data);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch SEO data",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchAbout() {
+    try {
+      const res = await fetch("/api/about");
+      const data = await res.json();
+      if (data._id) {
+        setAbout(data);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch about data",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchContactSettings() {
+    try {
+      const res = await fetch("/api/contact/settings");
+      const data = await res.json();
+      if (data._id) {
+        setContactSettings(data);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch contact settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleCreateProject(data: Partial<Project>) {
+    try {
+      const res = await fetch("/api/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchProjects();
+      toast({
+        title: "Success",
+        description: "Project created successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create project",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateProject(data: Project) {
+    try {
+      const res = await fetch(`/api/projects/${data._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchProjects();
+      toast({
+        title: "Success",
+        description: "Project updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update project",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleDeleteProject(id: string) {
+    try {
+      const res = await fetch(`/api/projects/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchProjects();
+      toast({
+        title: "Success",
+        description: "Project deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleCreateCategory(data: Partial<Category>) {
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchCategories();
+      toast({
+        title: "Success",
+        description: "Category created successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create category",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateCategory(data: Category) {
+    try {
+      const res = await fetch(`/api/categories/${data._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchCategories();
+      toast({
+        title: "Success",
+        description: "Category updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update category",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleDeleteCategory(id: string) {
+    try {
+      const res = await fetch(`/api/categories/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchCategories();
+      toast({
+        title: "Success",
+        description: "Category deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete category",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateHero(data: Partial<Hero>) {
+    try {
+      const res = await fetch("/api/hero", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchHero();
+      toast({
+        title: "Success",
+        description: "Hero section updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update hero section",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateSEO(data: Partial<SEO>) {
+    try {
+      const res = await fetch("/api/seo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchSEO();
+      toast({
+        title: "Success",
+        description: "SEO settings updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update SEO settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateAbout(data: Partial<About>) {
+    try {
+      const res = await fetch("/api/about", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchAbout();
+      toast({
+        title: "Success",
+        description: "About section updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update about section",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateContactSettings(data: any) {
+    try {
+      const res = await fetch("/api/contact/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchContactSettings();
+      toast({
+        title: "Success",
+        description: "Contact settings updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update contact settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-10">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto py-10">
+      <div className="mb-8 space-y-4">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <div className="flex flex-wrap gap-4">
+          <Button onClick={() => setIsHeroDialogOpen(true)}>
+            Edit Hero Section
+          </Button>
+          <Button onClick={() => setIsAboutDialogOpen(true)}>
+            Edit About Section
+          </Button>
+          <Button onClick={() => setIsSEODialogOpen(true)}>
+            Edit SEO Settings
+          </Button>
+          <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
+            Edit Contact Settings
+          </Button>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Categories</h2>
+          <Button onClick={() => setIsCategoryDialogOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add Category
+          </Button>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className="p-6 bg-card rounded-lg border shadow-sm"
+            >
+              <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
+              {category.description && (
+                <p className="text-muted-foreground mb-4">{category.description}</p>
+              )}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setIsCategoryDialogOpen(true);
+                    // Add logic to edit category
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDeleteCategory(category._id)}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold">Projects</h2>
+          <Button onClick={() => setIsProjectDialogOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Add Project
+          </Button>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project) => (
+            <ProjectCard
+              key={project._id}
+              project={project}
+              onEdit={handleUpdateProject}
+              onDelete={handleDeleteProject}
+            />
+          ))}
+        </div>
+      </div>
+
+      <ProjectDialog
+        open={isProjectDialogOpen}
+        onOpenChange={setIsProjectDialogOpen}
+        onSubmit={handleCreateProject}
+      />
+
+      <CategoryDialog
+        open={isCategoryDialogOpen}
+        onOpenChange={setIsCategoryDialogOpen}
+        onSubmit={handleCreateCategory}
+        maxOrder={Math.max(...categories.map((c) => c.order), -1)}
+      />
+
+      <HeroDialog
+        hero={hero}
+        open={isHeroDialogOpen}
+        onOpenChange={setIsHeroDialogOpen}
+        onSubmit={handleUpdateHero}
+      />
+
+      <SEODialog
+        seo={seo}
+        open={isSEODialogOpen}
+        onOpenChange={setIsSEODialogOpen}
+        onSubmit={handleUpdateSEO}
+      />
+
+      <AboutDialog
+        about={about}
+        open={isAboutDialogOpen}
+        onOpenChange={setIsAboutDialogOpen}
+        onSubmit={handleUpdateAbout}
+      />
+
+      <ContactSettingsDialog
+        settings={contactSettings}
+        open={isContactSettingsDialogOpen}
+        onOpenChange={setIsContactSettingsDialogOpen}
+        onSubmit={handleUpdateContactSettings}
+      />
+    </div>
+  );
 }
