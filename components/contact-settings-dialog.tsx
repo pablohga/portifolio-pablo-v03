@@ -28,7 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const contactSettingsSchema = z.object({
   emailTo: z.string().email("Invalid email address"),
@@ -43,6 +42,7 @@ const contactSettingsSchema = z.object({
     }),
   }).optional(),
   resendApiKey: z.string().optional(),
+  imageUrl: z.string().url("Must be a valid URL").optional(),
 });
 
 interface ContactSettingsDialogProps {
@@ -73,6 +73,7 @@ export function ContactSettingsDialog({
         },
       },
       resendApiKey: "",
+      imageUrl: "",
     },
   });
 
@@ -92,6 +93,23 @@ export function ContactSettingsDialog({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Image URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://example.com/image.jpg" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Image to display in the contact section (recommended: square image)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="emailTo"
