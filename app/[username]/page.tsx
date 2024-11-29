@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/hero-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";
+import { SEO } from "@/models/seo";
 
 interface Props {
   params: {
@@ -18,6 +19,10 @@ async function getUser(username: string) {
   return User.findOne({ name: new RegExp(`^${formattedUsername}$`, "i") });
 }
 
+async function getUserSEO(userId: string) {
+  return SEO.findOne({ userId }).sort({ createdAt: -1 });
+}
+
 export async function generateMetadata({ params }: Props) {
   const user = await getUser(params.username);
   
@@ -27,9 +32,23 @@ export async function generateMetadata({ params }: Props) {
     };
   }
 
+  const seo = await getUserSEO(user._id.toString());
+
   return {
-    title: `${user.name} - Portfolio`,
-    description: `${user.name}'s portfolio showcasing their projects and skills`,
+    title: seo?.title || `${user.name} - Portfolio`,
+    description: seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
+    keywords: seo?.keywords || [],
+    openGraph: {
+      title: seo?.title || `${user.name} - Portfolio`,
+      description: seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
+      images: [{ url: seo?.ogImage || "/og-image.jpg" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo?.title || `${user.name} - Portfolio`,
+      description: seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
+      images: [seo?.ogImage || "/og-image.jpg"],
+    },
   };
 }
 

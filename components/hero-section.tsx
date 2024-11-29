@@ -29,6 +29,8 @@ export function HeroSection({ userId }: HeroSectionProps) {
     fetchHero();
   }, [userId]);
 
+  if (!hero) return null;
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       {hero?.backgroundImage && (

@@ -4,10 +4,13 @@ import dbConnect from "@/lib/db";
 import { SEO } from "@/models/seo";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+    
     await dbConnect();
-    const seo = await SEO.findOne().sort({ createdAt: -1 });
+    const seo = await SEO.findOne(userId ? { userId } : {}).sort({ createdAt: -1 });
     return NextResponse.json(seo || {});
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch SEO data" }, { status: 500 });
@@ -24,8 +27,8 @@ export async function POST(request: Request) {
     await dbConnect();
     const data = await request.json();
     
-    // Delete previous SEO data
-    await SEO.deleteMany({});
+    // Delete previous SEO data for this user
+    await SEO.deleteMany({ userId: session.user.id });
     
     // Create new SEO data
     const seo = await SEO.create({

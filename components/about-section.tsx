@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Star } from "lucide-react";
 import { About } from "@/types/about";
 
+interface AboutSectionProps {
+  userId?: string;
+}
+
 const iconMap: { [key: string]: React.ReactNode } = {
   Code2: <Code2 className="h-10 w-10" />,
   Palette: <Palette className="h-10 w-10" />,
@@ -12,13 +16,14 @@ const iconMap: { [key: string]: React.ReactNode } = {
   Star: <Star className="h-10 w-10" />,
 };
 
-export function AboutSection() {
+export function AboutSection({ userId }: AboutSectionProps) {
   const [about, setAbout] = useState<About | null>(null);
 
   useEffect(() => {
     async function fetchAbout() {
       try {
-        const response = await fetch("/api/about");
+        const url = userId ? `/api/about?userId=${userId}` : "/api/about";
+        const response = await fetch(url);
         const data = await response.json();
         if (data._id) {
           setAbout(data);
@@ -29,7 +34,7 @@ export function AboutSection() {
     }
 
     fetchAbout();
-  }, []);
+  }, [userId]);
 
   if (!about) return null;
 

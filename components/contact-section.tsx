@@ -4,17 +4,22 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
 
+interface ContactSectionProps {
+  userId?: string;
+}
+
 interface ContactImage {
   imageUrl: string;
 }
 
-export function ContactSection() {
+export function ContactSection({ userId }: ContactSectionProps) {
   const [contactImage, setContactImage] = useState<ContactImage | null>(null);
 
   useEffect(() => {
     async function fetchContactImage() {
       try {
-        const response = await fetch("/api/contact/image");
+        const url = userId ? `/api/contact/image?userId=${userId}` : "/api/contact/image";
+        const response = await fetch(url);
         const data = await response.json();
         if (data._id) {
           setContactImage(data);
@@ -25,7 +30,7 @@ export function ContactSection() {
     }
 
     fetchContactImage();
-  }, []);
+  }, [userId]);
 
   return (
     <section id="contact" className="py-20 bg-background">
@@ -62,7 +67,7 @@ export function ContactSection() {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <ContactForm />
+            <ContactForm userId={userId} />
           </motion.div>
         </div>
       </div>

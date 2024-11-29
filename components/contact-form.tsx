@@ -19,13 +19,17 @@ import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 
+interface ContactFormProps {
+  userId?: string;
+}
+
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
-export function ContactForm() {
+export function ContactForm({ userId }: ContactFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -41,7 +45,8 @@ export function ContactForm() {
   async function onSubmit(values: z.infer<typeof contactFormSchema>) {
     try {
       setIsSubmitting(true);
-      const response = await fetch("/api/contact", {
+      const url = userId ? `/api/contact?userId=${userId}` : "/api/contact";
+      const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

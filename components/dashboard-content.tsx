@@ -382,14 +382,14 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-20">
+      <div className="container mx-auto py-10">
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-20">
+    <div className="container mx-auto py-10">
       <div className="mb-8 space-y-4">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Dashboard</h1>

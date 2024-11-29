@@ -11,9 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectDetailsModal } from "@/components/project-details-modal";
 import * as Icons from "lucide-react";
 
+interface ProjectsSectionProps {
+  userId?: string;
+}
+
 const ITEMS_PER_PAGE = 6;
 
-export function ProjectsSection() {
+export function ProjectsSection({ userId }: ProjectsSectionProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,11 +30,12 @@ export function ProjectsSection() {
       fetchProjects(),
       fetchCategories()
     ]).finally(() => setIsLoading(false));
-  }, []);
+  }, [userId]);
 
   async function fetchProjects() {
     try {
-      const response = await fetch("/api/projects");
+      const url = userId ? `/api/projects?userId=${userId}` : "/api/projects";
+      const response = await fetch(url);
       const data = await response.json();
       setProjects(data);
     } catch (error) {
@@ -40,7 +45,8 @@ export function ProjectsSection() {
 
   async function fetchCategories() {
     try {
-      const response = await fetch("/api/categories");
+      const url = userId ? `/api/categories?userId=${userId}` : "/api/categories";
+      const response = await fetch(url);
       const data = await response.json();
       // Sort categories by order
       const sortedCategories = data.sort((a: Category, b: Category) => a.order - b.order);
@@ -117,7 +123,7 @@ export function ProjectsSection() {
                   className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
                 >
                   <div className="flex items-center gap-2">
-                    {/* <Icon className="h-4 w-4" /> */} 
+                    <Icon className="h-4 w-4" />
                     <span>{category.name}</span>
                   </div>
                 </TabsTrigger>

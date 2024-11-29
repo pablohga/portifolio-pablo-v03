@@ -6,9 +6,11 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+    
     await dbConnect();
-    const data = await request.json();
-    const settings = await ContactSettings.findOne().sort({ createdAt: -1 });
+    const settings = await ContactSettings.findOne(userId ? { userId } : {}).sort({ createdAt: -1 });
 
     if (!settings) {
       return NextResponse.json(
@@ -17,6 +19,7 @@ export async function POST(request: Request) {
       );
     }
 
+    const data = await request.json();
     const { name, email, message } = data;
     const emailContent = `
       Name: ${name}
