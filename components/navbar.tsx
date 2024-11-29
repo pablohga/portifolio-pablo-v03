@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./mode-toggle";
 import { Menu, LogIn, UserPlus } from "lucide-react";
 import { formatName } from "@/lib/utils";
+import { Logo } from "@/components/brand/logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,11 +22,15 @@ export default function Navbar() {
   return (
     <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold">
-          PA
-        </Link>
+        <div className="flex items-center gap-2">
+          <Logo />
+          <span className="text-lg font-semibold">Portify</span>
+        </div>
 
         <div className="hidden md:flex items-center gap-6">
+          <Link href="/start" className="hover:text-primary transition-colors">
+            Pricing
+          </Link>
           <Link href="/#projects" className="hover:text-primary transition-colors">
             Projects
           </Link>
@@ -51,13 +56,13 @@ export default function Navbar() {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button>Registrar</Button>
+                <Button>Register</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
                   <Link href="/auth/register" className="flex items-center">
                     <UserPlus className="mr-2 h-4 w-4" />
-                    <span>Criar Conta</span>
+                    <span>Create Account</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -81,6 +86,9 @@ export default function Navbar() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link href="/start">Pricing</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/#projects">Projects</Link>
               </DropdownMenuItem>
@@ -109,7 +117,7 @@ export default function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link href="/auth/register" className="flex items-center">
                       <UserPlus className="mr-2 h-4 w-4" />
-                      <span>Criar Conta</span>
+                      <span>Create Account</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>

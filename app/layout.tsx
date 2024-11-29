@@ -24,19 +24,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSEOData();
 
   return {
-    title: seo?.title || "Pablo Azevedo - Portfolio",
-    description: seo?.description || "Full-stack developer portfolio showcasing creative and innovative projects",
-    keywords: seo?.keywords || ["Pablo Azevedo", "Frontend Reactjs", "Frontend VueJS"],
+    title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
+    description: seo?.description || "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
+    keywords: seo?.keywords || ["Portify", "Portfolio Builder", "Freelancer Portfolio"],
     openGraph: {
-      title: seo?.title || "Pablo Azevedo - Portfolio",
-      description: seo?.description || "Full-stack developer portfolio showcasing creative and innovative projects",
-      images: [{ url: seo?.ogImage || "/og-image.jpg" }],
+      title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
+      description: seo?.description || "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
+      images: [{ url: seo?.ogImage || "https://mundonews.pt/portify_logo_p.png" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: seo?.title || "Pablo Azevedo - Portfolio",
-      description: seo?.description || "Full-stack developer portfolio showcasing creative and innovative projects",
-      images: [seo?.ogImage || "/og-image.jpg"],
+      title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
+      description: seo?.description || "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
+      images: [seo?.ogImage || "https://mundonews.pt/portify_logo_p.png"],
     },
     robots: {
       index: true,
