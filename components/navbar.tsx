@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./mode-toggle";
-import { Menu } from "lucide-react";
+import { Menu, LogIn, UserPlus } from "lucide-react";
 import { formatName } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
@@ -48,7 +49,26 @@ export default function Navbar() {
               </Button>
             </>
           ) : (
-            <Button onClick={() => signIn()}>Sign In</Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button>Registrar</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem asChild>
+                  <Link href="/auth/register" className="flex items-center">
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    <span>Criar Conta</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/auth/signin" className="flex items-center">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    <span>Login</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
 
@@ -85,9 +105,20 @@ export default function Navbar() {
                   </DropdownMenuItem>
                 </>
               ) : (
-                <DropdownMenuItem onClick={() => signIn()}>
-                  Sign In
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/register" className="flex items-center">
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      <span>Criar Conta</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/signin" className="flex items-center">
+                      <LogIn className="mr-2 h-4 w-4" />
+                      <span>Login</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
