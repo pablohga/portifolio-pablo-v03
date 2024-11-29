@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -21,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Hero } from "@/types/hero";
+import { useHeroData } from "@/hooks/use-hero-data";
 
 const heroSchema = z.object({
   title: z.string().optional(),
@@ -29,31 +31,46 @@ const heroSchema = z.object({
 });
 
 interface HeroDialogProps {
-  hero?: Hero;
+  userId?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: Partial<Hero>) => void;
 }
 
 export function HeroDialog({
-  hero,
+  userId,
   open,
   onOpenChange,
   onSubmit,
 }: HeroDialogProps) {
+  const { hero, isLoading } = useHeroData(userId);
+  
   const form = useForm<z.infer<typeof heroSchema>>({
     resolver: zodResolver(heroSchema),
     defaultValues: {
-      title: hero?.title || "",
-      subtitle: hero?.subtitle || "",
-      backgroundImage: hero?.backgroundImage || "",
+      title: "",
+      subtitle: "",
+      backgroundImage: "",
     },
   });
+
+  useEffect(() => {
+    if (hero) {
+      form.reset({
+        title: hero.title || "",
+        subtitle: hero.subtitle || "",
+        backgroundImage: hero.backgroundImage,
+      });
+    }
+  }, [hero, form]);
 
   function handleSubmit(values: z.infer<typeof heroSchema>) {
     onSubmit(values);
     onOpenChange(false);
-    form.reset();
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   return (
@@ -108,7 +125,10 @@ export function HeroDialog({
                 <FormItem>
                   <FormLabel>Background Image URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com/image.jpg" {...field} />
+                    <Input 
+                      placeholder="https://images.unsplash.com/photo-1579547621869-0ddb5f237392"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     Use a high-resolution image (recommended: 1920x1080 or larger)

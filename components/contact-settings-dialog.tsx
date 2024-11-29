@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useContactSettings } from "@/hooks/use-contact-settings";
 
 const contactSettingsSchema = z.object({
   emailTo: z.string().email("Invalid email address"),
@@ -46,18 +47,20 @@ const contactSettingsSchema = z.object({
 });
 
 interface ContactSettingsDialogProps {
-  settings?: any;
+  userId?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: any) => void;
 }
 
 export function ContactSettingsDialog({
-  settings,
+  userId,
   open,
   onOpenChange,
   onSubmit,
 }: ContactSettingsDialogProps) {
+  const { settings, isLoading } = useContactSettings(userId);
+  
   const form = useForm<z.infer<typeof contactSettingsSchema>>({
     resolver: zodResolver(contactSettingsSchema),
     defaultValues: {
@@ -85,6 +88,15 @@ export function ContactSettingsDialog({
 
   const emailService = form.watch("emailService");
 
+  function handleSubmit(values: z.infer<typeof contactSettingsSchema>) {
+    onSubmit(values);
+    onOpenChange(false);
+  }
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
@@ -92,7 +104,7 @@ export function ContactSettingsDialog({
           <DialogTitle>Contact Form Settings</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="imageUrl"
@@ -100,7 +112,7 @@ export function ContactSettingsDialog({
                 <FormItem>
                   <FormLabel>Contact Image URL</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com/image.jpg" {...field} />
+                    <Input placeholder="https://images.unsplash.com/photo-1423666639041-f56000c27a9a" {...field} />
                   </FormControl>
                   <FormDescription>
                     Image to display in the contact section (recommended: square image)

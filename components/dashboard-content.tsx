@@ -29,10 +29,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const { firstName, lastName } = formatName(session?.user?.name);
   const [projects, setProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [hero, setHero] = useState<Hero | undefined>();
-  const [seo, setSEO] = useState<SEO | undefined>();
-  const [about, setAbout] = useState<About | undefined>();
-  const [contactSettings, setContactSettings] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
@@ -46,10 +42,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     Promise.all([
       fetchProjects(),
       fetchCategories(),
-      fetchHero(),
-      fetchSEO(),
-      fetchAbout(),
-      fetchContactSettings(),
     ]).finally(() => setIsLoading(false));
   }, [userId]);
 
@@ -76,70 +68,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Error",
         description: "Failed to fetch categories",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function fetchHero() {
-    try {
-      const res = await fetch("/api/hero");
-      const data = await res.json();
-      if (data._id) {
-        setHero(data);
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch hero data",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function fetchSEO() {
-    try {
-      const res = await fetch("/api/seo");
-      const data = await res.json();
-      if (data._id) {
-        setSEO(data);
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch SEO data",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function fetchAbout() {
-    try {
-      const res = await fetch("/api/about");
-      const data = await res.json();
-      if (data._id) {
-        setAbout(data);
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch about data",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function fetchContactSettings() {
-    try {
-      const res = await fetch("/api/contact/settings");
-      const data = await res.json();
-      if (data._id) {
-        setContactSettings(data);
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch contact settings",
         variant: "destructive",
       });
     }
@@ -295,7 +223,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       if (!res.ok) throw new Error();
 
-      await fetchHero();
       toast({
         title: "Success",
         description: "Hero section updated successfully",
@@ -319,7 +246,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       if (!res.ok) throw new Error();
 
-      await fetchSEO();
       toast({
         title: "Success",
         description: "SEO settings updated successfully",
@@ -343,7 +269,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       if (!res.ok) throw new Error();
 
-      await fetchAbout();
       toast({
         title: "Success",
         description: "About section updated successfully",
@@ -367,7 +292,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       if (!res.ok) throw new Error();
 
-      await fetchContactSettings();
       toast({
         title: "Success",
         description: "Contact settings updated successfully",
@@ -498,28 +422,28 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       />
 
       <HeroDialog
-        hero={hero}
+        userId={userId}
         open={isHeroDialogOpen}
         onOpenChange={setIsHeroDialogOpen}
         onSubmit={handleUpdateHero}
       />
 
       <SEODialog
-        seo={seo}
+        userId={userId}
         open={isSEODialogOpen}
         onOpenChange={setIsSEODialogOpen}
         onSubmit={handleUpdateSEO}
       />
 
       <AboutDialog
-        about={about}
+        userId={userId}
         open={isAboutDialogOpen}
         onOpenChange={setIsAboutDialogOpen}
         onSubmit={handleUpdateAbout}
       />
 
       <ContactSettingsDialog
-        settings={contactSettings}
+        userId={userId}
         open={isContactSettingsDialogOpen}
         onOpenChange={setIsContactSettingsDialogOpen}
         onSubmit={handleUpdateContactSettings}

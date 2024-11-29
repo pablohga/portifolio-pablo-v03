@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -23,7 +24,7 @@ import { About } from "@/types/about";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
 import { RichTextEditor } from "./rich-text-editor";
-import { useEffect } from "react";
+import { useAboutData } from "@/hooks/use-about-data";
 
 const featureSchema = z.object({
   icon: z.string().min(1, "Icon is required"),
@@ -38,28 +39,32 @@ const aboutSchema = z.object({
 });
 
 interface AboutDialogProps {
-  about?: About;
+  userId?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: Partial<About>) => void;
 }
 
+const defaultFeatures = [
+  { icon: "Code2", title: "", description: "" },
+  { icon: "Palette", title: "", description: "" },
+  { icon: "Rocket", title: "", description: "" },
+];
+
 export function AboutDialog({
-  about,
+  userId,
   open,
   onOpenChange,
   onSubmit,
 }: AboutDialogProps) {
+  const { about, isLoading } = useAboutData(userId);
+  
   const form = useForm<z.infer<typeof aboutSchema>>({
     resolver: zodResolver(aboutSchema),
     defaultValues: {
       title: "",
       description: "",
-      features: [
-        { icon: "Code2", title: "", description: "" },
-        { icon: "Palette", title: "", description: "" },
-        { icon: "Rocket", title: "", description: "" },
-      ],
+      features: defaultFeatures,
     },
   });
 
@@ -68,7 +73,6 @@ export function AboutDialog({
     name: "features",
   });
 
-  // Update form when about data changes
   useEffect(() => {
     if (about) {
       form.reset({
@@ -84,11 +88,15 @@ export function AboutDialog({
     onOpenChange(false);
   }
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Home Sections</DialogTitle>
+          <DialogTitle>Edit About Section</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>

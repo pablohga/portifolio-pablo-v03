@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SEO } from "@/types/seo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useSEOData } from "@/hooks/use-seo-data";
 
 const seoSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters"),
@@ -33,27 +35,40 @@ const seoSchema = z.object({
 });
 
 interface SEODialogProps {
-  seo?: SEO;
+  userId?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: Partial<SEO>) => void;
 }
 
 export function SEODialog({
-  seo,
+  userId,
   open,
   onOpenChange,
   onSubmit,
 }: SEODialogProps) {
+  const { seo, isLoading } = useSEOData(userId);
+  
   const form = useForm<z.infer<typeof seoSchema>>({
     resolver: zodResolver(seoSchema),
     defaultValues: {
-      title: seo?.title || "",
-      description: seo?.description || "",
-      keywords: seo?.keywords.join(", ") || "",
-      ogImage: seo?.ogImage || "",
+      title: "",
+      description: "",
+      keywords: "",
+      ogImage: "",
     },
   });
+
+  useEffect(() => {
+    if (seo) {
+      form.reset({
+        title: seo.title,
+        description: seo.description,
+        keywords: seo.keywords.join(", "),
+        ogImage: seo.ogImage,
+      });
+    }
+  }, [seo, form]);
 
   function handleSubmit(values: z.infer<typeof seoSchema>) {
     onSubmit({
@@ -61,7 +76,10 @@ export function SEODialog({
       keywords: values.keywords.split(",").map((k) => k.trim()),
     });
     onOpenChange(false);
-    form.reset();
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   return (
