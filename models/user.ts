@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   image: String,
   emailVerified: Date,
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  resetToken: String,
+  resetTokenExpiry: Date,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

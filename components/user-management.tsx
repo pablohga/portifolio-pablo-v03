@@ -22,6 +22,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ChangePasswordDialog } from "./user-management/change-password-dialog";
+import { EditProfileDialog } from "./user-management/edit-profile-dialog";
+import { useSession } from "next-auth/react";
 
 interface User {
   _id: string;
@@ -29,10 +32,15 @@ interface User {
   email: string;
   role: string;
   createdAt: string;
+  image?: string;
 }
 
 export function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+  const { data: session } = useSession();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -99,6 +107,8 @@ export function UserManagement() {
     }
   }
 
+  const isCurrentUserAdmin = session?.user?.role === 'admin';
+
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-8">User Management</h1>
@@ -120,50 +130,94 @@ export function UserManagement() {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
-                  <select
-                    value={user.role}
-                    onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                    className="bg-transparent border rounded px-2 py-1"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Admin</option>
-                  </select>
+                  {isCurrentUserAdmin ? (
+                    <select
+                      value={user.role}
+                      onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                      className="bg-transparent border rounded px-2 py-1"
+                    >
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  ) : (
+                    user.role
+                  )}
                 </TableCell>
                 <TableCell>
                   {new Date(user.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm">
-                        Delete
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete User</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to delete this user? This action
-                          cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDeleteUser(user._id)}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setIsProfileDialogOpen(true);
+                      }}
+                    >
+                      Edit Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setIsPasswordDialogOpen(true);
+                      }}
+                    >
+                      Change Password
+                    </Button>
+                    {isCurrentUserAdmin && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="sm">
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete User</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete this user? This action
+                              cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteUser(user._id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
+
+      {selectedUser && (
+        <>
+          <ChangePasswordDialog
+            userId={selectedUser._id}
+            open={isPasswordDialogOpen}
+            onOpenChange={setIsPasswordDialogOpen}
+          />
+          <EditProfileDialog
+            user={selectedUser}
+            open={isProfileDialogOpen}
+            onOpenChange={setIsProfileDialogOpen}
+            onUpdate={fetchUsers}
+          />
+        </>
+      )}
     </div>
   );
 }
