@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, ExternalLink } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { ProjectDialog } from "@/components/project-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
@@ -18,6 +18,7 @@ import { Hero } from "@/types/hero";
 import { SEO } from "@/types/seo";
 import { About } from "@/types/about";
 import { formatName } from "@/lib/utils";
+import Link from "next/link";
 
 interface DashboardContentProps {
   userId: string;
@@ -392,7 +393,16 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     <div className="container mx-auto py-10">
       <div className="mb-8 space-y-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <Link 
+              href={`/${session?.user?.name?.toLowerCase().replace(/\s+/g, '-')}`}
+              className="inline-flex items-center text-primary hover:underline"
+            >
+              View your public profile
+              <ExternalLink className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
           <div className="text-lg font-medium">
             Welcome, {firstName} <span className="text-primary">{lastName}</span>
           </div>
