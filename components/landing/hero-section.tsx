@@ -33,22 +33,22 @@ export function HeroSection() {
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              Create Your Professional Portfolio Without Spending a Dime
+              Crie Seu Portfólio Profissional Sem Gastar Nada
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Launch your stunning portfolio website completely free. No hidden fees, no credit card required - just pure value for freelancers.
+              Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8">
-                Start Building Free
+                Comece Grátis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button size="lg" variant="outline" className="text-lg px-8">
-                View Demo
+                Ver Demo
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Join 10,000+ freelancers who've already created their portfolios
+              Junte-se a mais de 10.000 freelancers que já criaram seus portfólios
             </p>
           </motion.div>
         </div>

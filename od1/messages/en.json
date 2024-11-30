@@ -1,0 +1,50 @@
+{
+  "navigation": {
+    "portfolio": "Portfolio",
+    "features": "Features",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "dashboard": "Dashboard",
+    "signOut": "Sign Out",
+    "register": "Register",
+    "createAccount": "Create Account",
+    "login": "Login"
+  },
+  "hero": {
+    "title": "Create Your Professional Portfolio Without Spending a Dime",
+    "subtitle": "Launch your stunning portfolio website completely free. No hidden fees, no credit card required - just pure value for freelancers.",
+    "startBuilding": "Start Building Free",
+    "viewDemo": "View Demo",
+    "joinedUsers": "Join 10,000+ freelancers who've already created their portfolios"
+  },
+  "features": {
+    "title": "Everything You Need, For Free",
+    "subtitle": "We believe every freelancer deserves a professional online presence. That's why we made our portfolio builder completely free.",
+    "items": {
+      "free": {
+        "title": "100% Free Forever",
+        "description": "Create and maintain your professional portfolio completely free. No hidden costs or premium features."
+      },
+      "seo": {
+        "title": "SEO Optimized",
+        "description": "Get discovered by clients with our built-in SEO tools. Rank higher in search results naturally."
+      },
+      "fast": {
+        "title": "Lightning Fast",
+        "description": "Built with Next.js for blazing-fast performance that impresses visitors and search engines alike."
+      },
+      "secure": {
+        "title": "Secure & Reliable",
+        "description": "Your portfolio is protected with enterprise-grade security and hosted on reliable infrastructure."
+      },
+      "templates": {
+        "title": "Beautiful Templates",
+        "description": "Choose from our collection of professionally designed templates that make your work shine."
+      },
+      "setup": {
+        "title": "Quick Setup",
+        "description": "Get your portfolio online in minutes with our intuitive setup process. No technical skills needed."
+      }
+    }
+  }
+}

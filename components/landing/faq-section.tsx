@@ -10,24 +10,24 @@ import {
 
 const faqs = [
   {
-    question: "Is it really free?",
-    answer: "Yes! Our portfolio builder is completely free to use. We believe in providing value first and will only charge for additional business management features in the future.",
+    question: "É realmente grátis?",
+    answer: "Sim! Nosso construtor de portfólio é completamente gratuito para usar. Acreditamos em fornecer valor primeiro e só cobraremos por recursos adicionais de gestão de negócios no futuro.",
   },
   {
-    question: "What's included in the free version?",
-    answer: "Everything you need to create a professional portfolio: custom domain support, beautiful templates, SEO tools, analytics, and more. No feature restrictions or hidden costs.",
+    question: "O que está incluído na versão gratuita?",
+    answer: "Tudo que você precisa para criar um portfólio profissional: suporte a domínio personalizado, templates bonitos, ferramentas de SEO, analytics e muito mais. Sem restrições de recursos ou custos ocultos.",
   },
   {
-    question: "Will my portfolio remain free when you launch premium features?",
-    answer: "Absolutely! Your portfolio will always be free. The upcoming premium features are separate business management tools that you can choose to add later.",
+    question: "Meu portfólio continuará gratuito quando vocês lançarem recursos premium?",
+    answer: "Absolutamente! Seu portfólio sempre será gratuito. Os próximos recursos premium são ferramentas separadas de gestão de negócios que você pode escolher adicionar depois.",
   },
   {
-    question: "Can I use my own domain name?",
-    answer: "Yes! You can easily connect your own domain name to your portfolio. We provide detailed instructions and support to help you set it up.",
+    question: "Posso usar meu próprio domínio?",
+    answer: "Sim! Você pode facilmente conectar seu próprio domínio ao seu portfólio. Fornecemos instruções detalhadas e suporte para ajudá-lo a configurar.",
   },
   {
-    question: "Do I need technical knowledge?",
-    answer: "Not at all! Our platform is designed to be user-friendly and requires no coding knowledge. If you ever need help, our support team is here for you.",
+    question: "Preciso de conhecimento técnico?",
+    answer: "Não! Nossa plataforma foi projetada para ser amigável e não requer conhecimento de programação. Se você precisar de ajuda, nossa equipe de suporte está aqui para você.",
   },
 ];
 
@@ -42,9 +42,9 @@ export function FAQSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-bold mb-4">Perguntas Frequentes</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Got questions? We've got answers! If you can't find what you're looking for, reach out to our support team.
+            Tem dúvidas? Nós temos respostas! Se você não encontrar o que procura, entre em contato com nossa equipe de suporte.
           </p>
         </motion.div>
 

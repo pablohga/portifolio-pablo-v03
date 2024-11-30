@@ -1,0 +1,50 @@
+{
+  "navigation": {
+    "portfolio": "Portfólio",
+    "features": "Recursos",
+    "pricing": "Preços",
+    "contact": "Contato",
+    "dashboard": "Painel",
+    "signOut": "Sair",
+    "register": "Registrar",
+    "createAccount": "Criar Conta",
+    "login": "Entrar"
+  },
+  "hero": {
+    "title": "Crie Seu Portfólio Profissional Sem Gastar Nada",
+    "subtitle": "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers.",
+    "startBuilding": "Comece Grátis",
+    "viewDemo": "Ver Demo",
+    "joinedUsers": "Junte-se a mais de 10.000 freelancers que já criaram seus portfólios"
+  },
+  "features": {
+    "title": "Tudo Que Você Precisa, Grátis",
+    "subtitle": "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio totalmente gratuito.",
+    "items": {
+      "free": {
+        "title": "100% Grátis Para Sempre",
+        "description": "Crie e mantenha seu portfólio profissional totalmente grátis. Sem custos ocultos ou recursos premium."
+      },
+      "seo": {
+        "title": "Otimizado para SEO",
+        "description": "Seja descoberto por clientes com nossas ferramentas de SEO integradas. Ranqueie melhor nos resultados de busca naturalmente."
+      },
+      "fast": {
+        "title": "Extremamente Rápido",
+        "description": "Construído com Next.js para um desempenho impressionante que agrada visitantes e mecanismos de busca."
+      },
+      "secure": {
+        "title": "Seguro e Confiável",
+        "description": "Seu portfólio é protegido com segurança de nível empresarial e hospedado em infraestrutura confiável."
+      },
+      "templates": {
+        "title": "Templates Bonitos",
+        "description": "Escolha entre nossa coleção de templates profissionalmente projetados que fazem seu trabalho brilhar."
+      },
+      "setup": {
+        "title": "Configuração Rápida",
+        "description": "Coloque seu portfólio online em minutos com nosso processo intuitivo. Sem necessidade de conhecimentos técnicos."
+      }
+    }
+  }
+}

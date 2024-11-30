@@ -7,28 +7,28 @@ import { Bell, DollarSign, Users, FileText, PieChart, Calendar } from "lucide-re
 const features = [
   {
     icon: <DollarSign className="h-6 w-6" />,
-    title: "Income Tracking",
-    description: "Track your earnings, expenses, and profit margins in real-time.",
+    title: "Controle de Renda",
+    description: "Acompanhe seus ganhos, despesas e margens de lucro em tempo real.",
   },
   {
     icon: <Users className="h-6 w-6" />,
-    title: "Client Management",
-    description: "Manage client information, projects, and communication in one place.",
+    title: "Gestão de Clientes",
+    description: "Gerencie informações de clientes, projetos e comunicação em um só lugar.",
   },
   {
     icon: <FileText className="h-6 w-6" />,
-    title: "Invoice Generation",
-    description: "Create and send professional invoices with automated reminders.",
+    title: "Geração de Faturas",
+    description: "Crie e envie faturas profissionais com lembretes automatizados.",
   },
   {
     icon: <PieChart className="h-6 w-6" />,
-    title: "Financial Reports",
-    description: "Get insights into your business with detailed financial analytics.",
+    title: "Relatórios Financeiros",
+    description: "Obtenha insights sobre seu negócio com análises financeiras detalhadas.",
   },
   {
     icon: <Calendar className="h-6 w-6" />,
-    title: "Project Planning",
-    description: "Schedule projects, set milestones, and track deadlines efficiently.",
+    title: "Planejamento de Projetos",
+    description: "Agende projetos, defina marcos e acompanhe prazos de forma eficiente.",
   },
 ];
 
@@ -45,13 +45,13 @@ export function ComingSoonSection() {
         >
           <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
             <Bell className="h-4 w-4" />
-            Coming Soon
+            Em Breve
           </span>
           <h2 className="text-4xl font-bold mb-4">
-            Supercharge Your Freelance Business
+            Potencialize Seu Negócio Freelancer
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Get early access to our upcoming premium features designed to help you manage your freelance business like a pro.
+            Tenha acesso antecipado aos nossos próximos recursos premium projetados para ajudar você a gerenciar seu negócio freelancer como um profissional.
           </p>
         </motion.div>
 
@@ -78,7 +78,7 @@ export function ComingSoonSection() {
 
         <div className="text-center">
           <Button variant="outline" size="lg">
-            Get Notified When We Launch
+            Seja Notificado Quando Lançarmos
             <Bell className="ml-2 h-4 w-4" />
           </Button>
         </div>

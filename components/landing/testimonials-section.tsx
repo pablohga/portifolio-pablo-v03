@@ -6,21 +6,21 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "Sarah Johnson",
-    role: "UI/UX Designer",
+    role: "Designer UI/UX",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-    content: "This platform helped me land more clients than ever before. The portfolio templates are beautiful and the customization options are endless.",
+    content: "Esta plataforma me ajudou a conseguir mais clientes do que nunca. Os templates de portfólio são lindos e as opções de personalização são infinitas.",
   },
   {
     name: "Michael Chen",
-    role: "Frontend Developer",
+    role: "Desenvolvedor Frontend",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-    content: "Setting up my portfolio was a breeze. The SEO features have significantly improved my visibility online.",
+    content: "Configurar meu portfólio foi muito fácil. Os recursos de SEO melhoraram significativamente minha visibilidade online.",
   },
   {
     name: "Emily Rodriguez",
-    role: "Graphic Designer",
+    role: "Designer Gráfica",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-    content: "The best investment I've made for my freelance career. My portfolio looks professional and attracts high-quality clients.",
+    content: "O melhor investimento que fiz para minha carreira freelancer. Meu portfólio parece profissional e atrai clientes de alta qualidade.",
   },
 ];
 
@@ -35,9 +35,9 @@ export function TestimonialsSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Loved by Freelancers</h2>
+          <h2 className="text-4xl font-bold mb-4">Amado por Freelancers</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of successful freelancers who have transformed their online presence.
+            Junte-se a milhares de freelancers de sucesso que transformaram sua presença online.
           </p>
         </motion.div>
 
