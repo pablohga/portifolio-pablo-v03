@@ -28,14 +28,14 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-6">
-          <Link href="/start" className="hover:text-primary transition-colors">
+          <Link href="/portfolio" className="hover:text-primary transition-colors">
+            Portfolio
+          </Link>
+          <Link href="/#features" className="hover:text-primary transition-colors">
+            Features
+          </Link>
+          <Link href="/#pricing" className="hover:text-primary transition-colors">
             Pricing
-          </Link>
-          <Link href="/#projects" className="hover:text-primary transition-colors">
-            Projects
-          </Link>
-          <Link href="/#about" className="hover:text-primary transition-colors">
-            About
           </Link>
           <Link href="/contact" className="hover:text-primary transition-colors">
             Contact
@@ -87,13 +87,13 @@ export default function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link href="/start">Pricing</Link>
+                <Link href="/portfolio">Portfolio</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/#projects">Projects</Link>
+                <Link href="/#features">Features</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/#about">About</Link>
+                <Link href="/#pricing">Pricing</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/contact">Contact</Link>
