@@ -6,11 +6,12 @@ import { Check } from "lucide-react";
 
 const plans = [
   {
-    name: "Starter",
-    price: "9",
-    description: "Perfect for freelancers just starting out",
+    name: "Free",
+    price: "0",
+    description: "Perfect for getting started",
     features: [
-      "1 Portfolio Website",
+      "3 Categories",
+      "3 Projects per Category",
       "Basic Analytics",
       "Custom Domain",
       "SEO Tools",
@@ -18,12 +19,12 @@ const plans = [
     ],
   },
   {
-    name: "Professional",
+    name: "Paid",
     price: "19",
     description: "For established freelancers who need more",
     features: [
-      "Everything in Starter",
-      "Multiple Portfolios",
+      "Unlimited Categories",
+      "Unlimited Projects",
       "Advanced Analytics",
       "Priority Support",
       "Client Management",
@@ -32,16 +33,16 @@ const plans = [
     popular: true,
   },
   {
-    name: "Agency",
+    name: "Premium",
     price: "49",
-    description: "For agencies and teams",
+    description: "For serious freelancers looking to excel",
     features: [
-      "Everything in Professional",
-      "Team Collaboration",
-      "White Label Solution",
-      "API Access",
-      "Custom Integration",
-      "Dedicated Account Manager",
+      "Everything in Paid plan",
+      "Freelance Success Course",
+      "1-on-1 Mentoring",
+      "Private Community Access",
+      "Priority Features Access",
+      "Business Growth Resources",
     ],
   },
 ];
@@ -57,9 +58,9 @@ export function PricingSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
+          <h2 className="text-4xl font-bold mb-4">Choose Your Plan</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Choose the perfect plan for your needs. All plans include a 14-day free trial.
+            Select the perfect plan for your needs. All plans include core portfolio features.
           </p>
         </motion.div>
 
@@ -93,7 +94,7 @@ export function PricingSection() {
                   className="w-full"
                   variant={plan.popular ? "default" : "outline"}
                 >
-                  Start Free Trial
+                  Get Started
                 </Button>
               </div>
               <ul className="space-y-4">

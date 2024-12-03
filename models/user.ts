@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   image: String,
   emailVerified: Date,
   role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  subscriptionTier: { type: String, enum: ['free', 'paid', 'premium'], default: 'free' },
   resetToken: String,
   resetTokenExpiry: Date,
   createdAt: { type: Date, default: Date.now },
