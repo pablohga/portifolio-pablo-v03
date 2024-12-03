@@ -10,24 +10,24 @@ import {
 
 const faqs = [
   {
-    question: "É realmente grátis?",
-    answer: "Sim! Nosso construtor de portfólio é completamente gratuito para usar. Acreditamos em fornecer valor primeiro e só cobraremos por recursos adicionais de gestão de negócios no futuro.",
+    question: "Quais são as limitações do plano gratuito?",
+    answer: "O plano gratuito permite criar até 3 categorias, com 3 projetos em cada categoria. Você terá acesso a todas as funcionalidades básicas do portfólio, incluindo personalização, SEO e domínio personalizado.",
   },
   {
-    question: "O que está incluído na versão gratuita?",
-    answer: "Tudo que você precisa para criar um portfólio profissional: suporte a domínio personalizado, templates bonitos, ferramentas de SEO, analytics e muito mais. Sem restrições de recursos ou custos ocultos.",
+    question: "Como funciona o plano Pagante?",
+    answer: "O plano Pagante remove todas as limitações de categorias e projetos. Você pode criar quantas categorias desejar e adicionar quantos projetos precisar. Além disso, tem acesso a temas premium e analytics avançado.",
   },
   {
-    question: "Meu portfólio continuará gratuito quando vocês lançarem recursos premium?",
-    answer: "Absolutamente! Seu portfólio sempre será gratuito. Os próximos recursos premium são ferramentas separadas de gestão de negócios que você pode escolher adicionar depois.",
+    question: "O que está incluído no plano Premium?",
+    answer: "O plano Premium inclui todas as funcionalidades do plano Pagante, mais acesso ao sistema de gestão de clientes, gestão financeira, curso exclusivo sobre carreira freelancer, mentoria em grupo e comunidade VIP.",
   },
   {
-    question: "Posso usar meu próprio domínio?",
-    answer: "Sim! Você pode facilmente conectar seu próprio domínio ao seu portfólio. Fornecemos instruções detalhadas e suporte para ajudá-lo a configurar.",
+    question: "Posso mudar de plano depois?",
+    answer: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Ao fazer upgrade, você terá acesso imediato a todas as funcionalidades do novo plano.",
   },
   {
-    question: "Preciso de conhecimento técnico?",
-    answer: "Não! Nossa plataforma foi projetada para ser amigável e não requer conhecimento de programação. Se você precisar de ajuda, nossa equipe de suporte está aqui para você.",
+    question: "Como funciona o curso de carreira freelancer?",
+    answer: "O curso é exclusivo para assinantes Premium e inclui módulos sobre precificação, gestão de projetos, marketing pessoal, captação de clientes e muito mais. O conteúdo é atualizado regularmente.",
   },
 ];
 
@@ -44,7 +44,7 @@ export function FAQSection() {
         >
           <h2 className="text-4xl font-bold mb-4">Perguntas Frequentes</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tem dúvidas? Nós temos respostas! Se você não encontrar o que procura, entre em contato com nossa equipe de suporte.
+            Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.
           </p>
         </motion.div>
 

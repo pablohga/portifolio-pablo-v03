@@ -3,46 +3,51 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 const plans = [
   {
-    name: "Free",
+    name: "Grátis",
     price: "0",
-    description: "Perfect for getting started",
+    description: "Perfeito para começar",
     features: [
-      "3 Categories",
-      "3 Projects per Category",
-      "Basic Analytics",
-      "Custom Domain",
-      "SEO Tools",
-      "24/7 Support",
+      "3 Categorias",
+      "3 Projetos por Categoria",
+      "Portfólio Personalizado",
+      "Domínio Personalizado",
+      "SEO Otimizado",
+      "Suporte por Email",
     ],
   },
   {
-    name: "Paid",
-    price: "19",
-    description: "For established freelancers who need more",
+    name: "Pagante",
+    price: "29,90",
+    description: "Para freelancers estabelecidos",
     features: [
-      "Unlimited Categories",
-      "Unlimited Projects",
-      "Advanced Analytics",
-      "Priority Support",
-      "Client Management",
-      "Custom Branding",
+      "Categorias Ilimitadas",
+      "Projetos Ilimitados",
+      "Portfólio Personalizado",
+      "Domínio Personalizado",
+      "SEO Otimizado",
+      "Suporte Prioritário",
+      "Temas Premium",
+      "Analytics Avançado",
     ],
     popular: true,
   },
   {
     name: "Premium",
-    price: "49",
-    description: "For serious freelancers looking to excel",
+    price: "79,90",
+    description: "Solução completa para crescimento",
     features: [
-      "Everything in Paid plan",
-      "Freelance Success Course",
-      "1-on-1 Mentoring",
-      "Private Community Access",
-      "Priority Features Access",
-      "Business Growth Resources",
+      "Tudo do plano Pagante",
+      "Sistema de Gestão de Clientes",
+      "Gestão Financeira Completa",
+      "Curso: Carreira Freelancer",
+      "Mentoria em Grupo",
+      "Comunidade VIP",
+      "Acesso Antecipado a Recursos",
+      "Suporte 24/7",
     ],
   },
 ];
@@ -58,9 +63,9 @@ export function PricingSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Choose Your Plan</h2>
+          <h2 className="text-4xl font-bold mb-4">Planos que Crescem com Você</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Select the perfect plan for your needs. All plans include core portfolio features.
+            Escolha o plano perfeito para suas necessidades. Comece gratuitamente e evolua conforme seu negócio cresce.
           </p>
         </motion.div>
 
@@ -79,7 +84,7 @@ export function PricingSection() {
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <span className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-full">
-                    Most Popular
+                    Mais Popular
                   </span>
                 </div>
               )}
@@ -87,14 +92,17 @@ export function PricingSection() {
                 <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
                 <p className="text-muted-foreground mb-4">{plan.description}</p>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold">${plan.price}</span>
-                  <span className="text-muted-foreground">/month</span>
+                  <span className="text-4xl font-bold">R$ {plan.price}</span>
+                  <span className="text-muted-foreground">/mês</span>
                 </div>
                 <Button
                   className="w-full"
                   variant={plan.popular ? "default" : "outline"}
+                  asChild
                 >
-                  Get Started
+                  <Link href="/auth/register">
+                    {plan.price === "0" ? "Começar Grátis" : "Começar Agora"}
+                  </Link>
                 </Button>
               </div>
               <ul className="space-y-4">

@@ -18,7 +18,7 @@ export function HeroSection() {
           >
             <div className="flex items-center justify-center mb-8">
               <Image
-                src="https://mundonews.pt/portify_logo_p.png"
+                src="https://mundonews.pt/portify_logo_new_p.png"
                 alt="Portify"
                 width={80}
                 height={80}

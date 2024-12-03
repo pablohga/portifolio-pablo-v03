@@ -30,13 +30,13 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
       description: seo?.description || "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
-      images: [{ url: seo?.ogImage || "https://mundonews.pt/portify_logo_p.png" }],
+      images: [{ url: seo?.ogImage || "https://mundonews.pt/portify_logo_new_p.png" }],
     },
     twitter: {
       card: "summary_large_image",
       title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
       description: seo?.description || "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
-      images: [seo?.ogImage || "https://mundonews.pt/portify_logo_p.png"],
+      images: [seo?.ogImage || "https://mundonews.pt/portify_logo_new_p.png"],
     },
     robots: {
       index: true,
