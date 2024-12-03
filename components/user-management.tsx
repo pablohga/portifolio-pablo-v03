@@ -25,12 +25,21 @@ import {
 import { ChangePasswordDialog } from "./user-management/change-password-dialog";
 import { EditProfileDialog } from "./user-management/edit-profile-dialog";
 import { useSession } from "next-auth/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { SubscriptionTier } from "@/types/subscription";
 
 interface User {
   _id: string;
   name: string;
   email: string;
   role: string;
+  subscriptionTier: SubscriptionTier;
   createdAt: string;
   image?: string;
 }
@@ -85,6 +94,30 @@ export function UserManagement() {
     }
   }
 
+  async function handleSubscriptionChange(userId: string, newTier: SubscriptionTier) {
+    try {
+      const response = await fetch(`/api/users/${userId}/subscription`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subscriptionTier: newTier }),
+      });
+
+      if (!response.ok) throw new Error();
+
+      await fetchUsers();
+      toast({
+        title: "Success",
+        description: "Subscription tier updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update subscription tier",
+        variant: "destructive",
+      });
+    }
+  }
+
   async function handleDeleteUser(userId: string) {
     try {
       const response = await fetch(`/api/users/${userId}`, {
@@ -120,6 +153,7 @@ export function UserManagement() {
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Subscription</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -131,16 +165,41 @@ export function UserManagement() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
                   {isCurrentUserAdmin ? (
-                    <select
+                    <Select
                       value={user.role}
-                      onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                      className="bg-transparent border rounded px-2 py-1"
+                      onValueChange={(value) => handleRoleChange(user._id, value)}
                     >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Select role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="user">User</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
                   ) : (
                     user.role
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isCurrentUserAdmin ? (
+                    <Select
+                      value={user.subscriptionTier}
+                      onValueChange={(value) => 
+                        handleSubscriptionChange(user._id, value as SubscriptionTier)
+                      }
+                    >
+                      <SelectTrigger className="w-32">
+                        <SelectValue placeholder="Select tier" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">Free</SelectItem>
+                        <SelectItem value="paid">Paid</SelectItem>
+                        <SelectItem value="premium">Premium</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    user.subscriptionTier
                   )}
                 </TableCell>
                 <TableCell>
