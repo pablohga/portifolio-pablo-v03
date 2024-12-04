@@ -6,13 +6,19 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { checkSubscriptionLimits } from "@/lib/subscription";
 import { User } from "@/models/user";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+    
     await dbConnect();
-    const categories = await Category.find().sort({ createdAt: -1 });
+    const categories = await Category.find(userId ? { userId } : {}).sort({ order: 1 });
     return NextResponse.json(categories);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch categories" },
+      { status: 500 }
+    );
   }
 }
 
@@ -35,8 +41,13 @@ export async function POST(request: Request) {
     await checkSubscriptionLimits(session.user.id, user.subscriptionTier);
 
     const data = await request.json();
+    
+    // Create a URL-friendly ID from the name
+    const id = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    
     const category = await Category.create({
       ...data,
+      id,
       userId: session.user.id,
     });
     

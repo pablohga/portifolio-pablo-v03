@@ -19,9 +19,29 @@ import { SEO } from "@/types/seo";
 import { About } from "@/types/about";
 import { formatName } from "@/lib/utils";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface DashboardContentProps {
   userId: string;
+}
+
+interface CategoryDialogProps {
+  category?: Category | null; // Agora aceita 'null'
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubmit: (category: Partial<Category>) => void;
+  maxOrder: number;
 }
 
 export function DashboardContent({ userId }: DashboardContentProps) {
@@ -36,6 +56,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const [isSEODialogOpen, setIsSEODialogOpen] = useState(false);
   const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
   const [isContactSettingsDialogOpen, setIsContactSettingsDialogOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -151,32 +172,40 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error);
+      }
 
       await fetchCategories();
       toast({
         title: "Success",
         description: "Category created successfully",
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to create category",
+        description: error.message || "Failed to create category",
         variant: "destructive",
       });
     }
   }
 
-  async function handleUpdateCategory(data: Category) {
+  async function handleUpdateCategory(data: Partial<Category>) {
+    // Valida se _id está definido antes de prosseguir
+    if (!data._id) {
+      throw new Error("Category ID is required for updating.");
+    }
+  
     try {
       const res = await fetch(`/api/categories/${data._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
+  
       if (!res.ok) throw new Error();
-
+  
       await fetchCategories();
       toast({
         title: "Success",
@@ -196,7 +225,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       const res = await fetch(`/api/categories/${id}`, {
         method: "DELETE",
       });
-      console.log(`/api/categories/${id}`)
+
       if (!res.ok) throw new Error();
 
       await fetchCategories();
@@ -358,40 +387,67 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">Categories</h2>
-          <Button onClick={() => setIsCategoryDialogOpen(true)}>
+          <Button onClick={() => {
+            setSelectedCategory(null);
+            setIsCategoryDialogOpen(true);
+          }}>
             <Plus className="w-4 h-4 mr-2" />
             Add Category
           </Button>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {categories.map((category) => (
-            <div
-              key={category._id}
-              className="p-6 bg-card rounded-lg border shadow-sm"
-            >
-              <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
-              {category.description && (
-                <p className="text-muted-foreground mb-4">{category.description}</p>
-              )}
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setIsCategoryDialogOpen(true);
-                  }}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDeleteCategory(category._id)}
-                >
-                  Delete
-                </Button>
-              </div>
-            </div>
+            <Card key={category._id}>
+              <CardContent className="pt-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
+                    {category.description && (
+                      <div 
+                        className="text-muted-foreground prose prose-sm dark:prose-invert"
+                        dangerouslySetInnerHTML={{ __html: category.description }}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setIsCategoryDialogOpen(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm">
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Category</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete this category? This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDeleteCategory(category._id)}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
@@ -423,9 +479,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       />
 
       <CategoryDialog
+        category={selectedCategory || undefined}
         open={isCategoryDialogOpen}
         onOpenChange={setIsCategoryDialogOpen}
-        onSubmit={handleCreateCategory}
+        onSubmit={selectedCategory ? handleUpdateCategory : handleCreateCategory}
         maxOrder={Math.max(...categories.map((c) => c.order), -1)}
       />
 
