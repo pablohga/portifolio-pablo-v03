@@ -45,6 +45,19 @@ export async function POST(request: Request) {
     // Create a URL-friendly ID from the name
     const id = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     
+    // Check if category with same name already exists for this user
+    const existingCategory = await Category.findOne({
+      userId: session.user.id,
+      name: data.name
+    });
+
+    if (existingCategory) {
+      return NextResponse.json(
+        { error: "A category with this name already exists" },
+        { status: 400 }
+      );
+    }
+    
     const category = await Category.create({
       ...data,
       id,

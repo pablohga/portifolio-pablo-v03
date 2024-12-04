@@ -13,13 +13,14 @@ import * as Icons from "lucide-react";
 
 interface ProjectsSectionProps {
   userId?: string;
+  initialCategories?: Category[];
 }
 
 const ITEMS_PER_PAGE = 6;
 
-export function ProjectsSection({ userId }: ProjectsSectionProps) {
+export function ProjectsSection({ userId, initialCategories = [] }: ProjectsSectionProps) {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,8 +29,8 @@ export function ProjectsSection({ userId }: ProjectsSectionProps) {
   useEffect(() => {
     Promise.all([
       fetchProjects(),
-      fetchCategories()
-    ]).finally(() => setIsLoading(false));
+      !initialCategories.length && fetchCategories(),
+    ].filter(Boolean)).finally(() => setIsLoading(false));
   }, [userId]);
 
   async function fetchProjects() {
@@ -44,13 +45,18 @@ export function ProjectsSection({ userId }: ProjectsSectionProps) {
   }
 
   async function fetchCategories() {
+    if (initialCategories.length > 0) {
+      setCategories(initialCategories);
+      return;
+    }
+
     try {
       const url = userId ? `/api/categories?userId=${userId}` : "/api/categories";
       const response = await fetch(url);
       const data = await response.json();
-      // Sort categories by order
       const sortedCategories = data.sort((a: Category, b: Category) => a.order - b.order);
       setCategories(sortedCategories);
+      
       // Initialize pagination for each category
       const pages: Record<string, number> = {};
       sortedCategories.forEach((category: Category) => {
@@ -123,7 +129,7 @@ export function ProjectsSection({ userId }: ProjectsSectionProps) {
                   className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
                 >
                   <div className="flex items-center gap-2">
-                    <Icon className="h-4 w-4" />
+                    {/* <Icon className="h-4 w-4" /> */}
                     <span>{category.name}</span>
                   </div>
                 </TabsTrigger>
