@@ -196,7 +196,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       const res = await fetch(`/api/categories/${id}`, {
         method: "DELETE",
       });
-
+      console.log(`/api/categories/${id}`)
       if (!res.ok) throw new Error();
 
       await fetchCategories();

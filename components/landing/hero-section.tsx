@@ -18,12 +18,19 @@ export function HeroSection() {
           >
             <div className="flex items-center justify-center mb-8">
               <Image
-                src="https://mundonews.pt/portify_logo_new_p.png"
+                src="https://mundonews.pt/portify_logo_novo_horizontal.png"
                 alt="Portify"
-                width={80}
-                height={80}
+                width={320}
+                height={160}
                 className="h-20 w-auto"
               />
+              {/* <Image
+                src="https://mundonews.pt/portify_logo_new_p.png"
+                alt="Portify"
+                width={160}
+                height={80}
+                className="h-20 w-auto"
+              /> */}
             </div>
             <div className="flex items-center justify-center gap-2 mb-6">
               <Sparkles className="h-6 w-6 text-primary" />

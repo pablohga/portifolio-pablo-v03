@@ -25,6 +25,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Logo />
           <span className="text-lg font-semibold">Portify</span>
+          {/* <span className="text-lg font-semibold">Portify</span> */}
         </div>
 
         <div className="hidden md:flex items-center gap-6">
