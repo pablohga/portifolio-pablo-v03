@@ -37,7 +37,7 @@ interface DashboardContentProps {
 }
 
 interface CategoryDialogProps {
-  category?: Category | null; // Agora aceita 'null'
+  category?: Category | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (category: Partial<Category>) => void;
@@ -82,7 +82,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   async function fetchCategories() {
     try {
-      const res = await fetch("/api/categories");
+      const res = await fetch(`/api/categories?userId=${userId}`);
       const data = await res.json();
       setCategories(data);
     } catch (error) {
@@ -192,7 +192,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   }
 
   async function handleUpdateCategory(data: Partial<Category>) {
-    // Valida se _id está definido antes de prosseguir
     if (!data._id) {
       throw new Error("Category ID is required for updating.");
     }
