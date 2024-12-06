@@ -31,6 +31,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface DashboardContentProps {
   userId: string;
@@ -333,6 +334,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
+  const getProjectsByCategory = (categoryId: string) => {
+    return projects.filter(project => project.category === categoryId);
+  };
+
   if (isLoading) {
     return (
       <div className="container mx-auto py-20">
@@ -459,16 +464,40 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             Add Project
           </Button>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <ProjectCard
-              key={project._id}
-              project={project}
-              onEdit={handleUpdateProject}
-              onDelete={handleDeleteProject}
-            />
+
+        <Tabs defaultValue={categories[0]?.id} className="w-full">
+          <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent">
+            {categories.map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                {category.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {categories.map((category) => (
+            <TabsContent key={category.id} value={category.id}>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {getProjectsByCategory(category.id).map((project) => (
+                  <ProjectCard
+                    key={project._id}
+                    project={project}
+                    onEdit={handleUpdateProject}
+                    onDelete={handleDeleteProject}
+                  />
+                ))}
+              </div>
+              {getProjectsByCategory(category.id).length === 0 && (
+                <p className="text-center text-muted-foreground py-8">
+                  No projects in this category yet.
+                </p>
+              )}
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
       </div>
 
       <ProjectDialog
