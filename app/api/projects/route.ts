@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/db";
 import { Project } from "@/models/project";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { checkSubscriptionLimits } from "@/lib/subscription";
+import { checkProjectLimits } from "@/lib/subscription";
 import { User } from "@/models/user";
 
 export async function GET(request: Request) {
@@ -15,7 +15,10 @@ export async function GET(request: Request) {
     const projects = await Project.find(userId ? { userId } : {}).sort({ createdAt: -1 });
     return NextResponse.json(projects);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch projects" },
+      { status: 500 }
+    );
   }
 }
 
@@ -34,10 +37,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Check subscription limits
-    await checkSubscriptionLimits(session.user.id, user.subscriptionTier);
-
     const data = await request.json();
+
+    // Check project limits for the specific category
+    await checkProjectLimits(session.user.id, data.category, user.subscriptionTier);
+
     const project = await Project.create({
       ...data,
       userId: session.user.id,
