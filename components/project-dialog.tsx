@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/select";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
+import { useSession } from "next-auth/react";
 
 const projectSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -53,6 +54,7 @@ export function ProjectDialog({
   onSubmit,
 }: ProjectDialogProps) {
   const [categories, setCategories] = useState<Category[]>([]);
+  const { data: session } = useSession();
 
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
@@ -68,7 +70,7 @@ export function ProjectDialog({
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch("/api/categories");
+        const response = await fetch(`/api/categories?userId=${session?.user?.id}`);
         const data = await response.json();
         setCategories(data);
       } catch (error) {
@@ -76,10 +78,10 @@ export function ProjectDialog({
       }
     }
 
-    if (open) {
+    if (open && session?.user?.id) {
       fetchCategories();
     }
-  }, [open]);
+  }, [open, session?.user?.id]);
 
   function handleSubmit(values: z.infer<typeof projectSchema>) {
     onSubmit({
