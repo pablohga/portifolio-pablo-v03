@@ -14,23 +14,26 @@ import * as Icons from "lucide-react";
 interface ProjectsSectionProps {
   userId?: string;
   initialCategories?: Category[];
+  initialProjects?: Project[];
 }
 
 const ITEMS_PER_PAGE = 6;
 
-export function ProjectsSection({ userId, initialCategories = [] }: ProjectsSectionProps) {
-  const [projects, setProjects] = useState<Project[]>([]);
+export function ProjectsSection({ userId, initialCategories = [], initialProjects = [] }: ProjectsSectionProps) {
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!initialProjects.length || !initialCategories.length);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    Promise.all([
-      fetchProjects(),
-      !initialCategories.length && fetchCategories(),
-    ].filter(Boolean)).finally(() => setIsLoading(false));
+    if (!initialProjects.length || !initialCategories.length) {
+      Promise.all([
+        fetchProjects(),
+        !initialCategories.length && fetchCategories(),
+      ].filter(Boolean)).finally(() => setIsLoading(false));
+    }
   }, [userId]);
 
   async function fetchProjects() {

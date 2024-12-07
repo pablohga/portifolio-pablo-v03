@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { User } from "@/models/user";
+import { Project } from "@/models/project";
 import dbConnect from "@/lib/db";
 import { HeroSection } from "@/components/hero-section";
 import { ProjectsSection } from "@/components/projects-section";
@@ -26,6 +27,10 @@ async function getUserSEO(userId: string) {
 
 async function getUserCategories(userId: string) {
   return Category.find({ userId }).sort({ order: 1 });
+}
+
+async function getUserProjects(userId: string) {
+  return Project.find({ userId }).sort({ createdAt: -1 });
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -66,11 +71,12 @@ export default async function UserPortfolioPage({ params }: Props) {
 
   const userId = user._id.toString();
   const categories = await getUserCategories(userId);
+  const projects = await getUserProjects(userId);
 
   return (
     <div className="min-h-screen bg-background">
       <HeroSection userId={userId} />
-      <ProjectsSection userId={userId} initialCategories={categories} />
+      <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
       <AboutSection userId={userId} />
       <ContactSection userId={userId} />
     </div>
