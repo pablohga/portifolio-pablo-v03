@@ -70,13 +70,30 @@ export default async function UserPortfolioPage({ params }: Props) {
   }
 
   const userId = user._id.toString();
-  const categories = await getUserCategories(userId);
-  const projects = await getUserProjects(userId);
+  const [categories, projects] = await Promise.all([
+    getUserCategories(userId),
+    getUserProjects(userId)
+  ]);
+
+  // Convert Mongoose documents to plain objects and ensure proper typing
+  const plainCategories = categories.map(cat => ({
+    ...cat.toObject(),
+    _id: cat._id.toString(),
+  }));
+
+  const plainProjects = projects.map(proj => ({
+    ...proj.toObject(),
+    _id: proj._id.toString(),
+  }));
 
   return (
     <div className="min-h-screen bg-background">
       <HeroSection userId={userId} />
-      <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
+      <ProjectsSection 
+        userId={userId} 
+        initialCategories={plainCategories} 
+        initialProjects={plainProjects} 
+      />
       <AboutSection userId={userId} />
       <ContactSection userId={userId} />
     </div>

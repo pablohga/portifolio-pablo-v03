@@ -33,8 +33,15 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
         fetchProjects(),
         !initialCategories.length && fetchCategories(),
       ].filter(Boolean)).finally(() => setIsLoading(false));
+    } else {
+      // Initialize pagination for each category
+      const pages: Record<string, number> = {};
+      initialCategories.forEach((category) => {
+        pages[category.id] = 1;
+      });
+      setCurrentPage(pages);
     }
-  }, [userId]);
+  }, [userId, initialCategories, initialProjects]);
 
   async function fetchProjects() {
     try {
