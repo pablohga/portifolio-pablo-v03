@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, ExternalLink, Users } from "lucide-react";
+import { Plus, ExternalLink, Users, Home } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { ProjectDialog } from "@/components/project-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
@@ -12,11 +12,9 @@ import { HeroDialog } from "@/components/hero-dialog";
 import { SEODialog } from "@/components/seo-dialog";
 import { AboutDialog } from "@/components/about-dialog";
 import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
+import { HomeEditorDialog } from "@/components/home-editor-dialog";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
-import { Hero } from "@/types/hero";
-import { SEO } from "@/types/seo";
-import { About } from "@/types/about";
 import { formatName } from "@/lib/utils";
 import Link from "next/link";
 import {
@@ -37,17 +35,7 @@ interface DashboardContentProps {
   userId: string;
 }
 
-interface CategoryDialogProps {
-  category?: Category | null;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit: (category: Partial<Category>) => void;
-  maxOrder: number;
-}
-
 export function DashboardContent({ userId }: DashboardContentProps) {
-  const { data: session } = useSession();
-  const { firstName, lastName } = formatName(session?.user?.name);
   const [projects, setProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +45,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const [isSEODialogOpen, setIsSEODialogOpen] = useState(false);
   const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
   const [isContactSettingsDialogOpen, setIsContactSettingsDialogOpen] = useState(false);
+  const [isHomeEditorOpen, setIsHomeEditorOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const { data: session } = useSession();
+  const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -242,7 +233,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
-  async function handleUpdateHero(data: Partial<Hero>) {
+  async function handleUpdateHero(data: any) {
     try {
       const res = await fetch("/api/hero", {
         method: "POST",
@@ -265,7 +256,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
-  async function handleUpdateSEO(data: Partial<SEO>) {
+  async function handleUpdateSEO(data: any) {
     try {
       const res = await fetch("/api/seo", {
         method: "POST",
@@ -288,7 +279,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
-  async function handleUpdateAbout(data: Partial<About>) {
+  async function handleUpdateAbout(data: any) {
     try {
       const res = await fetch("/api/about", {
         method: "POST",
@@ -329,6 +320,29 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Error",
         description: "Failed to update contact settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateHome(data: any) {
+    try {
+      const res = await fetch("/api/home", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "Home page updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update home page",
         variant: "destructive",
       });
     }
@@ -378,12 +392,18 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             Edit Contact Settings
           </Button>
           {session?.user?.role === 'admin' && (
-            <Button asChild>
-              <Link href="/dashboard/users" className="inline-flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Manage Users
-              </Link>
-            </Button>
+            <>
+              <Button onClick={() => setIsHomeEditorOpen(true)}>
+                <Home className="mr-2 h-4 w-4" />
+                Edit Home Page
+              </Button>
+              <Button asChild>
+                <Link href="/dashboard/users" className="inline-flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Manage Users
+                </Link>
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -540,6 +560,12 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         open={isContactSettingsDialogOpen}
         onOpenChange={setIsContactSettingsDialogOpen}
         onSubmit={handleUpdateContactSettings}
+      />
+
+      <HomeEditorDialog
+        open={isHomeEditorOpen}
+        onOpenChange={setIsHomeEditorOpen}
+        onSubmit={handleUpdateHome}
       />
     </div>
   );
