@@ -4,8 +4,13 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
+import { PricingSection as PricingSectionType } from "@/types/home";
 
-const plans = [
+interface PricingSectionProps {
+  data?: PricingSectionType;
+}
+
+const defaultPlans = [
   {
     name: "Grátis",
     price: "0",
@@ -18,6 +23,7 @@ const plans = [
       "SEO Otimizado",
       "Suporte por Email",
     ],
+    buttonText: "Começar Grátis",
   },
   {
     name: "Pagante",
@@ -33,6 +39,7 @@ const plans = [
       "Temas Premium",
       "Analytics Avançado",
     ],
+    buttonText: "Começar Agora",
     popular: true,
   },
   {
@@ -49,10 +56,15 @@ const plans = [
       "Acesso Antecipado a Recursos",
       "Suporte 24/7",
     ],
+    buttonText: "Começar Agora",
   },
 ];
 
-export function PricingSection() {
+export function PricingSection({ data }: PricingSectionProps) {
+  const plans = data?.plans || defaultPlans;
+  const title = data?.title || "Planos que Crescem com Você";
+  const subtitle = data?.subtitle || "Escolha o plano perfeito para suas necessidades. Comece gratuitamente e evolua conforme seu negócio cresce.";
+
   return (
     <section id="pricing" className="py-20 bg-background">
       <div className="container px-4 mx-auto">
@@ -63,9 +75,9 @@ export function PricingSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Planos que Crescem com Você</h2>
+          <h2 className="text-4xl font-bold mb-4">{title}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Escolha o plano perfeito para suas necessidades. Comece gratuitamente e evolua conforme seu negócio cresce.
+            {subtitle}
           </p>
         </motion.div>
 
@@ -101,7 +113,7 @@ export function PricingSection() {
                   asChild
                 >
                   <Link href="/auth/register">
-                    {plan.price === "0" ? "Começar Grátis" : "Começar Agora"}
+                    {plan.buttonText}
                   </Link>
                 </Button>
               </div>

@@ -7,8 +7,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { FAQSection as FAQSectionType } from "@/types/home";
 
-const faqs = [
+interface FAQSectionProps {
+  data?: FAQSectionType;
+}
+
+const defaultFAQs = [
   {
     question: "Quais são as limitações do plano gratuito?",
     answer: "O plano gratuito permite criar até 3 categorias, com 3 projetos em cada categoria. Você terá acesso a todas as funcionalidades básicas do portfólio, incluindo personalização, SEO e domínio personalizado.",
@@ -31,7 +36,11 @@ const faqs = [
   },
 ];
 
-export function FAQSection() {
+export function FAQSection({ data }: FAQSectionProps) {
+  const faqs = data?.faqs || defaultFAQs;
+  const title = data?.title || "Perguntas Frequentes";
+  const subtitle = data?.subtitle || "Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.";
+
   return (
     <section className="py-20 bg-background">
       <div className="container px-4 mx-auto">
@@ -42,9 +51,9 @@ export function FAQSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Perguntas Frequentes</h2>
+          <h2 className="text-4xl font-bold mb-4">{title}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.
+            {subtitle}
           </p>
         </motion.div>
 

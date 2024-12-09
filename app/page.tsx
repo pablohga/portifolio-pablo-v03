@@ -10,9 +10,14 @@ import dbConnect from '@/lib/db';
 import { HomeData } from '@/types/home';
 
 async function getHomeData(): Promise<HomeData | null> {
-  await dbConnect();
-  const home = await Home.findOne().sort({ createdAt: -1 });
-  return home ? home.toObject() : null;
+  try {
+    await dbConnect();
+    const home = await Home.findOne().sort({ createdAt: -1 });
+    return home ? home.toObject() : null;
+  } catch (error) {
+    console.error('Error fetching home data:', error);
+    return null;
+  }
 }
 
 export default async function HomePage() {

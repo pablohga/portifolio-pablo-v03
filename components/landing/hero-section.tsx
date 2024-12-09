@@ -5,15 +5,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { HeroSection as HeroSectionType } from "@/types/home";
 
 interface HeroSectionProps {
-  data?: {
-    title: string;
-    subtitle: string;
-    description: string;
-    buttonText: string;
-    buttonLink: string;
-  };
+  data?: HeroSectionType;
 }
 
 export function HeroSection({ data }: HeroSectionProps) {

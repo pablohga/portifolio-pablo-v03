@@ -2,8 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { TestimonialsSection as TestimonialsSectionType } from "@/types/home";
 
-const testimonials = [
+interface TestimonialsSectionProps {
+  data?: TestimonialsSectionType;
+}
+
+const defaultTestimonials = [
   {
     name: "Sarah Johnson",
     role: "Designer UI/UX",
@@ -24,7 +29,11 @@ const testimonials = [
   },
 ];
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ data }: TestimonialsSectionProps) {
+  const testimonials = data?.testimonials || defaultTestimonials;
+  const title = data?.title || "Amado por Freelancers";
+  const subtitle = data?.subtitle || "Junte-se a milhares de freelancers de sucesso que transformaram sua presença online.";
+
   return (
     <section className="py-20 bg-background/50">
       <div className="container px-4 mx-auto">
@@ -35,9 +44,9 @@ export function TestimonialsSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Amado por Freelancers</h2>
+          <h2 className="text-4xl font-bold mb-4">{title}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Junte-se a milhares de freelancers de sucesso que transformaram sua presença online.
+            {subtitle}
           </p>
         </motion.div>
 
