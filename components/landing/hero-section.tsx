@@ -4,8 +4,19 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  data?: {
+    title: string;
+    subtitle: string;
+    description: string;
+    buttonText: string;
+    buttonLink: string;
+  };
+}
+
+export function HeroSection({ data }: HeroSectionProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/50">
       <div className="absolute inset-0 bg-grid-white/10" />
@@ -24,31 +35,26 @@ export function HeroSection() {
                 height={160}
                 className="h-20 w-auto"
               />
-              {/* <Image
-                src="https://mundonews.pt/portify_logo_new_p.png"
-                alt="Portify"
-                width={160}
-                height={80}
-                className="h-20 w-auto"
-              /> */}
             </div>
             <div className="flex items-center justify-center gap-2 mb-6">
               <Sparkles className="h-6 w-6 text-primary" />
               <span className="text-primary font-semibold">
-                Seu Portfólio, Sua Identidade
+                {data?.subtitle || "Seu Portfólio, Sua Identidade"}
               </span>
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              Crie Seu Portfólio Profissional Sem Gastar Nada
+              {data?.title || "Crie Seu Portfólio Profissional Sem Gastar Nada"}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers.
+              {data?.description || "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8">
-                Comece Grátis
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link href={data?.buttonLink || "/auth/register"}>
+                  {data?.buttonText || "Comece Grátis"}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
               <Button size="lg" variant="outline" className="text-lg px-8">
                 Ver Demo

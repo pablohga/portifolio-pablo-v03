@@ -7,10 +7,12 @@ import { FAQSection } from '@/components/landing/faq-section';
 import { CTASection } from '@/components/landing/cta-section';
 import { Home } from '@/models/home';
 import dbConnect from '@/lib/db';
+import { HomeData } from '@/types/home';
 
-async function getHomeData() {
+async function getHomeData(): Promise<HomeData | null> {
   await dbConnect();
-  return Home.findOne().sort({ createdAt: -1 });
+  const home = await Home.findOne().sort({ createdAt: -1 });
+  return home ? home.toObject() : null;
 }
 
 export default async function HomePage() {
