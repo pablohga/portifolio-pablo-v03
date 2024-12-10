@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { ServiceDialog } from "./service-dialog";
 
 interface Service {
   _id: string;
@@ -26,22 +27,35 @@ interface Service {
   endDate?: Date;
 }
 
+interface Client {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 interface ServiceListProps {
   userId: string;
 }
 
 export function ServiceList({ userId }: ServiceListProps) {
   const [services, setServices] = useState<Service[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchServices();
+    Promise.all([
+      fetchServices(),
+      fetchClients()
+    ]).finally(() => setIsLoading(false));
   }, []);
 
   async function fetchServices() {
     try {
       const response = await fetch(`/api/services?userId=${userId}`);
+      if (!response.ok) throw new Error();
       const data = await response.json();
       setServices(data);
     } catch (error) {
@@ -50,8 +64,53 @@ export function ServiceList({ userId }: ServiceListProps) {
         description: "Failed to fetch services",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
+    }
+  }
+
+  async function fetchClients() {
+    try {
+      const response = await fetch(`/api/clients?userId=${userId}`);
+      if (!response.ok) throw new Error();
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch clients",
+        variant: "destructive",
+      });
+    }
+  }
+
+  function handleAddService() {
+    setSelectedService(null);
+    setIsDialogOpen(true);
+  }
+
+  function handleEditService(service: Service) {
+    setSelectedService(service);
+    setIsDialogOpen(true);
+  }
+
+  async function handleDeleteService(id: string) {
+    try {
+      const response = await fetch(`/api/services/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error();
+
+      await fetchServices();
+      toast({
+        title: "Success",
+        description: "Service deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete service",
+        variant: "destructive",
+      });
     }
   }
 
@@ -63,7 +122,7 @@ export function ServiceList({ userId }: ServiceListProps) {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Services</h2>
-        <Button>
+        <Button onClick={handleAddService}>
           <Plus className="w-4 h-4 mr-2" />
           Add Service
         </Button>
@@ -92,7 +151,9 @@ export function ServiceList({ userId }: ServiceListProps) {
               services.map((service) => (
                 <TableRow key={service._id}>
                   <TableCell>{service.title}</TableCell>
-                  <TableCell>{service.clientId}</TableCell>
+                  <TableCell>
+                    {clients.find(c => c._id === service.clientId)?.name || 'Unknown Client'}
+                  </TableCell>
                   <TableCell>
                     <Badge variant="outline">{service.status}</Badge>
                   </TableCell>
@@ -117,10 +178,18 @@ export function ServiceList({ userId }: ServiceListProps) {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditService(service)}
+                      >
                         Edit
                       </Button>
-                      <Button variant="destructive" size="sm">
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDeleteService(service._id)}
+                      >
                         Delete
                       </Button>
                     </div>
@@ -131,6 +200,14 @@ export function ServiceList({ userId }: ServiceListProps) {
           </TableBody>
         </Table>
       </div>
+
+      <ServiceDialog
+        clients={clients}
+        service={selectedService}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onSubmit={fetchServices}
+      />
     </div>
   );
 }

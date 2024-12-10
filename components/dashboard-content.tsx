@@ -125,7 +125,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Project updated successfully",
-      });
+       });
     } catch (error) {
       toast({
         title: "Error",
@@ -392,7 +392,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
             Edit Contact Settings
           </Button>
-          {isUserPremium && (
+          {session?.user?.subscriptionTier === 'premium' && (
             <Button asChild>
               <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
                 <UserCircle className="h-4 w-4" />
