@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, ExternalLink, Users, Home } from "lucide-react";
+import { Plus, ExternalLink, Users, Home, UserCircle } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { ProjectDialog } from "@/components/project-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
@@ -50,6 +50,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const { data: session } = useSession();
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
+  const isUserPremium = session?.user?.role === 'premium';
 
   useEffect(() => {
     Promise.all([
@@ -391,6 +392,14 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
             Edit Contact Settings
           </Button>
+          {isUserPremium && (
+            <Button asChild>
+              <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
+                <UserCircle className="h-4 w-4" />
+                Client Management
+              </Link>
+            </Button>
+          )}
           {session?.user?.role === 'admin' && (
             <>
               <Button onClick={() => setIsHomeEditorOpen(true)}>
