@@ -29,11 +29,28 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+
+interface Client {
+  _id: string;
+  name: string;
+  email: string;
+}
+
+interface Service {
+  _id: string;
+  clientId: string;
+  title: string;
+  description: string;
+  value: number;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  startDate?: Date;
+  endDate?: Date;
+}
 
 const serviceSchema = z.object({
   clientId: z.string().min(1, "Client is required"),
@@ -46,8 +63,8 @@ const serviceSchema = z.object({
 });
 
 interface ServiceDialogProps {
-  clients: any[];
-  service?: any;
+  clients: Client[];
+  service?: Service | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: () => void;
@@ -245,7 +262,7 @@ export function ServiceDialog({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
+                          disabled={(date: Date) =>
                             date < new Date("1900-01-01")
                           }
                           initialFocus
@@ -287,7 +304,7 @@ export function ServiceDialog({
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
+                          disabled={(date: Date) =>
                             date < new Date("1900-01-01")
                           }
                           initialFocus

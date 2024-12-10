@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           role: user.role,
+          subscriptionTier: user.subscriptionTier,
         };
       }
     })
@@ -69,6 +70,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             image: user.image,
             role: 'user',
+            subscriptionTier: 'free',
           });
         }
       }
@@ -77,6 +79,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.subscriptionTier = user.subscriptionTier;
       }
       return token;
     },
@@ -84,6 +87,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.sub as string;
         session.user.role = token.role as string;
+        session.user.subscriptionTier = token.subscriptionTier as string;
       }
       return session;
     },
