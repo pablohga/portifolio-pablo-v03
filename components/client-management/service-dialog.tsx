@@ -35,39 +35,23 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 
-interface Client {
-  _id: string;
-  name: string;
-  email: string;
-}
-
-interface Service {
-  _id: string;
-  clientId: string;
-  title: string;
-  description: string;
-  value: number;
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-  startDate?: Date;
-  endDate?: Date;
-}
-
 const serviceSchema = z.object({
   clientId: z.string().min(1, "Client is required"),
   title: z.string().min(2, "Title must be at least 2 characters"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   value: z.string().min(1, "Value is required"),
   status: z.string().min(1, "Status is required"),
+  paymentStatus: z.string().min(1, "Payment status is required"),
   startDate: z.date().optional(),
   endDate: z.date().optional(),
 });
 
 interface ServiceDialogProps {
-  clients: Client[];
-  service?: Service | null;
+  clients: any[];
+  service?: any;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: () => void;
+  onSubmit: (data: any) => void;
 }
 
 export function ServiceDialog({
@@ -88,6 +72,7 @@ export function ServiceDialog({
       description: "",
       value: "",
       status: "pending",
+      paymentStatus: "pending",
       startDate: undefined,
       endDate: undefined,
     },
@@ -102,6 +87,7 @@ export function ServiceDialog({
         description: service.description,
         value: service.value.toString(),
         status: service.status,
+        paymentStatus: service.paymentStatus,
         startDate: service.startDate ? new Date(service.startDate) : undefined,
         endDate: service.endDate ? new Date(service.endDate) : undefined,
       });
@@ -112,6 +98,7 @@ export function ServiceDialog({
         description: "",
         value: "",
         status: "pending",
+        paymentStatus: "pending",
         startDate: undefined,
         endDate: undefined,
       });
@@ -121,32 +108,17 @@ export function ServiceDialog({
   async function handleSubmit(values: z.infer<typeof serviceSchema>) {
     try {
       setIsLoading(true);
-      const url = service?._id ? `/api/services/${service._id}` : "/api/services";
-      const method = service?._id ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          value: parseFloat(values.value),
-        }),
-      });
-
-      if (!response.ok) throw new Error();
-
-      toast({
-        title: "Success",
-        description: `Service ${service?._id ? "updated" : "created"} successfully`,
-      });
-
-      onSubmit();
-      onOpenChange(false);
-      form.reset();
+      const data = {
+        ...values,
+        value: parseFloat(values.value),
+        _id: service?._id,
+      };
+      
+      onSubmit(data);
     } catch (error) {
       toast({
         title: "Error",
-        description: `Failed to ${service?._id ? "update" : "create"} service`,
+        description: "Failed to save service",
         variant: "destructive",
       });
     } finally {
@@ -159,7 +131,7 @@ export function ServiceDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {service?._id ? "Edit Service" : "Add Service"}
+            {service ? "Edit Service" : "Add Service"}
           </DialogTitle>
         </DialogHeader>
 
@@ -232,29 +204,54 @@ export function ServiceDialog({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Status</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="in_progress">In Progress</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="in_progress">In Progress</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
+                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="paymentStatus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Payment Status</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select payment status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="partial">Partial</SelectItem>
+                        <SelectItem value="paid">Paid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <FormField
@@ -343,7 +340,7 @@ export function ServiceDialog({
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save Service"}
+              {isLoading ? "Saving..." : service ? "Update Service" : "Create Service"}
             </Button>
           </form>
         </Form>
