@@ -108,17 +108,34 @@ export function ServiceDialog({
   async function handleSubmit(values: z.infer<typeof serviceSchema>) {
     try {
       setIsLoading(true);
-      const data = {
-        ...values,
-        value: parseFloat(values.value),
-        _id: service?._id,
-      };
+      const url = service?._id ? `/api/services/${service._id}` : "/api/services";
+      const method = service?._id ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          value: parseFloat(values.value),
+        }),
+      });
+
+      if (!response.ok) throw new Error();
+
+      const updatedService = await response.json();
       
-      onSubmit(data);
+      toast({
+        title: "Success",
+        description: `Service ${service?._id ? "updated" : "created"} successfully`,
+      });
+
+      onSubmit(updatedService);
+      onOpenChange(false);
+      form.reset();
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to save service",
+        description: `Failed to ${service?._id ? "update" : "create"} service`,
         variant: "destructive",
       });
     } finally {
@@ -128,15 +145,14 @@ export function ServiceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>
-            {service ? "Edit Service" : "Add Service"}
+            {service ? "Edit Service" : "Create Service"}
           </DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="clientId"

@@ -14,6 +14,17 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { ServiceDialog } from "./service-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Service {
   _id: string;
@@ -100,7 +111,7 @@ export function ServiceList({ userId }: ServiceListProps) {
 
       if (!response.ok) throw new Error();
 
-      await fetchServices();
+      setServices(services.filter(service => service._id !== id));
       toast({
         title: "Success",
         description: "Service deleted successfully",
@@ -111,6 +122,18 @@ export function ServiceList({ userId }: ServiceListProps) {
         description: "Failed to delete service",
         variant: "destructive",
       });
+    }
+  }
+
+  function handleServiceSubmit(updatedService: Service) {
+    if (selectedService) {
+      // Update existing service
+      setServices(services.map(service => 
+        service._id === updatedService._id ? updatedService : service
+      ));
+    } else {
+      // Add new service
+      setServices([...services, updatedService]);
     }
   }
 
@@ -185,13 +208,30 @@ export function ServiceList({ userId }: ServiceListProps) {
                       >
                         Edit
                       </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDeleteService(service._id)}
-                      >
-                        Delete
-                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="sm">
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Service</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete this service? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteService(service._id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -206,7 +246,7 @@ export function ServiceList({ userId }: ServiceListProps) {
         service={selectedService}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
-        onSubmit={fetchServices}
+        onSubmit={handleServiceSubmit}
       />
     </div>
   );
