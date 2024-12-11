@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ClientDialog } from "./client-dialog";
 import { ClientTable } from "./client-table";
+import { ClientDetailsModal } from "./client-details-modal";
 import { useToast } from "@/components/ui/use-toast";
 
 interface Client {
@@ -32,6 +33,7 @@ export function ClientList({ userId }: ClientListProps) {
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const { toast } = useToast();
 
@@ -63,6 +65,11 @@ export function ClientList({ userId }: ClientListProps) {
   function handleEditClient(client: Client) {
     setSelectedClient(client);
     setIsDialogOpen(true);
+  }
+
+  function handleViewClient(client: Client) {
+    setSelectedClient(client);
+    setIsDetailsModalOpen(true);
   }
 
   async function handleDeleteClient(id: string) {
@@ -103,6 +110,7 @@ export function ClientList({ userId }: ClientListProps) {
 
       <ClientTable
         clients={clients}
+        onView={handleViewClient}
         onEdit={handleEditClient}
         onDelete={handleDeleteClient}
       />
@@ -112,6 +120,12 @@ export function ClientList({ userId }: ClientListProps) {
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onSubmit={fetchClients}
+      />
+
+      <ClientDetailsModal
+        client={selectedClient}
+        open={isDetailsModalOpen}
+        onOpenChange={setIsDetailsModalOpen}
       />
     </div>
   );

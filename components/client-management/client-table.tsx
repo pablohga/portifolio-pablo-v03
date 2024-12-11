@@ -20,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
 interface Client {
   _id: string;
@@ -33,11 +33,12 @@ interface Client {
 
 interface ClientTableProps {
   clients: Client[];
+  onView: (client: Client) => void;
   onEdit: (client: Client) => void;
   onDelete: (id: string) => void;
 }
 
-export function ClientTable({ clients, onEdit, onDelete }: ClientTableProps) {
+export function ClientTable({ clients, onView, onEdit, onDelete }: ClientTableProps) {
   return (
     <div className="rounded-md border">
       <Table>
@@ -54,13 +55,27 @@ export function ClientTable({ clients, onEdit, onDelete }: ClientTableProps) {
         <TableBody>
           {clients.map((client) => (
             <TableRow key={client._id}>
-              <TableCell>{client.name}</TableCell>
+              <TableCell>
+                <button
+                  onClick={() => onView(client)}
+                  className="text-left hover:text-primary hover:underline"
+                >
+                  {client.name}
+                </button>
+              </TableCell>
               <TableCell>{client.email}</TableCell>
               <TableCell>{client.phone || "-"}</TableCell>
               <TableCell>{client.whatsapp || "-"}</TableCell>
               <TableCell>{client.document || "-"}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => onView(client)}
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Button>
                   <Button
                     variant="outline"
                     size="icon"

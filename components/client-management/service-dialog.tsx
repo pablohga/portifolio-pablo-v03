@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -83,15 +83,40 @@ export function ServiceDialog({
   const form = useForm<z.infer<typeof serviceSchema>>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
-      clientId: service?.clientId || "",
-      title: service?.title || "",
-      description: service?.description || "",
-      value: service?.value?.toString() || "",
-      status: service?.status || "pending",
-      startDate: service?.startDate ? new Date(service.startDate) : undefined,
-      endDate: service?.endDate ? new Date(service.endDate) : undefined,
+      clientId: "",
+      title: "",
+      description: "",
+      value: "",
+      status: "pending",
+      startDate: undefined,
+      endDate: undefined,
     },
   });
+
+  // Reset form when service changes
+  useEffect(() => {
+    if (service) {
+      form.reset({
+        clientId: service.clientId,
+        title: service.title,
+        description: service.description,
+        value: service.value.toString(),
+        status: service.status,
+        startDate: service.startDate ? new Date(service.startDate) : undefined,
+        endDate: service.endDate ? new Date(service.endDate) : undefined,
+      });
+    } else {
+      form.reset({
+        clientId: "",
+        title: "",
+        description: "",
+        value: "",
+        status: "pending",
+        startDate: undefined,
+        endDate: undefined,
+      });
+    }
+  }, [service, form]);
 
   async function handleSubmit(values: z.infer<typeof serviceSchema>) {
     try {
@@ -146,7 +171,7 @@ export function ServiceDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Client</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a client" />
@@ -213,7 +238,7 @@ export function ServiceDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select status" />
