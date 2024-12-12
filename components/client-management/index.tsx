@@ -12,7 +12,7 @@ interface ClientManagementProps {
 
 export function ClientManagement({ userId }: ClientManagementProps) {
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-20 max-w-[960px]">
       <h1 className="text-3xl font-bold mb-8">Client Management</h1>
 
       <Tabs defaultValue="clients" className="w-full">

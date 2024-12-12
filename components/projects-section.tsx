@@ -104,7 +104,7 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
   if (isLoading || categories.length === 0) {
     return (
       <section id="projects" className="py-20 bg-background">
-        <div className="container px-4 mx-auto">
+        <div className="container px-4 mx-auto max-w-[960px]">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Projects</h2>
             <p className="text-muted-foreground">Loading projects...</p>
@@ -116,7 +116,7 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
 
   return (
     <section id="projects" className="py-20 bg-background">
-      <div className="container px-4 mx-auto">
+      <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
