@@ -33,6 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SubscriptionTier } from "@/types/subscription";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 interface User {
   _id: string;
@@ -46,6 +48,8 @@ interface User {
 
 export function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
@@ -56,11 +60,22 @@ export function UserManagement() {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    // Filter users based on search query
+    const filtered = users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [searchQuery, users]);
+
   async function fetchUsers() {
     try {
       const response = await fetch("/api/users");
       const data = await response.json();
       setUsers(data);
+      setFilteredUsers(data);
     } catch (error) {
       toast({
         title: "Error",
@@ -143,8 +158,18 @@ export function UserManagement() {
   const isCurrentUserAdmin = session?.user?.role === 'admin';
 
   return (
-    <div className="container mx-auto py-20">
+    <div className="container mx-auto py-20 px-10">
       <h1 className="text-3xl font-bold mb-8">User Management</h1>
+
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Input
+          placeholder="Search users by name or email..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
+      </div>
 
       <div className="rounded-md border">
         <Table>
@@ -159,7 +184,7 @@ export function UserManagement() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <TableRow key={user._id}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
@@ -258,6 +283,13 @@ export function UserManagement() {
                 </TableCell>
               </TableRow>
             ))}
+            {filteredUsers.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center py-8">
+                  {searchQuery ? "No users found matching your search" : "No users found"}
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
