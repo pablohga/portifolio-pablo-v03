@@ -10,31 +10,34 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
-const transactions = [
-  {
-    id: "1",
-    date: "2024-03-10",
-    amount: 1500,
-    client: "John Doe",
-    status: "paid",
-  },
-  {
-    id: "2",
-    date: "2024-03-09",
-    amount: 2000,
-    client: "Jane Smith",
-    status: "pending",
-  },
-  {
-    id: "3",
-    date: "2024-03-08",
-    amount: 3000,
-    client: "Bob Johnson",
-    status: "cancelled",
-  },
-];
+interface Service {
+  _id: string;
+  clientId: string;
+  value: number;
+  status: string;
+  paymentStatus: string;
+  startDate?: string;
+  endDate?: string;
+}
 
-export function TransactionsList() {
+interface Client {
+  _id: string;
+  name: string;
+}
+
+interface TransactionsListProps {
+  services: Service[];
+  clients: Client[];
+}
+
+export function TransactionsList({ services, clients }: TransactionsListProps) {
+  // Sort services by date (most recent first)
+  const sortedServices = [...services].sort((a, b) => {
+    const dateA = a.endDate ? new Date(a.endDate) : new Date(a.startDate || "");
+    const dateB = b.endDate ? new Date(b.endDate) : new Date(b.startDate || "");
+    return dateB.getTime() - dateA.getTime();
+  });
+
   return (
     <Table>
       <TableHeader>
@@ -43,36 +46,56 @@ export function TransactionsList() {
           <TableHead>Client</TableHead>
           <TableHead>Amount</TableHead>
           <TableHead>Status</TableHead>
+          <TableHead>Payment Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {transactions.map((transaction) => (
-          <TableRow key={transaction.id}>
+        {sortedServices.map((service) => (
+          <TableRow key={service._id}>
             <TableCell>
-              {new Date(transaction.date).toLocaleDateString()}
+              {service.endDate 
+                ? new Date(service.endDate).toLocaleDateString()
+                : service.startDate
+                ? new Date(service.startDate).toLocaleDateString()
+                : 'N/A'
+              }
             </TableCell>
-            <TableCell>{transaction.client}</TableCell>
+            <TableCell>
+              {clients.find(c => c._id === service.clientId)?.name || 'Unknown Client'}
+            </TableCell>
             <TableCell>
               {new Intl.NumberFormat("pt-BR", {
                 style: "currency",
                 currency: "BRL",
-              }).format(transaction.amount)}
+              }).format(service.value)}
+            </TableCell>
+            <TableCell>
+              <Badge variant="outline">
+                {service.status}
+              </Badge>
             </TableCell>
             <TableCell>
               <Badge
                 variant={
-                  transaction.status === "paid"
+                  service.paymentStatus === "paid"
                     ? "default"
-                    : transaction.status === "pending"
+                    : service.paymentStatus === "partial"
                     ? "secondary"
                     : "destructive"
                 }
               >
-                {transaction.status}
+                {service.paymentStatus}
               </Badge>
             </TableCell>
           </TableRow>
         ))}
+        {services.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={5} className="text-center py-4">
+              No transactions found
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

@@ -1,23 +1,54 @@
 "use client";
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
+import { format, startOfMonth, endOfMonth, eachMonthOfInterval } from "date-fns";
 
-const data = [
-  { month: "Jan", revenue: 4000 },
-  { month: "Feb", revenue: 3000 },
-  { month: "Mar", revenue: 2000 },
-  { month: "Apr", revenue: 2780 },
-  { month: "May", revenue: 1890 },
-  { month: "Jun", revenue: 2390 },
-  { month: "Jul", revenue: 3490 },
-  { month: "Aug", revenue: 2000 },
-  { month: "Sep", revenue: 2780 },
-  { month: "Oct", revenue: 1890 },
-  { month: "Nov", revenue: 2390 },
-  { month: "Dec", revenue: 3490 },
-];
+interface Service {
+  value: number;
+  endDate?: string;
+  startDate?: string;
+  status: string;
+  paymentStatus: string;
+}
 
-export function RevenueChart() {
+interface RevenueChartProps {
+  services: Service[];
+}
+
+export function RevenueChart({ services }: RevenueChartProps) {
+  // Get the date range for the last 12 months
+  const endDate = new Date();
+  const startDate = new Date(endDate.getFullYear() - 1, endDate.getMonth(), 1);
+  
+  // Generate an array of all months in the range
+  const months = eachMonthOfInterval({ start: startDate, end: endDate });
+
+  // Calculate revenue for each month
+  const data = months.map(month => {
+    const monthStart = startOfMonth(month);
+    const monthEnd = endOfMonth(month);
+
+    const monthlyRevenue = services
+      .filter(service => {
+        const serviceDate = service.endDate 
+          ? new Date(service.endDate) 
+          : service.startDate 
+          ? new Date(service.startDate)
+          : null;
+        
+        return serviceDate && 
+               serviceDate >= monthStart && 
+               serviceDate <= monthEnd &&
+               service.status === 'completed';
+      })
+      .reduce((sum, service) => sum + service.value, 0);
+
+    return {
+      month: format(month, "MMM yy"),
+      revenue: monthlyRevenue
+    };
+  });
+
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart data={data}>

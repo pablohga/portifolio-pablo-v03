@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
@@ -12,27 +12,100 @@ import { TransactionsList } from "./transactions-list";
 import { Download } from "lucide-react";
 import { addDays } from "date-fns";
 
-export function AnalyticsSection() {
+interface Service {
+  _id: string;
+  clientId: string;
+  value: number;
+  paymentStatus: 'pending' | 'partial' | 'paid';
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  startDate?: string;
+  endDate?: string;
+  paymentHistory?: {
+    amount: number;
+    date: Date;
+    description: string;
+  }[];
+}
+
+interface Client {
+  _id: string;
+  name: string;
+}
+
+interface AnalyticsSectionProps {
+  userId: string;
+}
+
+export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
   const [date, setDate] = useState({
     from: addDays(new Date(), -30),
     to: new Date(),
   });
+  const [services, setServices] = useState<Service[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [selectedClient, setSelectedClient] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetchServices(),
+      fetchClients()
+    ]).finally(() => setIsLoading(false));
+  }, []);
+
+  async function fetchServices() {
+    try {
+      const response = await fetch(`/api/services?userId=${userId}`);
+      const data = await response.json();
+      setServices(data);
+    } catch (error) {
+      console.error("Failed to fetch services:", error);
+    }
+  }
+
+  async function fetchClients() {
+    try {
+      const response = await fetch(`/api/clients?userId=${userId}`);
+      const data = await response.json();
+      setClients(data);
+    } catch (error) {
+      console.error("Failed to fetch clients:", error);
+    }
+  }
+
+  // Filter services based on selected date range, client, and status
+  const filteredServices = services.filter(service => {
+    const serviceDate = service.endDate ? new Date(service.endDate) : new Date(service.startDate || "");
+    const isInDateRange = (!date.from || serviceDate >= date.from) && (!date.to || serviceDate <= date.to);
+    const isClientMatch = selectedClient === "all" || service.clientId === selectedClient;
+    const isStatusMatch = selectedStatus === "all" || service.status === selectedStatus;
+    return isInDateRange && isClientMatch && isStatusMatch;
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="flex flex-wrap gap-4">
           <DatePickerWithRange date={date} onDateChange={setDate} />
-          <Select defaultValue="all">
+          <Select value={selectedClient} onValueChange={setSelectedClient}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select client" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Clients</SelectItem>
-              {/* Add client options dynamically */}
+              {clients.map(client => (
+                <SelectItem key={client._id} value={client._id}>
+                  {client.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
-          <Select defaultValue="all">
+          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Service status" />
             </SelectTrigger>
@@ -63,7 +136,7 @@ export function AnalyticsSection() {
             <CardTitle>Revenue by Month</CardTitle>
           </CardHeader>
           <CardContent>
-            <RevenueChart />
+            <RevenueChart services={filteredServices} />
           </CardContent>
         </Card>
 
@@ -72,7 +145,7 @@ export function AnalyticsSection() {
             <CardTitle>Revenue Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <DistributionChart />
+            <DistributionChart services={filteredServices} clients={clients} />
           </CardContent>
         </Card>
 
@@ -81,7 +154,7 @@ export function AnalyticsSection() {
             <CardTitle>Payment Trends</CardTitle>
           </CardHeader>
           <CardContent>
-            <TrendChart />
+            <TrendChart services={filteredServices} />
           </CardContent>
         </Card>
       </div>
@@ -91,7 +164,7 @@ export function AnalyticsSection() {
           <CardTitle>Recent Transactions</CardTitle>
         </CardHeader>
         <CardContent>
-          <TransactionsList />
+          <TransactionsList services={filteredServices} clients={clients} />
         </CardContent>
       </Card>
     </div>
