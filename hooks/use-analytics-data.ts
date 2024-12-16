@@ -2,21 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
-
-interface Service {
-  _id: string;
-  clientId: string;
-  value: number;
-  paymentStatus: 'pending' | 'partial' | 'paid';
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-  startDate?: string;
-  endDate?: string;
-  paymentHistory?: {
-    amount: number;
-    date: Date;
-    description: string;
-  }[];
-}
+import { Service } from "@/types/service";
 
 interface Client {
   _id: string;

@@ -2,14 +2,7 @@
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 import { format, startOfMonth, endOfMonth, eachMonthOfInterval } from "date-fns";
-
-interface Service {
-  value: number;
-  endDate?: string;
-  startDate?: string;
-  status: string;
-  paymentStatus: string;
-}
+import { Service } from "@/types/service";
 
 interface RevenueChartProps {
   services: Service[];

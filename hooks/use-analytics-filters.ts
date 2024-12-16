@@ -3,14 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
-
-interface Service {
-  _id: string;
-  clientId: string;
-  status: string;
-  startDate?: string;
-  endDate?: string;
-}
+import { Service } from "@/types/service";
 
 export function useAnalyticsFilters(services: Service[]) {
   const [dateRange, setDateRange] = useState<DateRange>({

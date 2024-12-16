@@ -10,10 +10,9 @@ import { DistributionChart } from "./distribution-chart";
 import { TrendChart } from "./trend-chart";
 import { TransactionsList } from "./transactions-list";
 import { Download } from "lucide-react";
-import { addDays } from "date-fns";
-import { DateRange } from "react-day-picker";
 import { useAnalyticsData } from "@/hooks/use-analytics-data";
 import { useAnalyticsFilters } from "@/hooks/use-analytics-filters";
+import { Service } from "@/types/service";
 
 interface AnalyticsSectionProps {
   userId: string;
@@ -42,7 +41,7 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
           <DatePickerWithRange
             date={dateRange}
             onDateChange={(newDate) => setDateRange(newDate || { 
-              from: addDays(new Date(), -30),
+              from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
               to: new Date()
             })}
           />
