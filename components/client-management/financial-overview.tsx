@@ -179,7 +179,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
         </TabsList>
 
         <TabsContent value="overview">
-          <AnalyticsSection />
+          <AnalyticsSection userId={userId} />
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-4">

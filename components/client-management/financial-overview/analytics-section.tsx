@@ -11,6 +11,7 @@ import { TrendChart } from "./trend-chart";
 import { TransactionsList } from "./transactions-list";
 import { Download } from "lucide-react";
 import { addDays } from "date-fns";
+import { DateRange } from "react-day-picker";
 
 interface Service {
   _id: string;
@@ -37,7 +38,7 @@ interface AnalyticsSectionProps {
 }
 
 export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
-  const [date, setDate] = useState({
+  const [date, setDate] = useState<DateRange>({
     from: addDays(new Date(), -30),
     to: new Date(),
   });
@@ -52,7 +53,7 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
       fetchServices(),
       fetchClients()
     ]).finally(() => setIsLoading(false));
-  }, []);
+  }, [userId]);
 
   async function fetchServices() {
     try {
