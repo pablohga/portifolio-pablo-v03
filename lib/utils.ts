@@ -1,16 +1,27 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+// Add this function to the existing utils.ts file
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export function formatCurrency(value: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(value);
 }
 
-export function formatName(fullName: string | null | undefined): { firstName: string; lastName: string } {
-  if (!fullName) return { firstName: '', lastName: '' };
-  
-  const nameParts = fullName.trim().split(' ');
-  const firstName = nameParts[0];
-  const lastName = nameParts.slice(1).join(' ');
-  
-  return { firstName, lastName };
+export function formatName(name: string | null | undefined): { firstName: string; lastName: string } {
+  if (!name) {
+    return { firstName: "", lastName: "" };
+  }
+
+  const [firstName, lastName] = name.split(" ");
+  return {
+    firstName: firstName || "",
+    lastName: lastName || "",
+  };
+}
+
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: (string | undefined | null | false)[]) {
+  return twMerge(clsx(inputs));
 }
