@@ -15,8 +15,8 @@ import {
 
 interface DatePickerWithRangeProps {
   className?: string;
-  date: DateRange;
-  onDateChange: (date: DateRange) => void;
+  date: DateRange | undefined;
+  onDateChange: (date: DateRange | undefined) => void;
 }
 
 export function DatePickerWithRange({
@@ -59,6 +59,7 @@ export function DatePickerWithRange({
             selected={date}
             onSelect={onDateChange}
             numberOfMonths={2}
+            disabled={(date) => date < new Date("1900-01-01")}
           />
         </PopoverContent>
       </Popover>

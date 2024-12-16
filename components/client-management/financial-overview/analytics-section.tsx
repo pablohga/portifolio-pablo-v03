@@ -12,77 +12,24 @@ import { TransactionsList } from "./transactions-list";
 import { Download } from "lucide-react";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
-
-interface Service {
-  _id: string;
-  clientId: string;
-  value: number;
-  paymentStatus: 'pending' | 'partial' | 'paid';
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-  startDate?: string;
-  endDate?: string;
-  paymentHistory?: {
-    amount: number;
-    date: Date;
-    description: string;
-  }[];
-}
-
-interface Client {
-  _id: string;
-  name: string;
-}
+import { useAnalyticsData } from "@/hooks/use-analytics-data";
+import { useAnalyticsFilters } from "@/hooks/use-analytics-filters";
 
 interface AnalyticsSectionProps {
   userId: string;
 }
 
 export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
-  const [date, setDate] = useState<DateRange>({
-    from: addDays(new Date(), -30),
-    to: new Date(),
-  });
-  const [services, setServices] = useState<Service[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [selectedClient, setSelectedClient] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetchServices(),
-      fetchClients()
-    ]).finally(() => setIsLoading(false));
-  }, [userId]);
-
-  async function fetchServices() {
-    try {
-      const response = await fetch(`/api/services?userId=${userId}`);
-      const data = await response.json();
-      setServices(data);
-    } catch (error) {
-      console.error("Failed to fetch services:", error);
-    }
-  }
-
-  async function fetchClients() {
-    try {
-      const response = await fetch(`/api/clients?userId=${userId}`);
-      const data = await response.json();
-      setClients(data);
-    } catch (error) {
-      console.error("Failed to fetch clients:", error);
-    }
-  }
-
-  // Filter services based on selected date range, client, and status
-  const filteredServices = services.filter(service => {
-    const serviceDate = service.endDate ? new Date(service.endDate) : new Date(service.startDate || "");
-    const isInDateRange = (!date.from || serviceDate >= date.from) && (!date.to || serviceDate <= date.to);
-    const isClientMatch = selectedClient === "all" || service.clientId === selectedClient;
-    const isStatusMatch = selectedStatus === "all" || service.status === selectedStatus;
-    return isInDateRange && isClientMatch && isStatusMatch;
-  });
+  const { services, clients, isLoading } = useAnalyticsData(userId);
+  const {
+    dateRange,
+    setDateRange,
+    selectedClient,
+    setSelectedClient,
+    selectedStatus,
+    setSelectedStatus,
+    filteredServices
+  } = useAnalyticsFilters(services);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -92,7 +39,13 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between gap-4">
         <div className="flex flex-wrap gap-4">
-          <DatePickerWithRange date={date} onDateChange={setDate} />
+          <DatePickerWithRange
+            date={dateRange}
+            onDateChange={(newDate) => setDateRange(newDate || { 
+              from: addDays(new Date(), -30),
+              to: new Date()
+            })}
+          />
           <Select value={selectedClient} onValueChange={setSelectedClient}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select client" />
