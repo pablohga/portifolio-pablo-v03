@@ -50,7 +50,7 @@ export async function GET(request: Request) {
         if (existingMonth) {
           existingMonth.revenue += service.value;
         } else {
-          acc.push({ <boltAction type="file" filePath="app/api/reports/financial/route.ts">
+          acc.push({ /* <boltAction type="file" filePath="app/api/reports/financial/route.ts"> */
             month,
             revenue: service.value
           });
