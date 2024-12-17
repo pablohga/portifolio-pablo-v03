@@ -6,10 +6,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Download, FileSpreadsheet, FileText, PieChart, TrendingUp } from "lucide-react";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { RevenueReport } from "./reports/revenue-report";
+import { ProfitabilityReport } from "./reports/profitability-report";
+import { TaxReport } from "./reports/tax-report";
 
 interface ReportsSectionProps {
   userId: string;
 }
+
+type ReportType = "revenue" | "profitability" | "tax";
 
 export function ReportsSection({ userId }: ReportsSectionProps) {
   const [dateRange, setDateRange] = useState<DateRange>({
@@ -17,7 +22,7 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
     to: new Date(),
   });
   const [selectedClient, setSelectedClient] = useState("all");
-  const [selectedReport, setSelectedReport] = useState("revenue");
+  const [selectedReport, setSelectedReport] = useState<ReportType>("revenue");
 
   const handleGenerateReport = () => {
     // TODO: Implement report generation
@@ -26,6 +31,39 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
       dateRange,
       client: selectedClient,
     });
+  };
+
+  const renderReport = () => {
+    if (!dateRange.from || !dateRange.to) return null;
+
+    switch (selectedReport) {
+      case "revenue":
+        return (
+          <RevenueReport
+            startDate={dateRange.from}
+            endDate={dateRange.to}
+            clientId={selectedClient !== "all" ? selectedClient : undefined}
+          />
+        );
+      case "profitability":
+        return (
+          <ProfitabilityReport
+            startDate={dateRange.from}
+            endDate={dateRange.to}
+            clientId={selectedClient !== "all" ? selectedClient : undefined}
+          />
+        );
+      case "tax":
+        return (
+          <TaxReport
+            startDate={dateRange.from}
+            endDate={dateRange.to}
+            clientId={selectedClient !== "all" ? selectedClient : undefined}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -51,9 +89,13 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" 
-              onClick={() => setSelectedReport("revenue")}>
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card 
+          className={`cursor-pointer hover:shadow-lg transition-shadow ${
+            selectedReport === "revenue" ? "border-primary" : ""
+          }`}
+          onClick={() => setSelectedReport("revenue")}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -69,8 +111,12 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedReport("profitability")}>
+        <Card 
+          className={`cursor-pointer hover:shadow-lg transition-shadow ${
+            selectedReport === "profitability" ? "border-primary" : ""
+          }`}
+          onClick={() => setSelectedReport("profitability")}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -86,8 +132,12 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedReport("tax")}>
+        <Card 
+          className={`cursor-pointer hover:shadow-lg transition-shadow ${
+            selectedReport === "tax" ? "border-primary" : ""
+          }`}
+          onClick={() => setSelectedReport("tax")}
+        >
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               <div className="p-2 bg-primary/10 rounded-lg">
@@ -103,6 +153,8 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
           </CardContent>
         </Card>
       </div>
+
+      {renderReport()}
 
       <Card>
         <CardHeader>
