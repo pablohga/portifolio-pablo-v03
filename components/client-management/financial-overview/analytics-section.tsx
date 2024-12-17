@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +27,16 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
     setSelectedStatus,
     filteredServices
   } = useAnalyticsFilters(services);
+
+  const handleExportPDF = () => {
+    // TODO: Implement PDF export
+    console.log("Export to PDF");
+  };
+
+  const handleExportExcel = () => {
+    // TODO: Implement Excel export
+    console.log("Export to Excel");
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -72,11 +80,11 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
           </Select>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleExportPDF}>
             <Download className="mr-2 h-4 w-4" />
             Export PDF
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleExportExcel}>
             <Download className="mr-2 h-4 w-4" />
             Export Excel
           </Button>
