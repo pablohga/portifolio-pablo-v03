@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Bell, DollarSign, FileText, Mail, Settings } from "lucide-react";
+import { Bell, DollarSign, FileText, Mail, Settings, Send } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
 import { useToast } from "@/components/ui/use-toast";
@@ -45,6 +45,7 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
     revenueThreshold: 1000,
   });
   const [isContactSettingsOpen, setIsContactSettingsOpen] = useState(false);
+  const [isSendingTest, setIsSendingTest] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -107,6 +108,32 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
     }
   }
 
+  async function sendTestEmail(type: string) {
+    try {
+      setIsSendingTest(type);
+      const response = await fetch('/api/notifications/test-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type }),
+      });
+
+      if (!response.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "Test email sent successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send test email",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSendingTest(null);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -144,12 +171,29 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
                   Receive notifications via email
                 </p>
               </div>
-              <Switch
-                checked={settings.emailNotifications}
-                onCheckedChange={(checked) => 
-                  updateSettings({ emailNotifications: checked })
-                }
-              />
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={settings.emailNotifications}
+                  onCheckedChange={(checked) => 
+                    updateSettings({ emailNotifications: checked })
+                  }
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => sendTestEmail('general')}
+                  disabled={isSendingTest === 'general'}
+                >
+                  {isSendingTest === 'general' ? (
+                    "Sending..."
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Test
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
@@ -158,12 +202,29 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
                   Get reminded about upcoming payments
                 </p>
               </div>
-              <Switch
-                checked={settings.paymentReminders}
-                onCheckedChange={(checked) => 
-                  updateSettings({ paymentReminders: checked })
-                }
-              />
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={settings.paymentReminders}
+                  onCheckedChange={(checked) => 
+                    updateSettings({ paymentReminders: checked })
+                  }
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => sendTestEmail('payment')}
+                  disabled={isSendingTest === 'payment'}
+                >
+                  {isSendingTest === 'payment' ? (
+                    "Sending..."
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Test
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
@@ -172,15 +233,54 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
                   Notifications for new reports
                 </p>
               </div>
-              <Switch
-                checked={settings.reportAlerts}
-                onCheckedChange={(checked) => 
-                  updateSettings({ reportAlerts: checked })
-                }
-              />
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={settings.reportAlerts}
+                  onCheckedChange={(checked) => 
+                    updateSettings({ reportAlerts: checked })
+                  }
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => sendTestEmail('report')}
+                  disabled={isSendingTest === 'report'}
+                >
+                  {isSendingTest === 'report' ? (
+                    "Sending..."
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Test
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
             <div className="space-y-2">
-              <Label>Revenue Threshold Alert</Label>
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Revenue Threshold Alert</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Get notified when revenue exceeds this amount
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => sendTestEmail('threshold')}
+                  disabled={isSendingTest === 'threshold'}
+                >
+                  {isSendingTest === 'threshold' ? (
+                    "Sending..."
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Test
+                    </>
+                  )}
+                </Button>
+              </div>
               <div className="flex gap-2">
                 <Input
                   type="number"
@@ -259,7 +359,6 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
         open={isContactSettingsOpen}
         onOpenChange={setIsContactSettingsOpen}
         onSubmit={async (data) => {
-          // The contact settings dialog will handle the submission
           setIsContactSettingsOpen(false);
         }}
       />
