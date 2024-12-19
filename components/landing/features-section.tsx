@@ -91,15 +91,15 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="p-6 bg-contain bg-no-repeat bg-[url('https://mundonews.pt/portify/card-top.png')] rounded-lg bg-card hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-300"
+                className="p-6 pt-7 bg-contain bg-no-repeat bg-[url('https://mundonews.pt/portify/card-header.png')] rounded-lg bg-card hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-300"
               >
-                <div className="flex gap-5 items-center mb-1 inline-block px-4 py-0 rounded-lg text-primary md:bg-cover">
+                <div className="flex gap-5 items-center mb-1 inline-block px-4 py-0 rounded-lg md:bg-cover">
                 {/* <div className="mb-4 inline-block p-3 rounded-lg bg-primary/10 text-primary"> */}
                   <IconComponent className="h-8 w-8" />
                   <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
                 </div>
                 <div className="max-w-[280px] bg-contain bg-[url('https://mundonews.pt/portify/card-body.png')]">
-                  <p className="pl-7 w-[200px] text-muted-foreground ">
+                  <p className="pl-7 w-[200px]">
                     {feature.description}
                   </p>
                 </div>

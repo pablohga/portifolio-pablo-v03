@@ -13,7 +13,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ data }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean.png')] bg-cover h-64 w-full">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean-new.png')] bg-cover h-64 w-full">
     {/* <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/50"> */}
       <div className="absolute inset-0 bg-grid-white/10" />
       <div className="flex flex-row justify-items-start container px-4 mx-auto max-w-[960px] relative z-10">
@@ -25,17 +25,18 @@ export function HeroSection({ data }: HeroSectionProps) {
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center justify-center gap-2 mb-6">
-              <Sparkles className="h-6 w-6 text-primary" />
               <span className="text-primary font-semibold">
-                {data?.subtitle || "Seu Portfólio, Sua Identidade"}
+                {data?.subtitle || ""}
+                {/* {data?.subtitle || "Seu Portfólio, Sua Identidade"} */}
               </span>
-              <Sparkles className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text to-primary/70">
+            {/* <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70"> */}
               {data?.title || "Crie Seu Portfólio Profissional Sem Gastar Nada"}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {data?.description || "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers."}
+              {data?.description || ""}
+              {/* {data?.description || "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers."} */}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8" asChild>
@@ -49,7 +50,7 @@ export function HeroSection({ data }: HeroSectionProps) {
               </Button> */}
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Junte-se a mais de 10.000 freelancers que já criaram seus portfólios
+            Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers.
             </p>
           </motion.div>
         </div>
