@@ -13,24 +13,17 @@ interface HeroSectionProps {
 
 export function HeroSection({ data }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/50">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean.png')] bg-cover h-64 w-full">
+    {/* <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/50"> */}
       <div className="absolute inset-0 bg-grid-white/10" />
-      <div className="container px-4 mx-auto max-w-[960px] relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="flex flex-row justify-items-start container px-4 mx-auto max-w-[960px] relative z-10">
+        <div className="max-w-[400px] text-center">
+        {/* <div className="max-w-2xl mx-auto text-center"> */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="flex items-center justify-center mb-8">
-              <Image
-                src="https://mundonews.pt/portify_logo_novo_horizontal.png"
-                alt="Portify"
-                width={320}
-                height={160}
-                className="h-20 w-auto"
-              />
-            </div>
             <div className="flex items-center justify-center gap-2 mb-6">
               <Sparkles className="h-6 w-6 text-primary" />
               <span className="text-primary font-semibold">
@@ -51,9 +44,9 @@ export function HeroSection({ data }: HeroSectionProps) {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8">
+{/*               <Button size="lg" variant="outline" className="text-lg px-8">
                 Ver Demo
-              </Button>
+              </Button> */}
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
               Junte-se a mais de 10.000 freelancers que já criaram seus portfólios

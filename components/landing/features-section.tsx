@@ -65,7 +65,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   const subtitle = data?.subtitle || "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
 
   return (
-    <section className="py-20 bg-background/50">
+    <section className="py-20 bg-top bg-center bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]">
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
