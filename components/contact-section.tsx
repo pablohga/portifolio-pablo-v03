@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ContactForm } from "@/components/contact-form";
+import Image from "next/image";
 
 interface ContactSectionProps {
   userId?: string;
@@ -42,8 +43,8 @@ export function ContactSection({ userId }: ContactSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
-          <p className="text-muted-foreground">Let's work together</p>
+          <h2 className="text-4xl font-bold mb-4">Entre em contato</h2>
+          <p className="text-muted-foreground">Vamos trabalhar juntos</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -54,7 +55,7 @@ export function ContactSection({ userId }: ContactSectionProps) {
             viewport={{ once: true }}
             className="relative aspect-square rounded-lg overflow-hidden"
           >
-            <img
+            <Image
               src={contactImage?.imageUrl || "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"}
               alt="Contact"
               className="object-cover w-full h-full"
