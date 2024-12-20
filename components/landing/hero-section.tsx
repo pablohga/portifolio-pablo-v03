@@ -13,7 +13,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ data }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean-new.png')] bg-cover h-64 w-full">
+    <section className="relative min-h-screen flex items-center justify-left overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean-new.png')] bg-cover h-64 w-full">
     {/* <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/50"> */}
       <div className="absolute inset-0 bg-grid-white/10" />
       <div className="flex flex-row justify-items-start container px-4 mx-auto max-w-[960px] relative z-10">

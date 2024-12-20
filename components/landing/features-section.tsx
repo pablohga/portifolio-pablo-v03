@@ -96,9 +96,9 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
                 <div className="flex gap-5 items-center mb-1 inline-block px-4 py-0 rounded-lg md:bg-cover">
                 {/* <div className="mb-4 inline-block p-3 rounded-lg bg-primary/10 text-primary"> */}
                   <IconComponent className="h-8 w-8" />
-                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                  <h3 className="text-card text-xl font-semibold mb-2">{feature.title}</h3>
                 </div>
-                <div className="max-w-[280px] bg-contain bg-[url('https://mundonews.pt/portify/card-body.png')]">
+                <div className="text-card-foreground max-w-[280px] bg-contain bg-[url('https://mundonews.pt/portify/card-body.png')]">
                   <p className="pl-7 w-[200px]">
                     {feature.description}
                   </p>
