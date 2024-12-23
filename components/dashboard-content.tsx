@@ -73,7 +73,120 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       });
     }
   }
+  async function handleUpdateHero(data: any) {
+    try {
+      const res = await fetch("/api/hero", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
+      if (!res.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "Hero section updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update hero section",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateSEO(data: any) {
+    try {
+      const res = await fetch("/api/seo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "SEO settings updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update SEO settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateAbout(data: any) {
+    try {
+      const res = await fetch("/api/about", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "About section updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update about section",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateContactSettings(data: any) {
+    try {
+      const res = await fetch("/api/contact/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "Contact settings updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update contact settings",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateHome(data: any) {
+    try {
+      const res = await fetch("/api/home", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      toast({
+        title: "Success",
+        description: "Home page updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update home page",
+        variant: "destructive",
+      });
+    }
+  }
   async function fetchCategories() {
     try {
       const res = await fetch(`/api/categories?userId=${userId}`);
