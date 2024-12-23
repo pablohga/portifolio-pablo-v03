@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, ExternalLink, Users, Home, UserCircle } from "lucide-react";
+import { Plus, ExternalLink, Users, Home, UserCircle, DollarSign } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { ProjectDialog } from "@/components/project-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
@@ -13,6 +13,7 @@ import { SEODialog } from "@/components/seo-dialog";
 import { AboutDialog } from "@/components/about-dialog";
 import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
 import { HomeEditorDialog } from "@/components/home-editor-dialog";
+import { PaymentPlansDialog } from "@/components/payment-plans-dialog";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import { formatName } from "@/lib/utils";
@@ -46,18 +47,18 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
   const [isContactSettingsDialogOpen, setIsContactSettingsDialogOpen] = useState(false);
   const [isHomeEditorOpen, setIsHomeEditorOpen] = useState(false);
+  const [isPaymentPlansOpen, setIsPaymentPlansOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const { data: session } = useSession();
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
-  const isUserPremium = session?.user?.role === 'premium';
 
   useEffect(() => {
     Promise.all([
       fetchProjects(),
       fetchCategories(),
     ]).finally(() => setIsLoading(false));
-  }, [userId]);
+  }, []);
 
   async function fetchProjects() {
     try {
@@ -234,125 +235,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
-  async function handleUpdateHero(data: any) {
-    try {
-      const res = await fetch("/api/hero", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error();
-
-      toast({
-        title: "Success",
-        description: "Hero section updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update hero section",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function handleUpdateSEO(data: any) {
-    try {
-      const res = await fetch("/api/seo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error();
-
-      toast({
-        title: "Success",
-        description: "SEO settings updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update SEO settings",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function handleUpdateAbout(data: any) {
-    try {
-      const res = await fetch("/api/about", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error();
-
-      toast({
-        title: "Success",
-        description: "About section updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update about section",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function handleUpdateContactSettings(data: any) {
-    try {
-      const res = await fetch("/api/contact/settings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error();
-
-      toast({
-        title: "Success",
-        description: "Contact settings updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update contact settings",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function handleUpdateHome(data: any) {
-    try {
-      const res = await fetch("/api/home", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error();
-
-      toast({
-        title: "Success",
-        description: "Home page updated successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update home page",
-        variant: "destructive",
-      });
-    }
-  }
-
-  const getProjectsByCategory = (categoryId: string) => {
-    return projects.filter(project => project.category === categoryId);
-  };
-
   if (isLoading) {
     return (
       <div className="container mx-auto py-20 max-w-[960px]">
@@ -405,6 +287,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               <Button onClick={() => setIsHomeEditorOpen(true)}>
                 <Home className="mr-2 h-4 w-4" />
                 Edit Home Page
+              </Button>
+              <Button onClick={() => setIsPaymentPlansOpen(true)}>
+                <DollarSign className="mr-2 h-4 w-4" />
+                Payment Plans
               </Button>
               <Button asChild>
                 <Link href="/dashboard/users" className="inline-flex items-center gap-2">
@@ -510,16 +396,18 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           {categories.map((category) => (
             <TabsContent key={category.id} value={category.id}>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {getProjectsByCategory(category.id).map((project) => (
-                  <ProjectCard
-                    key={project._id}
-                    project={project}
-                    onEdit={handleUpdateProject}
-                    onDelete={handleDeleteProject}
-                  />
-                ))}
+                {projects
+                  .filter((project) => project.category === category.id)
+                  .map((project) => (
+                    <ProjectCard
+                      key={project._id}
+                      project={project}
+                      onEdit={handleUpdateProject}
+                      onDelete={handleDeleteProject}
+                    />
+                  ))}
               </div>
-              {getProjectsByCategory(category.id).length === 0 && (
+              {projects.filter((project) => project.category === category.id).length === 0 && (
                 <p className="text-center text-muted-foreground py-8">
                   No projects in this category yet.
                 </p>
@@ -575,6 +463,11 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         open={isHomeEditorOpen}
         onOpenChange={setIsHomeEditorOpen}
         onSubmit={handleUpdateHome}
+      />
+
+      <PaymentPlansDialog
+        open={isPaymentPlansOpen}
+        onOpenChange={setIsPaymentPlansOpen}
       />
     </div>
   );
