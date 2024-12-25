@@ -119,7 +119,7 @@ export function PricingSection({ data }: PricingSectionProps) {
                 </Button>
 
                 {/* Teste stripe */}
-                <PaymentButton>
+                <PaymentButton tierPlan={plan.name}>
                   Teste Stripeeee!!!
                   {/* <Link href="/auth/register">
                       Teste Stripe

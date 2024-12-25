@@ -52,6 +52,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const { data: session } = useSession();
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
+  const userEmail = session?.user?.email
 
   useEffect(() => {
     Promise.all([

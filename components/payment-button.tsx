@@ -11,9 +11,10 @@ import {
 
 type PaymentButtonProps = {
   children: React.ReactNode
+  tierPlan?: string
 }
 
-export default function PaymentButton({children}: PaymentButtonProps){
+export default function PaymentButton({children, tierPlan}: PaymentButtonProps){
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ''
   )
@@ -45,13 +46,10 @@ export default function PaymentButton({children}: PaymentButtonProps){
       </DialogTrigger>
       <DialogContent className="w-[600px] h-[600px] bg-gray-200 rounded-lg shadow-lg absolute top-[-20%] left-[-50%] z-[10000]">
         <DialogTitle className="text-center text-primary-foreground">
-          Assinatura Pro
+          {tierPlan}
         </DialogTitle>
-        <EmbeddedCheckoutProvider
-        stripe={stripePromise}
-        options={options}
-        >
-        <EmbeddedCheckout />
+        <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
+          <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>
       </DialogContent>
       
