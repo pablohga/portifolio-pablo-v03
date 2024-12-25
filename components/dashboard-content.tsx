@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { fetchSubscritionByEmail } from "@/lib/stripe";
 
 interface DashboardContentProps {
   userId: string;
@@ -52,12 +53,15 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const { data: session } = useSession();
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
-  const userEmail = session?.user?.email
+  const userEmail = session?.user?.email as string
+
+  /* const subscription = await fetchSubscritionByEmail(userEmail) */
 
   useEffect(() => {
     Promise.all([
       fetchProjects(),
       fetchCategories(),
+      fetchSubscritionByEmail(userEmail)
     ]).finally(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
