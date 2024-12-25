@@ -116,6 +116,19 @@ export function PricingSection({ data }: PricingSectionProps) {
                     {plan.buttonText}
                   </Link>
                 </Button>
+
+                {/* Teste stripe */}
+                <Button
+                  className="w-full mt-5"
+                  variant={plan.popular ? "default" : "outline"}
+                  asChild
+                >
+                  <Link href="/auth/register">
+                    Teste Stripe
+                  </Link>
+                </Button>
+                {/* FInal Teste stripe */}
+
               </div>
               <ul className="space-y-4">
                 {plan.features.map((feature, featureIndex) => (
