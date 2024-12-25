@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { PricingSection as PricingSectionType } from "@/types/home";
+import PaymentButton from "../payment-button";
 
 interface PricingSectionProps {
   data?: PricingSectionType;
@@ -118,7 +119,13 @@ export function PricingSection({ data }: PricingSectionProps) {
                 </Button>
 
                 {/* Teste stripe */}
-                <Button
+                <PaymentButton>
+                  Teste Stripeeee!!!
+                  {/* <Link href="/auth/register">
+                      Teste Stripe
+                  </Link> */}
+                </PaymentButton>
+                {/* <Button
                   className="w-full mt-5"
                   variant={plan.popular ? "default" : "outline"}
                   asChild
@@ -126,7 +133,7 @@ export function PricingSection({ data }: PricingSectionProps) {
                   <Link href="/auth/register">
                     Teste Stripe
                   </Link>
-                </Button>
+                </Button> */}
                 {/* FInal Teste stripe */}
 
               </div>

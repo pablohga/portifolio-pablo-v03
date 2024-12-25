@@ -13,10 +13,10 @@ export async function POST(request: Request){
           quantity: 1,
           price: process.env.STRIPE_PRICE_ID
         },
-        {
+        /* {
           quantity: 1,
           price: process.env.STRIPE_PRICE_ID_2
-        }
+        } */
       ],
       mode: 'subscription',
       payment_method_types: ['card'],
