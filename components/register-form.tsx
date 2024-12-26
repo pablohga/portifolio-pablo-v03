@@ -19,6 +19,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { PlanSelection } from "./plan-selection";
 
 const registerSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -26,11 +27,15 @@ const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
+
 interface RegisterFormProps {
-  prefilledEmail?: string | null; // Torne a propriedade opcional, caso seja necessário
+  prefilledEmail?: string | null;
 }
+
 export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [showPlanSelection, setShowPlanSelection] = useState(false);
+  const [formData, setFormData] = useState<any>(null);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -39,21 +44,26 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      email: prefilledEmail || "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof registerSchema>) {
+  async function handleFormSubmit(values: z.infer<typeof registerSchema>) {
+    setFormData(values);
+    setShowPlanSelection(true);
+  }
+
+  async function handleFreePlanRegistration() {
     try {
       setIsLoading(true);
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${values.firstName} ${values.lastName}`,
-          email: values.email,
-          password: values.password,
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          password: formData.password,
         }),
       });
 
@@ -62,10 +72,9 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
         throw new Error(error.message || "Registration failed");
       }
 
-      // After successful registration, sign in automatically
       const result = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
+        email: formData.email,
+        password: formData.password,
         redirect: false,
       });
 
@@ -85,6 +94,20 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
     }
   }
 
+  if (showPlanSelection) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-5xl">
+          <h2 className="text-2xl font-bold text-center mb-8">Choose Your Plan</h2>
+          <PlanSelection 
+            userEmail={formData.email}
+            onSelectFreePlan={handleFreePlanRegistration}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-[350px]">
@@ -93,7 +116,7 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="firstName"
@@ -151,7 +174,7 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
               />
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating account..." : "Create Account"}
+                {isLoading ? "Creating account..." : "Continue"}
               </Button>
 
               <div className="text-center text-sm">

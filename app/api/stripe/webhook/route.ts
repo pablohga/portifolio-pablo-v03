@@ -35,19 +35,10 @@ export async function POST(request: Request) {
 
         await dbConnect();
         
-        // Update or create user
+        // Update user's subscription tier
         await User.findOneAndUpdate(
           { email: customerEmail },
-          { 
-            subscriptionTier: tier,
-            email: customerEmail,
-            // If user doesn't exist, set default values
-            $setOnInsert: {
-              name: customerEmail?.split('@')[0] || "User",
-              role: 'user',
-            }
-          },
-          { upsert: true, new: true }
+          { subscriptionTier: tier }
         );
         break;
       }

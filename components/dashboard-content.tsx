@@ -17,6 +17,7 @@ import { PaymentPlansDialog } from "@/components/payment-plans-dialog";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import { formatName } from "@/lib/utils";
+import { SubscriptionBadge } from "@/components/subscription-badge";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -379,6 +380,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           <div className="text-lg font-medium">
             Welcome, {firstName} <span className="text-primary">{lastName}</span>
           </div>
+          <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
         </div>
         <div className="flex flex-wrap gap-4">
           <Button onClick={() => setIsHeroDialogOpen(true)}>
