@@ -11,7 +11,7 @@ export async function POST(request: Request){
       line_items: [
         {
           quantity: 1,
-          price: process.env.STRIPE_PRICE_ID
+          price: process.env.STRIPE_PRICE_ID_2
         },
         /* {
           quantity: 1,

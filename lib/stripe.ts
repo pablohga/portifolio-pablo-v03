@@ -1,5 +1,9 @@
 import Stripe from 'stripe'
 
+/* if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("A chave STRIPE_SECRET_KEY não foi encontrada. Verifique o arquivo .env.");
+} */
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '')
 export async function fetchSubscritionByEmail(email: string){
   const customers = await stripe.customers.list({
