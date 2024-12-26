@@ -39,7 +39,7 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: prefilledEmail || "",
+      email: "",
       password: "",
     },
   });
@@ -52,7 +52,7 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: `${values.firstName} ${values.lastName}`,
-          email: prefilledEmail || values.email,
+          email: values.email,
           password: values.password,
         }),
       });
@@ -64,7 +64,7 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
 
       // After successful registration, sign in automatically
       const result = await signIn("credentials", {
-        email: prefilledEmail || values.email,
+        email: values.email,
         password: values.password,
         redirect: false,
       });

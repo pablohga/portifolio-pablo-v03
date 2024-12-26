@@ -21,6 +21,7 @@ export function CheckoutForm({ isOpen, onClose, plan }: CheckoutFormProps) {
     if (isOpen && !session?.user) {
       handleNonAuthenticatedCheckout();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, session]);
 
   const handleNonAuthenticatedCheckout = async () => {
