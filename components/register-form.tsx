@@ -26,8 +26,10 @@ const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
-
-export function RegisterForm() {
+interface RegisterFormProps {
+  prefilledEmail?: string | null; // Torne a propriedade opcional, caso seja necessário
+}
+export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -37,7 +39,7 @@ export function RegisterForm() {
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      email: prefilledEmail || "",
       password: "",
     },
   });
@@ -50,7 +52,7 @@ export function RegisterForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: `${values.firstName} ${values.lastName}`,
-          email: values.email,
+          email: prefilledEmail || values.email,
           password: values.password,
         }),
       });
@@ -62,7 +64,7 @@ export function RegisterForm() {
 
       // After successful registration, sign in automatically
       const result = await signIn("credentials", {
-        email: values.email,
+        email: prefilledEmail || values.email,
         password: values.password,
         redirect: false,
       });

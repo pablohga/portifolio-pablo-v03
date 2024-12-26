@@ -1,59 +1,32 @@
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { loadStripe } from "@stripe/stripe-js"
-import { useCallback } from "react";
-import { Dialog, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { DialogContent } from "@radix-ui/react-dialog";
-import {
-  EmbeddedCheckoutProvider,
-  EmbeddedCheckout
-} from '@stripe/react-stripe-js'
+"use client";
 
-type PaymentButtonProps = {
-  children: React.ReactNode
-  tierPlan?: string
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { CheckoutForm } from "./stripe/checkout-form";
+
+interface PaymentButtonProps {
+  children: React.ReactNode;
+  plan: string;
 }
 
-export default function PaymentButton({children, tierPlan}: PaymentButtonProps){
-  const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? ''
-  )
-  const fetchClientSecret = useCallback(() => {
-    // Create a Checkout Session
-    return fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => data.client_secret);
-  }, []);
-
-  const options = {fetchClientSecret};
+export default function PaymentButton({ children, plan }: PaymentButtonProps) {
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div className="payment-button">
-          <Button
-            className="w-full mt-5"
-            variant="default"
-          >
-            {children}
-          </Button>
-        </div>
-      </DialogTrigger>
-      <DialogContent className="w-[600px] h-[600px] bg-gray-200 rounded-lg shadow-lg absolute top-[-20%] left-[-50%] z-[10000]">
-        <DialogTitle className="text-center text-primary-foreground">
-          {tierPlan}
-        </DialogTitle>
-        <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
-          <EmbeddedCheckout />
-        </EmbeddedCheckoutProvider>
-      </DialogContent>
-      
-    </Dialog>
-    
-  )
+    <>
+      <Button
+        className="w-full mt-5"
+        variant="default"
+        onClick={() => setIsCheckoutOpen(true)}
+      >
+        {children}
+      </Button>
+
+      <CheckoutForm 
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        plan={plan.toLowerCase()}
+      />
+    </>
+  );
 }
