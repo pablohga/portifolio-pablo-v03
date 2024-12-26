@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchSubscritionByEmail } from "@/lib/stripe";
+/* import { fetchSubscritionByEmail } from "@/lib/stripe"; */
 
 interface DashboardContentProps {
   userId: string;
@@ -61,7 +61,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     Promise.all([
       fetchProjects(),
       fetchCategories(),
-      fetchSubscritionByEmail(userEmail)
+      /* fetchSubscritionByEmail(userEmail) */
     ]).finally(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
