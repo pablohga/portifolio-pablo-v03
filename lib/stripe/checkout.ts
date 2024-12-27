@@ -12,7 +12,7 @@ export async function createCheckoutSession(params: {
   password: string;
   origin: string;
 }) {
-  const { plan, email, name, password, origin } = params;
+  const { plan, email, origin } = params;
 
   if (!PRICE_IDS[plan as keyof typeof PRICE_IDS]) {
     throw new Error("Invalid plan");
@@ -23,13 +23,9 @@ export async function createCheckoutSession(params: {
   return stripe.checkout.sessions.create({
     line_items: [{ price: priceId, quantity: 1 }],
     mode: 'subscription',
-    success_url: `${origin}/auth/signin?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: `${origin}/auth/register?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/auth/register`,
     customer_email: email,
-    metadata: {
-      name,
-      password,
-    },
     allow_promotion_codes: true,
     billing_address_collection: 'required',
     payment_method_types: ['card'],

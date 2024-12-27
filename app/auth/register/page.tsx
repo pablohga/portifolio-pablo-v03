@@ -15,40 +15,63 @@ export default function RegisterPage() {
   const { toast } = useToast();
 
   const sessionId = searchParams.get("session_id");
-  const email = searchParams.get("email");
-  const plan = searchParams.get("plan");
 
   useEffect(() => {
-    if (sessionId && email && plan) {
-      verifyCheckoutSession(sessionId, email, plan);
+    if (sessionId) {
+      handlePaymentSuccess(sessionId);
     }
-  }, [sessionId, email, plan]);
+  }, [sessionId]);
 
-  async function verifyCheckoutSession(sessionId: string, email: string, plan: string) {
+  async function handlePaymentSuccess(sessionId: string) {
     try {
-      const response = await fetch(
-        `/api/stripe/verify-session?session_id=${sessionId}&email=${email}&plan=${plan}`
-      );
-      
-      if (!response.ok) {
-        throw new Error("Invalid checkout session");
+      // Get stored registration data
+      const pendingRegistration = sessionStorage.getItem('pendingRegistration');
+      if (!pendingRegistration) {
+        throw new Error('Registration data not found');
       }
 
+      const { email, name, password, plan } = JSON.parse(pendingRegistration);
+
+      // Verify payment status
+      const response = await fetch(`/api/stripe/verify-session?session_id=${sessionId}`);
       const data = await response.json();
-      
-      if (data.status === 'paid') {
+
+      if (data.status === 'complete') {
+        // Create user account
+        const registerResponse = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            subscriptionTier: plan
+          }),
+        });
+
+        if (!registerResponse.ok) {
+          throw new Error('Failed to create user account');
+        }
+
+        // Clear stored registration data
+        sessionStorage.removeItem('pendingRegistration');
+
         toast({
           title: "Success",
-          description: "Payment successful! You can now log in.",
+          description: "Account created successfully! You can now log in.",
         });
+
         router.push("/auth/signin");
+      } else {
+        throw new Error('Payment verification failed');
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to verify payment",
+        description: error.message || "Failed to complete registration",
         variant: "destructive",
       });
+      router.push("/auth/register");
     }
   }
 
@@ -66,6 +89,7 @@ export default function RegisterPage() {
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
           password: formData.password,
+          subscriptionTier: 'free'
         }),
       });
 
@@ -91,6 +115,8 @@ export default function RegisterPage() {
           <h2 className="text-2xl font-bold text-center mb-8">Choose Your Plan</h2>
           <PaymentSelection 
             email={formData.email}
+            name={`${formData.firstName} ${formData.lastName}`}
+            password={formData.password}
             onSelectFreePlan={handleFreePlanRegistration}
           />
         </div>

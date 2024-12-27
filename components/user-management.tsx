@@ -35,6 +35,7 @@ import {
 import { SubscriptionTier } from "@/types/subscription";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { VerifySubscriptionsButton } from "./admin/verify-subscriptions-button";
 
 interface User {
   _id: string;
@@ -160,7 +161,7 @@ export function UserManagement() {
   return (
     <div className="container mx-auto py-20 px-10">
       <h1 className="text-3xl font-bold mb-8">User Management</h1>
-
+      {isCurrentUserAdmin && <VerifySubscriptionsButton />}
       <div className="relative mb-6">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input

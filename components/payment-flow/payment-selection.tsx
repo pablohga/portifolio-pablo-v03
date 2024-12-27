@@ -1,8 +1,11 @@
+"use client";
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface PaymentSelectionProps {
   email: string;
@@ -14,6 +17,7 @@ interface PaymentSelectionProps {
 export function PaymentSelection({ email, name, password, onSelectFreePlan }: PaymentSelectionProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handlePlanSelection = async (plan: string) => {
     try {
@@ -38,6 +42,14 @@ export function PaymentSelection({ email, name, password, onSelectFreePlan }: Pa
       const data = await response.json();
 
       if (data.url) {
+        // Store registration data in sessionStorage before redirecting
+        sessionStorage.setItem('pendingRegistration', JSON.stringify({
+          email,
+          name,
+          password,
+          plan
+        }));
+        
         window.location.href = data.url;
       } else {
         throw new Error('Failed to create checkout session');
