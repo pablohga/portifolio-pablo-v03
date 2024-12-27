@@ -1,20 +1,18 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useSession } from "next-auth/react";
 
 interface PaymentSelectionProps {
   email: string;
+  name: string;
+  password: string;
   onSelectFreePlan: () => void;
 }
 
-export function PaymentSelection({ email, onSelectFreePlan }: PaymentSelectionProps) {
+export function PaymentSelection({ email, name, password, onSelectFreePlan }: PaymentSelectionProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const { data: session } = useSession();
   const { toast } = useToast();
 
   const handlePlanSelection = async (plan: string) => {
@@ -26,14 +24,14 @@ export function PaymentSelection({ email, onSelectFreePlan }: PaymentSelectionPr
         return;
       }
 
-      // Create checkout session
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           plan,
           email,
-          returnUrl: `${window.location.origin}/auth/register`
+          name,
+          password
         }),
       });
 
