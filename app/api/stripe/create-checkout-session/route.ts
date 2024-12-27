@@ -10,15 +10,15 @@ const PRICE_IDS = {
 
 export async function POST(request: Request) {
   try {
-    const { plan, email } = await request.json();
+    const { plan, email, returnUrl } = await request.json();
 
     if (!PRICE_IDS[plan as keyof typeof PRICE_IDS]) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
     const priceId = PRICE_IDS[plan as keyof typeof PRICE_IDS];
-    const successUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/register?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(email)}`;
-    const cancelUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/register`;
+    const successUrl = `${returnUrl}?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(email)}&plan=${plan}`;
+    const cancelUrl = returnUrl;
 
     // Create a checkout session
     const session = await stripe.checkout.sessions.create({

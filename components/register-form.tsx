@@ -15,11 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { PlanSelection } from "./plan-selection";
 
 const registerSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -29,83 +25,42 @@ const registerSchema = z.object({
 });
 
 interface RegisterFormProps {
-  prefilledEmail?: string | null;
+  onSubmit: (data: z.infer<typeof registerSchema>) => void;
 }
 
-export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
+export function RegisterForm({ onSubmit }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPlanSelection, setShowPlanSelection] = useState(false);
-  const [formData, setFormData] = useState<any>(null);
-  const { toast } = useToast();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: prefilledEmail || "",
+      email: "",
       password: "",
     },
   });
 
-  async function handleFormSubmit(values: z.infer<typeof registerSchema>) {
-    setFormData(values);
-    setShowPlanSelection(true);
-  }
-
-  async function handleFreePlanRegistration() {
+  async function handleSubmit(values: z.infer<typeof registerSchema>) {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+      // Check if email already exists
+      const response = await fetch(`/api/auth/check-email?email=${values.email}`);
+      const data = await response.json();
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Registration failed");
+      if (data.exists) {
+        // Redirect to sign in if email exists
+        window.location.href = `/auth/signin?email=${encodeURIComponent(values.email)}`;
+        return;
       }
 
-      const result = await signIn("credentials", {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error("Failed to sign in after registration");
-      }
-
-      router.push("/dashboard");
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Continue with registration flow
+      onSubmit(values);
+    } catch (error) {
+      console.error("Error checking email:", error);
     } finally {
       setIsLoading(false);
     }
-  }
-
-  if (showPlanSelection) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="w-full max-w-5xl">
-          <h2 className="text-2xl font-bold text-center mb-8">Choose Your Plan</h2>
-          <PlanSelection 
-            userEmail={formData.email}
-            onSelectFreePlan={handleFreePlanRegistration}
-          />
-        </div>
-      </div>
-    );
   }
 
   return (
@@ -116,7 +71,7 @@ export function RegisterForm({ prefilledEmail }: RegisterFormProps) {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="firstName"

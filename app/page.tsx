@@ -8,7 +8,7 @@ import { CTASection } from '@/components/landing/cta-section';
 import { Home } from '@/models/home';
 import dbConnect from '@/lib/db';
 import { HomeData } from '@/types/home';
-// novo453
+// novo4536
 async function getHomeData(): Promise<HomeData | null> {
   try {
     await dbConnect();
