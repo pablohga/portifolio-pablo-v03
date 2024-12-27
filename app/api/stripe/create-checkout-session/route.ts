@@ -1,17 +1,28 @@
 import { NextResponse } from 'next/server';
-import { createCheckoutSession } from '@/lib/stripe/checkout';
+import { stripe } from '@/lib/stripe';
 
 export async function POST(request: Request) {
   try {
-    const { plan, email, name, password } = await request.json();
+    const { plan } = await request.json();
     const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
-    const session = await createCheckoutSession({
-      plan,
-      email,
-      name,
-      password,
-      origin
+    const priceId = plan === 'premium' 
+      ? process.env.STRIPE_PRICE_ID_PREMIUM 
+      : process.env.STRIPE_PRICE_ID_PAID;
+
+    if (!priceId) {
+      throw new Error('Invalid plan or missing price ID');
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [{ price: priceId, quantity: 1 }],
+      mode: 'subscription',
+      success_url: `${origin}/auth/register?session_id={CHECKOUT_SESSION_ID}&plan=${plan}`,
+      cancel_url: `${origin}/`,
+      allow_promotion_codes: true,
+      billing_address_collection: 'required',
+      payment_method_types: ['card'],
+      //customer_email: null,  Let Stripe collect the email
     });
 
     return NextResponse.json({ url: session.url });

@@ -8,13 +8,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
 interface PaymentSelectionProps {
-  email: string;
-  name: string;
-  password: string;
   onSelectFreePlan: () => void;
 }
 
-export function PaymentSelection({ email, name, password, onSelectFreePlan }: PaymentSelectionProps) {
+export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -24,32 +21,19 @@ export function PaymentSelection({ email, name, password, onSelectFreePlan }: Pa
       setIsLoading(true);
 
       if (plan === 'free') {
-        onSelectFreePlan();
+        router.push(`/auth/register?plan=free`);
         return;
       }
 
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          plan,
-          email,
-          name,
-          password
-        }),
+        body: JSON.stringify({ plan }),
       });
 
       const data = await response.json();
 
       if (data.url) {
-        // Store registration data in sessionStorage before redirecting
-        sessionStorage.setItem('pendingRegistration', JSON.stringify({
-          email,
-          name,
-          password,
-          plan
-        }));
-        
         window.location.href = data.url;
       } else {
         throw new Error('Failed to create checkout session');

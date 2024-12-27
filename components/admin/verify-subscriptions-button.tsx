@@ -66,14 +66,14 @@ export function VerifySubscriptionsButton() {
       <Button
         onClick={handleVerify}
         disabled={isLoading}
-        className="gap-2"
+        className="gap-2 mb-6"
       >
         <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
         Verify Subscriptions
       </Button>
 
       <Dialog open={showResults} onOpenChange={setShowResults}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[600px]">
           <DialogHeader>
             <DialogTitle>Verification Results</DialogTitle>
           </DialogHeader>

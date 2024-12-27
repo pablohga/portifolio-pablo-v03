@@ -117,27 +117,10 @@ export function PricingSection({ data }: PricingSectionProps) {
                     {plan.buttonText}
                   </Link>
                 </Button>
-                <PaymentButton plan="paid">
+                {/* <PaymentButton plan="paid"> */}
                 {/* <PaymentButton plan={plan.name}> */}
-                  {plan.buttonText}
-                </PaymentButton>
-                {/* Teste stripe */}
-               {/* <PaymentButton tierPlan={plan.name}>
-                  Teste Stripeeee!!!
-                   <Link href="/auth/register">
-                      Teste Stripe
-                  </Link> 
-                </PaymentButton>*/}
-                {/* <Button
-                  className="w-full mt-5"
-                  variant={plan.popular ? "default" : "outline"}
-                  asChild
-                >
-                  <Link href="/auth/register">
-                    Teste Stripe
-                  </Link>
-                </Button> */}
-                {/* FInal Teste stripe */}
+                  {/* {plan.buttonText} */}
+                {/* </PaymentButton> */}
 
               </div>
               <ul className="space-y-4">

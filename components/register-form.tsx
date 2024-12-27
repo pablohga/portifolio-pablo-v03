@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
 
 const registerSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -25,39 +26,66 @@ const registerSchema = z.object({
 });
 
 interface RegisterFormProps {
-  onSubmit: (data: z.infer<typeof registerSchema>) => void;
+  initialEmail?: string | null;
+  initialPlan?: string | null;
+  onComplete: (data: any) => void;
 }
 
-export function RegisterForm({ onSubmit }: RegisterFormProps) {
+export function RegisterForm({ initialEmail, initialPlan, onComplete }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      email: initialEmail || "",
       password: "",
     },
   });
 
   async function handleSubmit(values: z.infer<typeof registerSchema>) {
-    setIsLoading(true);
     try {
-      // Check if email already exists
-      const response = await fetch(`/api/auth/check-email?email=${values.email}`);
-      const data = await response.json();
+      setIsLoading(true);
 
-      if (data.exists) {
-        // Redirect to sign in if email exists
-        window.location.href = `/auth/signin?email=${encodeURIComponent(values.email)}`;
+      // Check if email already exists
+      const checkResponse = await fetch(`/api/auth/check-email?email=${values.email}`);
+      const checkData = await checkResponse.json();
+
+      if (checkData.exists) {
+        toast({
+          title: "Error",
+          description: "This email is already registered. Please sign in instead.",
+          variant: "destructive",
+        });
         return;
       }
 
-      // Continue with registration flow
-      onSubmit(values);
-    } catch (error) {
-      console.error("Error checking email:", error);
+      // Register user
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: `${values.firstName} ${values.lastName}`,
+          email: values.email,
+          password: values.password,
+          subscriptionTier: initialPlan || 'free'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      const data = await response.json();
+      onComplete(data);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -107,7 +135,11 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="john@example.com" {...field} />
+                      <Input 
+                        placeholder="john@example.com" 
+                        {...field} 
+                        disabled={!!initialEmail}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -129,7 +161,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
               />
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Creating account..." : "Continue"}
+                {isLoading ? "Creating account..." : "Create Account"}
               </Button>
 
               <div className="text-center text-sm">
