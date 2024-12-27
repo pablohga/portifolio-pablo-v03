@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// app/api/stripe/create-checkout-session/route.ts
+import { NextResponse } from 'next/server';
+import { stripe } from '@/lib/stripe';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 const PRICE_IDS = {
   paid: process.env.STRIPE_PRICE_ID_PAID!,
@@ -10,15 +11,20 @@ const PRICE_IDS = {
 
 export async function POST(request: Request) {
   try {
-    const { plan, email, returnUrl } = await request.json();
+    const { plan, email } = await request.json();
 
     if (!PRICE_IDS[plan as keyof typeof PRICE_IDS]) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
     const priceId = PRICE_IDS[plan as keyof typeof PRICE_IDS];
-    const successUrl = `${returnUrl}?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(email)}&plan=${plan}`;
-    const cancelUrl = returnUrl;
+    
+    // Get the origin from the request headers
+    const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL;
+    
+    // Construct the success and cancel URLs
+    const successUrl = `${origin}/auth/register?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(email)}&plan=${plan}`;
+    const cancelUrl = `${origin}/auth/register`;
 
     // Create a checkout session
     const session = await stripe.checkout.sessions.create({
