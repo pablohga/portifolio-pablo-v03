@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
+import { PlanSelection } from "@/components/plan-selection";
 
 export default function RegisterPage() {
   const [registrationComplete, setRegistrationComplete] = useState(false);
@@ -48,6 +49,11 @@ export default function RegisterPage() {
   async function handleRegistrationComplete(data: any) {
     setRegistrationData(data);
     setRegistrationComplete(true);
+  }
+
+  // If no email/plan and not coming from Stripe checkout, show plan selection
+  if (!email && !sessionId) {
+    return <PlanSelection userEmail="" onSelectFreePlan={() => {}} />;
   }
 
   if (registrationComplete && registrationData) {

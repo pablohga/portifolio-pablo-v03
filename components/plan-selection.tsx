@@ -22,7 +22,7 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
       setIsLoading(true);
 
       if (plan === 'free') {
-        onSelectFreePlan();
+        router.push(`/auth/register?plan=free`);
         return;
       }
 
@@ -51,84 +51,95 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
   };
 
   return (
-    <div className="grid gap-6 md:grid-cols-3">
-      <Card className="relative">
-        <CardHeader>
-          <CardTitle>Free</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">R$0/mês</p>
-          <ul className="mt-4 space-y-2">
-            <li className="flex items-center">
-              <Check className="mr-2 h-4 w-4" />
-              3 Categorias
-            </li>
-            <li className="flex items-center">
-              <Check className="mr-2 h-4 w-4" />
-              3 Projetos por Categoria
-            </li>
-          </ul>
-          <Button 
-            className="mt-6 w-full" 
-            onClick={() => handlePlanSelection('free')}
-            disabled={isLoading}
-          >
-            Começar Grátis
-          </Button>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>
+          <p className="text-xl text-muted-foreground">
+            Select the plan that best fits your needs
+          </p>
+        </div>
 
-      <Card className="relative border-primary">
-        <CardHeader>
-          <CardTitle>Paid</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">R$29,90/mês</p>
-          <ul className="mt-4 space-y-2">
-            <li className="flex items-center">
-              <Check className="mr-2 h-4 w-4" />
-              Categorias Ilimitadas
-            </li>
-            <li className="flex items-center">
-              <Check className="mr-2 h-4 w-4" />
-              Projetos Ilimitados
-            </li>
-          </ul>
-          <Button 
-            className="mt-6 w-full" 
-            onClick={() => handlePlanSelection('paid')}
-            disabled={isLoading}
-          >
-            Assinar Plano Paid
-          </Button>
-        </CardContent>
-      </Card>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Card className="relative">
+            <CardHeader>
+              <CardTitle>Free</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">R$0/mês</p>
+              <ul className="mt-4 space-y-2">
+                <li className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  3 Categorias
+                </li>
+                <li className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  3 Projetos por Categoria
+                </li>
+              </ul>
+              <Button 
+                className="mt-6 w-full" 
+                onClick={() => handlePlanSelection('free')}
+                disabled={isLoading}
+              >
+                Começar Grátis
+              </Button>
+            </CardContent>
+          </Card>
 
-      <Card className="relative">
-        <CardHeader>
-          <CardTitle>Premium</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">R$79,90/mês</p>
-          <ul className="mt-4 space-y-2">
-            <li className="flex items-center">
-              <Check className="mr-2 h-4 w-4" />
-              Tudo do Plano Paid
-            </li>
-            <li className="flex items-center">
-              <Check className="mr-2 h-4 w-4" />
-              Gestão de Clientes
-            </li>
-          </ul>
-          <Button 
-            className="mt-6 w-full" 
-            onClick={() => handlePlanSelection('premium')}
-            disabled={isLoading}
-          >
-            Assinar Plano Premium
-          </Button>
-        </CardContent>
-      </Card>
+          <Card className="relative border-primary">
+            <CardHeader>
+              <CardTitle>Paid</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">R$29,90/mês</p>
+              <ul className="mt-4 space-y-2">
+                <li className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  Categorias Ilimitadas
+                </li>
+                <li className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  Projetos Ilimitados
+                </li>
+              </ul>
+              <Button 
+                className="mt-6 w-full" 
+                onClick={() => handlePlanSelection('paid')}
+                disabled={isLoading}
+              >
+                Assinar Plano Paid
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="relative">
+            <CardHeader>
+              <CardTitle>Premium</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">R$79,90/mês</p>
+              <ul className="mt-4 space-y-2">
+                <li className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  Tudo do Plano Paid
+                </li>
+                <li className="flex items-center">
+                  <Check className="mr-2 h-4 w-4" />
+                  Gestão de Clientes
+                </li>
+              </ul>
+              <Button 
+                className="mt-6 w-full" 
+                onClick={() => handlePlanSelection('premium')}
+                disabled={isLoading}
+              >
+                Assinar Plano Premium
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     
     // Get all users with paid or premium subscriptions
     const users = await User.find({
-      subscriptionTier: { $in: ['paid', 'premium'] }
+      subscriptionTier: { $in: ['free', 'paid', 'premium'] }
     });
 
     const updates = await Promise.all(users.map(async (user) => {
