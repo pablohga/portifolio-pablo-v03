@@ -1,5 +1,3 @@
-// components/payment-flow/payment-selection.tsx
-
 "use client";
 
 import { useRouter } from "next/navigation";
