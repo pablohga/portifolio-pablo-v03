@@ -1,30 +1,28 @@
+// components/payment-flow/payment-selection.tsx
+
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
 
 interface PaymentSelectionProps {
   onSelectFreePlan: () => void;
 }
 
 export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
+  const { toast } = useToast();
 
   const handlePlanSelection = async (plan: string) => {
+    if (plan === 'free') {
+      router.push('/auth/register?plan=free');
+      return;
+    }
+
     try {
-      setIsLoading(true);
-
-      if (plan === 'free') {
-        router.push(`/auth/register?plan=free`);
-        return;
-      }
-
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -44,8 +42,6 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
         description: "Failed to process plan selection",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -70,7 +66,6 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
           <Button 
             className="mt-6 w-full" 
             onClick={() => handlePlanSelection('free')}
-            disabled={isLoading}
           >
             Começar Grátis
           </Button>
@@ -96,7 +91,6 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
           <Button 
             className="mt-6 w-full" 
             onClick={() => handlePlanSelection('paid')}
-            disabled={isLoading}
           >
             Assinar Plano Paid
           </Button>
@@ -122,7 +116,6 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
           <Button 
             className="mt-6 w-full" 
             onClick={() => handlePlanSelection('premium')}
-            disabled={isLoading}
           >
             Assinar Plano Premium
           </Button>

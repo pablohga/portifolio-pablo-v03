@@ -1,3 +1,5 @@
+// app/auth/register/page.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
-import { PlanSelection } from "@/components/plan-selection";
+import { PaymentSelection } from "@/components/payment-flow/payment-selection";
 
 export default function RegisterPage() {
   const [registrationComplete, setRegistrationComplete] = useState(false);
@@ -52,8 +54,20 @@ export default function RegisterPage() {
   }
 
   // If no email/plan and not coming from Stripe checkout, show plan selection
-  if (!email && !sessionId) {
-    return <PlanSelection userEmail="" onSelectFreePlan={() => {}} />;
+  if (!email && !sessionId && !plan) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>
+            <p className="text-xl text-muted-foreground">
+              Select the plan that best fits your needs
+            </p>
+          </div>
+          <PaymentSelection onSelectFreePlan={() => {}} />
+        </div>
+      </div>
+    );
   }
 
   if (registrationComplete && registrationData) {
