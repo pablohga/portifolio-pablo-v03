@@ -8,6 +8,7 @@ import { User } from "@/models/user";
 import dbConnect from "@/lib/db";
 import bcrypt from "bcryptjs";
 
+// Configuração de opções de autenticação
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -47,8 +48,8 @@ export const authOptions: NextAuthOptions = {
           role: user.role,
           subscriptionTier: user.subscriptionTier,
         };
-      }
-    })
+      },
+    }),
   ],
   pages: {
     signIn: "/auth/signin",
@@ -63,14 +64,14 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "google") {
         await dbConnect();
         const existingUser = await User.findOne({ email: user.email });
-        
+
         if (!existingUser) {
           await User.create({
             name: user.name,
             email: user.email,
             image: user.image,
-            role: 'user',
-            subscriptionTier: 'free',
+            role: "user",
+            subscriptionTier: "free",
           });
         }
       }
@@ -94,5 +95,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
+// Exportando handlers como GET e POST
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
