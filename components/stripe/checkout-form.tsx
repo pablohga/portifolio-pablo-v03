@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
@@ -14,6 +14,7 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ isOpen, onClose, plan }: CheckoutFormProps) {
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -22,6 +23,20 @@ export function CheckoutForm({ isOpen, onClose, plan }: CheckoutFormProps) {
       handleNonAuthenticatedCheckout();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, session]);
+
+  useEffect(() => {
+    async function fetchClientSecret() {
+      if (isOpen && session?.user) {
+        try {
+          const clientSecret = await createCheckoutSession();
+          setClientSecret(clientSecret);
+        } catch (error) {
+          console.error('Failed to fetch client secret:', error);
+        }
+      }
+    }
+    fetchClientSecret();
   }, [isOpen, session]);
 
   const handleNonAuthenticatedCheckout = async () => {
@@ -46,7 +61,7 @@ export function CheckoutForm({ isOpen, onClose, plan }: CheckoutFormProps) {
     }
   };
 
-  const createCheckoutSession = async () => {
+  const createCheckoutSession = async (): Promise<string | null> => {
     try {
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
@@ -63,6 +78,7 @@ export function CheckoutForm({ isOpen, onClose, plan }: CheckoutFormProps) {
       return clientSecret;
     } catch (error) {
       console.error('Error creating checkout session:', error);
+      return null;
     }
   };
 
@@ -76,7 +92,7 @@ export function CheckoutForm({ isOpen, onClose, plan }: CheckoutFormProps) {
         <DialogTitle>Subscribe to {plan}</DialogTitle>
         <EmbeddedCheckoutProvider
           stripe={stripePromise}
-          options={{ clientSecret: createCheckoutSession }}
+          options={{ clientSecret: clientSecret || "" }} // Garantir que seja uma string
         >
           <EmbeddedCheckout />
         </EmbeddedCheckoutProvider>

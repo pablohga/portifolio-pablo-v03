@@ -1,20 +1,22 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+interface CachedMongoose {
+  conn: mongoose.Connection | null;
+  promise: Promise<mongoose.Connection> | null;
 }
 
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+// Adiciona 'mongoose' ao globalThis
+declare global {
+  var mongoose: CachedMongoose | undefined;
 }
 
-async function dbConnect() {
+// Garante que o 'cached' está inicializado
+const cached: CachedMongoose = globalThis.mongoose || { conn: null, promise: null };
+globalThis.mongoose = cached; // Atribui ao globalThis para reutilização
+
+async function dbConnect(): Promise<mongoose.Connection> {
   if (cached.conn) {
-    return cached.conn;
+    return cached.conn; // Retorna a conexão existente
   }
 
   if (!cached.promise) {
@@ -22,19 +24,14 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-      return mongoose;
+    // Cria a promessa de conexão
+    cached.promise = mongoose.connect(process.env.MONGODB_URI!, opts).then((mongooseInstance) => {
+      return mongooseInstance.connection;
     });
   }
 
-  try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
-
-  return cached.conn;
+  cached.conn = await cached.promise; // Aguarda a promessa ser resolvida
+  return cached.conn; // Retorna a conexão estabelecida
 }
 
 export default dbConnect;

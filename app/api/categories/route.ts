@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/db";
 import { Category } from "@/models/category";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth-options";
 import { checkSubscriptionLimits } from "@/lib/subscription";
 import { User } from "@/models/user";
 

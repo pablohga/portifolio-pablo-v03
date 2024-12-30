@@ -3,7 +3,7 @@ import crypto from "crypto-js";
 import dbConnect from "@/lib/db";
 import { User } from "@/models/user";
 import { sendResetEmail } from "@/lib/email";
-
+import bcrypt from "bcryptjs";
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth-options";
 import { ContactSettings } from "@/models/contact";
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
