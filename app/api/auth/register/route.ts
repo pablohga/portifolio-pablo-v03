@@ -3,6 +3,9 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/db";
 import { User } from "@/models/user";
 
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const { name, email, password } = await request.json();

@@ -5,6 +5,9 @@ import { User } from "@/models/user";
 import { authOptions } from "@/lib/auth-options";
 import { isAdmin } from "@/lib/auth";
 
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
+
 export async function PUT(
   request: Request,
   { params }: { params: { id: string } }

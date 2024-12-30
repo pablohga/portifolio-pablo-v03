@@ -5,6 +5,9 @@ import { Service } from "@/models/service";
 import { authOptions } from "@/lib/auth-options";
 import { startOfMonth, endOfMonth, format } from "date-fns";
 
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);

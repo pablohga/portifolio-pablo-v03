@@ -5,6 +5,9 @@ import { Service } from "@/models/service";
 import { Client } from "@/models/client";
 import { authOptions } from "@/lib/auth-options";
 
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);

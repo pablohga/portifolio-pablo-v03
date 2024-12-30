@@ -5,6 +5,8 @@ import { User } from "@/models/user";
 import dbConnect from "@/lib/db";
 import type Stripe from "stripe";
 
+export const dynamic = 'force-dynamic'
+
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(request: Request) {

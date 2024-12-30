@@ -4,6 +4,8 @@ import dbConnect from "@/lib/db";
 import { Service } from "@/models/service";
 import { authOptions } from "@/lib/auth-options";
 import { format, differenceInDays, eachMonthOfInterval, startOfMonth, endOfMonth } from "date-fns";
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {

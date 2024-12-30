@@ -4,6 +4,9 @@ import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { PlanSelection } from "@/components/plan-selection";
 
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
+
 export default async function UpgradePage() {
   const user = await getCurrentUser();
 

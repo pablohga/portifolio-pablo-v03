@@ -7,6 +7,8 @@ import { AuthProvider } from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { headers } from 'next/headers';
 
+export const dynamic = 'force-dynamic'
+
 const inter = Inter({ subsets: ["latin"] });
 
 async function getSEOData() {

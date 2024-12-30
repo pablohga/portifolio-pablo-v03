@@ -3,6 +3,9 @@ import dbConnect from "@/lib/db";
 import { User } from "@/models/user";
 import { isAdmin } from "@/lib/auth";
 
+// Força a rota a ser dinâmica
+export const dynamic = 'force-dynamic';
+
 export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }

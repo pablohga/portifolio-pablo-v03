@@ -4,6 +4,8 @@ import { stripe } from "@/lib/stripe";
 import dbConnect from "@/lib/db";
 import { handleCheckoutCompleted } from "@/lib/stripe/webhook";
 
+export const dynamic = 'force-dynamic'
+
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export async function POST(request: Request) {
