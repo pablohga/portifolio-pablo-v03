@@ -1,4 +1,3 @@
-import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -8,15 +7,7 @@ import { User } from "@/models/user";
 import dbConnect from "@/lib/db";
 import bcrypt from "bcryptjs";
 
-import { authOptions } from "@/lib/auth-options";
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
-
-
-// Configuração de opções de autenticação
-/* export const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
@@ -100,8 +91,4 @@ export { handler as GET, handler as POST };
       return session;
     },
   },
-}; 
-
-// Exportando handlers como GET e POST
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };*/
+};
