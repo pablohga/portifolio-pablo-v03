@@ -50,7 +50,7 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
           <CardTitle>Free</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">R$0/mês</p>
+          <p className="text-2xl font-bold">$0/mês</p>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
@@ -75,7 +75,7 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
           <CardTitle>Paid</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">R$29,90/mês</p>
+          <p className="text-2xl font-bold">$29,90/mês</p>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
@@ -100,7 +100,7 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
           <CardTitle>Premium</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">R$79,90/mês</p>
+          <p className="text-2xl font-bold">$79,90/mês</p>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
