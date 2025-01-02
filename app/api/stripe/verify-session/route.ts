@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 
-// Força a rota a ser dinâmica
-export const dynamic = 'force-dynamic';
-
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -16,10 +13,13 @@ export async function GET(request: Request) {
       );
     }
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['customer'],
+    });
 
     return NextResponse.json({ 
-      status: session.payment_status === 'paid' ? 'complete' : 'incomplete'
+      status: session.payment_status,
+      customerEmail: session.customer_details?.email
     });
   } catch (error) {
     console.error("Error verifying session:", error);

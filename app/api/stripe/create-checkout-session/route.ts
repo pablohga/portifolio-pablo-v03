@@ -17,12 +17,11 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
-      success_url: `${origin}/auth/register?session_id={CHECKOUT_SESSION_ID}&plan=${plan}`,
+      success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&email={CUSTOMER_EMAIL}&plan=${plan}`,
       cancel_url: `${origin}/`,
       allow_promotion_codes: true,
       billing_address_collection: 'required',
       payment_method_types: ['card'],
-      //customer_email: null,  Let Stripe collect the email
     });
 
     return NextResponse.json({ url: session.url });

@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     switch (event.type) {
       case "checkout.session.completed": {
-        const session = event.data.object as any;
+        const session = event.data.object as Stripe.Checkout.Session;
         const customerId = session.customer as string;
         const subscriptionId = session.subscription as string;
 
@@ -40,8 +40,12 @@ export async function POST(request: Request) {
         // Update user's subscription tier
         await User.findOneAndUpdate(
           { email: customerEmail },
-          { subscriptionTier: tier }
+          { 
+            subscriptionTier: tier,
+            updatedAt: new Date()
+          }
         );
+
         break;
       }
 
@@ -57,11 +61,16 @@ export async function POST(request: Request) {
         await dbConnect();
 
         if (event.type === "customer.subscription.deleted") {
+          // If subscription is cancelled, revert to free tier
           await User.findOneAndUpdate(
             { email: customerEmail },
-            { subscriptionTier: 'free' }
+            { 
+              subscriptionTier: 'free',
+              updatedAt: new Date()
+            }
           );
         } else {
+          // If subscription is updated, check the new plan
           const priceId = subscription.items.data[0].price.id;
           const tier = priceId === process.env.STRIPE_PRICE_ID_PREMIUM 
             ? 'premium' 
@@ -69,9 +78,30 @@ export async function POST(request: Request) {
 
           await User.findOneAndUpdate(
             { email: customerEmail },
-            { subscriptionTier: tier }
+            { 
+              subscriptionTier: tier,
+              updatedAt: new Date()
+            }
           );
         }
+        break;
+      }
+
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        const customerId = invoice.customer as string;
+        const customer = await stripe.customers.retrieve(customerId);
+        const customerEmail = (customer as Stripe.Customer).email;
+
+        // Optionally handle failed payments by marking the subscription as at risk
+        await dbConnect();
+        await User.findOneAndUpdate(
+          { email: customerEmail },
+          { 
+            paymentStatus: 'failed',
+            updatedAt: new Date()
+          }
+        );
         break;
       }
     }
