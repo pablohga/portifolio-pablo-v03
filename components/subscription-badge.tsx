@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Crown } from "lucide-react";
 
 interface SubscriptionBadgeProps {
-  tier: string;
+  tier?: string | null; // Adicionado suporte para undefined ou null
 }
 
 export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
@@ -12,23 +12,23 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
 
   const getBadgeVariant = () => {
     switch (tier) {
-      case 'premium':
-        return 'default';
-      case 'paid':
-        return 'secondary';
+      case "premium":
+        return "default"; // Premium tier
+      case "paid":
+        return "secondary"; // Paid tier
       default:
-        return 'outline';
+        return "outline"; // Free tier
     }
   };
 
   const getDisplayName = () => {
     switch (tier) {
-      case 'premium':
-        return 'Premium';
-      case 'paid':
-        return 'Paid';
+      case "premium":
+        return "Premium";
+      case "paid":
+        return "Paid";
       default:
-        return 'Free';
+        return "Free";
     }
   };
 
@@ -36,12 +36,10 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
     <Button
       variant="ghost"
       className="gap-2"
-      onClick={() => router.push('/dashboard/upgrade')}
+      onClick={() => router.push("/dashboard/upgrade")}
     >
       <Crown className="h-4 w-4" />
-      <Badge variant={getBadgeVariant()}>
-        {getDisplayName()} Plan
-      </Badge>
+      <Badge variant={getBadgeVariant()}>{getDisplayName()} Plan</Badge>
     </Button>
   );
 }
