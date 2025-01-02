@@ -6,7 +6,6 @@ import clientPromise from "@/lib/mongodb";
 import { User } from "@/models/user";
 import dbConnect from "@/lib/db";
 import bcrypt from "bcryptjs";
-import { verifyUserSubscription, updateUserSubscriptionTier } from "./stripe/subscription";
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -81,20 +80,6 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.subscriptionTier = user.subscriptionTier;
       }
-
-      // Verify subscription status on every token refresh
-      if (token.email) {
-        try {
-          const tier = await verifyUserSubscription(token.email);
-          if (tier !== token.subscriptionTier) {
-            await updateUserSubscriptionTier(token.email, tier);
-            token.subscriptionTier = tier;
-          }
-        } catch (error) {
-          console.error('Error verifying subscription:', error);
-        }
-      }
-
       return token;
     },
     async session({ session, token }) {
