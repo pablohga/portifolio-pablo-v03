@@ -6,6 +6,7 @@ import clientPromise from "@/lib/mongodb";
 import { User } from "@/models/user";
 import dbConnect from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { verifyStripeSubscription } from "@/lib/stripe/subscription";
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -39,6 +40,19 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid credentials");
         }
 
+        // Verifica se o e-mail é uma string válida antes de chamar a função
+        const email = credentials.email;
+        if (!email) {
+          throw new Error("Email is required");
+        }
+
+        // Verify Stripe subscription and update user tier
+        const stripeTier = await verifyStripeSubscription(email);
+        if (stripeTier !== user.subscriptionTier) {
+          user.subscriptionTier = stripeTier;
+          await user.save();
+        }
+
         return {
           id: user._id.toString(),
           name: user.name,
@@ -61,16 +75,33 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
         await dbConnect();
-        const existingUser = await User.findOne({ email: user.email });
+
+        // Verifica se o e-mail é uma string válida
+        const email = user.email;
+        if (!email) {
+          throw new Error("Email is required");
+        }
+
+        const existingUser = await User.findOne({ email });
 
         if (!existingUser) {
+          // For new Google users, verify Stripe subscription
+          const stripeTier = await verifyStripeSubscription(email);
+
           await User.create({
             name: user.name,
             email: user.email,
             image: user.image,
             role: "user",
-            subscriptionTier: "free",
+            subscriptionTier: stripeTier,
           });
+        } else {
+          // For existing Google users, update subscription tier
+          const stripeTier = await verifyStripeSubscription(email);
+          if (stripeTier !== existingUser.subscriptionTier) {
+            existingUser.subscriptionTier = stripeTier;
+            await existingUser.save();
+          }
         }
       }
       return true;
