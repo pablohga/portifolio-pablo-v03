@@ -59,7 +59,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   /* const subscription = await fetchSubscritionByEmail(userEmail) */
 
   useEffect(() => {
-    console.log('session?.user?.subscriptionTier: ', session?.user?.subscriptionTier)
+    /* console.log('session?.user?.subscriptionTier: ', session?.user?.subscriptionTier) */
     Promise.all([
       fetchProjects(),
       fetchCategories(),

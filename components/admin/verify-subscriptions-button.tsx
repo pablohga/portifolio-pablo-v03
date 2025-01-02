@@ -1,31 +1,15 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { RefreshCw } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { VerificationResultsDialog } from "./verification-results-dialog";
+import type { VerificationResult } from "@/types/verification";
 
-interface VerificationResult {
-  email: string;
-  status: string;
-  error?: string;
+interface VerifySubscriptionsButtonProps {
+  onVerificationComplete: () => void;
 }
 
-export function VerifySubscriptionsButton() {
+export function VerifySubscriptionsButton({ onVerificationComplete }: VerifySubscriptionsButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<VerificationResult[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -50,6 +34,8 @@ export function VerifySubscriptionsButton() {
         title: "Success",
         description: "Subscription verification completed",
       });
+
+      onVerificationComplete();
     } catch (error) {
       toast({
         title: "Error",
@@ -72,38 +58,11 @@ export function VerifySubscriptionsButton() {
         Verify Subscriptions
       </Button>
 
-      <Dialog open={showResults} onOpenChange={setShowResults}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Verification Results</DialogTitle>
-          </DialogHeader>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Email</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Error</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {results.map((result, index) => (
-                <TableRow key={index}>
-                  <TableCell>{result.email}</TableCell>
-                  <TableCell>{result.status}</TableCell>
-                  <TableCell>{result.error || '-'}</TableCell>
-                </TableRow>
-              ))}
-              {results.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center">
-                    No results to display
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </DialogContent>
-      </Dialog>
+      <VerificationResultsDialog
+        results={results}
+        open={showResults}
+        onOpenChange={setShowResults}
+      />
     </>
   );
 }

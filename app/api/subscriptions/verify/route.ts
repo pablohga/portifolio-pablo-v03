@@ -40,6 +40,8 @@ export async function POST(request: Request) {
         // Check subscription plan and update tier if needed
         const priceId = subscription.items.data[0].price.id;
         const newTier = priceId === process.env.STRIPE_PRICE_ID_PREMIUM 
+        || process.env.STRIPE_PRICE_ID_PREMIUM_BRL
+        || process.env.STRIPE_PRICE_ID_PREMIUM_EUR
           ? 'premium' 
           : 'paid';
 

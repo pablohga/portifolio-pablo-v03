@@ -10,7 +10,7 @@ interface PaymentSelectionProps {
   onSelectFreePlan: () => void;
 }
 
-export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
+export function PaymentSelection({ /* onSelectFreePlan */ }: PaymentSelectionProps) {
   const router = useRouter();
   const { toast } = useToast();
 
