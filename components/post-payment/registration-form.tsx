@@ -20,7 +20,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const registrationSchema = z.object({
   email: z.string().email("Invalid email address"),
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -42,7 +43,8 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       email,
-      name: "",
+      firstName: "",
+      lastName: "",
       password: "",
       confirmPassword: "",
     },
@@ -56,7 +58,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: values.email,
-          name: values.name,
+          name: `${values.firstName} ${values.lastName}`,
           password: values.password,
           subscriptionTier: plan,
         }),
@@ -105,19 +107,35 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
