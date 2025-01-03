@@ -18,6 +18,7 @@ import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import { formatName } from "@/lib/utils";
 import { SubscriptionBadge } from "@/components/subscription-badge";
+import { Settings } from "lucide-react";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -378,10 +379,22 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               <ExternalLink className="ml-1 h-4 w-4" />
             </Link>
           </div>
-          <div className="text-lg font-medium">
+          {/* <div className="text-lg font-medium">
             Welcome, {firstName} <span className="text-primary">{lastName}</span>
           </div>
-          <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
+          <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} /> */}
+          <div className="flex items-center gap-4">
+            <Button variant="outline" asChild>
+              <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
+                <Settings className="h-4 w-4" />
+                Profile & Settings
+              </Link>
+            </Button>
+            <div className="text-lg font-medium">
+              Welcome, {firstName} <span className="text-primary">{lastName}</span>
+            </div>
+              <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
+          </div>
         </div>
         <div className="flex flex-wrap gap-4">
           <Button onClick={() => setIsHeroDialogOpen(true)}>
