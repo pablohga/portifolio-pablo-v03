@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Crown, Check } from "lucide-react";
 import Link from "next/link";
+import { SubscriptionManagement } from "./subscription-management";
 
 interface SubscriptionInfoProps {
   user: any;
@@ -48,45 +49,25 @@ export function SubscriptionInfo({ user }: SubscriptionInfoProps) {
         </p>
       </div>
 
+      <SubscriptionManagement 
+        currentTier={user.subscriptionTier} 
+        email={user.email}
+      />
+
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Current Plan</CardTitle>
-            <Badge variant={user.subscriptionTier === "premium" ? "default" : "secondary"}>
-              {user.subscriptionTier === "premium" ? (
-                <span className="flex items-center gap-1">
-                  <Crown className="h-4 w-4" />
-                  Premium
-                </span>
-              ) : user.subscriptionTier === "paid" ? (
-                "Paid"
-              ) : (
-                "Free"
-              )}
-            </Badge>
-          </div>
+          <CardTitle>Current Plan Features</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div>
-              <h4 className="font-medium mb-2">Features included:</h4>
-              <ul className="space-y-2">
-                {getPlanFeatures().map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-primary" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {user.subscriptionTier === "free" && (
-              <div className="pt-4">
-                <Button asChild>
-                  <Link href="/dashboard/upgrade">Upgrade Plan</Link>
-                </Button>
-              </div>
-            )}
+            <ul className="space-y-2">
+              {getPlanFeatures().map((feature, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-primary" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
           </div>
         </CardContent>
       </Card>
