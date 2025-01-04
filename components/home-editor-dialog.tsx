@@ -136,7 +136,7 @@ export function HomeEditorDialog({
         subtitle: "",
         buttonText: "",
         features: [],
-      },
+      }
     },
   });
 
@@ -182,8 +182,9 @@ export function HomeEditorDialog({
     remove: removeCtaFeature,
   } = useFieldArray({
     control: form.control,
-    name: "ctaSection.features" as const,
-
+    name: "featuresSection.features",
+    /* FIX: CORRIGIR O ctaSection
+    name: "ctaSection.features", */
   });
 
   useEffect(() => {
@@ -823,15 +824,18 @@ export function HomeEditorDialog({
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <h4 className="text-sm font-medium">Features</h4>
+                    {/* 
+                    FIX: CORRIGIR O BTN DE FEATURE
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => appendCtaFeature("")}
+                      onClick={() => appendCtaFeature('')}
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Add Feature
-                    </Button>
+                    </Button> */}
+                    Add Feature
                   </div>
                   {ctaFeatureFields.map((field, index) => (
                     <div key={field.id} className="flex gap-2">

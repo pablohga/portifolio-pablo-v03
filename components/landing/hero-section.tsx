@@ -34,10 +34,10 @@ export function HeroSection({ data }: HeroSectionProps) {
             {/* <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70"> */}
               {data?.title || "Crie Seu Portfólio Profissional Sem Gastar Nada"}
             </h1>
+            {/* FIX: REMOVIDO PQ ESTA VINDO EM HTML DO BANCO DE DADOS. RESOVER DEPOIS
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {data?.description || ""}
-              {/* {data?.description || "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers."} */}
-            </p>
+              {data?.description || "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers."}
+            </p> */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8" asChild>
                 <Link href={data?.buttonLink || "/auth/register"}>
