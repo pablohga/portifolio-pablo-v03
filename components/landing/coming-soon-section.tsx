@@ -43,10 +43,10 @@ export function ComingSoonSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+          {/* <span className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-6">
             <Bell className="h-4 w-4" />
             Em Breve
-          </span>
+          </span> */}
           <h2 className="text-4xl font-bold mb-4">
             Potencialize Seu Negócio Freelancer
           </h2>
@@ -65,7 +65,7 @@ export function ComingSoonSection() {
               viewport={{ once: true }}
               className="flex gap-4 p-6 rounded-lg bg-card"
             >
-              <div className="shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <div className="shrink-0 h-12 w-12 flex items-center justify-center rounded-lg bg-primary/10">
                 {feature.icon}
               </div>
               <div>
@@ -76,12 +76,12 @@ export function ComingSoonSection() {
           ))}
         </div>
 
-        <div className="text-center">
+        {/* <div className="text-center">
           <Button variant="outline" size="lg">
             Seja Notificado Quando Lançarmos
             <Bell className="ml-2 h-4 w-4" />
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

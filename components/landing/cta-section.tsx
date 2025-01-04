@@ -16,7 +16,7 @@ export function CTASection({ data }: CTASectionProps) {
   const features = data?.features || ["100% Grátis", "Sem Cartão de Crédito", "Configure em Minutos"];
 
   return (
-    <section className="py-20 bg-foreground">
+    <section className="py-20 bg-primary/5">
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -25,15 +25,14 @@ export function CTASection({ data }: CTASectionProps) {
           viewport={{ once: true }}
           className="text-center"
         >
-          <h2 className="text-4xl font-bold mb-4 text-primary-foreground">
+          <h2 className="text-4xl font-bold mb-4">
             {title}
           </h2>
-          <p className="text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             {subtitle}
           </p>
           <Button
             size="lg"
-            variant="secondary"
             className="text-lg px-8"
           >
             {buttonText}

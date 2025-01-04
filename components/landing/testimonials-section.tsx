@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { TestimonialsSection as TestimonialsSectionType } from "@/types/home";
+import Image from "next/image";
 
 interface TestimonialsSectionProps {
   data?: TestimonialsSectionType;
@@ -67,7 +68,7 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
               </div>
               <p className="mb-6 text-muted-foreground">{testimonial.content}</p>
               <div className="flex items-center gap-4">
-                <img
+                <Image
                   src={testimonial.image}
                   alt={testimonial.name}
                   className="w-12 h-12 rounded-full object-cover"
