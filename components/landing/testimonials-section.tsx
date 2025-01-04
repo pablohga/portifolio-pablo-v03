@@ -13,30 +13,31 @@ const defaultTestimonials = [
   {
     name: "Sarah Johnson",
     role: "Designer UI/UX",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200",
     content: "Esta plataforma me ajudou a conseguir mais clientes do que nunca. Os templates de portfólio são lindos e as opções de personalização são infinitas.",
   },
   {
     name: "Michael Chen",
     role: "Desenvolvedor Frontend",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200",
     content: "Configurar meu portfólio foi muito fácil. Os recursos de SEO melhoraram significativamente minha visibilidade online.",
   },
   {
     name: "Emily Rodriguez",
     role: "Designer Gráfica",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&h=200",
     content: "O melhor investimento que fiz para minha carreira freelancer. Meu portfólio parece profissional e atrai clientes de alta qualidade.",
   },
 ];
 
 export function TestimonialsSection({ data }: TestimonialsSectionProps) {
-  const testimonials = data?.testimonials || defaultTestimonials;
+  // FIX: ADICIONAR CONTEUDO DO data?.testimonials
+  const testimonials = /* data?.testimonials || */ defaultTestimonials;
   const title = data?.title || "Amado por Freelancers";
   const subtitle = data?.subtitle || "Junte-se a milhares de freelancers de sucesso que transformaram sua presença online.";
 
   return (
-    <section className="py-20 bg-background/50">
+    <section className="py-20 bg-background">
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -71,7 +72,9 @@ export function TestimonialsSection({ data }: TestimonialsSectionProps) {
                 <Image
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
+                  width={48}
+                  height={48}
+                  className="rounded-full object-cover"
                 />
                 <div>
                   <h4 className="font-semibold">{testimonial.name}</h4>
