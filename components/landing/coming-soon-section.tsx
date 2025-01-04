@@ -76,12 +76,6 @@ export function ComingSoonSection() {
           ))}
         </div>
 
-        {/* <div className="text-center">
-          <Button variant="outline" size="lg">
-            Seja Notificado Quando Lançarmos
-            <Bell className="ml-2 h-4 w-4" />
-          </Button>
-        </div> */}
       </div>
     </section>
   );

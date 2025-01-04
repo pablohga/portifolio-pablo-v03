@@ -65,7 +65,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   const subtitle = data?.subtitle || "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
 
   return (
-    <section className="pt-0 pb-10 bg-top bg-center bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]">
+    <section className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]">
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -93,7 +93,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
                 viewport={{ once: true }}
                 className="p-6 pt-7 bg-contain bg-no-repeat bg-[url('https://mundonews.pt/portify/card-header.png')] rounded-lg bg-card hover:shadow-lg hover:shadow-primary/10 transition-shadow duration-300"
               >
-                <div className="flex gap-5 items-center mb-1 inline-block px-4 py-0 rounded-lg md:bg-cover">
+                <div className="flex gap-5 items-center mb-1 px-4 py-0 rounded-lg md:bg-cover">
                 {/* <div className="mb-4 inline-block p-3 rounded-lg bg-primary/10 text-primary"> */}
                   <IconComponent className="h-8 w-8" />
                   <h3 className="text-card text-xl font-semibold mb-2">{feature.title}</h3>
