@@ -1,27 +1,126 @@
 import nodemailer from 'nodemailer';
 
-export async function sendResetEmail(email: string, token: string) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: Boolean(process.env.SMTP_SECURE),
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Boolean(process.env.SMTP_SECURE),
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
-  const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
+const emailTemplate = (content: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portify</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo img {
+      max-width: 200px;
+      height: auto;
+    }
+    .content {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #5221e6;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Portify">
+    </div>
+    <div class="content">
+      ${content}
+    </div>
+    <div class="footer">
+      © ${new Date().getFullYear()} Portify. Todos os direitos reservados.
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+export async function sendWelcomeEmail(email: string, name: string) {
+  const loginUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/signin`;
+  
+  const content = `
+    <h1>Bem-vindo ao Portify, ${name}! 🚀</h1>
+    <p>Estamos muito felizes em ter você conosco! Você acaba de dar o primeiro passo para transformar sua presença profissional online.</p>
+    <p>Com o Portify, você terá todas as ferramentas necessárias para:</p>
+    <ul>
+      <li>Criar um portfólio profissional impressionante</li>
+      <li>Destacar seus melhores projetos</li>
+      <li>Atrair clientes de qualidade</li>
+      <li>Gerenciar seu negócio com eficiência</li>
+    </ul>
+    <p>Pronto para começar sua jornada de sucesso?</p>
+    <div style="text-align: center;">
+      <a href="${loginUrl}" class="button">Acessar Minha Conta</a>
+    </div>
+  `;
 
   await transporter.sendMail({
     from: process.env.SMTP_FROM,
     to: email,
-    subject: 'Password Reset Request',
-    html: `
-      <h1>Password Reset Request</h1>
-      <p>Click the link below to reset your password. This link will expire in 1 hour.</p>
-      <a href="${resetUrl}">${resetUrl}</a>
-      <p>If you didn't request this, please ignore this email.</p>
-    `,
+    subject: 'Bem-vindo ao Portify! Comece sua jornada de sucesso',
+    html: emailTemplate(content),
+  });
+}
+
+export async function sendResetEmail(email: string, token: string) {
+  const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
+  
+  const content = `
+    <h1>Redefinição de Senha</h1>
+    <p>Você solicitou a redefinição de sua senha. Clique no botão abaixo para criar uma nova senha. Este link expirará em 1 hora.</p>
+    <div style="text-align: center;">
+      <a href="${resetUrl}" class="button">Redefinir Minha Senha</a>
+    </div>
+    <p style="margin-top: 20px; font-size: 14px;">Se você não solicitou esta redefinição, por favor ignore este email.</p>
+  `;
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to: email,
+    subject: 'Redefinição de Senha - Portify',
+    html: emailTemplate(content),
   });
 }

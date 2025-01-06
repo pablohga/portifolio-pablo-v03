@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/db";
 import { User } from "@/models/user";
+import { sendWelcomeEmail } from "@/lib/email";
 
 // Força a rota a ser dinâmica
 export const dynamic = 'force-dynamic';
@@ -31,6 +32,9 @@ export async function POST(request: Request) {
       password: hashedPassword,
       role: "user",
     });
+
+    // Send welcome email
+    await sendWelcomeEmail(email, name);
 
     return NextResponse.json(
       { message: "User registered successfully" },
