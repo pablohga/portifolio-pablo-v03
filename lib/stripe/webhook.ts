@@ -11,7 +11,10 @@ export async function handleCheckoutCompleted(session: Stripe.Checkout.Session) 
   const subscription = await stripe.subscriptions.retrieve(subscriptionId);
   const priceId = subscription.items.data[0].price.id;
 
-  const tier = priceId === process.env.STRIPE_PRICE_ID_PREMIUM 
+  const tier = 
+    priceId === process.env.STRIPE_PRICE_ID_PREMIUM ||
+    priceId === process.env.STRIPE_PRICE_ID_PREMIUM_BRL ||
+    priceId === process.env.STRIPE_PRICE_ID_PREMIUM_EUR 
     ? 'premium' 
     : 'paid';
 

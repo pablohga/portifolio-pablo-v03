@@ -31,7 +31,10 @@ export async function POST(request: Request) {
         const priceId = subscription.items.data[0].price.id;
 
         // Determine subscription tier based on price ID
-        const tier = priceId === process.env.STRIPE_PRICE_ID_PREMIUM 
+        const tier = 
+        priceId === process.env.STRIPE_PRICE_ID_PREMIUM ||
+        priceId === process.env.STRIPE_PRICE_ID_PREMIUM_BRL ||
+        priceId === process.env.STRIPE_PRICE_ID_PREMIUM_EUR
           ? 'premium' 
           : 'paid';
 
