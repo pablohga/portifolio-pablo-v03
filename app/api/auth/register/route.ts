@@ -4,12 +4,18 @@ import dbConnect from "@/lib/db";
 import { User } from "@/models/user";
 import { sendWelcomeEmail } from "@/lib/email";
 
-// Força a rota a ser dinâmica
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password, subscriptionTier = 'free' } = await request.json();
+
+    if (!name || !email || !password) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
     await dbConnect();
 
@@ -17,7 +23,7 @@ export async function POST(request: Request) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
-        { message: "Email already registered" },
+        { error: "Email already registered" },
         { status: 400 }
       );
     }
@@ -26,24 +32,38 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create user
-    await User.create({
+    const user = await User.create({
       name,
       email,
       password: hashedPassword,
       role: "user",
+      subscriptionTier,
     });
 
-    // Send welcome email
-    await sendWelcomeEmail(email, name);
+    // Try to send welcome email, but don't fail if it fails
+    try {
+      await sendWelcomeEmail(email, name);
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // Continue with registration even if email fails
+    }
 
     return NextResponse.json(
-      { message: "User registered successfully" },
+      { 
+        message: "User registered successfully",
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          subscriptionTier: user.subscriptionTier,
+        }
+      },
       { status: 201 }
     );
   } catch (error) {
     console.error("Registration error:", error);
     return NextResponse.json(
-      { message: "Failed to register user" },
+      { error: "Failed to register user" },
       { status: 500 }
     );
   }

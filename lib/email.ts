@@ -1,14 +1,24 @@
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: Boolean(process.env.SMTP_SECURE),
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+// Create transporter only if SMTP settings are available
+const createTransporter = () => {
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    console.warn('SMTP configuration is missing. Email functionality will be disabled.');
+    return null;
+  }
+
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: Boolean(process.env.SMTP_SECURE) || false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+};
+
+const transporter = createTransporter();
 
 const emailTemplate = (content: string) => `
 <!DOCTYPE html>
@@ -79,48 +89,76 @@ const emailTemplate = (content: string) => `
 `;
 
 export async function sendWelcomeEmail(email: string, name: string) {
-  const loginUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/signin`;
-  
-  const content = `
-    <h1>Bem-vindo ao Portify, ${name}! 🚀</h1>
-    <p>Estamos muito felizes em ter você conosco! Você acaba de dar o primeiro passo para transformar sua presença profissional online.</p>
-    <p>Com o Portify, você terá todas as ferramentas necessárias para:</p>
-    <ul>
-      <li>Criar um portfólio profissional impressionante</li>
-      <li>Destacar seus melhores projetos</li>
-      <li>Atrair clientes de qualidade</li>
-      <li>Gerenciar seu negócio com eficiência</li>
-    </ul>
-    <p>Pronto para começar sua jornada de sucesso?</p>
-    <div style="text-align: center;">
-      <a href="${loginUrl}" class="button">Acessar Minha Conta</a>
-    </div>
-  `;
+  try {
+    // Garantir que o transporter não seja null antes de usar
+    if (!transporter) {
+      console.log('Email sending skipped - SMTP not configured');
+      return;
+    }
 
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM,
-    to: email,
-    subject: 'Bem-vindo ao Portify! Comece sua jornada de sucesso',
-    html: emailTemplate(content),
-  });
+    const loginUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/signin`;
+
+    const content = `
+      <h1>Bem-vindo ao Portify, ${name}! 🚀</h1>
+      <p>Estamos muito felizes em ter você conosco! Você acaba de dar o primeiro passo para transformar sua presença profissional online.</p>
+      <p>Com o Portify, você terá todas as ferramentas necessárias para:</p>
+      <ul>
+        <li>Criar um portfólio profissional impressionante</li>
+        <li>Destacar seus melhores projetos</li>
+        <li>Atrair clientes de qualidade</li>
+        <li>Gerenciar seu negócio com eficiência</li>
+      </ul>
+      <p>Pronto para começar sua jornada de sucesso?</p>
+      <div style="text-align: center;">
+        <a href="${loginUrl}" style="display: inline-block; padding: 12px 24px; background-color: #5221e6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
+          Acessar Minha Conta
+        </a>
+      </div>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM || 'noreply@example.com',
+      to: email,
+      subject: 'Bem-vindo ao Portify! Comece sua jornada de sucesso',
+      html: emailTemplate(content),
+    });
+
+    console.log('Welcome email sent successfully to:', email);
+  } catch (error) {
+    console.error('Error sending welcome email:', error);
+    // Não lançar o erro, apenas logá-lo
+  }
 }
 
 export async function sendResetEmail(email: string, token: string) {
-  const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
-  
-  const content = `
-    <h1>Redefinição de Senha</h1>
-    <p>Você solicitou a redefinição de sua senha. Clique no botão abaixo para criar uma nova senha. Este link expirará em 1 hora.</p>
-    <div style="text-align: center;">
-      <a href="${resetUrl}" class="button">Redefinir Minha Senha</a>
-    </div>
-    <p style="margin-top: 20px; font-size: 14px;">Se você não solicitou esta redefinição, por favor ignore este email.</p>
-  `;
+  try {
+    // Garantir que o transporter não seja null antes de usar
+    if (!transporter) {
+      console.log('Email sending skipped - SMTP not configured');
+      return;
+    }
 
-  await transporter.sendMail({
-    from: process.env.SMTP_FROM,
-    to: email,
-    subject: 'Redefinição de Senha - Portify',
-    html: emailTemplate(content),
-  });
+    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
+
+    const content = `
+      <h1>Redefinição de Senha</h1>
+      <p>Você solicitou a redefinição de sua senha. Clique no botão abaixo para criar uma nova senha. Este link expirará em 1 hora.</p>
+      <div style="text-align: center;">
+        <a href="${resetUrl}" class="button">Redefinir Minha Senha</a>
+      </div>
+      <p style="margin-top: 20px; font-size: 14px;">Se você não solicitou esta redefinição, por favor ignore este email.</p>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM,
+      to: email,
+      subject: 'Redefinição de Senha - Portify',
+      html: emailTemplate(content),
+    });
+
+    console.log('Reset password email sent successfully to:', email);
+  } catch (error) {
+    console.error('Error sending reset email:', error);
+    // Não lançar o erro, apenas logá-lo
+  }
 }
