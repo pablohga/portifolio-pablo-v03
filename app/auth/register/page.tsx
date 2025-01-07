@@ -26,6 +26,7 @@ export default function RegisterPage() {
     if (sessionId) {
       verifyPayment(sessionId);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   async function verifyPayment(sessionId: string) {
@@ -69,6 +70,8 @@ export default function RegisterPage() {
   }
 
   if (registrationComplete && registrationData) {
+    /* console.log('registrationComplete: ', registrationComplete)
+    console.log('registrationData: ', registrationData) */
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="w-[450px]">
@@ -79,8 +82,8 @@ export default function RegisterPage() {
             <div className="space-y-2 text-center">
               <p className="text-lg">Your account has been created successfully!</p>
               <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
-                <p>Email: {registrationData.email}</p>
-                <p>Plan: {registrationData.subscriptionTier}</p>
+                <p>Email: {registrationData.user.email}</p>
+                <p>Plan: {registrationData.user.subscriptionTier}</p>
               </div>
             </div>
 

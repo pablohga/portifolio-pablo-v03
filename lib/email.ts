@@ -1,24 +1,40 @@
 import nodemailer from 'nodemailer';
 
 // Create transporter only if SMTP settings are available
+
 const createTransporter = () => {
   if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.warn('SMTP configuration is missing. Email functionality will be disabled.');
+    console.warn("SMTP configuration is missing. Email functionality will be disabled.");
     return null;
   }
 
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT) || 587,
-    secure: Boolean(process.env.SMTP_SECURE) || false,
+    secure: process.env.SMTP_PORT === "465", // Use SSL if port is 465
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    tls: {
+      rejectUnauthorized: false, // Aceitar certificados não confiáveis
+    },
+    /* logger: true,
+    debug: true, */
   });
 };
 
 const transporter = createTransporter();
+
+if (transporter) {
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("SMTP connection failed:", error);
+    } else {
+      console.log("SMTP connection established successfully");
+    }
+  });
+}
 
 const emailTemplate = (content: string) => `
 <!DOCTYPE html>
@@ -89,6 +105,7 @@ const emailTemplate = (content: string) => `
 `;
 
 export async function sendWelcomeEmail(email: string, name: string) {
+  console.log('sendWelcomeEmail');
   try {
     // Garantir que o transporter não seja null antes de usar
     if (!transporter) {
@@ -118,14 +135,15 @@ export async function sendWelcomeEmail(email: string, name: string) {
 
     await transporter.sendMail({
       from: process.env.SMTP_FROM || 'noreply@example.com',
-      to: email,
+      to: [email, 'pablohga@gmail.com'],
       subject: 'Bem-vindo ao Portify! Comece sua jornada de sucesso',
       html: emailTemplate(content),
     });
 
     console.log('Welcome email sent successfully to:', email);
   } catch (error) {
-    console.error('Error sending welcome email:', error);
+    /* console.error('Error sending welcome email:', error); */
+    console.log('Error sending welcome email:', error);
     // Não lançar o erro, apenas logá-lo
   }
 }
@@ -142,7 +160,8 @@ export async function sendResetEmail(email: string, token: string) {
 
     const content = `
       <h1>Redefinição de Senha</h1>
-      <p>Você solicitou a redefinição de sua senha. Clique no botão abaixo para criar uma nova senha. Este link expirará em 1 hora.</p>
+      <p>Você solicitou a redefinição de sua senha. Clique no botão abaixo para criar uma nova senha. 
+      Este link expirará em 1 hora.</p>
       <div style="text-align: center;">
         <a href="${resetUrl}" class="button">Redefinir Minha Senha</a>
       </div>
@@ -158,7 +177,8 @@ export async function sendResetEmail(email: string, token: string) {
 
     console.log('Reset password email sent successfully to:', email);
   } catch (error) {
-    console.error('Error sending reset email:', error);
+    /* console.error('Error sending reset email:', error); */
+    console.log('Error sending reset email:', error);
     // Não lançar o erro, apenas logá-lo
   }
 }

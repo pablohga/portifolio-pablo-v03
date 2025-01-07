@@ -42,7 +42,9 @@ export async function POST(request: Request) {
 
     // Try to send welcome email, but don't fail if it fails
     try {
+      console.log('tentando enviar o email Welcome')
       await sendWelcomeEmail(email, name);
+      console.log('enviado', email, name);
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
       // Continue with registration even if email fails
@@ -59,7 +61,9 @@ export async function POST(request: Request) {
         }
       },
       { status: 201 }
-    );
+      
+    )
+    
   } catch (error) {
     console.error("Registration error:", error);
     return NextResponse.json(
