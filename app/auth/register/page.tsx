@@ -58,9 +58,9 @@ export default function RegisterPage() {
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>
+            <h1 className="text-4xl font-bold mb-4">Escolha seu plano</h1>
             <p className="text-xl text-muted-foreground">
-              Select the plan that best fits your needs
+            Selecione o plano que melhor se adapta às suas necessidades
             </p>
           </div>
           <PaymentSelection onSelectFreePlan={() => {}} />
@@ -76,32 +76,41 @@ export default function RegisterPage() {
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="w-[450px]">
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Welcome to Portify!</CardTitle>
+            <CardTitle className="text-2xl text-center">Bem-vindo ao Portify!</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2 text-center">
-              <p className="text-lg">Your account has been created successfully!</p>
-              <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
-                <p>Email: {registrationData.user.email}</p>
-                <p>Plan: {registrationData.user.subscriptionTier}</p>
+              <p className="text-lg">Sua conta foi criada com sucesso!</p>
+              {/* <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground"> */}
+              <div className="space-y-4">
+                <ul className="space-y-2">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    Email: {registrationData.user.email}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    Plan: {registrationData.user.subscriptionTier}
+                  </li>
+                </ul>
               </div>
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-medium">You can now:</h3>
+              <h3 className="font-medium">Agora você pode:</h3>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  Create your professional portfolio
+                  Criar seu portfólio profissional
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-primary" />
-                  Showcase your projects
+                  Mostrar seus projetos
                 </li>
                 {registrationData.subscriptionTier !== 'free' && (
                   <li className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-primary" />
-                    Access premium features
+                    Acessar recursos premium
                   </li>
                 )}
               </ul>

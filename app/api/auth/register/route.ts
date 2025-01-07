@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
     // Try to send welcome email, but don't fail if it fails
     try {
-      console.log('tentando enviar o email Welcome')
+      /* console.log('tentando enviar o email Welcome') */
       await sendWelcomeEmail(email, name);
       console.log('enviado', email, name);
     } catch (emailError) {
