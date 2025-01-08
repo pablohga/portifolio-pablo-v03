@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -25,6 +25,10 @@ const registerSchema = z
     email: z.string().email("Invalid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
+    slug: z
+      .string()
+      .min(3, "Slug must be at least 3 characters")
+      .regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -39,6 +43,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ initialEmail, initialPlan, onComplete }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSlugAvailable, setIsSlugAvailable] = useState<boolean | null>(null);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -49,27 +54,50 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
       email: initialEmail || "",
       password: "",
       confirmPassword: "",
+      slug: "",
     },
   });
 
+  // Verificar disponibilidade do slug
+  async function checkSlugAvailability(slug: string) {
+    try {
+      const response = await fetch("/api/check-slug", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
+      });
+      const data = await response.json();
+      setIsSlugAvailable(data.available);
+    } catch (error) {
+      console.error("Failed to check slug availability:", error);
+      setIsSlugAvailable(null);
+    }
+  }
+
+  // Atualizar disponibilidade ao alterar o slug
+  useEffect(() => {
+    const slug = form.watch("slug");
+    if (slug) {
+      const delayDebounceFn = setTimeout(() => {
+        checkSlugAvailability(slug);
+      }, 500); // Debounce para evitar requisições excessivas
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [form.watch("slug")]);
+
   async function handleSubmit(values: z.infer<typeof registerSchema>) {
+    if (isSlugAvailable === false) {
+      toast({
+        title: "Error",
+        description: "Slug is not available. Please choose another one.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
 
-      // Check if email already exists
-      const checkResponse = await fetch(`/api/auth/check-email?email=${values.email}`);
-      const checkData = await checkResponse.json();
-
-      if (checkData.exists) {
-        toast({
-          title: "Error",
-          description: "This email is already registered. Please sign in instead.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Register user
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,6 +105,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
           name: `${values.firstName} ${values.lastName}`,
           email: values.email,
           password: values.password,
+          slug: values.slug,
           subscriptionTier: initialPlan || "free",
         }),
       });
@@ -107,6 +136,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+              {/* First Name */}
               <FormField
                 control={form.control}
                 name="firstName"
@@ -121,6 +151,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                 )}
               />
 
+              {/* Last Name */}
               <FormField
                 control={form.control}
                 name="lastName"
@@ -135,6 +166,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                 )}
               />
 
+              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -142,17 +174,14 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="john@example.com" 
-                        {...field} 
-                        disabled={!!initialEmail}
-                      />
+                      <Input placeholder="john@example.com" {...field} disabled={!!initialEmail} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Password */}
               <FormField
                 control={form.control}
                 name="password"
@@ -167,6 +196,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                 )}
               />
 
+              {/* Confirm Password */}
               <FormField
                 control={form.control}
                 name="confirmPassword"
@@ -181,6 +211,28 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                 )}
               />
 
+              {/* Slug */}
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormControl>
+                      <Input placeholder="john-doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    {isSlugAvailable === false && (
+                      <p className="text-red-500 text-sm">Slug is already taken.</p>
+                    )}
+                    {isSlugAvailable === true && (
+                      <p className="text-green-500 text-sm">Slug is available.</p>
+                    )}
+                  </FormItem>
+                )}
+              />
+
+              {/* Submit Button */}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Creating account..." : "Create Account"}
               </Button>
