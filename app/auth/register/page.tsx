@@ -70,8 +70,8 @@ export default function RegisterPage() {
   }
 
   if (registrationComplete && registrationData) {
-    /* console.log('registrationComplete: ', registrationComplete)
-    console.log('registrationData: ', registrationData) */
+    console.log('registrationComplete: ', registrationComplete)
+    console.log('registrationData: ', registrationData)
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="w-[450px]">
