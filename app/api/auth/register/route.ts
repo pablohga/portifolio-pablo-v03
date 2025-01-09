@@ -50,7 +50,7 @@ export async function POST(request: Request) {
       name,
       email,
       password: hashedPassword,
-      slug: uniqueSlug,
+      slug: slug || uniqueSlug,
       role: "user",
       subscriptionTier,
     });

@@ -83,6 +83,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
       }, 500); // Debounce para evitar requisições excessivas
       return () => clearTimeout(delayDebounceFn);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("slug")]);
 
   async function handleSubmit(values: z.infer<typeof registerSchema>) {

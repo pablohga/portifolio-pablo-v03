@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,6 +24,7 @@ const registrationSchema = z.object({
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),
+  slug: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -32,10 +33,12 @@ const registrationSchema = z.object({
 interface RegistrationFormProps {
   email: string;
   plan: string;
+  slug: string;
 }
 
 export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSlugAvailable, setIsSlugAvailable] = useState<boolean | null>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -47,8 +50,37 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
       lastName: "",
       password: "",
       confirmPassword: "",
+      slug: "",
     },
   });
+
+  // Verificar disponibilidade do slug
+  async function checkSlugAvailability(slug: string) {
+    try {
+      const response = await fetch("/api/check-slug", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
+      });
+      const data = await response.json();
+      setIsSlugAvailable(data.available);
+    } catch (error) {
+      console.error("Failed to check slug availability:", error);
+      setIsSlugAvailable(null);
+    }
+  }
+
+    // Atualizar disponibilidade ao alterar o slug
+    useEffect(() => {
+      const slug = form.watch("slug");
+      if (slug) {
+        const delayDebounceFn = setTimeout(() => {
+          checkSlugAvailability(slug);
+        }, 500); // Debounce para evitar requisições excessivas
+        return () => clearTimeout(delayDebounceFn);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [form.watch("slug")]);
 
   async function onSubmit(values: z.infer<typeof registrationSchema>) {
     try {
@@ -60,6 +92,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
           email: values.email,
           name: `${values.firstName} ${values.lastName}`,
           password: values.password,
+          slug: values.slug,
           subscriptionTier: plan,
         }),
       });
@@ -164,6 +197,26 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
                 </FormItem>
               )}
             />
+            {/* Slug */}
+            <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormControl>
+                      <Input placeholder="john-doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    {isSlugAvailable === false && (
+                      <p className="text-red-500 text-sm">Slug is already taken.</p>
+                    )}
+                    {isSlugAvailable === true && (
+                      <p className="text-green-500 text-sm">Slug is available.</p>
+                    )}
+                  </FormItem>
+                )}
+              />
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Complete Registration"}
