@@ -92,6 +92,16 @@ export default function RegisterPage() {
                     <Check className="h-4 w-4 text-primary" />
                     Plan: {registrationData.user.subscriptionTier}
                   </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    URL:{" "}
+                    <Link
+                      href={`/${registrationData.user.slug}`}
+                      className="text-primary hover:underline"
+                    >
+                      {`/${registrationData.user.slug}`}
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>

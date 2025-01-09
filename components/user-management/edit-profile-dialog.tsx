@@ -34,6 +34,7 @@ interface EditProfileDialogProps {
     name: string;
     email: string;
     image?: string;
+    slug?: string;
   };
   open: boolean;
   onOpenChange: (open: boolean) => void;

@@ -109,6 +109,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
           subscriptionTier: initialPlan || "free",
         }),
       });
+      console.log('values.slug', values.slug)
 
       if (!response.ok) {
         throw new Error("Registration failed");
