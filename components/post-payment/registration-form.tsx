@@ -18,22 +18,26 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const registrationSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string(),
-  slug: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const registrationSchema = z
+  .object({
+    email: z.string().email("Invalid email address"),
+    firstName: z.string().min(2, "First name must be at least 2 characters"),
+    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+    slug: z
+      .string()
+      .min(3, "Slug must be at least 3 characters")
+      .regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 interface RegistrationFormProps {
   email: string;
   plan: string;
-  slug: string;
 }
 
 export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormProps) {
@@ -70,19 +74,45 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
     }
   }
 
-    // Atualizar disponibilidade ao alterar o slug
-    useEffect(() => {
-      const slug = form.watch("slug");
-      if (slug) {
-        const delayDebounceFn = setTimeout(() => {
-          checkSlugAvailability(slug);
-        }, 500); // Debounce para evitar requisições excessivas
-        return () => clearTimeout(delayDebounceFn);
+  // Atualizar slug automaticamente baseado em firstName e lastName
+  useEffect(() => {
+    const firstName = form.watch("firstName");
+    const lastName = form.watch("lastName");
+
+    if (firstName || lastName) {
+      const generatedSlug = `${firstName.trim()}-${lastName.trim()}`
+        .toLowerCase()
+        .replace(/\s+/g, "-") // Substituir espaços por hífens
+        .replace(/[^a-z0-9-]/g, ""); // Remover caracteres inválidos
+
+      if (!form.getValues("slug")) {
+        form.setValue("slug", generatedSlug); // Auto preencher apenas se vazio
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [form.watch("slug")]);
+    }
+  }, [form.watch("firstName"), form.watch("lastName")]);
+
+  // Verificar slug ao clicar fora do campo slug
+  const handleSlugBlur = async () => {
+    const slug = form.getValues("slug");
+    if (slug) {
+      await checkSlugAvailability(slug);
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof registrationSchema>) {
+    // Checar a disponibilidade do slug novamente antes do envio
+    const slug = values.slug;
+    await checkSlugAvailability(slug);
+
+    if (isSlugAvailable === false) {
+      toast({
+        title: "Error",
+        description: "Slug is not available. Please choose another one.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
       const response = await fetch("/api/auth/register", {
@@ -126,6 +156,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -140,6 +171,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
               )}
             />
 
+            {/* First Name and Last Name */}
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -170,6 +202,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
               />
             </div>
 
+            {/* Password */}
             <FormField
               control={form.control}
               name="password"
@@ -184,6 +217,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
               )}
             />
 
+            {/* Confirm Password */}
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -197,27 +231,37 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
                 </FormItem>
               )}
             />
+
             {/* Slug */}
             <FormField
-                control={form.control}
-                name="slug"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Slug</FormLabel>
-                    <FormControl>
-                      <Input placeholder="john-doe" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                    {isSlugAvailable === false && (
-                      <p className="text-red-500 text-sm">Slug is already taken.</p>
-                    )}
-                    {isSlugAvailable === true && (
-                      <p className="text-green-500 text-sm">Slug is available.</p>
-                    )}
-                  </FormItem>
-                )}
-              />
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    URL do seu Portfólio: <br /> 
+                    https://portify.pt/
+                    <span className="text-primary">{form.watch("slug")}</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="john-doe"
+                      {...field}
+                      onBlur={handleSlugBlur} // Checar slug ao sair do campo
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  {isSlugAvailable === false && (
+                    <p className="text-red-500 text-sm">Slug is already taken.</p>
+                  )}
+                  {isSlugAvailable === true && (
+                    <p className="text-green-500 text-sm">Slug is available.</p>
+                  )}
+                </FormItem>
+              )}
+            />
 
+            {/* Submit */}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Complete Registration"}
             </Button>

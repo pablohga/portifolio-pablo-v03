@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -74,17 +74,30 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
     }
   }
 
-  // Atualizar disponibilidade ao alterar o slug
+  // Atualizar slug automaticamente baseado em firstName e lastName
   useEffect(() => {
-    const slug = form.watch("slug");
-    if (slug) {
-      const delayDebounceFn = setTimeout(() => {
-        checkSlugAvailability(slug);
-      }, 500); // Debounce para evitar requisições excessivas
-      return () => clearTimeout(delayDebounceFn);
+    const firstName = form.watch("firstName");
+    const lastName = form.watch("lastName");
+
+    if (firstName || lastName) {
+      const generatedSlug = `${firstName.trim()}-${lastName.trim()}`
+        .toLowerCase()
+        .replace(/\s+/g, "-") // Substitui espaços por hífens
+        .replace(/[^a-z0-9-]/g, ""); // Remove caracteres inválidos
+
+      if (!form.getValues("slug")) {
+        form.setValue("slug", generatedSlug); // Auto preencher apenas se vazio
+      }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch("slug")]);
+  }, [form.watch("firstName"), form.watch("lastName")]);
+
+  // Checar slug ao clicar fora do campo
+  const handleSlugBlur = async () => {
+    const slug = form.getValues("slug");
+    if (slug) {
+      await checkSlugAvailability(slug);
+    }
+  };
 
   async function handleSubmit(values: z.infer<typeof registerSchema>) {
     if (isSlugAvailable === false) {
@@ -110,7 +123,6 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
           subscriptionTier: initialPlan || "free",
         }),
       });
-      console.log('values.slug', values.slug)
 
       if (!response.ok) {
         throw new Error("Registration failed");
@@ -130,7 +142,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="py-20 min-h-screen flex items-center justify-center">
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Create Account</CardTitle>
@@ -219,9 +231,17 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                 name="slug"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Slug</FormLabel>
+                    <FormLabel>
+                      URL do seu Portfólio: <br /> 
+                      https://portify.pt/
+                      <span className="text-primary">{form.watch("slug")}</span>
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="john-doe" {...field} />
+                      <Input
+                        placeholder="john-doe"
+                        {...field}
+                        onBlur={handleSlugBlur} // Checar slug ao sair do campo
+                      />
                     </FormControl>
                     <FormMessage />
                     {isSlugAvailable === false && (
