@@ -55,7 +55,7 @@ export default function PaymentSuccessPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center py-20 px-4">
       <div className="w-full max-w-md space-y-8">
         <PlanDetails plan={plan} />
         <PostPaymentRegistrationForm email={customerEmail} plan={plan} />
