@@ -9,16 +9,15 @@ import { ContactSection } from "@/components/contact-section";
 import { SEO } from "@/models/seo";
 import { Category } from "@/models/category";
 
-interface Props {
+interface UserPortfolioPageProps {
   params: {
-    username: string;
+    slug: string;
   };
 }
 
-async function getUser(username: string) {
+async function getUser(slug: string) {
   await dbConnect();
-  const formattedUsername = username.replace(/-/g, " ");
-  return User.findOne({ name: new RegExp(`^${formattedUsername}$`, "i") });
+  return User.findOne({ slug });
 }
 
 async function getUserSEO(userId: string) {
@@ -33,9 +32,9 @@ async function getUserProjects(userId: string) {
   return Project.find({ userId }).sort({ createdAt: -1 });
 }
 
-export async function generateMetadata({ params }: Props) {
-  const user = await getUser(params.username);
-  
+export async function generateMetadata({ params }: UserPortfolioPageProps) {
+  const user = await getUser(params.slug);
+
   if (!user) {
     return {
       title: "User Not Found",
@@ -46,42 +45,50 @@ export async function generateMetadata({ params }: Props) {
 
   return {
     title: seo?.title || `${user.name} - Portfolio`,
-    description: seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
+    description:
+      seo?.description ||
+      `${user.name}'s portfolio showcasing their projects and skills`,
     keywords: seo?.keywords || [],
     openGraph: {
       title: seo?.title || `${user.name} - Portfolio`,
-      description: seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
+      description:
+        seo?.description ||
+        `${user.name}'s portfolio showcasing their projects and skills`,
       images: [{ url: seo?.ogImage || "/og-image.jpg" }],
     },
     twitter: {
       card: "summary_large_image",
       title: seo?.title || `${user.name} - Portfolio`,
-      description: seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
+      description:
+        seo?.description ||
+        `${user.name}'s portfolio showcasing their projects and skills`,
       images: [seo?.ogImage || "/og-image.jpg"],
     },
   };
 }
 
-export default async function UserPortfolioPage({ params }: Props) {
-  const user = await getUser(params.username);
+export default async function UserPortfolioPage({
+  params,
+}: UserPortfolioPageProps) {
+  const user = await getUser(params.slug);
 
   if (!user) {
-    notFound();
+    return notFound();
   }
 
   const userId = user._id.toString();
   const [categories, projects] = await Promise.all([
     getUserCategories(userId),
-    getUserProjects(userId)
+    getUserProjects(userId),
   ]);
 
   // Convert Mongoose documents to plain objects and ensure proper typing
-  const plainCategories = categories.map(cat => ({
+  const plainCategories = categories.map((cat) => ({
     ...cat.toObject(),
     _id: cat._id.toString(),
   }));
 
-  const plainProjects = projects.map(proj => ({
+  const plainProjects = projects.map((proj) => ({
     ...proj.toObject(),
     _id: proj._id.toString(),
   }));
@@ -89,10 +96,10 @@ export default async function UserPortfolioPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection userId={userId} />
-      <ProjectsSection 
-        userId={userId} 
-        initialCategories={plainCategories} 
-        initialProjects={plainProjects} 
+      <ProjectsSection
+        userId={userId}
+        initialCategories={plainCategories}
+        initialProjects={plainProjects}
       />
       <AboutSection userId={userId} />
       <ContactSection userId={userId} />
