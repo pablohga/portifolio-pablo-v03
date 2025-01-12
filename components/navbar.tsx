@@ -26,9 +26,7 @@ export default function Navbar() {
   // Detectar se a página é de portfólio com base no título
   useEffect(() => {
     const checkPortfolioPage = () => {
-      if (document?.title?.includes(" - ")) {
-      /* if (document?.title?.includes(" - Portfolio")) { */
-        console.log('ESTOU EM UM PORTIFOLIO!!!')
+      if (document?.title?.includes(" - Portfolio")) {
         setIsPortfolioPage(true);
       } else {
         setIsPortfolioPage(false);
@@ -94,10 +92,11 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            <ModeToggle />
+            
             <div className="text-sm font-bold">
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
+            <ModeToggle />
             <Button variant="ghost" onClick={() => signOut()}>
               Sair
             </Button>
@@ -109,7 +108,7 @@ export default function Navbar() {
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
             <Button
-              variant="ghost"
+              variant="secondary"
               className="w-full text-left py-2"
               onClick={() => signOut()}
             >
@@ -137,9 +136,9 @@ export default function Navbar() {
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-          {/* <ModeToggle /> */}
+          {/*  */}
           {/* Botão Hamburguer */}
-          <ModeToggle />
+          
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
@@ -162,10 +161,11 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
-            <ModeToggle />
+            
             <div className="text-sm font-bold">
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
+            <ModeToggle />
             <Button variant="ghost" onClick={() => signOut()}>
               Sair
             </Button>
@@ -217,7 +217,7 @@ export default function Navbar() {
           {/* Links Desktop */}
           <div className="hidden md:flex items-center gap-6">
             {renderLinks(links)}
-            <ModeToggle />
+            
           </div>
         </div>
 
@@ -261,7 +261,7 @@ export default function Navbar() {
           {/* Links Desktop */}
           <div className="hidden md:flex items-center gap-6">
             {renderLinks(links)}
-            <ModeToggle />
+            
           </div>
         </div>
 

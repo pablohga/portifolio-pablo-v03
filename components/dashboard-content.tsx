@@ -368,7 +368,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   return (
     <div className="container mx-auto py-20 max-w-[960px]">
       <div className="mb-8 space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Dashboard</h1>
             <Link 
@@ -379,7 +379,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               <ExternalLink className="ml-1 h-4 w-4" />
             </Link>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
             <Button variant="outline" asChild>
               <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
                 <Settings className="h-4 w-4" />
