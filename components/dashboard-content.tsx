@@ -375,7 +375,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               href={`/${session?.user?.name?.toLowerCase().replace(/\s+/g, '-')}`}
               className="inline-flex items-center text-primary hover:underline"
             >
-              View your public profile
+              Ver seu Portifólio
               <ExternalLink className="ml-1 h-4 w-4" />
             </Link>
           </div>
@@ -383,7 +383,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             <Button variant="outline" asChild>
               <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
                 <Settings className="h-4 w-4" />
-                Profile & Settings
+                Perfil & configurações
               </Link>
             </Button>
             <div className="text-lg font-medium">
@@ -394,16 +394,16 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         </div>
         <div className="flex flex-wrap gap-4">
           <Button onClick={() => setIsHeroDialogOpen(true)}>
-            Editar Hero Section
+            Editar seção Hero Banner 
           </Button>
           <Button onClick={() => setIsAboutDialogOpen(true)}>
-            Editar About Section
+            Editar seção Sobre
           </Button>
           <Button onClick={() => setIsSEODialogOpen(true)}>
-            Editar SEO Settings
+            Editar configurações SEO
           </Button>
           <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
-            Editar Contact Settings
+            Editar configurações de Contato
           </Button>
           {session?.user?.subscriptionTier === 'premium' && (
             <Button asChild>

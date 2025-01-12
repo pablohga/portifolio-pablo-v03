@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { useToast } from "@/components/ui/use-toast";
 import { formatName } from "@/lib/utils";
+import { ModeToggle } from "./mode-toggle";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -53,6 +54,7 @@ export default function Navbar() {
           <Link href="/projects" className="text-gray-700 dark:text-gray-300 hover:underline">
             Projetos
           </Link>
+          <ModeToggle />
           <Link href="/register" className="text-primary font-bold hover:underline">
             Criar Meu Portfólio
           </Link>
@@ -81,6 +83,7 @@ export default function Navbar() {
           <Link href="/dashboard" className="text-primary font-bold hover:underline">
           Editar portifolio
           </Link>
+          <ModeToggle />
           <div className="text-sm font-bold">
                 {firstName} <span className="text-primary">{lastName}</span>
           </div>
@@ -112,6 +115,7 @@ export default function Navbar() {
           <Link href="/support" className="text-gray-700 dark:text-gray-300 hover:underline">
             Ajuda
           </Link>
+          <ModeToggle />
           <Link href="/auth/signin" className="text-primary font-bold hover:underline">
             Entrar
           </Link>
@@ -143,6 +147,7 @@ export default function Navbar() {
           <Link href="/support" className="text-gray-700 dark:text-gray-300 hover:underline">
             Ajuda
           </Link>
+          <ModeToggle />
           <div className="text-sm font-bold">
                 {firstName} <span className="text-primary">{lastName}</span>
           </div>

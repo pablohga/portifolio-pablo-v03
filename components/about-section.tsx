@@ -46,9 +46,9 @@ export function AboutSection({ userId }: AboutSectionProps) {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">{about.title}</h2>
+          <h2 className="text-center text-4xl font-bold mb-4">{about.title}</h2>
           <div 
             className="text-muted-foreground max-w-2xl mx-auto prose prose-sm dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: about.description }}
