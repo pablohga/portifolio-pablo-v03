@@ -56,8 +56,8 @@ export default function RegisterPage() {
   if (!email && !sessionId && !plan) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
+        <div className="py-6 max-w-6xl mx-auto">
+          <div className="mt-6 text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Escolha seu plano</h1>
             <p className="text-xl text-muted-foreground">
             Selecione o plano que melhor se adapta às suas necessidades

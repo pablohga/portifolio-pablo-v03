@@ -1,182 +1,308 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
-import { useToast } from "@/components/ui/use-toast";
-import { formatName } from "@/lib/utils";
 import { ModeToggle } from "./mode-toggle";
+import { Menu, X } from "lucide-react";
+import { formatName } from "@/lib/utils";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [isPortfolioPage, setIsPortfolioPage] = useState(false);
-  const { firstName, lastName } = formatName(session?.user?.name);
-  const { toast } = useToast();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar o menu
+  const { firstName, lastName } = session?.user?.name
+  ? session.user.name.split(" ").reduce<{ firstName: string; lastName: string }>(
+      (acc, name, idx) =>
+        idx === 0
+          ? { ...acc, firstName: name }
+          : { ...acc, lastName: acc.lastName ? acc.lastName + " " + name : name },
+      { firstName: "", lastName: "" }
+    )
+  : { firstName: "", lastName: "" };
 
   // Detectar se a página é de portfólio com base no título
   useEffect(() => {
-    
     const checkPortfolioPage = () => {
-      if (document?.title?.includes(" - Portfolio")) {
+      if (document?.title?.includes(" - ")) {
+      /* if (document?.title?.includes(" - Portfolio")) { */
+        console.log('ESTOU EM UM PORTIFOLIO!!!')
         setIsPortfolioPage(true);
       } else {
         setIsPortfolioPage(false);
       }
     };
 
-    // Executar a verificação inicial
     checkPortfolioPage();
 
-    // Opcional: Adiciona um listener para mudanças no título da página
     const observer = new MutationObserver(() => checkPortfolioPage());
     observer.observe(document.querySelector("title") as Node, { childList: true });
 
-    // Limpar observador ao desmontar
     return () => observer.disconnect();
   }, []);
 
-  const VisitorNavbar = () => (
-    <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Logo />
-          <span className="text-lg font-semibold">Portify</span>
-        </div>
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Home
-          </Link>
-          <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Sobre o Criador
-          </Link>
-          <Link href="/projects" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Projetos
-          </Link>
-          <ModeToggle />
-          <Link href="/register" className="text-primary font-bold hover:underline">
-            Criar Meu Portfólio
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
+  // Função para alternar o menu hambúrguer
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const AuthenticatedNavbarPort = () => (
-    <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Logo />
-          <span className="text-lg font-semibold">Portify</span>
-        </div>
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Home
-          </Link>
-          <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:underline">
-          Sobre
-          </Link>
-          <Link href="/projects" className="text-gray-700 dark:text-gray-300 hover:underline">
-          Projetos
-          </Link>
-          <Link href="/dashboard" className="text-primary font-bold hover:underline">
-          Editar portifolio
-          </Link>
-          <ModeToggle />
-          <div className="text-sm font-bold">
-                {firstName} <span className="text-primary">{lastName}</span>
+  const renderLinks = (links: { label: string; href: string }[]) =>
+    links.map(({ label, href }) => (
+      <Link
+        key={href}
+        href={href}
+        className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+        onClick={() => setIsMenuOpen(false)} // Fecha o menu ao clicar em um link
+      >
+        {label}
+      </Link>
+    ));
+
+  const AuthenticatedNavbarPort = () => {
+    const links = [
+      { label: "Home", href: "/" },
+      { label: "Sobre", href: "/about" },
+      { label: "Projetos", href: "/projects" },
+      { label: "Editar Portfólio", href: "/dashboard" },
+    ];
+
+    return (
+      <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
+        <div className="container mx-auto flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Logo />
+            <span className="text-lg font-semibold">Portify</span>
           </div>
-          <Button variant="ghost" onClick={() => signOut()}>
-            Sair
-          </Button>
-        </div>
-      </div>
-    </nav>
-  );
 
-  const GuestNavbar = () => (
-    <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Logo />
-          <span className="text-lg font-semibold">Portify</span>
-        </div>
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Home
-          </Link>
-          <Link href="/features" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Recursos
-          </Link>
-          <Link href="/pricing" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Preços
-          </Link>
-          <Link href="/support" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Ajuda
-          </Link>
-          <ModeToggle />
-          <Link href="/auth/signin" className="text-primary font-bold hover:underline">
-            Entrar
-          </Link>
-          <Link href="/register" className="text-primary font-bold hover:underline">
-            Registrar-se
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
+          {/* Botão Hamburguer */}
+          <button
+            className="md:hidden text-gray-700 dark:text-gray-300"
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
 
-  const AuthenticatedNavbar = () => (
-    <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Logo />
-          <span className="text-lg font-semibold">Portify</span>
-        </div>
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/dashboard" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Dashboard
-          </Link>
-          <Link href={`/portfolio/${session?.user?.slug}`} className="text-gray-700 dark:text-gray-300 hover:underline">
-            Meu Portfólio
-          </Link>
-          <Link href="/settings" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Configurações
-          </Link>
-          <Link href="/support" className="text-gray-700 dark:text-gray-300 hover:underline">
-            Ajuda
-          </Link>
-          <ModeToggle />
-          <div className="text-sm font-bold">
-                {firstName} <span className="text-primary">{lastName}</span>
+          {/* Links Desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            {links.map(({ label, href }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-gray-700 dark:text-gray-300 hover:underline"
+              >
+                {label}
+              </Link>
+            ))}
+            <ModeToggle />
+            <div className="text-sm font-bold">
+              {firstName} <span className="text-primary">{lastName}</span>
+            </div>
+            <Button variant="ghost" onClick={() => signOut()}>
+              Sair
+            </Button>
           </div>
-          <Button variant="ghost" onClick={() => signOut()}>
-            Sair
-          </Button>
         </div>
-      </div>
-    </nav>
-  );
 
-  // Determinar qual navbar exibir
+        {/* Menu Mobile */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
+            {renderLinks(links)}
+            <Button
+              variant="ghost"
+              className="w-full text-left py-2"
+              onClick={() => signOut()}
+            >
+              Sair
+            </Button>
+          </div>
+        )}
+      </nav>
+    );
+  };
+
+  const AuthenticatedNavbar = () => {
+    const links = [
+      { label: "Dashboard", href: "/dashboard" },
+      { label: "Meu Portfólio", href: `/${session?.user?.slug}` },
+      { label: "Configurações", href: "/settings" },
+      { label: "Ajuda", href: "/support" },
+    ];
+
+    return (
+      <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
+        <div className="container mx-auto flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Logo />
+            <span className="text-lg font-semibold">Portify</span>
+          </div>
+          {/* <ModeToggle /> */}
+          {/* Botão Hamburguer */}
+          <ModeToggle />
+          <button
+            className="md:hidden text-gray-700 dark:text-gray-300"
+            onClick={toggleMenu}
+          >
+            
+            <Button variant="ghost" onClick={() => signOut()}>
+              Sair
+            </Button>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Links Desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            {links.map(({ label, href }) => (
+              <Link
+                key={href}
+                href={href}
+                className="text-gray-700 dark:text-gray-300 hover:underline"
+              >
+                {label}
+              </Link>
+            ))}
+            <ModeToggle />
+            <div className="text-sm font-bold">
+              {firstName} <span className="text-primary">{lastName}</span>
+            </div>
+            <Button variant="ghost" onClick={() => signOut()}>
+              Sair
+            </Button>
+          </div>
+        </div>
+
+        {/* Menu Mobile */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
+            {renderLinks(links)}
+            <Button
+              variant="ghost"
+              className="w-full text-left py-2"
+              onClick={() => signOut()}
+            >
+              Sair
+            </Button>
+          </div>
+        )}
+      </nav>
+    );
+  };
+
+  const VisitorNavbarPortifolio = () => {
+    const links = [
+      { label: "Home", href: "/" },
+      { label: "Sobre o Criador", href: "/about" },
+      { label: "Projetos", href: "/projects" },
+      { label: "Criar Meu Portfólio", href: "/auth/register" },
+    ];
+
+    return (
+      <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
+        <div className="container mx-auto flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Logo />
+            <span className="text-lg font-semibold">Portify</span>
+          </div>
+
+          {/* Botão Hamburguer */}
+          <button
+            className="md:hidden text-gray-700 dark:text-gray-300"
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Links Desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            {renderLinks(links)}
+            <ModeToggle />
+          </div>
+        </div>
+
+        {/* Menu Mobile */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
+            {renderLinks(links)}
+          </div>
+        )}
+      </nav>
+    );
+  };
+
+  const VisitorNavbar = () => {
+    const links = [
+      { label: "Home", href: "/" },
+      { label: "Recursos", href: "/features" },
+      { label: "Preços", href: "/pricing" },
+      { label: "Ajuda", href: "/support" },
+      { label: "Entrar", href: "/auth/signin" },
+      { label: "Registrar-se", href: "/auth/register" },
+    ];
+
+    return (
+      <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
+        <div className="container mx-auto flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <Logo />
+            <span className="text-lg font-semibold">Portify</span>
+          </div>
+
+          {/* Botão Hamburguer */}
+          <button
+            className="md:hidden text-gray-700 dark:text-gray-300"
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Links Desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            {renderLinks(links)}
+            <ModeToggle />
+          </div>
+        </div>
+
+        {/* Menu Mobile */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
+            {renderLinks(links)}
+          </div>
+        )}
+      </nav>
+    );
+  };
+// Determinar qual navbar exibir
 
   // no portifolio e nao logado
   if (isPortfolioPage && !session?.user) {
-    /* console.log('-{ VisitorNavbar?.user }-', session?.user ) */
-    return <VisitorNavbar />;
+    console.log('esta no ortifoio')
+    if(!session?.user){
+      console.log('no portifolio e nao logado', session?.user )
+    return <VisitorNavbarPortifolio />;
+    } else {
+      console.log('logado e no Portifolio', session?.user )
+    return <AuthenticatedNavbarPort />;
+    }
+    
   }
   // logado e no Portifolio
-  if (isPortfolioPage) {
+  /* if (isPortfolioPage) {
+    console.log('logado e no Portifolio', session?.user )
     return <AuthenticatedNavbarPort />;
-  }
+  } */
   // logado
   if (session?.user) {
+    console.log('logado', session?.user )
     return <AuthenticatedNavbar />;
+  } else {
+    // nao logado
+  console.log('nao logado', session?.user )
+  return <VisitorNavbar />;
   }
-  // nao logado
-  return <GuestNavbar />;
+  
 }
 
 
-  

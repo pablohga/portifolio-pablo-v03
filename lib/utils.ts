@@ -7,7 +7,21 @@ export function formatCurrency(value: number): string {
   }).format(value);
 }
 
-export function formatName(name: string | null | undefined): { firstName: string; lastName: string } {
+export function formatName(name?: string | null | undefined): { firstName: string; lastName: string } {
+  if (!name) {
+    return { firstName: "", lastName: "" };
+  }
+
+  const [firstName, ...lastNameParts] = name.split(" ");
+  const lastName = lastNameParts.join(" ");
+
+  return {
+    firstName: firstName || "",
+    lastName: lastName || "",
+  };
+}
+
+/* export function formatName(name: string | null | undefined): { firstName: string; lastName: string } {
   if (!name) {
     return { firstName: "", lastName: "" };
   }
@@ -17,7 +31,7 @@ export function formatName(name: string | null | undefined): { firstName: string
     firstName: firstName || "",
     lastName: lastName || "",
   };
-}
+} */
 
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
