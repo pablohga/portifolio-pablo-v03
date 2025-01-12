@@ -96,7 +96,7 @@ export function AboutDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit About Section</DialogTitle>
+          <DialogTitle>Editar Seção Sobre</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -106,7 +106,7 @@ export function AboutDialog({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Section Title</FormLabel>
+                  <FormLabel>Título da Seção</FormLabel>
                   <FormControl>
                     <Input placeholder="About Me" {...field} />
                   </FormControl>
@@ -120,7 +120,7 @@ export function AboutDialog({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Main Description</FormLabel>
+                  <FormLabel>Descrição Principal</FormLabel>
                   <FormControl>
                     <RichTextEditor
                       content={field.value}
@@ -135,7 +135,7 @@ export function AboutDialog({
 
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Features</h3>
+                <h3 className="text-lg font-semibold">Recursos</h3>
                 {fields.length < 6 && (
                   <Button
                     type="button"
@@ -144,7 +144,7 @@ export function AboutDialog({
                       append({ icon: "Star", title: "", description: "" })
                     }
                   >
-                    Add Feature
+                    Adicionar Recurso
                   </Button>
                 )}
               </div>
@@ -152,7 +152,7 @@ export function AboutDialog({
               {fields.map((field, index) => (
                 <Card key={field.id}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <h4 className="text-sm font-medium">Feature {index + 1}</h4>
+                    <h4 className="text-sm font-medium">Recurso {index + 1}</h4>
                     {fields.length > 1 && (
                       <Button
                         type="button"
@@ -170,7 +170,7 @@ export function AboutDialog({
                       name={`features.${index}.icon`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Icon Name</FormLabel>
+                          <FormLabel>Nome do Ícone</FormLabel>
                           <FormControl>
                             <Input placeholder="Code2, Palette, Rocket, etc." {...field} />
                           </FormControl>
@@ -183,7 +183,7 @@ export function AboutDialog({
                       name={`features.${index}.title`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Title</FormLabel>
+                          <FormLabel>Título</FormLabel>
                           <FormControl>
                             <Input placeholder="Feature title" {...field} />
                           </FormControl>
@@ -196,7 +196,7 @@ export function AboutDialog({
                       name={`features.${index}.description`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Description</FormLabel>
+                          <FormLabel>Descrição</FormLabel>
                           <FormControl>
                             <RichTextEditor
                               content={field.value}
@@ -213,7 +213,7 @@ export function AboutDialog({
               ))}
             </div>
 
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit">Guardar alterações</Button>
           </form>
         </Form>
       </DialogContent>

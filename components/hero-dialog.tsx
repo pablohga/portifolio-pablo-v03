@@ -77,7 +77,7 @@ export function HeroDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Edit Hero Section</DialogTitle>
+          <DialogTitle>Editar seção Hero Banner</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
@@ -86,12 +86,12 @@ export function HeroDialog({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title (Optional)</FormLabel>
+                  <FormLabel>Título (Opcional)</FormLabel>
                   <FormControl>
                     <Input placeholder="Pablo Azevedo" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Leave empty to hide the title
+                  Deixe em branco para ocultar o título
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -103,7 +103,7 @@ export function HeroDialog({
               name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subtitle (Optional)</FormLabel>
+                  <FormLabel>Subtítulo (Opcional)</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Full-stack Developer & Creative Problem Solver"
@@ -111,7 +111,7 @@ export function HeroDialog({
                     />
                   </FormControl>
                   <FormDescription>
-                    Leave empty to hide the subtitle
+                    Deixe em branco para ocultar o subtítulo
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -123,7 +123,7 @@ export function HeroDialog({
               name="backgroundImage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Background Image URL</FormLabel>
+                  <FormLabel>URL da imagem de fundo</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="https://images.unsplash.com/photo-1579547621869-0ddb5f237392"
@@ -131,14 +131,14 @@ export function HeroDialog({
                     />
                   </FormControl>
                   <FormDescription>
-                    Use a high-resolution image (recommended: 1920x1080 or larger)
+                    Use uma imagem de alta resolução (recomendado: 1920x1080 ou maior)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit">Guardar alterações</Button>
           </form>
         </Form>
       </DialogContent>
