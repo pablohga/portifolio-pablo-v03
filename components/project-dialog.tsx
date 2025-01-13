@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CldImage } from 'next-cloudinary';
 import * as z from "zod";
 import {
   Dialog,
@@ -168,6 +169,16 @@ export function ProjectDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Image URL</FormLabel>
+                  {/* <CldImage
+                    src="cld-sample-5" // Use this sample image or upload your own via the Media Explorer
+                    width="500" // Transform the image: auto-crop to square aspect_ratio
+                    height="500"
+                    crop={{
+                      type: 'auto',
+                      source: true
+                    }}
+                    alt="IMG"
+                  /> */}
                   <FormControl>
                     <Input placeholder="https://example.com/image.jpg" {...field} />
                   </FormControl>

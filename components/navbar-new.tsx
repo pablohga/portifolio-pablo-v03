@@ -17,13 +17,13 @@ export default function Navbar() {
         Portify
       </Link>
       <div className="flex gap-4">
-        <Link href="/" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Home
         </Link>
-        <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/about" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Sobre o Criador
         </Link>
-        <Link href="/projects" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/projects" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Projetos
         </Link>
         <Link href="/register" className="text-primary font-bold hover:underline">
@@ -40,16 +40,16 @@ export default function Navbar() {
         Portify
       </Link>
       <div className="flex gap-4">
-        <Link href="/" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Home
         </Link>
-        <Link href="/features" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/features" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Recursos
         </Link>
-        <Link href="/pricing" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/pricing" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Preços
         </Link>
-        <Link href="/support" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/support" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Ajuda
         </Link>
         <Link href="/auth/signin" className="text-primary font-bold hover:underline">
@@ -69,16 +69,16 @@ export default function Navbar() {
         Portify
       </Link>
       <div className="flex gap-4">
-        <Link href="/dashboard" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/dashboard" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Dashboard
         </Link>
-        <Link href={`/portfolio/${session?.user.slug}`} className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href={`/portfolio/${session?.user.slug}`} className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Meu Portfólio
         </Link>
-        <Link href="/settings" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/settings" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Configurações
         </Link>
-        <Link href="/support" className="text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="/support" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Ajuda
         </Link>
         <Button variant="ghost" onClick={() => signOut()}>

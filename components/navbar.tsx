@@ -82,21 +82,21 @@ export default function Navbar() {
           </button>
 
           {/* Links Desktop */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center">
             {links.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className="text-gray-700 dark:text-gray-300 hover:underline"
+                className="px-2 text-gray-700 dark:text-gray-300 hover:underline"
               >
                 {label}
               </Link>
             ))}
             
+            <ModeToggle/>
             <div className="text-sm font-bold">
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
-            <ModeToggle />
             <Button variant="ghost" onClick={() => signOut()}>
               Sair
             </Button>
@@ -144,28 +144,28 @@ export default function Navbar() {
             onClick={toggleMenu}
           >
             
-            <Button variant="ghost" onClick={() => signOut()}>
+            {/* <Button variant="ghost" onClick={() => signOut()}>
               Sair
-            </Button>
+            </Button> */}
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
           {/* Links Desktop */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center">
             {links.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
-                className="text-gray-700 dark:text-gray-300 hover:underline"
+                className="px-2 text-gray-700 dark:text-gray-300 hover:underline"
               >
                 {label}
               </Link>
             ))}
             
+            <ModeToggle />
             <div className="text-sm font-bold">
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
-            <ModeToggle />
             <Button variant="ghost" onClick={() => signOut()}>
               Sair
             </Button>
@@ -215,9 +215,9 @@ export default function Navbar() {
           </button>
 
           {/* Links Desktop */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center">
             {renderLinks(links)}
-            
+            <ModeToggle />
           </div>
         </div>
 
@@ -234,8 +234,8 @@ export default function Navbar() {
   const VisitorNavbar = () => {
     const links = [
       { label: "Home", href: "/" },
-      { label: "Recursos", href: "/features" },
-      { label: "Preços", href: "/pricing" },
+      { label: "Recursos", href: "/#features" },
+      { label: "Preços", href: "/#pricing" },
       { label: "Ajuda", href: "/support" },
       { label: "Entrar", href: "/auth/signin" },
       { label: "Registrar-se", href: "/auth/register" },
@@ -259,9 +259,9 @@ export default function Navbar() {
           </button>
 
           {/* Links Desktop */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center">
             {renderLinks(links)}
-            
+            <ModeToggle />
           </div>
         </div>
 
