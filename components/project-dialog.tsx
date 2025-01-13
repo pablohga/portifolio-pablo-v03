@@ -32,6 +32,10 @@ import {
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
+
+
 
 const projectSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
@@ -56,6 +60,7 @@ export function ProjectDialog({
 }: ProjectDialogProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const { data: session } = useSession();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof projectSchema>>({
     resolver: zodResolver(projectSchema),
@@ -168,24 +173,77 @@ export function ProjectDialog({
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  {/* <CldImage
-                    src="cld-sample-5" // Use this sample image or upload your own via the Media Explorer
-                    width="500" // Transform the image: auto-crop to square aspect_ratio
-                    height="500"
-                    crop={{
-                      type: 'auto',
-                      source: true
-                    }}
-                    alt="IMG"
-                  /> */}
+                  <FormLabel>Upload Image</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://example.com/image.jpg" {...field} />
+                    <div className="space-y-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          const userId = session?.user?.id; // Substitua pelo ID real do usuário
+                          const currentDate = new Date();
+                          const timestamp = currentDate
+                            .toISOString()
+                            .replace(/[-:.TZ]/g, ""); // Formato: YYYYMMDDHHMMSS
+                          const newFileName = `${file.name.split(".")[0].replace(/\s+/g, "")[0]}-${userId}-${timestamp}.${file.type.split("/")[1]}`;
+                          const renamedFile = new File([file], newFileName, {
+                            type: file.type,
+                          });
+
+                          const formData = new FormData();
+                          formData.append("file", renamedFile);
+                          // formData.append("upload_preset", "your_upload_preset");  O mesmo configurado no Cloudinary
+                          formData.append("upload_preset", "user_project_imgs"); // O mesmo configurado no Cloudinary
+
+                          try {
+                            const res = await fetch("/api/upload", {
+                              method: "POST",
+                              body: formData,
+                            });
+
+                            const data = await res.json();
+                            if (data.secure_url) {
+                              field.onChange(data.secure_url); // Atualiza o campo com a URL retornada
+                              toast({
+                                title: "Success",
+                                description: "Image uploaded successfully!",
+                              });
+                            } else {
+                              toast({
+                                title: "Error",
+                                description: "Failed to upload image.",
+                                variant: "destructive",
+                              });
+                            }
+                          } catch (error) {
+                            console.error("Upload error:", error);
+                            toast({
+                              title: "Error",
+                              description: "An error occurred while uploading the image.",
+                              variant: "destructive",
+                            });
+                          }
+                        }}
+                      />
+                      {field.value && (
+                        <Image
+                          src={field.value}
+                          alt="Uploaded Preview"
+                          className="w-full max-h-48 object-cover rounded-md"
+                          height={120}
+                          width={80}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
 
             <FormField
               control={form.control}
