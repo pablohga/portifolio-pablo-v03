@@ -196,7 +196,8 @@ export function ProjectDialog({
                           const formData = new FormData();
                           formData.append("file", renamedFile);
                           // formData.append("upload_preset", "your_upload_preset");  O mesmo configurado no Cloudinary
-                          formData.append("upload_preset", "user_project_imgs"); // O mesmo configurado no Cloudinary
+                          formData.append("upload_preset", "user-projects-imgs"); // O mesmo configurado no Cloudinary
+                          formData.append("folder", `user_uploads/user-projects/${userId}`);
 
                           try {
                             const res = await fetch("/api/upload", {

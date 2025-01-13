@@ -295,11 +295,11 @@ export default function Navbar() {
   } */
   // logado
   if (session?.user) {
-    console.log('logado', session?.user )
+    /* console.log('logado', session?.user ) */
     return <AuthenticatedNavbar />;
   } else {
     // nao logado
-  console.log('nao logado', session?.user )
+  /* console.log('nao logado', session?.user ) */
   return <VisitorNavbar />;
   }
   
