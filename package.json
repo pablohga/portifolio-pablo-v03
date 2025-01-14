@@ -54,6 +54,7 @@
     "@tiptap/starter-kit": "^2.2.4",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "^2.5.1",
     "clsx": "^2.1.0",
     "cmdk": "^1.0.4",
     "crypto-js": "^4.2.0",
