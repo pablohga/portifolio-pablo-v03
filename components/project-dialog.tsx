@@ -188,7 +188,7 @@ export function ProjectDialog({
                           const timestamp = currentDate
                             .toISOString()
                             .replace(/[-:.TZ]/g, ""); // Formato: YYYYMMDDHHMMSS
-                          const newFileName = `${file.name.split(".")[0].replace(/\s+/g, "")[0]}-${userId}-${timestamp}.${file.type.split("/")[1]}`;
+                          const newFileName = `${userId}-${file.name.split(".")[0].replace(/\s+/g, "")[0]}-${timestamp}.${file.type.split("/")[1]}`;
                           const renamedFile = new File([file], newFileName, {
                             type: file.type,
                           });
