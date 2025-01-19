@@ -1,12 +1,4 @@
-declare global {
-  namespace NodeJS {
-    interface Global {
-      mongoose: {
-        conn: any;
-        promise: Promise<any> | null;
-      };
-    }
-  }
+declare module "*.json" {
+  const value: any;
+  export default value;
 }
-
-export {};

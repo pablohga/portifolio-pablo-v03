@@ -1,0 +1,9 @@
+{
+  "transation": {
+    "header": "Cabeçalho",
+    "footer": "Rodapé {{ year }}"
+  },
+  "welcomeMessage": "Bem-vindo ao Portify!",
+  "dashboard": "Painel",
+  "login": "Entrar"
+}
