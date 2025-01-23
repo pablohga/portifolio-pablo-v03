@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"; // Use o hook do react-i18next
 import i18next from "@/lib/i18next-config"; // Certifique-se de importar o i18n configurado
 
@@ -19,6 +19,8 @@ interface FeaturesSectionProps {
     features: Feature[];
   };
 }
+
+
 
 const defaultFeatures: Feature[] = [
   {
@@ -68,13 +70,20 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   const subtitle =
     data?.subtitle ||
     "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
-
+    const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
   const { t } = useTranslation(); // Use o hook para obter traduções
 
+  useEffect(() => {
+    const detectedLanguage = i18next.language; // Idioma detectado pelo i18next
+    setCurrentLanguage(detectedLanguage);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18next.language]);
+
   const handleChangeLanguage = () => {
-    const newLanguage = i18next.language === "en" ? "pt" : "en"; // Verifique o idioma atual
-    i18next.changeLanguage(newLanguage); // Altere o idioma
-  };
+    const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
+    i18next.changeLanguage(newLanguage); // Altera o idioma
+    setCurrentLanguage(newLanguage); // Atualiza o estado
+  }
 
   return (
     <section

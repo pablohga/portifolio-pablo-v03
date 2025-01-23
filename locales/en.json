@@ -1,6 +1,6 @@
 {
   "translation":{
-    "header":"Header",
+    "header":"Header!",
     "footer":"Footer {{ year }}"
   },
   "welcomeMessage": "Welcome to Portify!",
