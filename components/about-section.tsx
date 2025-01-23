@@ -49,10 +49,11 @@ export function AboutSection({ userId }: AboutSectionProps) {
           className="mb-12"
         >
           <h2 className="text-center text-4xl font-bold mb-4">{about.title}</h2>
-          <div 
+          {/* <div 
             className="text-muted-foreground max-w-2xl mx-auto prose prose-sm dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: about.description }}
-          />
+          /> */}
+          {about.description}
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-16">

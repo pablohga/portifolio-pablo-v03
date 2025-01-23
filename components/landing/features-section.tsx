@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next"; // Use o hook do react-i18next
+import i18next from "@/lib/i18next-config"; // Certifique-se de importar o i18n configurado
 
 interface Feature {
   icon: string;
@@ -64,26 +65,27 @@ const iconComponents = {
 export function FeaturesSection({ data }: FeaturesSectionProps) {
   const features = data?.features || defaultFeatures;
   const title = data?.title || "Tudo Que Você Precisa, Grátis";
-  const subtitle = data?.subtitle || "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
-  
-  const {
-    t, 
-    i18n:{changeLanguage, language}
-  } = useTranslation();
+  const subtitle =
+    data?.subtitle ||
+    "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
 
-  const [currentLanguage, setCurrentLanguage] = useState(language)
+  const { t } = useTranslation(); // Use o hook para obter traduções
 
   const handleChangeLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'pt' : 'en'
-    changeLanguage(newLanguage)
-    setCurrentLanguage(newLanguage)
-  }
-  
+    const newLanguage = i18next.language === "en" ? "pt" : "en"; // Verifique o idioma atual
+    i18next.changeLanguage(newLanguage); // Altere o idioma
+  };
+
   return (
-    <section id="features" className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]">
-      <h1>{t('header')}</h1>
+    <section
+      id="features"
+      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]"
+    >
+      <h1>{t("header")}</h1>
       <span></span>
-      <button type="button" onClick={handleChangeLanguage}>Change Language</button>
+      <button type="button" onClick={handleChangeLanguage}>
+        Change Language
+      </button>
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -100,8 +102,10 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
-            const IconComponent = iconComponents[feature.icon as keyof typeof iconComponents] || Rocket;
-            
+            const IconComponent =
+              iconComponents[feature.icon as keyof typeof iconComponents] ||
+              Rocket;
+
             return (
               <motion.div
                 key={index}
@@ -109,25 +113,15 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className='relative p-5 rounded-lg bg-card border border-primary'
+                className="relative p-5 rounded-lg bg-card border border-primary"
               >
                 <div className="flex gap-5 items-center mb-1 px-4 py-0 rounded-lg md:bg-cover">
-                {/* <div className="mb-4 inline-block p-3 rounded-lg bg-primary/10 text-primary"> */}
                   <IconComponent className="h-8 w-8" />
-                  <h3 className="text-foreground text-xl font-semibold mb-2">{feature.title}</h3>
+                  <h3 className="text-foreground text-xl font-semibold mb-2">
+                    {feature.title}
+                  </h3>
                 </div>
-                <div className="text-foreground">
-                <p 
-                  className="pl-7" 
-                  dangerouslySetInnerHTML={{ __html: feature.description }} 
-                />
-                </div>
-                {/* <div className="max-w-[280px] h-[80px] bg-no-repeat">
-                  
-                    <br />
-                  
-                </div> */}
-                
+                <div className="text-foreground">{feature.description}</div>
               </motion.div>
             );
           })}
