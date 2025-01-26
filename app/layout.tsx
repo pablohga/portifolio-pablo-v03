@@ -71,7 +71,7 @@ export default async function RootLayout({
   // Carrega as mensagens de tradução com base no idioma
   let messages;
   try {
-    messages = (await import(`../../locales/${params.locale}.json`)).default;
+    messages = (await import(`../locales/${params.locale}.json`)).default;
   } catch (error) {
     console.error("Erro ao carregar mensagens de tradução:", error);
     messages = {}; // Fallback em caso de erro
