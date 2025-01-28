@@ -4,55 +4,49 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 229 51% 60%;
-    /* --foreground: 0 0% 3.9%; */
-    --card: 0 0% 100%;
-    --card-foreground: 229 0% 100%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 183, 100%, 82%;
-    /* --primary: 255 86% 51%; */
-    --primary-foreground: 229 51% 60%;
-    /* --primary-foreground: 0 0% 98%; */
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 220 10% 94%;
-    --muted-foreground: 220 15% 40%;
-    /* --muted-foreground: 0 0% 45.1%; */
-    --accent: 255 86% 51%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 255 86% 51%;
-    --radius: 0.5rem;
+    --background: 0 0% 98%; /* Fundo claro principal (quase branco) */
+    --foreground: 220 4.7% 16.9%; /* Texto escuro para contraste */
+    --card: 0 0% 100%; /* Cards brancos puros */
+    --card-foreground: 220 4.7% 16.9%; /* Texto escuro nos cards */
+    --popover: 0 0% 100%; /* Popovers brancos */
+    --popover-foreground: 220 4.7% 16.9%; /* Texto escuro nos popovers */
+    --primary: 192 94% 84%; /* Cor primária (azul claro) */
+    --primary-foreground: 220 4.7% 16.9%; /* Texto escuro sobre o primário */
+    --secondary: 0 0% 96.1%; /* Secundário (cinza muito claro) */
+    --secondary-foreground: 220 4.7% 16.9%; /* Texto escuro sobre o secundário */
+    --muted: 220 10% 94%; /* Elementos mudos (cinza claro) */
+    --muted-foreground: 220 15% 40%; /* Texto cinza para elementos mudos */
+    --accent: 192 94% 84%; /* Destaque usando a cor primária */
+    --accent-foreground: 220 4.7% 16.9%; /* Texto escuro sobre o destaque */
+    --destructive: 0 84.2% 60.2%; /* Vermelho para ações destrutivas */
+    --destructive-foreground: 0 0% 98%; /* Texto claro sobre o destrutivo */
+    --border: 0 0% 89.8%; /* Bordas cinza claro */
+    --input: 0 0% 89.8%; /* Campos de entrada com fundo cinza claro */
+    --ring: 192 94% 84%; /* Anéis de foco usando a cor primária */
+    --radius: 0.5rem; /* Bordas arredondadas */
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0%% 3.9%;
-    /* --card: 0 0% 3.9%; */
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 192 94% 84%;
-    /* --primary: 255 86% 51%; */
-    --primary-foreground: 0 0% 0%;
-    /* --primary-foreground: 0 0% 98%; */
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 255 86% 51%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 255 86% 51%;
+/* Dark Theme */
+--background: 220 4.7% 16.9%; /* Fundo escuro principal */
+--foreground: 0 0% 98%; /* Texto claro para contraste */
+--card: 220 4.7% 20%; /* Cards um pouco mais claros que o fundo */
+--card-foreground: 0 0% 98%; /* Texto claro nos cards */
+--popover: 220 4.7% 20%; /* Popovers com mesma tonalidade dos cards */
+--popover-foreground: 0 0% 98%; /* Texto claro nos popovers */
+--primary: 192 94% 84%; /* Cor primária (azul claro) */
+--primary-foreground: 220 4.7% 16.9%; /* Texto escuro sobre o primário */
+--secondary: 220 4.7% 25%; /* Secundário mais claro que o fundo */
+--secondary-foreground: 0 0% 98%; /* Texto claro sobre o secundário */
+--muted: 220 4.7% 30%; /* Elementos mudos (mais claros) */
+--muted-foreground: 220 15% 70%; /* Texto cinza claro para elementos mudos */
+--accent: 192 94% 84%; /* Destaque usando a cor primária */
+--accent-foreground: 220 4.7% 16.9%; /* Texto escuro sobre o destaque */
+--destructive: 0 62.8% 50%; /* Vermelho para ações destrutivas */
+--destructive-foreground: 0 0% 98%; /* Texto claro sobre o destrutivo */
+--border: 220 4.7% 30%; /* Bordas mais claras que o fundo */
+--input: 220 4.7% 30%; /* Campos de entrada com fundo claro */
+--ring: 192 94% 84%; /* Anéis de foco usando a cor primária */
   }
 }
 
