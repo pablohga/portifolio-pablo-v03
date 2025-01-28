@@ -5,8 +5,8 @@ export async function POST(request: Request) {
   try {
     const { plan } = await request.json();
     const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-// id da conta premium no stripe 678d59b6b00ec115aea40c55
-    const priceId = plan === '678d59b6b00ec115aea40c55' 
+// id da conta premium no stripe 6796bbdb9e2378cd53291bd6
+    const priceId = plan === '6796bbdb9e2378cd53291bd6' 
       ? process.env.STRIPE_PRICE_ID_PREMIUM 
       : process.env.STRIPE_PRICE_ID_PAID;
 

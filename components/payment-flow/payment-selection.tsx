@@ -43,7 +43,7 @@ export function PaymentSelection() {
   const handlePlanSelection = async (planId: string) => {
     console.log('planId', planId)
     // id da conta grtuita no stripe 678d59b6b00ec115aea40c53 
-    if (planId === "678d59b6b00ec115aea40c53") {
+    if (planId === "6796bbdb9e2378cd53291bd5"/* "Grátis" || 'Free' || 'Gratis' */) {
       router.push("/auth/register?plan=free");
       return;
     }
@@ -80,7 +80,7 @@ export function PaymentSelection() {
             <CardTitle>{plan.name}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">R$ {plan.price}/mês</p>
+            <p className="text-2xl font-bold">$ {plan.price}/mês</p>
             <p className="mt-2 text-muted-foreground">{plan.description}</p>
             <ul className="mt-4 space-y-2">
               {plan.features.map((feature, index) => (
@@ -96,7 +96,8 @@ export function PaymentSelection() {
             >
               {plan.buttonText}
             </Button>
-            {plan._id}
+            {/* {plan._id} <br />
+            {plan.name} */}
           </CardContent>
         </Card>
       ))}
