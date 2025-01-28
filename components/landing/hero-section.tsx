@@ -17,7 +17,7 @@ export function HeroSection({ data }: HeroSectionProps) {
     {/* <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background to-background/50"> */}
       <div className="absolute inset-0 bg-grid-white/10" />
       <div className="flex flex-row justify-items-start container px-4 mx-auto max-w-[960px] relative z-10">
-        <div className="max-w-[400px] text-left">
+        <div className="text-primary max-w-[400px] text-left">
         {/* <div className="max-w-2xl mx-auto text-center"> */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
