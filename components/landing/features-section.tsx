@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next"; // Use o hook do react-i18next
-import i18next from "@/lib/i18next-config"; // Certifique-se de importar o i18n configurado
+import { useTranslation } from "react-i18next";
+import i18next from "@/lib/i18next-config";
 
 interface Feature {
   icon: string;
@@ -20,38 +20,36 @@ interface FeaturesSectionProps {
   };
 }
 
-
-
 const defaultFeatures: Feature[] = [
   {
     icon: "Code2",
     title: "100% Grátis Para Sempre",
-    description: "Crie e mantenha seu portfólio profissional totalmente grátis. Sem custos ocultos ou recursos premium.",
+    description: "Crie e mantenha seu portfólio profissional totalmente grátis.",
   },
   {
     icon: "Search",
     title: "Otimizado para SEO",
-    description: "Seja descoberto por clientes com nossas ferramentas de SEO integradas. Ranqueie melhor nos resultados de busca naturalmente.",
+    description: "Seja descoberto por clientes com nossas ferramentas de SEO integradas.",
   },
   {
     icon: "Zap",
     title: "Extremamente Rápido",
-    description: "Construído com Next.js para um desempenho impressionante que agrada visitantes e mecanismos de busca.",
+    description: "Construído com Next.js para um desempenho impressionante.",
   },
   {
     icon: "Shield",
     title: "Seguro & Confiável",
-    description: "Seu portfólio é protegido com segurança de nível empresarial e hospedado em infraestrutura confiável.",
+    description: "Seu portfólio é protegido com segurança de nível empresarial.",
   },
   {
     icon: "Palette",
     title: "Templates Bonitos",
-    description: "Escolha entre nossa coleção de templates profissionalmente projetados que fazem seu trabalho brilhar.",
+    description: "Escolha entre nossa coleção de templates profissionalmente projetados.",
   },
   {
     icon: "Rocket",
     title: "Configuração Rápida",
-    description: "Coloque seu portfólio online em minutos com nosso processo intuitivo. Sem necessidade de conhecimentos técnicos.",
+    description: "Coloque seu portfólio online em minutos com nosso processo intuitivo.",
   },
 ];
 
@@ -69,29 +67,32 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   const title = data?.title || "Tudo Que Você Precisa, Grátis";
   const subtitle =
     data?.subtitle ||
-    "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
-    const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
-  const { t } = useTranslation(); // Use o hook para obter traduções
+    "Acreditamos que todo freelancer merece uma presença online profissional.";
+
+  const { t, i18n } = useTranslation();
+  
+  // ✅ Pega o idioma inicial do i18next
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
   useEffect(() => {
-    const detectedLanguage = i18next.language; // Idioma detectado pelo i18next
-    setCurrentLanguage(detectedLanguage);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i18next.language]);
+    const detectedLanguage = i18n.language;
+    if (currentLanguage !== detectedLanguage) {
+      setCurrentLanguage(detectedLanguage);
+    }
+  }, [i18n.language, currentLanguage]);
 
   const handleChangeLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
-    i18next.changeLanguage(newLanguage); // Altera o idioma
-    setCurrentLanguage(newLanguage); // Atualiza o estado
-  }
+    const newLanguage = currentLanguage === "en" ? "pt" : "en";
+    i18next.changeLanguage(newLanguage);
+    setCurrentLanguage(newLanguage);
+  };
 
   return (
     <section
       id="features"
-      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]"
+      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain bg-[url('https://mundonews.pt/portify/hero_footer.png')]"
     >
-      <h1>{t("header")}</h1>
-      <span></span>
+      <h1 suppressHydrationWarning>{t("header")}</h1> {/* <- Evita erro de hidratação */}
       <button type="button" onClick={handleChangeLanguage}>
         Change Language
       </button>
@@ -112,8 +113,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             const IconComponent =
-              iconComponents[feature.icon as keyof typeof iconComponents] ||
-              Rocket;
+              iconComponents[feature.icon as keyof typeof iconComponents] || Rocket;
 
             return (
               <motion.div
