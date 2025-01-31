@@ -172,7 +172,7 @@ export function HeroDialog({
                 <FormItem>
                   <FormLabel>Título (Opcional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Pablo Azevedo" {...field} />
+                    <Input placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormDescription>
                     Deixe em branco para ocultar o título

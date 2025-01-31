@@ -136,7 +136,7 @@ export function SEODialog({
                 <FormItem>
                   <FormLabel>Meta Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Pablo Azevedo - Frontend Developer" {...field} />
+                    <Input placeholder="John Doe - Frontend Developer" {...field} />
                   </FormControl>
                   <FormDescription>
                     Optimal length: 50-60 characters
@@ -174,7 +174,7 @@ export function SEODialog({
                   <FormLabel>Keywords (comma-separated)</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="Pablo Azevedo, Frontend Reactjs, Frontend VueJS"
+                      placeholder="John Doe, Frontend Reactjs, Frontend VueJS"
                       {...field}
                     />
                   </FormControl>
