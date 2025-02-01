@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -7,9 +7,15 @@ import { AuthProvider } from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { headers } from "next/headers";
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const dynamic = "force-dynamic";
 
-const inter = Inter({ subsets: ["latin"] });
+interface GenerateMetadataParams {
+  params: {
+    locale?: string;
+  };
+}
 
 async function getSEOData() {
   try {
@@ -66,19 +72,12 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string }; // Adicionado para passar o idioma
+  params: { locale: string }; // Expecting locale to be passed in the params
 }) {
-  // Carrega as mensagens de tradução com base no idioma
-  let messages;
-  try {
-    messages = (await import(`../locales/${params.locale}.json`)).default;
-  } catch (error) {
-    console.error("Erro ao carregar mensagens de tradução:", error);
-    messages = {}; // Fallback em caso de erro
-  }
+  const locale = params.locale || "en"; // Default to English if no locale is provided
 
   return (
-    <html lang={params.locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
           <ThemeProvider
@@ -87,12 +86,9 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* Provedor para gerenciar traduções */}
-            
-              <Navbar />
-              <main>{children}</main>
-              <Toaster />
-            
+            <Navbar />
+            <main>{children}</main>
+            <Toaster />
           </ThemeProvider>
         </AuthProvider>
       </body>
