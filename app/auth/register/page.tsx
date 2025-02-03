@@ -61,9 +61,12 @@ export default function RegisterPage() {
             <h1 className="text-4xl font-bold mb-4">Escolha seu plano</h1>
             <p className="text-xl text-muted-foreground">
             Selecione o plano que melhor se adapta às suas necessidades
-            </p>
+            </p>{plan}
           </div>
-          <PaymentSelection onSelectFreePlan={() => {}} />
+          <PaymentSelection
+          onSelectFreePlan={
+            () => {router.push("/auth/register?plan=free")}
+          } />
         </div>
       </div>
     );

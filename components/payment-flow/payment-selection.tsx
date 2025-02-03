@@ -17,7 +17,11 @@ interface Plan {
   features: string[];
 }
 
-export function PaymentSelection() {
+interface PaymentSelectionProps {
+  onSelectFreePlan?: () => void; // Torna a função opcional
+}
+
+export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -40,11 +44,20 @@ export function PaymentSelection() {
     fetchPlans();
   }, []);
 
-  const handlePlanSelection = async (planId: string) => {
-    console.log('planId', planId)
+  const handlePlanSelection = async (planName: string) => {
+    console.log('planName', planName)
     // id da conta grtuita no stripe 678d59b6b00ec115aea40c53 
-    if (planId === "6796bbdb9e2378cd53291bd5"/* "Grátis" || 'Free' || 'Gratis' */) {
-      router.push("/auth/register?plan=free");
+    // free: 6796c14e9e2378cd53291e33
+    // Assinante: 6796c14e9e2378cd53291e34
+    // Premium: 6796c14e9e2378cd53291e35
+    /* if (planName === "6796bbdb9e2378cd53291bd5") { */
+
+    if (planName === 'Free') {
+      if (onSelectFreePlan) {
+        onSelectFreePlan();
+      } else {
+        router.push("/auth/register?plan=free");
+      }
       return;
     }
 
@@ -52,9 +65,9 @@ export function PaymentSelection() {
       const response = await fetch("/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: planId }),
+        body: JSON.stringify({ plan: planName }),
       });
-
+      alert(planName)
       const data = await response.json();
 
       if (data.url) {
@@ -92,12 +105,12 @@ export function PaymentSelection() {
             </ul>
             <Button
               className="mt-6 w-full"
-              onClick={() => handlePlanSelection(plan._id)}
+              onClick={() => handlePlanSelection(plan.name)}
             >
               {plan.buttonText}
             </Button>
-            {/* {plan._id} <br />
-            {plan.name} */}
+            {plan._id} <br />
+            {plan.name}
           </CardContent>
         </Card>
       ))}
