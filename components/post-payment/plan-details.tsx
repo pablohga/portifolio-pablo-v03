@@ -26,7 +26,7 @@ const PLAN_FEATURES = {
 
 export function PlanDetails({ plan }: PlanDetailsProps) {
   const features = PLAN_FEATURES[plan as keyof typeof PLAN_FEATURES] || [];
-  const planName = plan === "premium" ? "Premium" : "Paid";
+  const planName = plan === "premium" ? "Premium " : "Paid";
 
   return (
     <Card>

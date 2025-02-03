@@ -11,6 +11,7 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
   const router = useRouter();
 
   const getBadgeVariant = () => {
+    console.log('tier1', tier)
     switch (tier) {
       case "premium":
         return "default"; // Premium tier
@@ -22,6 +23,7 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
   };
 
   const getDisplayName = () => {
+    console.log('tier2', tier)
     switch (tier) {
       case "premium":
         return "Premium";

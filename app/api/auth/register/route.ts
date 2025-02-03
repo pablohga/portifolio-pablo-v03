@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, slug, subscriptionTier = "free" } = await request.json();
+    const { name, email, password, slug, plan } = await request.json();
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -45,14 +45,14 @@ export async function POST(request: Request) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user with the generated slug
+    // Create the user with the generated slug and subscription tier
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
       slug: slug || uniqueSlug,
       role: "user",
-      subscriptionTier,
+      subscriptionTier: plan || "free", // Set subscriptionTier based on incoming plan
     });
     console.log("user:", user);
     // Attempt to send a welcome email, log the error if it fails

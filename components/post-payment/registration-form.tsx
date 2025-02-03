@@ -89,6 +89,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
         form.setValue("slug", generatedSlug); // Auto preencher apenas se vazio
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch("firstName"), form.watch("lastName")]);
 
   // Verificar slug ao clicar fora do campo slug

@@ -67,7 +67,7 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plan: planName }),
       });
-      alert(planName)
+      /* alert(planName) */
       const data = await response.json();
 
       if (data.url) {
@@ -109,8 +109,8 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
             >
               {plan.buttonText}
             </Button>
-            {plan._id} <br />
-            {plan.name}
+            {/* {plan._id} <br />
+            {plan.name} */}
           </CardContent>
         </Card>
       ))}
