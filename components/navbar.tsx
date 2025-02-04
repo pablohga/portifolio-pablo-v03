@@ -7,23 +7,22 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/logo";
 import { ModeToggle } from "./mode-toggle";
 import { Menu, X } from "lucide-react";
-import { formatName } from "@/lib/utils";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const [isPortfolioPage, setIsPortfolioPage] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar o menu
-  const { firstName, lastName } = session?.user?.name
-  ? session.user.name.split(" ").reduce<{ firstName: string; lastName: string }>(
-      (acc, name, idx) =>
-        idx === 0
-          ? { ...acc, firstName: name }
-          : { ...acc, lastName: acc.lastName ? acc.lastName + " " + name : name },
-      { firstName: "", lastName: "" }
-    )
-  : { firstName: "", lastName: "" };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Detectar se a página é de portfólio com base no título
+  const { firstName, lastName } = session?.user?.name
+    ? session.user.name.split(" ").reduce<{ firstName: string; lastName: string }>(
+        (acc, name, idx) =>
+          idx === 0
+            ? { ...acc, firstName: name }
+            : { ...acc, lastName: acc.lastName ? acc.lastName + " " + name : name },
+        { firstName: "", lastName: "" }
+      )
+    : { firstName: "", lastName: "" };
+
   useEffect(() => {
     const checkPortfolioPage = () => {
       if (document?.title?.includes(" - Portfolio")) {
@@ -41,7 +40,6 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Função para alternar o menu hambúrguer
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const renderLinks = (links: { label: string; href: string }[]) =>
@@ -50,7 +48,7 @@ export default function Navbar() {
         key={href}
         href={href}
         className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-        onClick={() => setIsMenuOpen(false)} // Fecha o menu ao clicar em um link
+        onClick={() => setIsMenuOpen(false)}
       >
         {label}
       </Link>
@@ -59,21 +57,19 @@ export default function Navbar() {
   const AuthenticatedNavbarPort = () => {
     const links = [
       { label: "Home", href: "/" },
-      { label: "Sobre", href: "/about" },
-      { label: "Projetos", href: "/projects" },
-      { label: "Editar Portfólio", href: "/dashboard" },
+      { label: "About", href: "/about" },
+      { label: "Projects", href: "/projects" },
+      { label: "Edit Portfolio", href: "/dashboard" },
     ];
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center gap-2">
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
 
-          {/* Botão Hamburguer */}
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
@@ -81,29 +77,18 @@ export default function Navbar() {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Links Desktop */}
           <div className="hidden md:flex items-center">
-            {links.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="px-2 text-gray-700 dark:text-gray-300 hover:underline"
-              >
-                {label}
-              </Link>
-            ))}
-            
-            <ModeToggle/>
+            {renderLinks(links)}
+            <ModeToggle />
             <div className="text-sm font-bold">
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
             <Button variant="ghost" onClick={() => signOut()}>
-              Sair
+              Sign Out
             </Button>
           </div>
         </div>
 
-        {/* Menu Mobile */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -112,7 +97,7 @@ export default function Navbar() {
               className="w-full text-left py-2"
               onClick={() => signOut()}
             >
-              Sair
+              Sign Out
             </Button>
           </div>
         )}
@@ -123,56 +108,38 @@ export default function Navbar() {
   const AuthenticatedNavbar = () => {
     const links = [
       { label: "Dashboard", href: "/dashboard" },
-      { label: "Meu Portfólio", href: `/${session?.user?.slug}` },
-      { label: "Configurações", href: "/settings" },
-      { label: "Ajuda", href: "/support" },
+      { label: "My Portfolio", href: `/${session?.user?.slug}` },
+      { label: "Settings", href: "/settings" },
+      { label: "Support", href: "/support" },
     ];
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center gap-2">
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-          {/*  */}
-          {/* Botão Hamburguer */}
-          
+
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
           >
-            
-            {/* <Button variant="ghost" onClick={() => signOut()}>
-              Sair
-            </Button> */}
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Links Desktop */}
           <div className="hidden md:flex items-center">
-            {links.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="px-2 text-gray-700 dark:text-gray-300 hover:underline"
-              >
-                {label}
-              </Link>
-            ))}
-            
+            {renderLinks(links)}
             <ModeToggle />
             <div className="text-sm font-bold">
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
             <Button variant="ghost" onClick={() => signOut()}>
-              Sair
+              Sign Out
             </Button>
           </div>
         </div>
 
-        {/* Menu Mobile */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -181,7 +148,7 @@ export default function Navbar() {
               className="w-full text-left py-2"
               onClick={() => signOut()}
             >
-              Sair
+              Sign Out
             </Button>
           </div>
         )}
@@ -189,24 +156,22 @@ export default function Navbar() {
     );
   };
 
-  const VisitorNavbarPortifolio = () => {
+  const VisitorNavbarPortfolio = () => {
     const links = [
       { label: "Home", href: "/" },
-      { label: "Sobre o Criador", href: "/about" },
-      { label: "Projetos", href: "/projects" },
-      { label: "Criar Meu Portfólio", href: "/auth/register" },
+      { label: "About the Creator", href: "/about" },
+      { label: "Projects", href: "/projects" },
+      { label: "Create My Portfolio", href: "/auth/register" },
     ];
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center gap-2">
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
 
-          {/* Botão Hamburguer */}
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
@@ -214,14 +179,12 @@ export default function Navbar() {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Links Desktop */}
           <div className="hidden md:flex items-center">
             {renderLinks(links)}
             <ModeToggle />
           </div>
         </div>
 
-        {/* Menu Mobile */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -234,23 +197,21 @@ export default function Navbar() {
   const VisitorNavbar = () => {
     const links = [
       { label: "Home", href: "/" },
-      { label: "Recursos", href: "/#features" },
-      { label: "Preços", href: "/#pricing" },
-      { label: "Ajuda", href: "/support" },
-      { label: "Entrar", href: "/auth/signin" },
-      { label: "Registrar-se", href: "/auth/register" },
+      { label: "Features", href: "/#features" },
+      { label: "Pricing", href: "/#pricing" },
+      { label: "Support", href: "/support" },
+      { label: "Sign In", href: "/auth/signin" },
+      { label: "Sign Up", href: "/auth/register" },
     ];
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Logo */}
           <div className="flex items-center gap-2">
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
 
-          {/* Botão Hamburguer */}
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
@@ -258,14 +219,12 @@ export default function Navbar() {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* Links Desktop */}
           <div className="hidden md:flex items-center">
             {renderLinks(links)}
             <ModeToggle />
           </div>
         </div>
 
-        {/* Menu Mobile */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -274,35 +233,12 @@ export default function Navbar() {
       </nav>
     );
   };
-// Determinar qual navbar exibir
 
-  // no portifolio e nao logado
-  if (isPortfolioPage && !session?.user) {
-    console.log('esta no ortifoio')
-    if(!session?.user){
-      console.log('no portifolio e nao logado', session?.user )
-    return <VisitorNavbarPortifolio />;
-    } else {
-      console.log('logado e no Portifolio', session?.user )
-    return <AuthenticatedNavbarPort />;
-    }
-    
-  }
-  // logado e no Portifolio
-  /* if (isPortfolioPage) {
-    console.log('logado e no Portifolio', session?.user )
-    return <AuthenticatedNavbarPort />;
-  } */
-  // logado
-  if (session?.user) {
-    /* console.log('logado', session?.user ) */
-    return <AuthenticatedNavbar />;
-  } else {
-    // nao logado
-  /* console.log('nao logado', session?.user ) */
-  return <VisitorNavbar />;
-  }
-  
+  return session?.user
+    ? isPortfolioPage
+      ? <AuthenticatedNavbarPort />
+      : <AuthenticatedNavbar />
+    : isPortfolioPage
+      ? <VisitorNavbarPortfolio />
+      : <VisitorNavbar />;
 }
-
-
