@@ -161,7 +161,7 @@ export function HeroDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Editar seção Hero Banner</DialogTitle>
+          <DialogTitle>Edit Hero Banner Section</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
@@ -170,12 +170,12 @@ export function HeroDialog({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título (Opcional)</FormLabel>
+                  <FormLabel>Title (Optional)</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Deixe em branco para ocultar o título
+                    Leave it blank to hide the title
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -187,7 +187,7 @@ export function HeroDialog({
               name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subtítulo (Opcional)</FormLabel>
+                  <FormLabel>Subtitle (Opcional)</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Full-stack Developer & Creative Problem Solver"
@@ -195,7 +195,7 @@ export function HeroDialog({
                     />
                   </FormControl>
                   <FormDescription>
-                    Deixe em branco para ocultar o subtítulo
+                    Leave it blank to hide the subtitle
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -207,7 +207,7 @@ export function HeroDialog({
               name="backgroundImage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Imagem de fundo</FormLabel>
+                  <FormLabel>Background</FormLabel>
                   <FormControl>
                     <div className="space-y-2">
                       <input
@@ -233,7 +233,7 @@ export function HeroDialog({
                     </div>
                   </FormControl>
                   <FormDescription>
-                    Use uma imagem de alta resolução (recomendado: 1920x1080 ou maior).
+                    Use a high resolution image (recommended: 1920x1080 or larger).
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

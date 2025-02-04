@@ -66,15 +66,15 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
               <CardTitle>Free</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">$0/mês</p>
+              <p className="text-2xl font-bold">$0/month</p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center">
                   <Check className="mr-2 h-4 w-4" />
-                  3 Categorias
+                  3 categories
                 </li>
                 <li className="flex items-center">
                   <Check className="mr-2 h-4 w-4" />
-                  3 Projetos por Categoria
+                  3 Projects by category
                 </li>
               </ul>
               <Button 
@@ -82,7 +82,7 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
                 onClick={() => handlePlanSelection('free')}
                 disabled={isLoading}
               >
-                Começar Grátis
+                Start free
               </Button>
             </CardContent>
           </Card>
@@ -92,15 +92,15 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
               <CardTitle>Paid</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">$29,90/mês</p>
+              <p className="text-2xl font-bold">$29,90/month</p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center">
                   <Check className="mr-2 h-4 w-4" />
-                  Categorias Ilimitadas
+                  Unlimited Categories
                 </li>
                 <li className="flex items-center">
                   <Check className="mr-2 h-4 w-4" />
-                  Projetos Ilimitados
+                  Unlimited Projects
                 </li>
               </ul>
               <Button 
@@ -108,7 +108,7 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
                 onClick={() => handlePlanSelection('paid')}
                 disabled={isLoading}
               >
-                Assinar Plano Paid
+                Subscribe Paid
               </Button>
             </CardContent>
           </Card>
@@ -118,15 +118,15 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
               <CardTitle>Premium</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">$79,90/mês</p>
+              <p className="text-2xl font-bold">$79,90/month</p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center">
                   <Check className="mr-2 h-4 w-4" />
-                  Tudo do Plano Paid
+                  All of the Paid plan
                 </li>
                 <li className="flex items-center">
                   <Check className="mr-2 h-4 w-4" />
-                  Gestão de Clientes
+                  Customer management
                 </li>
               </ul>
               <Button 
@@ -134,7 +134,7 @@ export function PlanSelection({ userEmail, onSelectFreePlan }: PlanSelectionProp
                 onClick={() => handlePlanSelection('premium')}
                 disabled={isLoading}
               >
-                Assinar Plano Premium
+                Premium Plan
               </Button>
             </CardContent>
           </Card>

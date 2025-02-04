@@ -94,17 +94,17 @@ export function HeroDialog({
         form.setValue("backgroundImageId", data.public_id); // Define o public_id da imagem.
         
         toast({
-          title: "Sucesso",
-          description: "Imagem carregada com sucesso!",
+          title: "Success",
+          description: "Image charged successfully!",
         });
       } else {
-        throw new Error("Erro ao carregar a imagem.");
+        throw new Error("Error loading the image.");
       }
     } catch (error) {
-      console.error("Erro no upload:", error);
+      console.error("Upload error:", error);
       toast({
-        title: "Erro",
-        description: "Ocorreu um erro ao carregar a imagem.",
+        title: "Error",
+        description: "An error occurred when carrying the image.",
         variant: "destructive",
       });
     } finally {
@@ -125,7 +125,7 @@ export function HeroDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Editar seção Hero Banner</DialogTitle>
+          <DialogTitle>Edit Hero Banner Section</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
@@ -134,12 +134,12 @@ export function HeroDialog({
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título (Opcional)</FormLabel>
+                  <FormLabel>Title (optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Pablo Azevedo" {...field} />
+                    <Input placeholder="Jonh Doe" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Deixe em branco para ocultar o título.
+                    Leave it blank to hide the title.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -151,12 +151,12 @@ export function HeroDialog({
               name="subtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subtítulo (Opcional)</FormLabel>
+                  <FormLabel>Subtitle (Opcional)</FormLabel>
                   <FormControl>
                     <Input placeholder="Full-stack Developer & Creative Problem Solver" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Deixe em branco para ocultar o subtítulo.
+                    Leave it blank to hide the subtitle.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -168,7 +168,7 @@ export function HeroDialog({
               name="backgroundImage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Imagem de fundo</FormLabel>
+                  <FormLabel>Background</FormLabel>
                   <FormControl>
                     <div className="space-y-2">
                       <input
@@ -194,7 +194,7 @@ export function HeroDialog({
                     </div>
                   </FormControl>
                   <FormDescription>
-                    Use uma imagem de alta resolução (recomendado: 1920x1080 ou maior).
+                    Use a high resolution image (recommended: 1920x1080 or larger).
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -202,7 +202,7 @@ export function HeroDialog({
             />
 
             <Button type="submit" disabled={isUploading}>
-              {isUploading ? "Carregando imagem..." : "Guardar alterações"}
+              {isUploading ? "Loading image ..." : "Save changes"}
             </Button>
           </form>
         </Form>

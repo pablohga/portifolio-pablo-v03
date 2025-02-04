@@ -50,22 +50,22 @@ export function PaymentSelection({ /* onSelectFreePlan */ }: PaymentSelectionPro
           <CardTitle>Free</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">$0/mês</p>
+          <p className="text-2xl font-bold">$0/month</p>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
-              3 Categorias
+              3 Categories
             </li>
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
-              3 Projetos por Categoria
+              3 Projects by category
             </li>
           </ul>
           <Button 
             className="mt-6 w-full" 
             onClick={() => handlePlanSelection('free')}
           >
-            Começar Grátis
+            Start free
           </Button>
         </CardContent>
       </Card>
@@ -75,22 +75,22 @@ export function PaymentSelection({ /* onSelectFreePlan */ }: PaymentSelectionPro
           <CardTitle>Paid</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">$29,90/mês</p>
+          <p className="text-2xl font-bold">$29,90/month</p>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
-              Categorias Ilimitadas
+              Unlimited Categories
             </li>
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
-              Projetos Ilimitados
+              Unlimited Projects
             </li>
           </ul>
           <Button 
             className="mt-6 w-full" 
             onClick={() => handlePlanSelection('paid')}
           >
-            Assinar Plano Paid
+            Subscribe PAID
           </Button>
         </CardContent>
       </Card>
@@ -100,22 +100,22 @@ export function PaymentSelection({ /* onSelectFreePlan */ }: PaymentSelectionPro
           <CardTitle>Premium</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold">$79,90/mês</p>
+          <p className="text-2xl font-bold">$79,90/month</p>
           <ul className="mt-4 space-y-2">
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
-              Tudo do Plano Paid
+              All of the Paid plan
             </li>
             <li className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
-              Gestão de Clientes
+              Customer management
             </li>
           </ul>
           <Button 
             className="mt-6 w-full" 
             onClick={() => handlePlanSelection('premium')}
           >
-            Assinar Plano Premium
+            Premium plan
           </Button>
         </CardContent>
       </Card>

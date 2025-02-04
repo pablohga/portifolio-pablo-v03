@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: UserPortfolioPageProps) {
   const seo = await getUserSEO(user._id.toString());
 
   return {
-    title: `${seo?.title} - Portfolio` || `${user.name} - Portfolio`,
+    title: undefined ? 'Portify | Free online portfolio. Make your now - Portfolio' : `${seo?.title} - Portfolio` || `${user.name} - Portfolio`,
     description:
       seo?.description ||
       `${user.name}'s portfolio showcasing their projects and skills`,

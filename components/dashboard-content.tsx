@@ -383,33 +383,33 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             <Button variant="outline" asChild>
               <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
                 <Settings className="h-4 w-4" />
-                Perfil & configurações
+                Profile / Settings
               </Link>
             </Button>
             <div className="text-lg font-medium">
-              Bem vindo&#40;a&#41;, {firstName} <span className="text-primary">{lastName}</span>
+              Welcome, {firstName} <span className="text-primary">{lastName}</span>
             </div>
               <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
           </div>
         </div>
         <div className="flex flex-wrap gap-4">
           <Button onClick={() => setIsHeroDialogOpen(true)}>
-            Editar seção Hero Banner 
+            Edit Hero Banner Section
           </Button>
           <Button onClick={() => setIsAboutDialogOpen(true)}>
-            Editar seção Sobre
+            Edit section About You
           </Button>
           <Button onClick={() => setIsSEODialogOpen(true)}>
-            Editar configurações SEO
+            Edit SEO Settings
           </Button>
           <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
-            Editar configurações de Contato
+            Edit Contact Settings
           </Button>
           {session?.user?.subscriptionTier === 'premium' && (
             <Button asChild>
               <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
                 <UserCircle className="h-4 w-4" />
-                Gerenciar Clientes
+                Manage customers
               </Link>
             </Button>
           )}
@@ -417,16 +417,16 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             <>
               <Button onClick={() => setIsHomeEditorOpen(true)}>
                 <Home className="mr-2 h-4 w-4" />
-                Editar Home Page
+                Home Page Edit
               </Button>
               <Button onClick={() => setIsPaymentPlansOpen(true)}>
                 <DollarSign className="mr-2 h-4 w-4" />
-                Planos de Pagamento
+                Payment plans
               </Button>
               <Button asChild>
                 <Link href="/dashboard/users" className="inline-flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  Gerenciar Usuarios do Portify
+                  Manage Portify Users
                 </Link>
               </Button>
             </>
@@ -436,13 +436,13 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Categorias</h2>
+          <h2 className="text-2xl font-bold">Categories</h2>
           <Button onClick={() => {
             setSelectedCategory(null);
             setIsCategoryDialogOpen(true);
           }}>
             <Plus className="w-4 h-4 mr-2" />
-            Adicionar Categorias
+            Add categories
           </Button>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -469,19 +469,19 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                       setIsCategoryDialogOpen(true);
                     }}
                   >
-                    Editar
+                    Edit
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive" size="sm">
-                        Deletar
+                        Delete
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Deletar Categoria</AlertDialogTitle>
+                        <AlertDialogTitle>Delete category</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Tem certeza de que deseja excluir esta categoria? Esta ação não pode ser desfeita.
+                          Are you sure you want to delete this category?This action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -490,7 +490,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                           onClick={() => handleDeleteCategory(category._id)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Deletar
+                          Delete
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -504,10 +504,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Projetos</h2>
+          <h2 className="text-2xl font-bold">Projects</h2>
           <Button onClick={() => setIsProjectDialogOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Adicionar projetos
+            Add projects
           </Button>
         </div>
 
@@ -540,7 +540,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               </div>
               {projects.filter((project) => project.category === category.id).length === 0 && (
                 <p className="text-center text-muted-foreground py-8">
-                  Nenhum projeto nesta categoria ainda.
+                  No projects in this category yet.
                 </p>
               )}
             </TabsContent>
