@@ -20,38 +20,36 @@ interface FeaturesSectionProps {
   };
 }
 
-
-
 const defaultFeatures: Feature[] = [
   {
     icon: "Code2",
-    title: "100% Grátis Para Sempre",
-    description: "Crie e mantenha seu portfólio profissional totalmente grátis. Sem custos ocultos ou recursos premium.",
+    title: "100% Free Forever",
+    description: "Create and maintain your professional portfolio completely free. No hidden costs or premium features.",
   },
   {
     icon: "Search",
-    title: "Otimizado para SEO",
-    description: "Seja descoberto por clientes com nossas ferramentas de SEO integradas. Ranqueie melhor nos resultados de busca naturalmente.",
+    title: "SEO Optimized",
+    description: "Be discovered by clients with our integrated SEO tools. Rank better in search results naturally.",
   },
   {
     icon: "Zap",
-    title: "Extremamente Rápido",
-    description: "Construído com Next.js para um desempenho impressionante que agrada visitantes e mecanismos de busca.",
+    title: "Extremely Fast",
+    description: "Built with Next.js for impressive performance that delights visitors and search engines.",
   },
   {
     icon: "Shield",
-    title: "Seguro & Confiável",
-    description: "Seu portfólio é protegido com segurança de nível empresarial e hospedado em infraestrutura confiável.",
+    title: "Safe & Reliable",
+    description: "Your portfolio is protected with enterprise-level security and hosted on reliable infrastructure.",
   },
   {
     icon: "Palette",
-    title: "Templates Bonitos",
-    description: "Escolha entre nossa coleção de templates profissionalmente projetados que fazem seu trabalho brilhar.",
+    title: "Beautiful Templates",
+    description: "Choose from our collection of professionally designed templates that make your work shine.",
   },
   {
     icon: "Rocket",
-    title: "Configuração Rápida",
-    description: "Coloque seu portfólio online em minutos com nosso processo intuitivo. Sem necessidade de conhecimentos técnicos.",
+    title: "Quick Setup",
+    description: "Get your portfolio online in minutes with our intuitive process. No technical knowledge required.",
   },
 ];
 
@@ -66,23 +64,23 @@ const iconComponents = {
 
 export function FeaturesSection({ data }: FeaturesSectionProps) {
   const features = data?.features || defaultFeatures;
-  const title = data?.title || "Tudo Que Você Precisa, Grátis";
+  const title = data?.title || "Everything You Need, Free";
   const subtitle =
     data?.subtitle ||
-    "Acreditamos que todo freelancer merece uma presença online profissional. Por isso, tornamos nosso construtor de portfólio completamente gratuito.";
-    const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
-  const { t } = useTranslation(); // Use o hook para obter traduções
+    "We believe every freelancer deserves a professional online presence. That's why we made our portfolio builder completely free.";
+  const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
+  const { t } = useTranslation(); // Use the hook to get translations
 
   useEffect(() => {
-    const detectedLanguage = i18next.language; // Idioma detectado pelo i18next
+    const detectedLanguage = i18next.language; // Detected language by i18next
     setCurrentLanguage(detectedLanguage);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18next.language]);
 
   const handleChangeLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
-    i18next.changeLanguage(newLanguage); // Altera o idioma
-    setCurrentLanguage(newLanguage); // Atualiza o estado
+    i18next.changeLanguage(newLanguage); // Change the language
+    setCurrentLanguage(newLanguage); // Update the state
   }
 
   return (
