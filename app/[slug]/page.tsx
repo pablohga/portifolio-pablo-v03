@@ -8,6 +8,7 @@ import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";
 import { SEO } from "@/models/seo";
 import { Category } from "@/models/category";
+import { Metadata } from "next";
 
 interface UserPortfolioPageProps {
   params: {
@@ -32,7 +33,7 @@ async function getUserProjects(userId: string) {
   return Project.find({ userId }).sort({ createdAt: -1 });
 }
 
-export async function generateMetadata({ params }: UserPortfolioPageProps) {
+export async function generateMetadata({ params }: UserPortfolioPageProps): Promise<Metadata> {
   const user = await getUser(params.slug);
 
   if (!user) {
@@ -44,24 +45,21 @@ export async function generateMetadata({ params }: UserPortfolioPageProps) {
   const seo = await getUserSEO(user._id.toString());
 
   return {
-    title: undefined ? 'Portify | Free online portfolio. Make your now - Portfolio' : `${seo?.title} - Portfolio` || `${user.name} - Portfolio`,
+    title: seo?.title || `${user.name} - Portfolio`,
     description:
-      seo?.description ||
-      `${user.name}'s portfolio showcasing their projects and skills`,
+      seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
     keywords: seo?.keywords || [],
     openGraph: {
       title: seo?.title || `${user.name} - Portfolio`,
       description:
-        seo?.description ||
-        `${user.name}'s portfolio showcasing their projects and skills`,
+        seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
       images: [{ url: seo?.ogImage || "/og-image.jpg" }],
     },
     twitter: {
       card: "summary_large_image",
       title: seo?.title || `${user.name} - Portfolio`,
       description:
-        seo?.description ||
-        `${user.name}'s portfolio showcasing their projects and skills`,
+        seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,
       images: [seo?.ogImage || "/og-image.jpg"],
     },
   };
@@ -82,25 +80,10 @@ export default async function UserPortfolioPage({
     getUserProjects(userId),
   ]);
 
-  // Convert Mongoose documents to plain objects and ensure proper typing
-  const plainCategories = categories.map((cat) => ({
-    ...cat.toObject(),
-    _id: cat._id.toString(),
-  }));
-
-  const plainProjects = projects.map((proj) => ({
-    ...proj.toObject(),
-    _id: proj._id.toString(),
-  }));
-
   return (
     <div className="min-h-screen bg-background">
       <HeroSection userId={userId} />
-      <ProjectsSection
-        userId={userId}
-        initialCategories={plainCategories}
-        initialProjects={plainProjects}
-      />
+      <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
       <AboutSection userId={userId} />
       <ContactSection userId={userId} />
     </div>

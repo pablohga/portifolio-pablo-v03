@@ -107,14 +107,17 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   async function handleUpdateSEO(data: any) {
     try {
-      const res = await fetch("/api/seo", {
+      setIsLoading(true);
+  
+      // Include the userId in the payload
+      const response = await fetch("/api/seo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, userId: session?.user?.id }),
       });
-
-      if (!res.ok) throw new Error();
-
+  
+      if (!response.ok) throw new Error("Failed to update SEO settings");
+  
       toast({
         title: "Success",
         description: "SEO settings updated successfully",
@@ -125,6 +128,8 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         description: "Failed to update SEO settings",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 

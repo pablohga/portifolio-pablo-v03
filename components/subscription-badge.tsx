@@ -11,7 +11,6 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
   const router = useRouter();
 
   const getBadgeVariant = () => {
-    console.log('tier1', tier)
     switch (tier) {
       case "premium":
         return "default"; // Premium tier
@@ -23,7 +22,6 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
   };
 
   const getDisplayName = () => {
-    console.log('tier2', tier)
     switch (tier) {
       case "premium":
         return "Premium";
@@ -38,7 +36,7 @@ export function SubscriptionBadge({ tier }: SubscriptionBadgeProps) {
     <Button
       variant="ghost"
       className="gap-2"
-      onClick={() => router.push("/dashboard/upgrade")}
+      onClick={() => router.push("/dashboard/profile")}
     >
       <Crown className="h-4 w-4" />
       <Badge variant={getBadgeVariant()}>{getDisplayName()} Plan</Badge>

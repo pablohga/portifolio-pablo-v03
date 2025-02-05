@@ -1,3 +1,5 @@
+// app/layout.tsx
+
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -8,20 +10,19 @@ import { Toaster } from "@/components/ui/toaster";
 import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
-
 export const dynamic = "force-dynamic";
-
 interface GenerateMetadataParams {
   params: {
     locale?: string;
   };
 }
 
-async function getSEOData() {
+async function getSystemSEOData() {
   try {
     const host = headers().get("host");
     const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-    const res = await fetch(`${protocol}://${host}/api/seo`);
+    const res = await fetch(`${protocol}://${host}/api/seo?system=true`);
+    console.log('RES SEO', res)
     return res.json();
   } catch (error) {
     return null;
@@ -29,17 +30,18 @@ async function getSEOData() {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getSEOData();
-
+  const seo = await getSystemSEOData();
+    console.log('seo?.title',seo?.title)
   return {
-    title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
+    
+    title: seo?.title || "Portify - Your Free Online Portfolio - Your Portfolio, Your Identity",
     description:
       seo?.description ||
       "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
     keywords:
-      seo?.keywords || ["Portify", "Portfolio Builder", "Freelancer Portfolio"],
+      seo?.keywords || ["Portify", "Free Online Portfolio", "Portfolio Builder", "Freelancer Portfolio", "Free Portfolio"],
     openGraph: {
-      title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
+      title: seo?.title || "Portify - Your Free Online Portfolio - Your Portfolio, Your Identity",
       description:
         seo?.description ||
         "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
@@ -72,22 +74,16 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string }; // Expecting locale to be passed in the params
+  params: { locale: string };
 }) {
-  const locale = params.locale || "en"; // Default to English if no locale is provided
-
+  const locale = params.locale || "en";
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <Navbar />
-            <main>{children}</main>
+            {children}
             <Toaster />
           </ThemeProvider>
         </AuthProvider>
