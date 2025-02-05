@@ -12,7 +12,7 @@ import { HeroDialog } from "@/components/hero-dialog";
 import { SEODialog } from "@/components/seo-dialog";
 import { AboutDialog } from "@/components/about-dialog";
 import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
-import { HomeEditorDialog } from "@/components/home-editor-dialog";
+import { HomeEditorDialog } from "@/components/home-editor-dialog_edited";
 import { PaymentPlansDialog } from "@/components/payment-plans-dialog";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";

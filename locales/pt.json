@@ -1,6 +1,6 @@
 {
   "translation": {
-    "header": "Cabeçalho",
+    "header": "Header!",
     "footer": "Rodapé {{ year }}"
   },
   "welcomeMessage": "Bem-vindo ao Portify!",
