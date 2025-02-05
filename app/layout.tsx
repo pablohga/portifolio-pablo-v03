@@ -1,5 +1,3 @@
-// app/layout.tsx
-
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -22,7 +20,7 @@ async function getSystemSEOData() {
     const host = headers().get("host");
     const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
     const res = await fetch(`${protocol}://${host}/api/seo?system=true`);
-    console.log('RES SEO', res)
+    /* console.log('RES SEO', res) */
     return res.json();
   } catch (error) {
     return null;
@@ -31,7 +29,7 @@ async function getSystemSEOData() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSystemSEOData();
-    console.log('seo?.title',seo?.title)
+    /* console.log('seo?.title',seo?.title) */
   return {
     
     title: seo?.title || "Portify - Your Free Online Portfolio - Your Portfolio, Your Identity",
@@ -52,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: seo?.title || "Portify - Seu Portfólio, Sua Identidade",
       description:
         seo?.description ||
-        "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
+        "Create your professional portfolio with Portify. the platform that helps freelancers showcase their work and attract better clients.",
       images: [seo?.ogImage || "https://mundonews.pt/portify_logo_new_p.png"],
     },
     robots: {
