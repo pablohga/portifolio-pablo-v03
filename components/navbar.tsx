@@ -9,10 +9,14 @@ import { ModeToggle } from "./mode-toggle";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession(); // Obtenha o status da sessão
   const [isPortfolioPage, setIsPortfolioPage] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Verificar se o usuário está autenticado
+  const isAuthenticated = status === "authenticated";
+
+  // Extrair firstName e lastName apenas se session.user.name existir
   const { firstName, lastName } = session?.user?.name
     ? session.user.name.split(" ").reduce<{ firstName: string; lastName: string }>(
         (acc, name, idx) =>
@@ -24,6 +28,10 @@ export default function Navbar() {
     : { firstName: "", lastName: "" };
 
   useEffect(() => {
+    // Adicione um console.log para depurar o status da sessão
+    console.log("Session Status:", status);
+    console.log("Session Data:", session);
+
     const checkPortfolioPage = () => {
       if (document?.title?.includes(" - Portfolio")) {
         setIsPortfolioPage(true);
@@ -38,7 +46,7 @@ export default function Navbar() {
     observer.observe(document.querySelector("title") as Node, { childList: true });
 
     return () => observer.disconnect();
-  }, []);
+  }, [status]); // Atualize quando o status da sessão mudar
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -54,6 +62,7 @@ export default function Navbar() {
       </Link>
     ));
 
+  // Componente para navbar autenticado em páginas de portfólio
   const AuthenticatedNavbarPort = () => {
     const links = [
       { label: "Home", href: "/" },
@@ -69,14 +78,12 @@ export default function Navbar() {
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-
           <div className="hidden md:flex items-center">
             {renderLinks(links)}
             <ModeToggle />
@@ -88,7 +95,6 @@ export default function Navbar() {
             </Button>
           </div>
         </div>
-
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -105,6 +111,7 @@ export default function Navbar() {
     );
   };
 
+  // Componente para navbar autenticado em outras páginas
   const AuthenticatedNavbar = () => {
     const links = [
       { label: "Dashboard", href: "/dashboard" },
@@ -120,14 +127,12 @@ export default function Navbar() {
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-
           <div className="hidden md:flex items-center">
             {renderLinks(links)}
             <ModeToggle />
@@ -139,7 +144,6 @@ export default function Navbar() {
             </Button>
           </div>
         </div>
-
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -156,6 +160,7 @@ export default function Navbar() {
     );
   };
 
+  // Componente para navbar de visitantes em páginas de portfólio
   const VisitorNavbarPortfolio = () => {
     const links = [
       { label: "Home", href: "/" },
@@ -171,20 +176,17 @@ export default function Navbar() {
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-
           <div className="hidden md:flex items-center">
             {renderLinks(links)}
             <ModeToggle />
           </div>
         </div>
-
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -194,6 +196,7 @@ export default function Navbar() {
     );
   };
 
+  // Componente para navbar de visitantes em outras páginas
   const VisitorNavbar = () => {
     const links = [
       { label: "Home", href: "/" },
@@ -211,20 +214,17 @@ export default function Navbar() {
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-
           <div className="hidden md:flex items-center">
             {renderLinks(links)}
             <ModeToggle />
           </div>
         </div>
-
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-2 bg-background/90 backdrop-blur-sm border-t px-4 py-2">
             {renderLinks(links)}
@@ -234,7 +234,12 @@ export default function Navbar() {
     );
   };
 
-  return session?.user
+  // Renderização condicional com base no status da sessão
+  if (status === "loading") {
+    return <div>Loading...</div>; // Exibe uma mensagem de carregamento enquanto a sessão é carregada
+  }
+
+  return isAuthenticated
     ? isPortfolioPage
       ? <AuthenticatedNavbarPort />
       : <AuthenticatedNavbar />

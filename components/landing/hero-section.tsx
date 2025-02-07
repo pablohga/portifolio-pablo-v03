@@ -32,16 +32,16 @@ export function HeroSection({ data }: HeroSectionProps) {
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text to-primary/70">
             {/* <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70"> */}
-              {data?.title || "Crie Seu Portfólio Profissional Sem Gastar Nada"}
+              {data?.title || "Create your professional portfolio without spending anything"}
             </h1>
             {/* FIX: REMOVIDO PQ ESTA VINDO EM HTML DO BANCO DE DADOS. RESOVER DEPOIS */}
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {data?.description || "Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers."}
+              {data?.description || "Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8" asChild>
                 <Link href={data?.buttonLink || "/auth/register"}>
-                  {data?.buttonText || "Comece Grátis"}
+                  {data?.buttonText || "Start Free"}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -50,7 +50,7 @@ export function HeroSection({ data }: HeroSectionProps) {
               </Button> */}
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-            Lance seu incrível site de portfólio totalmente grátis. Sem taxas ocultas, sem cartão de crédito - apenas valor puro para freelancers.
+            Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers.
             </p>
           </motion.div>
         </div>
