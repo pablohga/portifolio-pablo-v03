@@ -12,7 +12,7 @@ export default function Navbar() {
   const { data: session, status } = useSession(); // Obtenha o status da sessão
   const [isPortfolioPage, setIsPortfolioPage] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [userSlug, setUserSlug] = useState<string | null>(null); // Estado para armazenar o slug
   // Verificar se o usuário está autenticado
   const isAuthenticated = status === "authenticated";
 
@@ -32,6 +32,16 @@ export default function Navbar() {
     console.log("Session Status:", status);
     console.log("Session Data:", session);
 
+    if (session?.user?.id) {
+      // Busca o slug do usuário com base no session.id
+      fetchUserSlug(session.user.id).then((slug) => {
+        if (slug) {
+          console.log("User Slug:", slug); // Exibe o slug no console
+          setUserSlug(slug); // Define o estado com o slug
+        }
+      });
+    }
+
     const checkPortfolioPage = () => {
       if (document?.title?.includes(" - Portfolio")) {
         setIsPortfolioPage(true);
@@ -46,7 +56,7 @@ export default function Navbar() {
     observer.observe(document.querySelector("title") as Node, { childList: true });
 
     return () => observer.disconnect();
-  }, [status]); // Atualize quando o status da sessão mudar
+  }, [session, status]); // Atualize quando o status da sessão mudar
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -115,7 +125,7 @@ export default function Navbar() {
   const AuthenticatedNavbar = () => {
     const links = [
       { label: "Dashboard", href: "/dashboard" },
-      { label: "My Portfolio", href: `/${session?.user?.slug}` },
+      { label: "My Portfolio", href: `/${userSlug}` },
       { label: "Settings", href: "/settings" },
       { label: "Support", href: "/support" },
     ];
@@ -246,4 +256,17 @@ export default function Navbar() {
     : isPortfolioPage
       ? <VisitorNavbarPortfolio />
       : <VisitorNavbar />;
+}
+
+// Função para buscar o slug do usuário
+async function fetchUserSlug(userId: string): Promise<string | null> {
+  try {
+    const res = await fetch(`/api/user/slug?userId=${userId}`);
+    if (!res.ok) throw new Error("Failed to fetch user slug");
+    const data = await res.json();
+    return data.slug || null;
+  } catch (error) {
+    console.error("Error fetching user slug:", error);
+    return null;
+  }
 }
