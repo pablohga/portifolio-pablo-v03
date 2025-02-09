@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { User } from "@/models/user";
 import { Project } from "@/models/project";
 import dbConnect from "@/lib/db";
-import { HeroSection } from "@/components/hero-section";
+import HeroSection from "@/components/hero-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";

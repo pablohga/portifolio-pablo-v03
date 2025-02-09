@@ -91,11 +91,6 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
       id="features"
       className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain  bg-[url('https://mundonews.pt/portify/hero_footer.png')]"
     >
-      <h1>{t("header")}</h1>
-      <span></span>
-      <button type="button" onClick={handleChangeLanguage}>
-        Change Language
-      </button>
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

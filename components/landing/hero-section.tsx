@@ -12,7 +12,7 @@ interface HeroSectionProps {
   data?: HeroSectionType;
 }
 
-export function HeroSection({ data }: HeroSectionProps) {
+export default function HeroSection({ data }: HeroSectionProps) {
   const dataSubtitle = DOMPurify.sanitize(data?.subtitle  || "");
   const dataTitle = DOMPurify.sanitize(data?.title || "Create your professional portfolio without spending anything");
   const dataDescription = DOMPurify.sanitize(data?.description || "Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers.");
@@ -30,15 +30,15 @@ export function HeroSection({ data }: HeroSectionProps) {
           >
             <div className="flex items-center justify-center gap-2 mb-6">
               <span className="text-primary font-semibold">
-                <div dangerouslySetInnerHTML={{ __html: dataSubtitle }} />
+                <span dangerouslySetInnerHTML={{ __html: dataSubtitle }} />
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text to-primary/70">
-              <div dangerouslySetInnerHTML={{ __html: dataTitle }} />
+              <span dangerouslySetInnerHTML={{ __html: dataTitle }} />
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            <div dangerouslySetInnerHTML={{ __html: dataDescription }} />
+            <span dangerouslySetInnerHTML={{ __html: dataDescription }} />
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8" asChild>

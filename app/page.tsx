@@ -1,13 +1,18 @@
-import { HeroSection } from '@/app/components/landing/hero-section';
-import { FeaturesSection } from '@/app/components/landing/features-section';
-import { PricingSection } from '@/app/components/landing/pricing-section';
-import { ComingSoonSection } from '@/app/components/landing/coming-soon-section';
-import { TestimonialsSection } from '@/app/components/landing/testimonials-section';
-import { FAQSection } from '@/app/components/landing/faq-section';
-import { CTASection } from '@/app/components/landing/cta-section';
+/* import { HeroSection } from '@/components/landing/hero-section'; */
+import { FeaturesSection } from '@/components/landing/features-section';
+import { PricingSection } from '@/components/landing/pricing-section';
+import { ComingSoonSection } from '@/components/landing/coming-soon-section';
+import { TestimonialsSection } from '@/components/landing/testimonials-section';
+import { FAQSection } from '@/components/landing/faq-section';
+import { CTASection } from '@/components/landing/cta-section';
 import { Home } from '@/models/home';
 import dbConnect from '@/lib/db';
 import { HomeData } from '@/types/home';
+import dynamic from "next/dynamic";
+
+const HeroSection = dynamic(() => import("@/components/landing/hero-section"), {
+  ssr: false, // Desativa SSR para evitar erros de hidratação
+});
 // novo45366
 async function getHomeData(): Promise<HomeData | null> {
   try {

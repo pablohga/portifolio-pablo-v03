@@ -376,10 +376,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">Dashboard</h1>
-            {/* <Link 
-              href={`/${session?.user?.name?.toLowerCase().replace(/\s+/g, '-')}`}
-              className="inline-flex items-center text-primary hover:underline"
-            > */}
             <Link 
               href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
               className="inline-flex items-center text-primary hover:underline"

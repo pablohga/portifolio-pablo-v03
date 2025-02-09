@@ -7,9 +7,10 @@ import { Hero } from "@/types/hero";
 
 interface HeroSectionProps {
   userId?: string;
+  data?: object;
 }
 
-export function HeroSection({ userId }: HeroSectionProps) {
+export default function HeroSection({ userId }: HeroSectionProps) {
   const [hero, setHero] = useState<Hero | null>(null);
 
   useEffect(() => {
