@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Star } from "lucide-react";
 import { About } from "@/types/about";
+import DOMPurify from "isomorphic-dompurify";
 
 interface AboutSectionProps {
   userId?: string;
@@ -49,11 +50,14 @@ export function AboutSection({ userId }: AboutSectionProps) {
           className="mb-12"
         >
           <h2 className="text-center text-4xl font-bold mb-4">{about.title}</h2>
-          {/* <div 
+          <div 
             className="text-muted-foreground max-w-2xl mx-auto prose prose-sm dark:prose-invert"
-            dangerouslySetInnerHTML={{ __html: about.description }}
-          /> */}
-          {about.description}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(about.description),
+            }}
+          />
+          {/* <hr /> <br />
+          {about.description} */}
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-16">
