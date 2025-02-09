@@ -5,7 +5,7 @@ import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"; // Use o hook do react-i18next
 import i18next from "@/lib/i18next-config"; // Certifique-se de importar o i18n configurado
-
+import DOMPurify from "isomorphic-dompurify";
 interface Feature {
   icon: string;
   title: string;
@@ -19,6 +19,8 @@ interface FeaturesSectionProps {
     features: Feature[];
   };
 }
+
+
 
 const defaultFeatures: Feature[] = [
   {
@@ -74,6 +76,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   useEffect(() => {
     const detectedLanguage = i18next.language; // Detected language by i18next
     setCurrentLanguage(detectedLanguage);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18next.language]);
 
@@ -102,9 +105,12 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
           className="text-center mb-12"
         >
           <h2 className="text-primary text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {subtitle}
-          </p>
+          <p
+            className="text-xl text-muted-foreground max-w-2xl mx-auto"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(subtitle || "Start Free"),
+            }}
+          />
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -112,6 +118,9 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
             const IconComponent =
               iconComponents[feature.icon as keyof typeof iconComponents] ||
               Rocket;
+              // Sanitize feature.title and feature.description
+            const sanitizedTitle = DOMPurify.sanitize(feature.title || "");
+            const sanitizedDescription = DOMPurify.sanitize(feature.description || "");
 
             return (
               <motion.div
@@ -124,11 +133,15 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
               >
                 <div className="flex gap-5 items-center mb-1 px-4 py-0 rounded-lg md:bg-cover">
                   <IconComponent className="h-8 w-8" />
-                  <h3 className="text-foreground text-xl font-semibold mb-2">
-                    {feature.title}
-                  </h3>
+                  <h3
+                    className="text-foreground text-xl font-semibold mb-2"
+                    dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
+                  />
                 </div>
-                <div className="text-foreground">{feature.description}</div>
+                <div
+                  className="text-foreground"
+                  dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+                />
               </motion.div>
             );
           })}

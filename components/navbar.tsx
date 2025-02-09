@@ -29,14 +29,14 @@ export default function Navbar() {
 
   useEffect(() => {
     // Adicione um console.log para depurar o status da sessão
-    console.log("Session Status:", status);
-    console.log("Session Data:", session);
+    /* console.log("Session Status:", status);*/
+    console.log("Session Data:", session); 
 
     if (session?.user?.id) {
       // Busca o slug do usuário com base no session.id
       fetchUserSlug(session.user.id).then((slug) => {
         if (slug) {
-          console.log("User Slug:", slug); // Exibe o slug no console
+         //  console.log("User Slug:", slug); Exibe o slug no console
           setUserSlug(slug); // Define o estado com o slug
         }
       });
