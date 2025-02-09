@@ -1,9 +1,9 @@
-import { HeroSection } from "@/components/landing/hero-section";
-import { FeaturesSection } from "@/components/landing/features-section";
-import { ComingSoonSection } from "@/components/landing/coming-soon-section";
-import { TestimonialsSection } from "@/components/landing/testimonials-section";
-import { FAQSection } from "@/components/landing/faq-section";
-import { CTASection } from "@/components/landing/cta-section";
+import { HeroSection } from "@/app/components/landing/hero-section";
+import { FeaturesSection } from "@/app/components/landing/features-section";
+import { ComingSoonSection } from "@/app/components/landing/coming-soon-section";
+import { TestimonialsSection } from "@/app/components/landing/testimonials-section";
+import { FAQSection } from "@/app/components/landing/faq-section";
+import { CTASection } from "@/app/components/landing/cta-section";
 
 export default function StartPage() {
   return (

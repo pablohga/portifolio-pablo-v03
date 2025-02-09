@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { PricingSection as PricingSectionType } from "@/types/home";
-import PaymentButton from "../payment-button";
+import PaymentButton from "../../../components/payment-button";
 
 interface PricingSectionProps {
   data?: PricingSectionType;
