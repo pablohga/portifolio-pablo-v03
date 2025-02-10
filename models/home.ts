@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const homeSchema = new mongoose.Schema({
+export const homeSchema = new mongoose.Schema({
   heroSection: {
     title: String,
     subtitle: String,
