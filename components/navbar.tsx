@@ -173,7 +173,7 @@ export default function Navbar() {
     );
   };
 
-  // Componente para navbar autenticado em outras páginas
+  //  Componente para navbar autenticado em outras páginas
   const AuthenticatedNavbar = () => {
     const links = [
       { label: "Dashboard", href: "/dashboard" },
