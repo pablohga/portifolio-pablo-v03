@@ -1,5 +1,9 @@
 import { useFieldArray, Control, FieldValues } from "react-hook-form";
+<<<<<<< HEAD
 import { homeSchema, zodHomeSchema } from "../models/home"; // Added import for homeSchema
+=======
+import { homeSchema } from "../models/home"; // Added import for homeSchema
+>>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
 
 
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "./ui/form";
@@ -8,6 +12,7 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Plus, Trash2 } from "lucide-react";
+<<<<<<< HEAD
 import * as z from "zod"; // Importing zod
 
 interface PricingSectionProps {
@@ -16,6 +21,13 @@ interface PricingSectionProps {
   fields: FieldValues[];
   append: (data: z.infer<typeof zodHomeSchema>['pricingSection']['plans'][number]) => void;
   /* append: (data: FieldValues) => void; */
+=======
+
+interface PricingSectionProps {
+  control: Control<FieldValues>;
+  fields: FieldValues[];
+  append: (data: FieldValues) => void;
+>>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
   remove: (index: number) => void;
 }
 

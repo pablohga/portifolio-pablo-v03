@@ -1,6 +1,11 @@
 import { useFieldArray, Control, FieldValues } from "react-hook-form";
 import { z } from "zod"; // Importing zod
+<<<<<<< HEAD
 import { zodHomeSchema } from "../models/home"; // Importing zodHomeSchema
+=======
+import { homeSchema } from "../models/home"; // Added import for homeSchema
+import { featureSchema } from "../models/home"; // Importing featureSchema
+>>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
 
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
@@ -9,9 +14,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Plus, Trash2 } from "lucide-react";
 
 interface FeaturesSectionProps<TFieldValues extends FieldValues> {
+<<<<<<< HEAD
   control: Control<z.infer<typeof zodHomeSchema>>;
   fields: FieldValues[];
   append: (data: z.infer<typeof zodHomeSchema>['featuresSection']['features'][number]) => void; // Ensure the type matches the schema
+=======
+  control: Control<z.infer<typeof homeSchema>>;
+  fields: FieldValues[];
+  append: (data: z.infer<typeof featureSchema>) => void;
+>>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
   remove: (index: number) => void;
 }
 
@@ -33,7 +44,11 @@ export function FeaturesSection({ control, fields, append, remove }: FeaturesSec
                 icon: "Star",
                 title: "",
                 description: "",
+<<<<<<< HEAD
               } as z.infer<typeof zodHomeSchema>['featuresSection']['features'][number]) // Ensure the type matches the schema
+=======
+              })
+>>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
             }
           >
             <Plus className="h-4 w-4 mr-2" />
