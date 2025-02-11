@@ -59,7 +59,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              {/* Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers. */}
+              {/*  Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers. */}
               {t("HeroSection.text")}
             </p>
           </motion.div>
