@@ -128,7 +128,6 @@ export default function Navbar() {
             <Logo />
             <span className="text-lg font-semibold">Portify</span>
           </div>
-          {t("header")}
           <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={toggleMenu}

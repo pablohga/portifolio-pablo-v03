@@ -1,8 +1,14 @@
 {
   "translation":{
     "header":"Cabeçalho",
+    "footer":"Roda-pe {{ year }}",
+    "HeroSection":{
+      "title":"Crea tu portafolio profesional sin gastar nada",
+      "subtitle":"",
+      "text":"Crea tu increíble sitio de portafolio totalmente gratis. Sin tarifas ocultas, sin tarjeta de crédito: solo valor puro para autónomos.",
+      "button":"Empieza gratis ahora"
+    }
 
-    "footer":"Roda-pe {{ year }}"
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
   "dashboard": "Panel",

@@ -1,7 +1,14 @@
 {
   "translation": {
     "header": "Cabecalho!",
-    "footer": "Rodapé {{ year }}"
+    "footer": "Rodapé {{ year }}",
+    "HeroSection":{
+      "title":"Crie seu portfólio profissional sem gastar nada",
+      "subtitle":"",
+      "description":"",
+      "text":"Crie seu incrível site de portfólio totalmente gratuito. Sem taxas ocultas, sem cartão de crédito - somente valor puro para freelancers.",
+      "button":"Comece grátis agora"
+    }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",
   "dashboard": "Painel",
