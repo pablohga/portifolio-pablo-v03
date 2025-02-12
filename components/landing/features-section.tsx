@@ -91,6 +91,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
+            {/* TODO: para corrigir quando configurar as traduções do banco de dados */}
           <h2 className="text-primary text-4xl font-bold mb-4">
             {/* {title}<br/> */}
             {t("featuresSection.title")}
