@@ -8,6 +8,44 @@
       "description":"",
       "text":"Create your stunning portfolio website completely free. No hidden fees, no credit card required - just pure value for freelancers.",
       "button":"Start Free Now"
+    },
+    "featuresSection": {
+      
+      "title":"Everything You Need, Free",
+      "subtitle":"We believe every freelancer deserves a professional online presence. That's why we made our portfolio builder completely free.",
+      "description":"",
+      "features":{
+        "feature1":{
+          "icon": "Code2",
+          "title":"100% Free Forever",
+          "description":"Create and maintain your professional portfolio completely free. No hidden costs or premium features."
+        },
+        "feature2":{
+          "icon": "Search",
+          "title":"SEO Optimized",
+          "description":"Get discovered by customers with our built-in SEO tools. Rank higher in search results naturally."
+        },
+        "feature3":{
+          "icon": "Zap",
+          "title":"Extremely Fast",
+          "description":"Built with Next.js for stunning performance that pleases visitors and search engines."
+        },
+        "feature4":{
+          "icon": "Shield",
+          "title":"Safe & Reliable",
+          "description":"Your portfolio is protected with enterprise-level security and hosted on reliable infrastructure."
+        },
+        "feature5":{
+          "icon": "Palette",
+          "title":"Beautiful Templates",
+          "description":"Choose from our collection of professionally designed templates that make your work shine."
+        },
+        "feature6":{
+          "icon": "Rocket",
+          "title":"Quick Setup",
+          "description":"Get your portfolio online in minutes with our intuitive process. No technical knowledge required."
+        }
+      }
     }
   },
   "welcomeMessage": "Welcome to Portify!",

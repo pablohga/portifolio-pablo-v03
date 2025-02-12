@@ -120,6 +120,7 @@ export default function Navbar() {
       { label: "Projects", href: "/projects" },
       { label: "Edit Portfolio", href: "/dashboard" },
     ];
+    console.log('setCurrentLanguage!!!!', currentLanguage)
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">

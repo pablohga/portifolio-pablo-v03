@@ -8,6 +8,44 @@
       "description":"",
       "text":"Crie seu incrível site de portfólio totalmente gratuito. Sem taxas ocultas, sem cartão de crédito - somente valor puro para freelancers.",
       "button":"Comece grátis agora"
+    },
+    "featuresSection": {
+      
+      "title":"Tudo que você precisa, grátis",
+      "subtitle":"Acreditamos que todo freelancer merece uma presença profissional online.É por isso que tornamos o nosso construtor de portfólio completamente livre.",
+      "description":"",
+      "features":{
+        "feature1":{
+          "icon": "Code2",
+          "title":"100% grátis para sempre",
+          "description":"Crie e mantenha seu portfólio profissional completamente gratuito.Sem custos ocultos ou recursos premium."
+        },
+        "feature2":{
+          "icon": "Search",
+          "title":"SEO otimizado",
+          "description":"Seja descoberto pelos clientes com nossas ferramentas de SEO embutidas.Classificação mais alta nos resultados de pesquisa naturalmente."
+        },
+        "feature3":{
+          "icon": "Zap",
+          "title":"Extremamente rápido",
+          "description":"Construído com o Next.js para uma performance impressionante que agrada aos visitantes e aos mecanismos de pesquisa."
+        },
+        "feature4":{
+          "icon": "Shield",
+          "title":"Seguro e confiável",
+          "description":"Seu portfólio está protegido com segurança de nível corporativo e hospedado em infraestrutura confiável."
+        },
+        "feature5":{
+          "icon": "Palette",
+          "title":"Belos modelos",
+          "description":"Escolha entre nossa coleção de modelos de design profissionalmente que fazem seu trabalho brilhar."
+        },
+        "feature6":{
+          "icon": "Rocket",
+          "title":"Configuração rápida",
+          "description":"Obtenha seu portfólio on -line em minutos com nosso processo intuitivo.Nenhum conhecimento técnico necessário."
+        }
+      }
     }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",

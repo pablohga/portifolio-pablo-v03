@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"; // Use o hook do react-i18next
 import i18next from "@/lib/i18next-config"; // Certifique-se de importar o i18n configurado
 import DOMPurify from "isomorphic-dompurify";
+
 interface Feature {
   icon: string;
   title: string;
@@ -22,38 +23,7 @@ interface FeaturesSectionProps {
 
 
 
-const defaultFeatures: Feature[] = [
-  {
-    icon: "Code2",
-    title: "100% Free Forever",
-    description: "Create and maintain your professional portfolio completely free. No hidden costs or premium features.",
-  },
-  {
-    icon: "Search",
-    title: "SEO Optimized",
-    description: "Be discovered by clients with our integrated SEO tools. Rank better in search results naturally.",
-  },
-  {
-    icon: "Zap",
-    title: "Extremely Fast",
-    description: "Built with Next.js for impressive performance that delights visitors and search engines.",
-  },
-  {
-    icon: "Shield",
-    title: "Safe & Reliable",
-    description: "Your portfolio is protected with enterprise-level security and hosted on reliable infrastructure.",
-  },
-  {
-    icon: "Palette",
-    title: "Beautiful Templates",
-    description: "Choose from our collection of professionally designed templates that make your work shine.",
-  },
-  {
-    icon: "Rocket",
-    title: "Quick Setup",
-    description: "Get your portfolio online in minutes with our intuitive process. No technical knowledge required.",
-  },
-];
+
 
 const iconComponents = {
   Code2,
@@ -65,26 +35,48 @@ const iconComponents = {
 };
 
 export function FeaturesSection({ data }: FeaturesSectionProps) {
-  const features = data?.features || defaultFeatures;
+  const { t } = useTranslation(); // Use the hook to get translations
+
+  const defaultFeatures: Feature[] = [
+    {
+      icon: t('featuresSection.features.feature1.icon'),
+      title: t('featuresSection.features.feature1.title'),
+      description: t('featuresSection.features.feature1.description'),
+    },
+    {
+      icon: t('featuresSection.features.feature2.icon'),
+      title: t('featuresSection.features.feature2.title'),
+      description: t('featuresSection.features.feature2.description'),
+    },
+    {
+      icon: t('featuresSection.features.feature3.icon'),
+      title: t('featuresSection.features.feature3.title'),
+      description: t('featuresSection.features.feature3.description'),
+    },
+    {
+      icon: t('featuresSection.features.feature4.icon'),
+      title: t('featuresSection.features.feature4.title'),
+      description: t('featuresSection.features.feature4.description'),
+    },
+    {
+      icon: t('featuresSection.features.feature5.icon'),
+      title: t('featuresSection.features.feature5.title'),
+      description: t('featuresSection.features.feature5.description'),
+    },
+    {
+      icon: t('featuresSection.features.feature6.icon'),
+      title: t('featuresSection.features.feature6.title'),
+      description: t('featuresSection.features.feature6.description'),
+    },
+  ];
+
+  // TODO: para corrigir quando configurar as traduções do banco de dados
+  const features = /* data?.features || */ defaultFeatures;
   const title = data?.title || "Everything You Need, Free";
   const subtitle =
     data?.subtitle ||
     "We believe every freelancer deserves a professional online presence. That's why we made our portfolio builder completely free.";
-  const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
-  const { t } = useTranslation(); // Use the hook to get translations
 
-  useEffect(() => {
-    const detectedLanguage = i18next.language; // Detected language by i18next
-    setCurrentLanguage(detectedLanguage);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i18next.language]);
-
-  const handleChangeLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
-    i18next.changeLanguage(newLanguage); // Change the language
-    setCurrentLanguage(newLanguage); // Update the state
-  }
 
   return (
     <section
@@ -99,13 +91,19 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-primary text-4xl font-bold mb-4">{title}</h2>
-          <p
+          <h2 className="text-primary text-4xl font-bold mb-4">
+            {/* {title}<br/> */}
+            {t("featuresSection.title")}
+          </h2>
+          {/* <p
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(subtitle || "Start Free"),
             }}
-          />
+          /> */}
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            {t("featuresSection.subtitle")}
+          </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

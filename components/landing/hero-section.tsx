@@ -18,7 +18,10 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ data }: HeroSectionProps) {
+  // guardado para quando atuaizar e for utiizar o conteudo do banco de dados
   /* const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en'); */
+
+  // guardado para quando atuaizar e for utiizar o conteudo do banco de dados
   const dataSubtitle = DOMPurify.sanitize(data?.subtitle  || "");
   const dataTitle = DOMPurify.sanitize(data?.title || "Create your professional portfolio without spending anything");
   const dataDescription = DOMPurify.sanitize(data?.description || "Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers.");

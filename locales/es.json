@@ -7,6 +7,44 @@
       "subtitle":"",
       "text":"Crea tu increíble sitio de portafolio totalmente gratis. Sin tarifas ocultas, sin tarjeta de crédito: solo valor puro para autónomos.",
       "button":"Empieza gratis ahora"
+    },
+    "featuresSection": {
+      
+      "title":"Todo lo que necesitas, gratis",
+      "subtitle":"Creemos que cada profesional independiente merece una presencia profesional en línea.",
+      "description":"",
+      "features":{
+        "feature1":{
+          "icon": "Code2",
+          "title":"100% gratis para siempre",
+          "description":"Cree y mantenga su cartera profesional completamente gratuita."
+        },
+        "feature2":{
+          "icon": "Search",
+          "title":"SEO optimizado",
+          "description":"Ser descubierto por clientes con nuestras herramientas de SEO construidas."
+        },
+        "feature3":{
+          "icon": "Zap",
+          "title":"Extremadamente",
+          "description":"Construido con Next.js para una actuación impresionante que agrada a los visitantes y los mecanismos de investigación."
+        },
+        "feature4":{
+          "icon": "Shield",
+          "title":"Seguro y confiable",
+          "description":"SLa cartera de I está protegida con seguridad a nivel corporativo y se aloja en infraestructura confiable."
+        },
+        "feature5":{
+          "icon": "Palette",
+          "title":"Hermosas modelos",
+          "description":"Elija entre nuestra colección de modelos de diseño profesionalmente que brille su trabajo."
+        },
+        "feature6":{
+          "icon": "Rocket",
+          "title":"Configuración rápida",
+          "description":"Ponga su cartera en línea en minutos con nuestro proceso intuitivo."
+        }
+      }
     }
 
   },
