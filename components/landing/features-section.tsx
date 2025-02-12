@@ -92,9 +92,12 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
           className="text-center mb-12"
         >
             {/* TODO: para corrigir quando configurar as traduções do banco de dados */}
-          <h2 className="text-primary text-4xl font-bold mb-4">
+          <h2 className="text-primary text-4xl font-bold mb-4"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(t("featuresSection.title")),
+          }}>
             {/* {title}<br/> */}
-            {t("featuresSection.title")}
+            {/* {t("featuresSection.title")} */}
           </h2>
           {/* <p
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
@@ -102,8 +105,11 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
               __html: DOMPurify.sanitize(subtitle || "Start Free"),
             }}
           /> */}
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {t("featuresSection.subtitle")}
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(t("featuresSection.subtitle")),
+          }}>
+            {/* {t("featuresSection.subtitle")} */}
           </p>
         </motion.div>
 
