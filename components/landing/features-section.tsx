@@ -21,10 +21,6 @@ interface FeaturesSectionProps {
   };
 }
 
-
-
-
-
 const iconComponents = {
   Code2,
   Search,

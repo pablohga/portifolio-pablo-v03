@@ -5,15 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { PricingSection as PricingSectionType } from "@/types/home";
+import { useTranslation } from "react-i18next"; // Use o hook do react-i18next
+import i18next from "@/lib/i18next-config"; // Certifique-se de importar o i18n configurado
+import DOMPurify from "isomorphic-dompurify";
 import PaymentButton from "../payment-button";
+import { useEffect } from "react";
 
 interface PricingSectionProps {
   data?: PricingSectionType;
 }
 
-const defaultPlans = [
+/* const defaultPlans = [
   {
     name: "Grátis",
+    {t('pricingSection.plans.0.name')}
     price: "0",
     description: "Perfeito para começar",
     features: [
@@ -59,12 +64,37 @@ const defaultPlans = [
     ],
     buttonText: "Começar Agora",
   },
-];
+]; */
 
 export function PricingSection({ data }: PricingSectionProps) {
-  const plans = data?.plans || defaultPlans;
-  const title = data?.title || "Planos que Crescem com Você";
-  const subtitle = data?.subtitle || "Escolha o plano perfeito para suas necessidades. Comece gratuitamente e evolua conforme seu negócio cresce.";
+  const { t } = useTranslation(); // Use the hook to get translations
+  const defaultPlans = [
+    {
+      name: t('pricingSection.plans.0.name'),
+      price: data?.plans[0].price,
+      description: t('pricingSection.plans.0.description'),
+      features: t('pricingSection.plans.0.features', { returnObjects: true }) as string[],
+      buttonText: t('pricingSection.plans.0.buttonText'),
+    },
+    {
+      name: t('pricingSection.plans.1.name'),
+      price: data?.plans[1].price,
+      description: t('pricingSection.plans.1.description'),
+      features: t('pricingSection.plans.1.features', { returnObjects: true }) as string[],
+      buttonText: t('pricingSection.plans.1.buttonText'),
+      popular: true,
+    },
+    {
+      name: t('pricingSection.plans.2.name'),
+      price: data?.plans[2].price,
+      description: t('pricingSection.plans.2.description'),
+      features: t('pricingSection.plans.2.features', { returnObjects: true }) as string[],
+      buttonText: t('pricingSection.plans.2.buttonText'),
+    },
+  ];
+  const plans = /* data?.plans || */ defaultPlans;
+  const title = /* data?.title || */ t("pricingSection.title");
+  const subtitle = /* data?.subtitle || */ t("pricingSection.subtitle");
 
   return (
     <section id="pricing" className="py-20 bg-background">
@@ -76,7 +106,9 @@ export function PricingSection({ data }: PricingSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">{title}</h2>
+          <h2 className="text-4xl font-bold mb-4">
+            {title}
+          </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {subtitle}
           </p>

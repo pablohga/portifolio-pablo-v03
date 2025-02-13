@@ -1,54 +1,106 @@
 {
-  "translation":{
-    "header":"Cabeçalho",
-    "footer":"Roda-pe {{ year }}",
-    "HeroSection":{
-      "title":"Crea tu portafolio profesional sin gastar nada",
-      "subtitle":"",
-      "text":"Crea tu increíble sitio de portafolio totalmente gratis. Sin tarifas ocultas, sin tarjeta de crédito: solo valor puro para autónomos.",
-      "button":"Empieza gratis ahora"
+  "translation": {
+    "header": "¡Encabezado!",
+    "footer": "Pie de página {{ year }}",
+    "HeroSection": {
+      "title": "Crea tu portafolio profesional sin gastar nada",
+      "subtitle": "",
+      "description": "",
+      "text": "Crea tu increíble sitio web de portafolio completamente gratis. Sin costos ocultos, sin necesidad de tarjeta de crédito, solo puro valor para freelancers.",
+      "button": "Comienza Gratis Ahora"
     },
     "featuresSection": {
-      
-      "title":"Todo lo que necesitas, gratis",
-      "subtitle":"Creemos que cada profesional independiente merece una presencia profesional en línea.",
-      "description":"",
-      "features":{
-        "feature1":{
+      "title": "Todo lo que Necesitas, Gratis",
+      "subtitle": "Creemos que todo freelancer merece una presencia profesional en línea. Por eso, hemos creado nuestro constructor de portafolios completamente gratuito.",
+      "description": "",
+      "features": {
+        "feature1": {
           "icon": "Code2",
-          "title":"100% gratis para siempre",
-          "description":"Cree y mantenga su cartera profesional completamente gratuita."
+          "title": "100% Gratis para Siempre",
+          "description": "Crea y mantén tu portafolio profesional totalmente gratis. Sin costos ocultos ni funciones premium."
         },
-        "feature2":{
+        "feature2": {
           "icon": "Search",
-          "title":"SEO optimizado",
-          "description":"Ser descubierto por clientes con nuestras herramientas de SEO construidas."
+          "title": "Optimizado para SEO",
+          "description": "Sé encontrado por clientes con nuestras herramientas SEO integradas. Mejora tu visibilidad en los resultados de búsqueda."
         },
-        "feature3":{
+        "feature3": {
           "icon": "Zap",
-          "title":"Extremadamente",
-          "description":"Construido con Next.js para una actuación impresionante que agrada a los visitantes y los mecanismos de investigación."
+          "title": "Extremadamente Rápido",
+          "description": "Construido con Next.js para un rendimiento increíble que complace a los visitantes y motores de búsqueda."
         },
-        "feature4":{
+        "feature4": {
           "icon": "Shield",
-          "title":"Seguro y confiable",
-          "description":"SLa cartera de I está protegida con seguridad a nivel corporativo y se aloja en infraestructura confiable."
+          "title": "Seguro y Confiable",
+          "description": "Tu portafolio está protegido con seguridad de nivel empresarial y alojado en una infraestructura confiable."
         },
-        "feature5":{
+        "feature5": {
           "icon": "Palette",
-          "title":"Hermosas modelos",
-          "description":"Elija entre nuestra colección de modelos de diseño profesionalmente que brille su trabajo."
+          "title": "Plantillas Hermosas",
+          "description": "Elige entre nuestra colección de plantillas profesionales que hacen que tu trabajo destaque."
         },
-        "feature6":{
+        "feature6": {
           "icon": "Rocket",
-          "title":"Configuración rápida",
-          "description":"Ponga su cartera en línea en minutos con nuestro proceso intuitivo."
+          "title": "Configuración Rápida",
+          "description": "Pon tu portafolio en línea en minutos con nuestro proceso intuitivo. No se requieren conocimientos técnicos."
         }
       }
+    },
+    "pricingSection": {
+      "title": "Elige Tu Plan",
+      "subtitle": "Encuentra el plan perfecto para tus necesidades",
+      "plans": [
+        {
+          "name": "Gratis",
+          "price": "0",
+          "description": "Perfecto para comenzar",
+          "features": [
+            "3 Categorías",
+            "3 Proyectos por Categoría",
+            "Portafolio Personalizado",
+            "Dominio Personalizado",
+            "Optimizado para SEO",
+            "Soporte por Correo Electrónico"
+          ],
+          "buttonText": "Comenzar Gratis"
+        },
+        {
+          "name": "Pagado",
+          "price": "29.90",
+          "description": "Para freelancers establecidos",
+          "features": [
+            "Categorías Ilimitadas",
+            "Proyectos Ilimitados",
+            "Portafolio Personalizado",
+            "Dominio Personalizado",
+            "Optimizado para SEO",
+            "Soporte Prioritario",
+            "Temas Premium",
+            "Análisis Avanzado"
+          ],
+          "buttonText": "Comienza Ahora",
+          "popular": true
+        },
+        {
+          "name": "Premium",
+          "price": "79.90",
+          "description": "Solución completa para el crecimiento",
+          "features": [
+            "Todo en el Plan Pagado",
+            "Sistema de Gestión de Clientes",
+            "Gestión Financiera Completa",
+            "Curso de Carrera para Freelancers",
+            "Mentoría en Grupo",
+            "Comunidad VIP",
+            "Acceso Anticipado a Funciones",
+            "Soporte 24/7"
+          ],
+          "buttonText": "Comienza Ahora"
+        }
+      ]
     }
-
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
-  "dashboard": "Panel",
-  "login": "Iniciar sesión"
+  "dashboard": "Panel de Control",
+  "login": "Iniciar Sesión"
 }
