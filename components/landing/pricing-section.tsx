@@ -106,15 +106,19 @@ export function PricingSection({ data }: PricingSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">
-            {title}
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {subtitle}
-          </p>
+          <h2 className="text-4xl font-bold mb-4"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(title),
+          }} suppressHydrationWarning={true} />
+        
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto"
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(subtitle),
+          }} suppressHydrationWarning={true}/>
+
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto" >
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -134,10 +138,21 @@ export function PricingSection({ data }: PricingSectionProps) {
                 </div>
               )}
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <p className="text-muted-foreground mb-4">{plan.description}</p>
+                <h3 className="text-2xl font-bold mb-2"
+                dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(plan.name),
+                }} suppressHydrationWarning={true} />
+
+                <p className="text-muted-foreground mb-4"
+                dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(plan.description),
+                }} suppressHydrationWarning={true} />
+
                 <div className="mb-4">
-                  <span className="text-4xl font-bold">$ {plan.price}</span>
+                  <span className="text-4xl font-bold"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(`$ ${plan.price}`),
+                    }} suppressHydrationWarning={true}/>
                   <span className="text-muted-foreground">/mês</span>
                 </div>
                 <Button
@@ -145,24 +160,30 @@ export function PricingSection({ data }: PricingSectionProps) {
                   variant={plan.popular ? "default" : "outline"}
                   asChild
                 >
-                  <Link href="/auth/register">
-                    {plan.buttonText}
-                  </Link>
+                  <Link
+                    href="/auth/register"
+                    dangerouslySetInnerHTML={{
+                      __html: DOMPurify.sanitize(plan.buttonText),
+                    }}
+                    suppressHydrationWarning={true}
+                  />
                 </Button>
-                {/* <PaymentButton plan="paid"> */}
-                {/* <PaymentButton plan={plan.name}> */}
-                  {/* {plan.buttonText} */}
-                {/* </PaymentButton> */}
 
               </div>
               <ul className="space-y-4">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center">
                     <Check className="h-5 w-5 text-primary mr-2" />
-                    <span>{feature}</span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(feature),
+                      }}
+                      suppressHydrationWarning={true}
+                    />
                   </li>
                 ))}
               </ul>
+              
             </motion.div>
           ))}
         </div>

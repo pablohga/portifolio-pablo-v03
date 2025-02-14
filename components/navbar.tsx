@@ -319,7 +319,7 @@ export default function Navbar() {
               size="icon"
               onClick={handleChangeLanguage}
             >
-              <Globe className="h-[1.2rem] w-[1.2rem] scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Globe className="h-[1.2rem] w-[1.2rem] scale-0 transition-all text-black light:text-white" />
               <span className="sr-only">Toggle language</span>
             </Button>
             
