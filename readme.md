@@ -1,5 +1,9 @@
-<img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Portify Logo" width="100"/>
-#  Portify 🚀
+<div align="center">
+   <img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Portify Logo" width="350"/>
+</div>
+##  Portify 🚀
+
+---
 
 [![GitHub license](https://img.shields.io/github/license/yourusername/portify.svg)](https://github.com/yourusername/portify/blob/main/LICENSE)
 [![npm version](https://badge.fury.io/js/%40portify%2Fcore.svg)](https://badge.fury.io/js/%40portify%2Fcore)
@@ -50,14 +54,14 @@ Confira uma demonstração ao vivo do Portify:
 
 ## Tecnologias Utilizadas 🛠️
 
-**Framework: Next.js -** Um framework React para construção de aplicações web performáticas.
-**Estilização: Tailwind CSS -** Uma biblioteca de utilitários CSS para estilização rápida e eficiente.
-**Editor de Texto: Tiptap -** Um editor WYSIWYG leve e poderoso.
-**Autenticação: NextAuth.js -** Biblioteca para autenticação segura no Next.js.
-**Pagamentos: Stripe -** Integração para assinaturas e pagamentos recorrentes.
-**Banco de Dados: MongoDB -** Banco de dados NoSQL para armazenamento de dados flexível.
-**Internacionalização: i18next -** Suporte para múltiplos idiomas (Português, Inglês, Espanhol).
-**Email: Nodemailer -** Envio de emails automáticos para confirmação de conta e redefinição de senha.
+**Framework: Next.js -** Um framework React para construção de aplicações web performáticas.<br/>
+**Estilização: Tailwind CSS -** Uma biblioteca de utilitários CSS para estilização rápida e eficiente.<br/>
+**Editor de Texto: Tiptap -** Um editor WYSIWYG leve e poderoso.<br/>
+**Autenticação: NextAuth.js -** Biblioteca para autenticação segura no Next.js.<br/>
+**Pagamentos: Stripe -** Integração para assinaturas e pagamentos recorrentes.<br/>
+**Banco de Dados: MongoDB -** Banco de dados NoSQL para armazenamento de dados flexível.<br/>
+**Internacionalização: i18next -** Suporte para múltiplos idiomas (Português, Inglês, Espanhol).<br/>
+**Email: Nodemailer -** Envio de emails automáticos para confirmação de conta e redefinição de senha.<br/>
 
 
 ## Licença 📄
