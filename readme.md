@@ -1,4 +1,5 @@
-# <img src="http://exemplo.logo" alt="Portify Logo" width="100"/> Portify 🚀
+<img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Portify Logo" width="100"/>
+#  Portify 🚀
 
 [![GitHub license](https://img.shields.io/github/license/yourusername/portify.svg)](https://github.com/yourusername/portify/blob/main/LICENSE)
 [![npm version](https://badge.fury.io/js/%40portify%2Fcore.svg)](https://badge.fury.io/js/%40portify%2Fcore)
