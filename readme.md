@@ -47,43 +47,6 @@ Confira uma demonstração ao vivo do Portify:
 
 ---
 
-## Instalação 🔧
-
-Para configurar o Portify localmente, siga as etapas abaixo:
-
-1. **Clone o Repositório:**
-   ```bash
-   git clone https://github.com/yourusername/portify.git
-
-2. **Instale as Dependências:**
-   ```bash
-   npm install
-# ou
-yarn install
-
-3. **Configure as Variáveis de Ambiente:**
-Crie um arquivo .env.local na raiz do projeto e adicione as seguintes variáveis:
-
-MONGODB_URI=your_mongodb_connection_string
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-STRIPE_SECRET_KEY=your_stripe_secret_key
-STRIPE_PRICE_ID_FREE=price_free_id
-STRIPE_PRICE_ID_PAID=price_paid_id
-STRIPE_PRICE_ID_PREMIUM=price_premium_id
-SMTP_HOST=your_smtp_host
-SMTP_USER=your_smtp_user
-SMTP_PASS=your_smtp_password
-SMTP_FROM=your_email@example.com
-
-4. **Inicie o Servidor de Desenvolvimento:**
-
-npm run dev
-# ou
-yarn dev
-5. **Acesse o Projeto:**
-
-Abra http://localhost:3000 no seu navegador.
-
 ## Tecnologias Utilizadas 🛠️
 
 **Framework: Next.js -** Um framework React para construção de aplicações web performáticas.
@@ -95,15 +58,6 @@ Abra http://localhost:3000 no seu navegador.
 **Internacionalização: i18next -** Suporte para múltiplos idiomas (Português, Inglês, Espanhol).
 **Email: Nodemailer -** Envio de emails automáticos para confirmação de conta e redefinição de senha.
 
-## Contribuição 🤝
-Contribuições são bem-vindas! Se você deseja contribuir para o Portify, siga estas etapas:
-
-Faça um fork do repositório.
-Crie uma nova branch para sua funcionalidade (git checkout -b feature/nova-funcionalidade).
-Faça commit das suas alterações (git commit -m "Adiciona nova funcionalidade").
-Faça push para a branch (git push origin feature/nova-funcionalidade).
-Abra um Pull Request.
-**Nota:** Certifique-se de seguir o guia de estilo do código antes de enviar suas alterações.
 
 ## Licença 📄
 Este projeto é licenciado sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
@@ -138,6 +92,7 @@ Se precisar de ajuda, sinta-se à vontade para entrar em contato conosco ou abri
 Para mais informações, entre em contato conosco:
 
 Email: support@portify.pt
+Email: pablohga@gmail.com
 Website: https://portify.pt
 
 ## Screenshots 📸
