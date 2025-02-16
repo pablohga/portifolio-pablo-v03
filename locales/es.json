@@ -6,17 +6,19 @@
       "Home": "Inicio",
       "About": "Acerca de",
       "Projects": "Proyectos",
-      "Edit Portfolio": "Editar Portafolio",
+      "EditPortfolio": "Editar Portafolio",
       "Dashboard": "Panel",
-      "My Portfolio": "Mi Portafolio",
+      "MyPortfolio": "Mi Portafolio",
       "Settings": "Configuraciones",
       "Support": "Soporte",
-      "About the Creator": "Acerca del Creador",
-      "Create My Portfolio": "Crear Mi Portafolio",
+      "AboutTheCreator": "Acerca del Creador",
+      "CreateMyPortfolio": "Crear Mi Portafolio",
       "Features": "Características",
       "Pricing": "Planes",
-      "Sign In": "Iniciar Sesión",
-      "Sign Up": "Registrarse"
+      "SignIn": "Iniciar Sesión",
+      "SignUp": "Registrarse",
+      "SignOut": "Salir"
+      
     },
     "HeroSection": {
       "title": "Crea tu portafolio profesional sin gastar nada",

@@ -36,7 +36,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
 
   useEffect(() => {
     const detectedLanguage = i18next.language;
-
+    
     // Normaliza "pt-BR" para "pt"
     if (detectedLanguage === "pt-BR") {
       i18next.changeLanguage("pt");
@@ -44,7 +44,13 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
     } else {
       setCurrentLanguage(detectedLanguage);
     }
+    console.log('detectedLanguage FEAURE >>>', detectedLanguage)
   }, []);
+
+    // **Verifica se as traduções estão prontas antes de renderizar**
+    if (!ready) {
+      return <p>Loading...</p>;
+    }
 
   const defaultFeatures: Feature[] = [
     {

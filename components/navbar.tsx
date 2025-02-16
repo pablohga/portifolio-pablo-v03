@@ -39,6 +39,7 @@ export default function Navbar() {
 
     // Adicione um console.log para depurar o status da sessão
     console.log("Session Data:", session); 
+    
 
     if (session?.user?.id) {
       // Busca o slug do usuário com base no session.id
@@ -88,12 +89,12 @@ export default function Navbar() {
   // Componente para navbar autenticado em páginas de portfólio
   const AuthenticatedNavbarPort = () => {
     const links = [
-      { label: "Home", href: "/" },
-      { label: "About", href: "/about" },
-      { label: "Projects", href: "/projects" },
-      { label: "Edit Portfolio", href: "/dashboard" },
+      { label: t('Navbar.Home'), href: "/" },
+      { label: t('Navbar.About'), href: "/about" },
+      { label: t('Navbar.Projects'), href: "/projects" },
+      { label: t('Navbar.EditPortfolio'), href: "/dashboard" },
     ];
-    /* console.log('setCurrentLanguage NAVBAR!!!!', currentLanguage) */
+    console.log('setCurrentLanguage NAVBAR!!!!', currentLanguage)
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">
@@ -127,7 +128,7 @@ export default function Navbar() {
             </div>
             
             <Button variant="ghost" onClick={() => signOut()}>
-              Sign Out
+              {t('Navbar.SignOut')}
             </Button>
           </div>
         </div>
@@ -139,7 +140,7 @@ export default function Navbar() {
               className="w-full text-left py-2"
               onClick={() => signOut()}
             >
-              Sign Out
+              {t('Navbar.SignOut')}
             </Button>
           </div>
         )}
@@ -150,10 +151,10 @@ export default function Navbar() {
   //  Componente para navbar autenticado em outras páginas
   const AuthenticatedNavbar = () => {
     const links = [
-      { label: "Dashboard", href: "/dashboard" },
-      { label: "My Portfolio", href: `/${userSlug}` },
-      { label: "Settings", href: "/settings" },
-      { label: "Support", href: "/support" },
+      { label: t('Navbar.Dashboard'), href: "/dashboard" },
+      { label: t('Navbar.MyPortfolio'), href: `/${userSlug}` },
+      { label: t('Navbar.Settings'), href: "/settings" },
+      { label: t('Navbar.Support'), href: "/support" },
     ];
 
     return (
@@ -188,7 +189,7 @@ export default function Navbar() {
               {firstName} <span className="text-primary">{lastName}</span>
             </div>
             <Button variant="ghost" onClick={() => signOut()}>
-              Sign Out
+              {t('Navbar.SignOut')}
             </Button>
           </div>
         </div>
@@ -201,7 +202,7 @@ export default function Navbar() {
               className="w-full text-left py-2"
               onClick={() => signOut()}
             >
-              Sign Out
+              {t('Navbar.SignOut')}
             </Button>
           </div>
         )}
@@ -212,10 +213,10 @@ export default function Navbar() {
   // Componente para navbar de visitantes em páginas de portfólio
   const VisitorNavbarPortfolio = () => {
     const links = [
-      { label: "Home", href: "/" },
-      { label: "About the Creator", href: "/about" },
-      { label: "Projects", href: "/projects" },
-      { label: "Create My Portfolio", href: "/auth/register" },
+      { label: t('Navbar.Home'), href: "/" },
+      { label: t('Navbar.AboutTheCreator'), href: "/about" },
+      { label: t('Navbar.Projects'), href: "/projects" },
+      { label: t('Navbar.CreateMyPortfolio'), href: "/auth/register" },
     ];
 
     return (
@@ -260,12 +261,12 @@ export default function Navbar() {
   // Componente para navbar de visitantes em outras páginas
   const VisitorNavbar = () => {
     const links = [
-      { label: "Home", href: "/" },
-      { label: "Features", href: "/#features" },
-      { label: "Pricing", href: "/#pricing" },
-      { label: "Support", href: "/support" },
-      { label: "Sign In", href: "/auth/signin" },
-      { label: "Sign Up", href: "/auth/register" },
+      { label: t('Navbar.Home'), href: "/" },
+      { label: t('Navbar.Features'), href: "/#features" },
+      { label: t('Navbar.Pricing'), href: "/#pricing" },
+      { label: t('Navbar.Support'), href: "/support" },
+      { label: t('Navbar.SignIn'), href: "/auth/signin" },
+      { label: t('Navbar.SignUp'), href: "/auth/register" },
     ];
 
     return (
