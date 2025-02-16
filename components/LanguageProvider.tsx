@@ -1,23 +1,40 @@
-"use client"; // Marca este componente como um Client Component
+"use client";
 
-import { useEffect } from "react";
-import i18next  from "@/lib/i18next-config";
+import { createContext, useEffect, useState } from "react";
+import i18next from "i18next";
+
+export const LanguageContext = createContext({
+  language: "en",
+  setLanguage: (lang: string) => {}
+});
 
 export default function LanguageProvider({ children }: { children: React.ReactNode }) {
+  const [language, setLanguage] = useState(i18next.language || "en");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const supportedLocales = ["en", "pt", "es"];
-  const searchParams = new URLSearchParams(window.location.search); // Acessa a query string
-  const lngParam = searchParams.get("lng"); // Obtém o idioma da query string
+  const searchParams = new URLSearchParams(window.location.search);
+  const lngParam = searchParams.get("lng");
 
   useEffect(() => {
     if (lngParam && !supportedLocales.includes(lngParam)) {
-      // Redireciona para a página 404 se o idioma não for suportado
-      window.location.href = "/404"; // Substitua pelo redirecionamento correto
+      window.location.href = "/404";
     } else if (lngParam) {
-      // Define o idioma no i18next
       i18next.changeLanguage(lngParam);
+      setLanguage(lngParam);
     }
   }, [lngParam, supportedLocales]);
 
-  return <>{children}</>;
+  const handleLanguageChange = (lang: string) => {
+    i18next.changeLanguage(lang);
+    setLanguage(lang);
+  };
+
+  return (
+    <LanguageContext.Provider value={{ 
+      language, 
+      setLanguage: handleLanguageChange 
+    }}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }

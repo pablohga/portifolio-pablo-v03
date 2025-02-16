@@ -1,10 +1,10 @@
 "use client";
 
+import { useContext } from "react";
 import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next"; // Hook de tradução
-import i18next from "@/lib/i18next-config";
+import { useTranslation } from "react-i18next";
+import { LanguageContext } from "../LanguageProvider";
 import DOMPurify from "isomorphic-dompurify";
 
 interface Feature {
@@ -31,26 +31,12 @@ const iconComponents = {
 };
 
 export function FeaturesSection({ data }: FeaturesSectionProps) {
-  const { t, ready } = useTranslation(); // Hook do i18next para traduções
-  const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
+  const { t, ready } = useTranslation();
+  const { language } = useContext(LanguageContext);
 
-  useEffect(() => {
-    const detectedLanguage = i18next.language;
-    
-    // Normaliza "pt-BR" para "pt"
-    if (detectedLanguage === "pt-BR") {
-      i18next.changeLanguage("pt");
-      setCurrentLanguage("pt");
-    } else {
-      setCurrentLanguage(detectedLanguage);
-    }
-    console.log('detectedLanguage FEAURE >>>', detectedLanguage)
-  }, []);
-
-    // **Verifica se as traduções estão prontas antes de renderizar**
-    if (!ready) {
-      return <p>Loading...</p>;
-    }
+  if (!ready) {
+    return <p>Loading...</p>;
+  }
 
   const defaultFeatures: Feature[] = [
     {
@@ -85,8 +71,8 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
     },
   ];
 
-  const features = defaultFeatures; // Garantir que há um fallback caso `data.features` não exista.
-  console.log('setCurrentLanguage Feature!!!!', currentLanguage)
+  const features = defaultFeatures;
+  
   return (
     <section
       id="features"
@@ -100,19 +86,20 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          {/* Título sanitizado */}
           <h2
             className="text-primary text-4xl font-bold mb-4"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(t("featuresSection.title")),
             }}
-            suppressHydrationWarning={true}/>
-          {/* Subtítulo sanitizado */}
+            suppressHydrationWarning={true}
+          />
           <p
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(t("featuresSection.subtitle")),
-            }} suppressHydrationWarning={true}/>
+            }}
+            suppressHydrationWarning={true}
+          />
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -136,13 +123,17 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
                     className="text-foreground text-xl font-semibold mb-2"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(feature.title || ""),
-                    }} suppressHydrationWarning={true}/>
+                    }}
+                    suppressHydrationWarning={true}
+                  />
                 </div>
                 <div
                   className="text-foreground"
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(feature.description || ""),
-                  }} suppressHydrationWarning={true}/>
+                  }}
+                  suppressHydrationWarning={true}
+                />
               </motion.div>
             );
           })}

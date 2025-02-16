@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import { AuthProvider } from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { headers } from "next/headers";
+import LanguageProvider from "@/components/LanguageProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const dynamic = "force-dynamic";
@@ -79,11 +80,13 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body className={inter.className}>
         <AuthProvider>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <Navbar />
-            {children}
-            <Toaster />
-          </ThemeProvider>
+          <LanguageProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+              <Navbar />
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </LanguageProvider>
         </AuthProvider>
       </body>
     </html>
