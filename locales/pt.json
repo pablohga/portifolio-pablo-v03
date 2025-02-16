@@ -2,6 +2,22 @@
   "translation": {
     "header": "Cabeçalho!",
     "footer": "Rodapé {{ year }}",
+    "Navbar": {
+      "Home": "Início",
+      "About": "Sobre",
+      "Projects": "Projetos",
+      "Edit Portfolio": "Editar Portfólio",
+      "Dashboard": "Painel",
+      "My Portfolio": "Meu Portfólio",
+      "Settings": "Configurações",
+      "Support": "Suporte",
+      "About the Creator": "Sobre o Criador",
+      "Create My Portfolio": "Criar Meu Portfólio",
+      "Features": "Recursos",
+      "Pricing": "Planos",
+      "Sign In": "Entrar",
+      "Sign Up": "Cadastrar-se"
+    },
     "HeroSection": {
       "title": "Crie seu portfólio profissional sem gastar nada",
       "subtitle": "",
@@ -42,7 +58,7 @@
         "feature6": {
           "icon": "Rocket",
           "title": "Configuração Rápida",
-          "description": "Coloque seu portfólio no ar em minutos com nosso processo intuitivo. Nenhum conhecimento técnico necessário."
+          "description": "Coloque seu portfólio online em minutos com nosso processo intuitivo. Sem necessidade de conhecimentos técnicos."
         }
       }
     },
@@ -51,7 +67,7 @@
       "subtitle": "Encontre o plano perfeito para suas necessidades",
       "plans": [
         {
-          "name": "Gratuito",
+          "name": "Grátis",
           "price": "0",
           "description": "Perfeito para começar",
           "features": [
@@ -59,13 +75,13 @@
             "3 Projetos por Categoria",
             "Portfólio Personalizado",
             "Domínio Personalizado",
-            "Otimizado para SEO",
-            "Suporte por E-mail"
+            "SEO Otimizado",
+            "Suporte por Email"
           ],
           "buttonText": "Começar Grátis"
         },
         {
-          "name": "Pago",
+          "name": "Assinante",
           "price": "29.90",
           "description": "Para freelancers estabelecidos",
           "features": [
@@ -76,7 +92,7 @@
             "Otimizado para SEO",
             "Suporte Prioritário",
             "Temas Premium",
-            "Análises Avançadas"
+            "Analytics Avançado"
           ],
           "buttonText": "Comece Agora",
           "popular": true
@@ -86,10 +102,10 @@
           "price": "79.90",
           "description": "Solução completa para crescimento",
           "features": [
-            "Tudo no Plano Pago",
+            "Tudo do plano Assinante",
             "Sistema de Gestão de Clientes",
             "Gestão Financeira Completa",
-            "Curso de Carreira para Freelancers",
+            "Curso: Carreira Freelancer",
             "Mentoria em Grupo",
             "Comunidade VIP",
             "Acesso Antecipado a Recursos",
@@ -101,6 +117,6 @@
     }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",
-  "dashboard": "Painel de Controle",
+  "dashboard": "Painel",
   "login": "Entrar"
 }

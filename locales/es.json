@@ -1,17 +1,33 @@
 {
   "translation": {
-    "header": "¡Encabezado!",
+    "header": "Encabezado!",
     "footer": "Pie de página {{ year }}",
+    "Navbar": {
+      "Home": "Inicio",
+      "About": "Acerca de",
+      "Projects": "Proyectos",
+      "Edit Portfolio": "Editar Portafolio",
+      "Dashboard": "Panel",
+      "My Portfolio": "Mi Portafolio",
+      "Settings": "Configuraciones",
+      "Support": "Soporte",
+      "About the Creator": "Acerca del Creador",
+      "Create My Portfolio": "Crear Mi Portafolio",
+      "Features": "Características",
+      "Pricing": "Planes",
+      "Sign In": "Iniciar Sesión",
+      "Sign Up": "Registrarse"
+    },
     "HeroSection": {
       "title": "Crea tu portafolio profesional sin gastar nada",
       "subtitle": "",
       "description": "",
-      "text": "Crea tu increíble sitio web de portafolio completamente gratis. Sin costos ocultos, sin necesidad de tarjeta de crédito, solo puro valor para freelancers.",
+      "text": "Crea tu increíble sitio web de portafolio completamente gratis. Sin tarifas ocultas, sin necesidad de tarjeta de crédito, solo valor puro para freelancers.",
       "button": "Comienza Gratis Ahora"
     },
     "featuresSection": {
       "title": "Todo lo que Necesitas, Gratis",
-      "subtitle": "Creemos que todo freelancer merece una presencia profesional en línea. Por eso, hemos creado nuestro constructor de portafolios completamente gratuito.",
+      "subtitle": "Creemos que todo freelancer merece una presencia profesional en línea. Por eso, hicimos nuestro creador de portafolios completamente gratuito.",
       "description": "",
       "features": {
         "feature1": {
@@ -22,27 +38,27 @@
         "feature2": {
           "icon": "Search",
           "title": "Optimizado para SEO",
-          "description": "Sé encontrado por clientes con nuestras herramientas SEO integradas. Mejora tu visibilidad en los resultados de búsqueda."
+          "description": "Haz que los clientes te encuentren con nuestras herramientas de SEO integradas. Mejora tu ranking en los resultados de búsqueda de manera natural."
         },
         "feature3": {
           "icon": "Zap",
           "title": "Extremadamente Rápido",
-          "description": "Construido con Next.js para un rendimiento increíble que complace a los visitantes y motores de búsqueda."
+          "description": "Construido con Next.js para un rendimiento impresionante que agrada tanto a los visitantes como a los motores de búsqueda."
         },
         "feature4": {
           "icon": "Shield",
-          "title": "Seguro y Confiable",
+          "title": "Seguro & Confiable",
           "description": "Tu portafolio está protegido con seguridad de nivel empresarial y alojado en una infraestructura confiable."
         },
         "feature5": {
           "icon": "Palette",
           "title": "Plantillas Hermosas",
-          "description": "Elige entre nuestra colección de plantillas profesionales que hacen que tu trabajo destaque."
+          "description": "Elige entre nuestra colección de plantillas diseñadas profesionalmente que harán que tu trabajo brille."
         },
         "feature6": {
           "icon": "Rocket",
           "title": "Configuración Rápida",
-          "description": "Pon tu portafolio en línea en minutos con nuestro proceso intuitivo. No se requieren conocimientos técnicos."
+          "description": "Publica tu portafolio en línea en minutos con nuestro proceso intuitivo. Sin necesidad de conocimientos técnicos."
         }
       }
     },
@@ -59,13 +75,13 @@
             "3 Proyectos por Categoría",
             "Portafolio Personalizado",
             "Dominio Personalizado",
-            "Optimizado para SEO",
+            "SEO Optimizado",
             "Soporte por Correo Electrónico"
           ],
           "buttonText": "Comenzar Gratis"
         },
         {
-          "name": "Pagado",
+          "name": "Suscripción",
           "price": "29.90",
           "description": "Para freelancers establecidos",
           "features": [
@@ -76,9 +92,9 @@
             "Optimizado para SEO",
             "Soporte Prioritario",
             "Temas Premium",
-            "Análisis Avanzado"
+            "Analítica Avanzada"
           ],
-          "buttonText": "Comienza Ahora",
+          "buttonText": "Suscribirse Ahora",
           "popular": true
         },
         {
@@ -86,21 +102,21 @@
           "price": "79.90",
           "description": "Solución completa para el crecimiento",
           "features": [
-            "Todo en el Plan Pagado",
+            "Todo en el plan Suscripción",
             "Sistema de Gestión de Clientes",
             "Gestión Financiera Completa",
-            "Curso de Carrera para Freelancers",
+            "Curso: Carrera Freelancer",
             "Mentoría en Grupo",
             "Comunidad VIP",
             "Acceso Anticipado a Funciones",
             "Soporte 24/7"
           ],
-          "buttonText": "Comienza Ahora"
+          "buttonText": "Suscribirse Ahora"
         }
       ]
     }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
-  "dashboard": "Panel de Control",
+  "dashboard": "Panel",
   "login": "Iniciar Sesión"
 }
