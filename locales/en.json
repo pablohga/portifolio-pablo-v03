@@ -19,6 +19,31 @@
       "SignUp": "Sign Up",
       "SignOut": "Sign Out"
     },
+    "Dashboard":{
+      "title":"Dashboard",
+      "ViewYourPortfolio":"View your Portfolio",
+      "ProfileSettings":"Profile / Settings",
+      "Welcome":"Welcome",
+      "EditHeroBannerSection":"Edit Hero Banner Section",
+      "EditSectionAboutYou":"Edit section About You",
+      "EditSeoSettings":"Edit SEO Settings",
+      "EditContactSettings":"Edit Contact Settings",
+      "ManageCustomers":"Manage customers",
+      "HomePageEdit":"Home Page Edit",
+      "PaymentPlans":"Payment plans",
+      "ManagePortifyUsers":"Manage Portify Users",
+      "Categories":"Categories",
+      "AddCategories":"Add categories",
+      "Edit":"Edit",
+      "Delete":"Delete",
+      "DeleteCategory":"Delete category",
+      "DeleteThisCategory":"Are you sure you want to delete this category? This action cannot be undone.",
+      "Cancel":"Cancelar",
+      "NoProjects":"No projects in this category yet.",
+      "Projects":"Projects",
+      "AddProjects":"Add Projects"
+    },
+    
     "HeroSection": {
       "title": "Create your professional portfolio without spending anything",
       "subtitle": "",

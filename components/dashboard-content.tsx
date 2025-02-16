@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 /* import { fetchSubscritionByEmail } from "@/lib/stripe"; */
 
 interface DashboardContentProps {
@@ -56,18 +57,21 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
   const userEmail = session?.user?.email as string
+  const { t, ready } = useTranslation();
 
-  /* const subscription = await fetchSubscritionByEmail(userEmail) */
 
   useEffect(() => {
-    /* console.log('session?.user?.subscriptionTier: ', session?.user?.subscriptionTier) */
-    Promise.all([
+      Promise.all([
       fetchProjects(),
       fetchCategories(),
       /* fetchSubscritionByEmail(userEmail) */
     ]).finally(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!ready) {
+    return <p>Loading...</p>;
+  }
 
   async function fetchProjects() {
     try {
@@ -375,12 +379,12 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       <div className="mb-8 space-y-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
             <Link 
               href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
               className="inline-flex items-center text-primary hover:underline"
             >
-              View your Portfolio
+              {t("Dashboard.ViewYourPortfolio")}
               <ExternalLink className="ml-1 h-4 w-4" />
             </Link>
           </div>
@@ -388,33 +392,33 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             <Button variant="outline" asChild>
               <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
                 <Settings className="h-4 w-4" />
-                Profile / Settings
+                {t("Dashboard.ProfileSettings")}
               </Link>
             </Button>
             <div className="text-lg font-medium">
-              Welcome, {firstName} <span className="text-primary">{lastName}</span>
+            {t("Dashboard.Welcome")}Welcome, {firstName} <span className="text-primary">{lastName}</span>
             </div>
               <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
           </div>
         </div>
         <div className="flex flex-wrap gap-4">
           <Button onClick={() => setIsHeroDialogOpen(true)}>
-            Edit Hero Banner Section
+            {t("Dashboard.EditHeroBannerSection")}
           </Button>
           <Button onClick={() => setIsAboutDialogOpen(true)}>
-            Edit section About You
+            {t("Dashboard.EditSectionAboutYou")}
           </Button>
           <Button onClick={() => setIsSEODialogOpen(true)}>
-            Edit SEO Settings
+            {t("Dashboard.EditSeoSettings")}
           </Button>
           <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
-            Edit Contact Settings
+            {t("Dashboard.EditContactSettings")}
           </Button>
           {session?.user?.subscriptionTier === 'premium' && (
             <Button asChild>
               <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
                 <UserCircle className="h-4 w-4" />
-                Manage customers
+                {t("Dashboard.ManageCustomers")}
               </Link>
             </Button>
           )}
@@ -422,16 +426,16 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             <>
               <Button onClick={() => setIsHomeEditorOpen(true)}>
                 <Home className="mr-2 h-4 w-4" />
-                Home Page Edit
+                {t("Dashboard.HomePageEdit")}
               </Button>
               <Button onClick={() => setIsPaymentPlansOpen(true)}>
                 <DollarSign className="mr-2 h-4 w-4" />
-                Payment plans
+                {t("Dashboard.PaymentPlans")}
               </Button>
               <Button asChild>
                 <Link href="/dashboard/users" className="inline-flex items-center gap-2">
                   <Users className="h-4 w-4" />
-                  Manage Portify Users
+                  {t("Dashboard.ManagePortifyUsers")}
                 </Link>
               </Button>
             </>
@@ -441,13 +445,15 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Categories</h2>
+          <h2 className="text-2xl font-bold">
+            {t("Dashboard.Categories")}
+          </h2>
           <Button onClick={() => {
             setSelectedCategory(null);
             setIsCategoryDialogOpen(true);
           }}>
             <Plus className="w-4 h-4 mr-2" />
-            Add categories
+            {t("Dashboard.AddCategories")}
           </Button>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -474,28 +480,32 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                       setIsCategoryDialogOpen(true);
                     }}
                   >
-                    Edit
+                    {t("Dashboard.Edit")}
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive" size="sm">
-                        Delete
+                        {t("Dashboard.Delete")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete category</AlertDialogTitle>
+                        <AlertDialogTitle>
+                          {t("Dashboard.DeleteCategory")}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete this category?This action cannot be undone.
+                          {t("Dashboard.DeleteThisCategory")}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogCancel>
+                          {t("Dashboard.Cancel")}
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleDeleteCategory(category._id)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Delete
+                          {t("Dashboard.Delete")}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -509,10 +519,12 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Projects</h2>
+          <h2 className="text-2xl font-bold">
+            {t("Dashboard.Projects")}
+          </h2>
           <Button onClick={() => setIsProjectDialogOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Add projects
+            {t("Dashboard.AddProjects")}
           </Button>
         </div>
 
@@ -545,7 +557,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               </div>
               {projects.filter((project) => project.category === category.id).length === 0 && (
                 <p className="text-center text-muted-foreground py-8">
-                  No projects in this category yet.
+                  {t("Dashboard.NoProjects")}
                 </p>
               )}
             </TabsContent>
