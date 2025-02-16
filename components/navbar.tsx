@@ -32,45 +32,18 @@ export default function Navbar() {
       )
     : { firstName: "", lastName: "" };
 
-    /* useEffect(() => {
-      if (typeof window !== "undefined") {
-        const checkPortfolioPage = () => {
-          setIsPortfolioPage(document?.title?.includes(" - Portfolio"));
-        };
-    
-        checkPortfolioPage();
-        
-        if (session?.user?.id) {
-      // Busca o slug do usuário com base no session.id
-      fetchUserSlug(session.user.id).then((slug) => {
-        if (slug) {
-         //  console.log("User Slug:", slug); Exibe o slug no console
-          setUserSlug(slug); // Define o estado com o slug
-        }
-      });
-    }
-    
-        const observer = new MutationObserver(checkPortfolioPage);
-        observer.observe(document.querySelector("title") as Node, { childList: true });
-    
-        return () => observer.disconnect();
-      }
-    }, []); */
-
   useEffect(() => {
     // Detected language by i18next
     const detectedLanguage = i18next.language; 
     setCurrentLanguage(detectedLanguage);
 
     // Adicione um console.log para depurar o status da sessão
-    /* console.log("Session Status:", status);*/
     console.log("Session Data:", session); 
 
     if (session?.user?.id) {
       // Busca o slug do usuário com base no session.id
       fetchUserSlug(session.user.id).then((slug) => {
         if (slug) {
-         //  console.log("User Slug:", slug); Exibe o slug no console
           setUserSlug(slug); // Define o estado com o slug
         }
       });
@@ -120,7 +93,7 @@ export default function Navbar() {
       { label: "Projects", href: "/projects" },
       { label: "Edit Portfolio", href: "/dashboard" },
     ];
-    console.log('setCurrentLanguage!!!!', currentLanguage)
+    /* console.log('setCurrentLanguage NAVBAR!!!!', currentLanguage) */
 
     return (
       <nav className="fixed w-full z-50 top-0 px-4 py-3 bg-background/80 backdrop-blur-sm border-b">

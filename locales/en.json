@@ -2,6 +2,22 @@
   "translation": {
     "header": "Header!",
     "footer": "Footer {{ year }}",
+    "Navbar": {
+      "Home": "Home",
+      "About": "About",
+      "Projects": "Projects",
+      "Edit Portfolio": "Edit Portfolio",
+      "Dashboard": "Dashboard",
+      "My Portfolio": "My Portfolio",
+      "Settings": "Settings",
+      "Support": "Support",
+      "About the Creator": "About the Creator",
+      "Create My Portfolio": "Create My Portfolio",
+      "Features": "Features",
+      "Pricing": "Pricing",
+      "Sign In": "Sign In",
+      "Sign Up": "Sign Up"
+    },
     "HeroSection": {
       "title": "Create your professional portfolio without spending anything",
       "subtitle": "",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -18,6 +18,31 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ data }: HeroSectionProps) {
+  const { t, ready } = useTranslation(); // Hook do i18next para traduções
+  const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
+
+  ///////
+
+  useEffect(() => {
+    const detectedLanguage = i18next.language; 
+    setCurrentLanguage(detectedLanguage);
+  }, []);
+
+  //////
+  // **Verifica se as traduções estão prontas antes de renderizar**
+  if (!ready) {
+    return <p>Loading...</p>;
+  }
+  const defaultHeroContent = [
+    {
+      title: t("HeroSection.title"),
+      subtitle: t("HeroSection.subtitle"),
+      description: t("HeroSection.description"),
+      text: t("HeroSection.button"),
+      button: t("HeroSection.button")
+    },
+  ];
+  
   // guardado para quando atuaizar e for utiizar o conteudo do banco de dados
   /* const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en'); */
 
@@ -26,25 +51,14 @@ export default function HeroSection({ data }: HeroSectionProps) {
   const dataTitle = DOMPurify.sanitize(data?.title || "Create your professional portfolio without spending anything");
   const dataDescription = DOMPurify.sanitize(data?.description || "Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers.");
   const dataButtonText = DOMPurify.sanitize(data?.buttonText || "Start Free");
-  const { t, ready} = useTranslation(); // Use the hook to get translations
   
 // **Verifica se as traduções estão prontas antes de renderizar**
-if (!ready) {
-  return <p>Loading...</p>;
-}
 
-const defaultHeroContent = [
-  {
-    title: t("HeroSection.title"),
-    subtitle: t("HeroSection.subtitle"),
-    description: t("HeroSection.description"),
-    text: t("HeroSection.button"),
-    button: t("HeroSection.button")
-  },
-];
+
 
 const heroContent = defaultHeroContent; // Garantir que há um fallback caso `data.features` não exista.
-console.log('heroContent---', heroContent)
+
+console.log('setCurrentLanguage HERO!!!!', currentLanguage)
 
   return (
     <section className="relative min-h-screen flex items-center justify-left overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean-transformed_new1.png')] bg-cover h-64 w-full">

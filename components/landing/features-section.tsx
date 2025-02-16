@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next"; // Hook de tradução
+import i18next from "@/lib/i18next-config";
 import DOMPurify from "isomorphic-dompurify";
 
 interface Feature {
@@ -31,11 +32,19 @@ const iconComponents = {
 
 export function FeaturesSection({ data }: FeaturesSectionProps) {
   const { t, ready } = useTranslation(); // Hook do i18next para traduções
+  const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
 
-  // **Verifica se as traduções estão prontas antes de renderizar**
-  if (!ready) {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    const detectedLanguage = i18next.language;
+
+    // Normaliza "pt-BR" para "pt"
+    if (detectedLanguage === "pt-BR") {
+      i18next.changeLanguage("pt");
+      setCurrentLanguage("pt");
+    } else {
+      setCurrentLanguage(detectedLanguage);
+    }
+  }, []);
 
   const defaultFeatures: Feature[] = [
     {
@@ -71,7 +80,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   ];
 
   const features = defaultFeatures; // Garantir que há um fallback caso `data.features` não exista.
-
+  console.log('setCurrentLanguage Feature!!!!', currentLanguage)
   return (
     <section
       id="features"
