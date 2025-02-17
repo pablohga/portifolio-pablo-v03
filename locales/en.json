@@ -19,31 +19,30 @@
       "SignUp": "Sign Up",
       "SignOut": "Sign Out"
     },
-    "Dashboard":{
-      "title":"Dashboard",
-      "ViewYourPortfolio":"View your Portfolio",
-      "ProfileSettings":"Profile / Settings",
-      "Welcome":"Welcome",
-      "EditHeroBannerSection":"Edit Hero Banner Section",
-      "EditSectionAboutYou":"Edit section About You",
-      "EditSeoSettings":"Edit SEO Settings",
-      "EditContactSettings":"Edit Contact Settings",
-      "ManageCustomers":"Manage customers",
-      "HomePageEdit":"Home Page Edit",
-      "PaymentPlans":"Payment plans",
-      "ManagePortifyUsers":"Manage Portify Users",
-      "Categories":"Categories",
-      "AddCategories":"Add categories",
-      "Edit":"Edit",
-      "Delete":"Delete",
-      "DeleteCategory":"Delete category",
-      "DeleteThisCategory":"Are you sure you want to delete this category? This action cannot be undone.",
-      "Cancel":"Cancelar",
-      "NoProjects":"No projects in this category yet.",
-      "Projects":"Projects",
-      "AddProjects":"Add Projects"
+    "Dashboard": {
+      "title": "Dashboard",
+      "ViewYourPortfolio": "View your Portfolio",
+      "ProfileSettings": "Profile / Settings",
+      "Welcome": "Welcome",
+      "EditHeroBannerSection": "Edit Hero Banner Section",
+      "EditSectionAboutYou": "Edit About You Section",
+      "EditSeoSettings": "Edit SEO Settings",
+      "EditContactSettings": "Edit Contact Settings",
+      "ManageCustomers": "Manage Customers",
+      "HomePageEdit": "Edit Home Page",
+      "PaymentPlans": "Payment Plans",
+      "ManagePortifyUsers": "Manage Portify Users",
+      "Categories": "Categories",
+      "AddCategories": "Add Categories",
+      "Edit": "Edit",
+      "Delete": "Delete",
+      "DeleteCategory": "Delete Category",
+      "DeleteThisCategory": "Are you sure you want to delete this category? This action cannot be undone.",
+      "Cancel": "Cancel",
+      "NoProjects": "No projects in this category yet.",
+      "Projects": "Projects",
+      "AddProjects": "Add Projects"
     },
-    
     "HeroSection": {
       "title": "Create your professional portfolio without spending anything",
       "subtitle": "",
@@ -140,6 +139,37 @@
           "buttonText": "Get Started Now"
         }
       ]
+    },
+    "comingSoonSection": {
+      "title": "Enhance Your Freelance Business",
+      "subtitle": "Get early access to our upcoming premium features designed to help you manage your freelance business like a pro.",
+      "features": {
+        "feature1": {
+          "icon": "DollarSign",
+          "title": "Income Management",
+          "description": "Track your earnings, expenses, and profit margins in real-time."
+        },
+        "feature2": {
+          "icon": "Users",
+          "title": "Client Management",
+          "description": "Manage client information, projects, and communication in one place."
+        },
+        "feature3": {
+          "icon": "FileText",
+          "title": "Invoice Generation",
+          "description": "Create and send professional invoices with automated reminders."
+        },
+        "feature4": {
+          "icon": "PieChart",
+          "title": "Financial Reports",
+          "description": "Gain insights into your business with detailed financial analytics."
+        },
+        "feature5": {
+          "icon": "Calendar",
+          "title": "Project Planning",
+          "description": "Schedule projects, set milestones, and track deadlines efficiently."
+        }
+      }
     }
   },
   "welcomeMessage": "Welcome to Portify!",

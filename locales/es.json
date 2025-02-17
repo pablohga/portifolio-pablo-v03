@@ -18,7 +18,6 @@
       "SignIn": "Iniciar Sesión",
       "SignUp": "Registrarse",
       "SignOut": "Salir"
-      
     },
     "HeroSection": {
       "title": "Crea tu portafolio profesional sin gastar nada",
@@ -116,6 +115,37 @@
           "buttonText": "Suscribirse Ahora"
         }
       ]
+    },
+    "comingSoonSection": {
+      "title": "Potencia Tu Negocio Freelance",
+      "subtitle": "Obtén acceso anticipado a nuestras próximas funciones premium diseñadas para ayudarte a gestionar tu negocio freelance como un profesional.",
+      "features": {
+        "feature1": {
+          "icon": "DollarSign",
+          "title": "Gestión de Ingresos",
+          "description": "Haz un seguimiento de tus ganancias, gastos y márgenes de beneficio en tiempo real."
+        },
+        "feature2": {
+          "icon": "Users",
+          "title": "Gestión de Clientes",
+          "description": "Administra información de clientes, proyectos y comunicación en un solo lugar."
+        },
+        "feature3": {
+          "icon": "FileText",
+          "title": "Generación de Facturas",
+          "description": "Crea y envía facturas profesionales con recordatorios automatizados."
+        },
+        "feature4": {
+          "icon": "PieChart",
+          "title": "Informes Financieros",
+          "description": "Obtén información detallada sobre tu negocio con análisis financieros avanzados."
+        },
+        "feature5": {
+          "icon": "Calendar",
+          "title": "Planificación de Proyectos",
+          "description": "Programa proyectos, define hitos y sigue los plazos de manera eficiente."
+        }
+      }
     }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",

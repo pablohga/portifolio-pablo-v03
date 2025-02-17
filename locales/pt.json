@@ -139,6 +139,37 @@
           "buttonText": "Comece Agora"
         }
       ]
+    },
+    "comingSoonSection": {
+      "title": "Potencialize Seu Negócio Freelancer",
+      "subtitle": "Tenha acesso antecipado aos nossos próximos recursos premium projetados para ajudar você a gerenciar seu negócio freelancer como um profissional.",
+      "features": {
+        "feature1": {
+          "icon": "DollarSign",
+          "title": "Gestão de Renda",
+          "description": "Acompanhe seus ganhos, despesas e margens de lucro em tempo real."
+        },
+        "feature2": {
+          "icon": "Users",
+          "title": "Gerenciamento de Clientes",
+          "description": "Gerencie informações de clientes, projetos e comunicação em um só lugar."
+        },
+        "feature3": {
+          "icon": "FileText",
+          "title": "Criação de Faturas",
+          "description": "Crie e envie faturas profissionais com lembretes automatizados."
+        },
+        "feature4": {
+          "icon": "PieChart",
+          "title": "Relatórios Financeiros",
+          "description": "Obtenha insights sobre seu negócio com análises financeiras detalhadas."
+        },
+        "feature5": {
+          "icon": "Calendar",
+          "title": "Planejamento de Projetos",
+          "description": "Agende projetos, defina marcos e acompanhe prazos de forma eficiente."
+        }
+      }
     }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",
