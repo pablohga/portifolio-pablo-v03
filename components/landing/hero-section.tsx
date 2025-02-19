@@ -71,9 +71,9 @@ console.log('setCurrentLanguage HERO!!!!', currentLanguage)
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center justify-center gap-2 mb-6">
-              <span className="text-primary font-semibold">
+              {/* <span className="text-primary font-semibold">
                 <span dangerouslySetInnerHTML={{ __html: dataSubtitle }} />
-              </span>
+              </span> */}
               <p
               className="text-xl text-muted-foreground max-w-2xl mx-auto"
               dangerouslySetInnerHTML={{

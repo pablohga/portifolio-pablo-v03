@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-montserrat)'],
+        heading: ['var(--font-oxanium)'],
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -88,6 +92,18 @@ const config: Config = {
           css: {
             maxWidth: 'none',
             color: 'inherit',
+            h1: {
+              fontFamily: 'var(--font-oxanium)',
+              color: 'inherit',
+            },
+            h2: {
+              fontFamily: 'var(--font-oxanium)',
+              color: 'inherit',
+            },
+            h3: {
+              fontFamily: 'var(--font-oxanium)',
+              color: 'inherit',
+            },
             a: {
               color: 'inherit',
               textDecoration: 'none',
@@ -143,15 +159,6 @@ const config: Config = {
               marginTop: '1.6em',
               marginBottom: '1.6em',
               paddingLeft: '1em',
-            },
-            h1: {
-              color: 'inherit',
-            },
-            h2: {
-              color: 'inherit',
-            },
-            h3: {
-              color: 'inherit',
             },
             h4: {
               color: 'inherit',

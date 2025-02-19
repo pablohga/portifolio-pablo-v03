@@ -24,6 +24,8 @@
     --input: 0 0% 89.8%; /* Campos de entrada com fundo cinza claro */
     --ring: 192 94% 84%; /* Anéis de foco usando a cor primária */
     --radius: 0.5rem; /* Bordas arredondadas */
+    --font-heading: var(--font-oxanium);
+    --font-sans: var(--font-montserrat);
   }
 
   .dark {

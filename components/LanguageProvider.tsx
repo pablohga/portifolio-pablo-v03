@@ -9,13 +9,36 @@ export const LanguageContext = createContext({
 });
 
 export default function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState(i18next.language || "en");
+  const [language, setLanguage] = useState("en");
+  const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const supportedLocales = ["en", "pt", "es"];
-  const searchParams = new URLSearchParams(window.location.search);
-  const lngParam = searchParams.get("lng");
+  const [lngParam, setLngParam] = useState<string | null>(null);
+
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const param = searchParams.get("lng");
+      const storedLang = localStorage.getItem("i18nextLng") || "en";
+      
+      if (param && supportedLocales.includes(param)) {
+        i18next.changeLanguage(param);
+        setLanguage(param);
+      } else if (supportedLocales.includes(storedLang)) {
+        i18next.changeLanguage(storedLang);
+        setLanguage(storedLang);
+      }
+      
+      setLngParam(param);
+      setIsLoading(false);
+    }
+  //  eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+  useEffect(() => {
+
     if (lngParam && !supportedLocales.includes(lngParam)) {
       window.location.href = "/404";
     } else if (lngParam) {
@@ -29,6 +52,10 @@ export default function LanguageProvider({ children }: { children: React.ReactNo
     setLanguage(lang);
   };
 
+  if (isLoading) {
+    return null; // Or a loading spinner
+  }
+
   return (
     <LanguageContext.Provider value={{ 
       language, 
@@ -37,4 +64,5 @@ export default function LanguageProvider({ children }: { children: React.ReactNo
       {children}
     </LanguageContext.Provider>
   );
+
 }

@@ -74,7 +74,7 @@ export function ComingSoonSection() {
             <Bell className="h-4 w-4" />
             Em Breve
           </span> */}
-          <h2 className="text-4xl font-bold mb-4">
+          <h2 className="text-4xl font-bold mb-4 font-heading">
             {t("comingSoonSection.title")}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

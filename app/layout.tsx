@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import { Inter } from "next/font/google";
+/* import { Inter } from "next/font/google"; */
+import { Montserrat, Oxanium } from 'next/font/google';
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar";
@@ -8,7 +9,18 @@ import { Toaster } from "@/components/ui/toaster";
 import { headers } from "next/headers";
 import LanguageProvider from "@/components/LanguageProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({ 
+  weight: ['400', '600'],
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+});
+
+const oxanium = Oxanium({
+  weight: ['500', '600'],
+  subsets: ['latin'],
+  variable: '--font-oxanium',
+});
+
 export const dynamic = "force-dynamic";
 interface GenerateMetadataParams {
   params: {
@@ -77,8 +89,8 @@ export default async function RootLayout({
 }) {
   const locale = params.locale || "en";
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang={locale} className={`${oxanium.variable} ${montserrat.variable}`} suppressHydrationWarning>
+      <body className={`${montserrat.className}`}>
         <AuthProvider>
           <LanguageProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
