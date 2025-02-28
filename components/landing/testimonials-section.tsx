@@ -4,38 +4,43 @@ import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { TestimonialsSection as TestimonialsSectionType } from "@/types/home";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 interface TestimonialsSectionProps {
   data?: TestimonialsSectionType;
 }
 
-const defaultTestimonials = [
-  {
-    name: "Sarah Johnson",
-    role: "Designer UI/UX",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200",
-    content: "Esta plataforma me ajudou a conseguir mais clientes do que nunca. Os templates de portfólio são lindos e as opções de personalização são infinitas.",
-  },
-  {
-    name: "Michael Chen",
-    role: "Desenvolvedor Frontend",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200",
-    content: "Configurar meu portfólio foi muito fácil. Os recursos de SEO melhoraram significativamente minha visibilidade online.",
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Designer Gráfica",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&h=200",
-    content: "O melhor investimento que fiz para minha carreira freelancer. Meu portfólio parece profissional e atrai clientes de alta qualidade.",
-  },
-];
+
 
 export function TestimonialsSection({ data }: TestimonialsSectionProps) {
+  const { t, ready } = useTranslation();
+
+  const defaultTestimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Designer UI/UX",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200",
+      content: t("Testimonials.testimonial1"),
+    },
+    {
+      name: "Michael Chen",
+      role: "Desenvolvedor Frontend",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200",
+      content: t("Testimonials.testimonial2"),
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Designer Gráfica",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&h=200",
+      content: t("Testimonials.testimonial3"),
+    },
+  ];
+
   // FIX: ADICIONAR CONTEUDO DO data?.testimonials
   const testimonials = /* data?.testimonials || */ defaultTestimonials;
-  const title = data?.title || "Amado por Freelancers";
-  const subtitle = data?.subtitle || "Junte-se a milhares de freelancers de sucesso que transformaram sua presença online.";
-
+  const title = data?.title || t("Testimonials.title");
+  const subtitle = data?.subtitle || t("Testimonials.subtitle");
+  
   return (
     <section className="py-20 bg-background">
       <div className="container px-4 mx-auto max-w-[960px]">

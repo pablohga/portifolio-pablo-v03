@@ -156,6 +156,13 @@
       "upgradeToPremium": "Actualizar a Premium",
       "error": "Error",
       "errorDescription": "Error al procesar la solicitud de actualización"
+    },
+      "Testimonials": {
+      "title": "Amado por Freelancers",
+      "subtitle": "Únete a miles de freelancers exitosos que transformaron su presencia en línea.",
+      "testimonial1": "Esta plataforma me ayudó a conseguir más clientes que nunca. Las plantillas de portafolio son hermosas y las opciones de personalización son infinitas.",
+      "testimonial2": "Configurar mi portafolio fue muy fácil. Las funciones de SEO mejoraron significativamente mi visibilidad en línea.",
+      "testimonial3": "La mejor inversión que hice para mi carrera como freelancer. Mi portafolio se ve profesional y atrae clientes de alta calidad."
     }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
