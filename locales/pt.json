@@ -170,6 +170,16 @@
           "description": "Agende projetos, defina marcos e acompanhe prazos de forma eficiente."
         }
       }
+    },
+    "Subscription": {
+      "title": "Assinatura",
+      "description": "Gerencie sua assinatura e informações de cobrança.",
+      "currentPlanFeatures": "Recursos do Plano Atual",
+      "currentPlanDescription": "Veja e gerencie seu nível de assinatura atual.",
+      "upgradeToPaid": "Atualizar para Pago",
+      "upgradeToPremium": "Atualizar para Premium",
+      "error": "Erro",
+      "errorDescription": "Falha ao processar a solicitação de atualização"
     }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",

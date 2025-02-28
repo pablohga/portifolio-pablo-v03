@@ -146,6 +146,16 @@
           "description": "Programa proyectos, define hitos y sigue los plazos de manera eficiente."
         }
       }
+    },
+      "Subscription": {
+      "title": "Suscripción",
+      "description": "Administra tu suscripción y la información de facturación.",
+      "currentPlanFeatures": "Características del Plan Actual",
+      "currentPlanDescription": "Ver y gestionar tu nivel de suscripción actual.",
+      "upgradeToPaid": "Actualizar a Pagado",
+      "upgradeToPremium": "Actualizar a Premium",
+      "error": "Error",
+      "errorDescription": "Error al procesar la solicitud de actualización"
     }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",

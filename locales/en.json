@@ -170,6 +170,16 @@
           "description": "Schedule projects, set milestones, and track deadlines efficiently."
         }
       }
+    },
+      "Subscription": {
+      "title": "Subscription",
+      "description": "Manage your subscription and billing information.",
+      "currentPlanFeatures": "Current Plan Features",
+      "currentPlanDescription": "View and manage your current subscription tier.",
+      "upgradeToPaid": "Upgrade to Paid",
+      "upgradeToPremium": "Upgrade to Premium",
+      "error": "Error",
+      "errorDescription": "Failed to process upgrade request"
     }
   },
   "welcomeMessage": "Welcome to Portify!",
