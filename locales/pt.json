@@ -187,7 +187,21 @@
       "testimonial1": "Esta plataforma me ayudó a conseguir más clientes que nunca. Las plantillas de portafolio son hermosas y las opciones de personalización son infinitas.",
       "testimonial2": "Configurar mi portafolio fue muy fácil. Las funciones de SEO mejoraron significativamente mi visibilidad en línea.",
       "testimonial3": "La mejor inversión que hice para mi carrera como freelancer. Mi portafolio se ve profesional y atrae clientes de alta calidad."
-    }
+    },
+    "FAQ": {
+    "title": "Perguntas Frequentes",
+    "subtitle": "Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.",
+    "question1": "Quais são as limitações do plano gratuito?",
+    "answer1": "O plano gratuito permite criar até 3 categorias, com 3 projetos em cada categoria. Você terá acesso a todas as funcionalidades básicas do portfólio, incluindo personalização, SEO e domínio personalizado.",
+    "question2": "Como funciona o plano Pagante?",
+    "answer2": "O plano Pagante remove todas as limitações de categorias e projetos. Você pode criar quantas categorias desejar e adicionar quantos projetos precisar. Além disso, tem acesso a temas premium e analytics avançado.",
+    "question3": "O que está incluído no plano Premium?",
+    "answer3": "O plano Premium inclui todas as funcionalidades do plano Pagante, mais acesso ao sistema de gestão de clientes, gestão financeira, curso exclusivo sobre carreira freelancer, mentoria em grupo e comunidade VIP.",
+    "question4": "Posso mudar de plano depois?",
+    "answer4": "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Ao fazer upgrade, você terá acesso imediato a todas as funcionalidades do novo plano.",
+    "question5": "Como funciona o curso de carreira freelancer?",
+    "answer5": "O curso é exclusivo para assinantes Premium e inclui módulos sobre precificação, gestão de projetos, marketing pessoal, captação de clientes e muito mais. O conteúdo é atualizado regularmente."
+  }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",
   "dashboard": "Painel",

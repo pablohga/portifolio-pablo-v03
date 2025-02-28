@@ -8,38 +8,61 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { FAQSection as FAQSectionType } from "@/types/home";
+import { useTranslation } from "react-i18next";
 
 interface FAQSectionProps {
   data?: FAQSectionType;
 }
 
-const defaultFAQs = [
-  {
-    question: "Quais são as limitações do plano gratuito?",
-    answer: "O plano gratuito permite criar até 3 categorias, com 3 projetos em cada categoria. Você terá acesso a todas as funcionalidades básicas do portfólio, incluindo personalização, SEO e domínio personalizado.",
-  },
-  {
-    question: "Como funciona o plano Pagante?",
-    answer: "O plano Pagante remove todas as limitações de categorias e projetos. Você pode criar quantas categorias desejar e adicionar quantos projetos precisar. Além disso, tem acesso a temas premium e analytics avançado.",
-  },
-  {
-    question: "O que está incluído no plano Premium?",
-    answer: "O plano Premium inclui todas as funcionalidades do plano Pagante, mais acesso ao sistema de gestão de clientes, gestão financeira, curso exclusivo sobre carreira freelancer, mentoria em grupo e comunidade VIP.",
-  },
-  {
-    question: "Posso mudar de plano depois?",
-    answer: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Ao fazer upgrade, você terá acesso imediato a todas as funcionalidades do novo plano.",
-  },
-  {
-    question: "Como funciona o curso de carreira freelancer?",
-    answer: "O curso é exclusivo para assinantes Premium e inclui módulos sobre precificação, gestão de projetos, marketing pessoal, captação de clientes e muito mais. O conteúdo é atualizado regularmente.",
-  },
-];
+/* FAQ
+
+"question1": "What are the limitations of the free plan?",
+    "answer1": "The free plan allows you to create up to 3 categories, with 3 projects in each category. You will have access to all basic portfolio features, including customization, SEO, and custom domain.",
+    "question2": "How does the Paid plan work?",
+    "answer2": "The Paid plan removes all limitations on categories and projects. You can create as many categories as you want and add as many projects as you need. Additionally, you have access to premium themes and advanced analytics.",
+    "question3": "What is included in the Premium plan?",
+    "answer3": "The Premium plan includes all features of the Paid plan, plus access to the client management system, financial management, an exclusive course on freelance careers, group mentoring, and a VIP community.",
+    "question4": "Can I change plans later?",
+    "answer4": "Yes! You can upgrade or downgrade your plan at any time. When you upgrade, you will have immediate access to all features of the new plan.",
+    "question5": "How does the freelance career course work?",
+    "answer5": "The course is exclusive to Premium subscribers and includes modules on pricing, project management, personal marketing, client acquisition, and much more. The content is regularly updated."
+  
+
+*/
+
+
+
 
 export function FAQSection({ data }: FAQSectionProps) {
-  const faqs = data?.faqs || defaultFAQs;
-  const title = data?.title || "Perguntas Frequentes";
-  const subtitle = data?.subtitle || "Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.";
+  const { t, ready } = useTranslation();
+
+  const defaultFAQs = [
+    {
+      question: t('FAQ.question1'),
+      answer: t('FAQ.answer1'),
+    },
+    {
+      question: t('FAQ.question2'),
+      answer: t('FAQ.answer2'),
+    },
+    {
+      question: t('FAQ.question3'),
+      answer: t('FAQ.answer3'),
+    },
+    {
+      question: t('FAQ.question4'),
+      answer: t('FAQ.answer4'),
+    },
+    {
+      question: t('FAQ.question5'),
+      answer: t('FAQ.answer5'),
+    },
+  ];
+
+  // FIX QUANDO ESTIVER COM TODAS AS LINGUAGENS NO BANCO DE DADOS
+  const faqs = /* data?.faqs || */ defaultFAQs;
+  const title = /* data?.title || */ t("FAQ.title");
+  const subtitle = /* data?.subtitle || */ t("FAQ.subtitle");
 
   return (
     <section className="py-20 bg-background">
