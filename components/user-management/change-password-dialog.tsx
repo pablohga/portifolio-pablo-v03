@@ -74,6 +74,7 @@ export function ChangePasswordDialog({
       toast({
         title: "Success",
         description: "Password updated successfully",
+        variant: "success",
       });
       
       onOpenChange(false);

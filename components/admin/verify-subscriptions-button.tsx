@@ -33,6 +33,7 @@ export function VerifySubscriptionsButton({ onVerificationComplete }: VerifySubs
       toast({
         title: "Success",
         description: "Subscription verification completed",
+        variant: "success",
       });
 
       onVerificationComplete();

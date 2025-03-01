@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -59,6 +60,7 @@ export function PersonalInfo({ user }: PersonalInfoProps) {
       toast({
         title: "Success",
         description: "Profile updated successfully",
+        variant: "success",
       });
     } catch (error: any) {
       toast({
@@ -106,6 +108,7 @@ export function PersonalInfo({ user }: PersonalInfoProps) {
         toast({
           title: "Success",
           description: "Profile picture updated successfully!",
+          variant: "success",
         });
       } else {
         throw new Error("Failed to upload image.");
@@ -179,7 +182,7 @@ export function PersonalInfo({ user }: PersonalInfoProps) {
                       disabled={isUploading}
                     />
                     {field.value && (
-                      <img
+                      <Image
                         src={field.value}
                         alt="Uploaded Preview"
                         className="w-[350px] aspect-[1/1] bg-cover bg-center"

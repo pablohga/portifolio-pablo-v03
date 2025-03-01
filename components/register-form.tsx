@@ -104,7 +104,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
       toast({
         title: "Error",
         description: "Slug is not available. Please choose another one.",
-        variant: "destructive",
+        variant: "error",
       });
       return;
     }
@@ -134,7 +134,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
       toast({
         title: "Error",
         description: error.message,
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setIsLoading(false);

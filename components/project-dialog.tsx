@@ -211,6 +211,7 @@ export function ProjectDialog({
                               toast({
                                 title: "Success",
                                 description: "Image uploaded successfully!",
+                                variant: "success",
                               });
                             } else {
                               toast({

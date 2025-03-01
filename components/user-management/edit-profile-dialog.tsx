@@ -76,6 +76,7 @@ export function EditProfileDialog({
       toast({
         title: "Success",
         description: "Profile updated successfully",
+        variant: "success",
       });
       
       onUpdate();

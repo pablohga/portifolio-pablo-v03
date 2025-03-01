@@ -135,6 +135,7 @@ export function PostPaymentRegistrationForm({ email, plan }: RegistrationFormPro
       toast({
         title: "Success",
         description: "Registration completed successfully",
+        variant: "success",
       });
 
       router.push("/dashboard");

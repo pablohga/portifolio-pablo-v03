@@ -33,7 +33,7 @@ export function RecoverPasswordForm() {
       toast({
         title: "Success",
         description: "Recovery email sent successfully!",
-        variant: "default",
+        variant: "success",
       });
     } catch (error: any) {
       toast({

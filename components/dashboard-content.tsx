@@ -99,6 +99,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Hero section updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -125,6 +126,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "SEO settings updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -150,6 +152,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "About section updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -173,6 +176,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Contact settings updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -196,6 +200,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Home page updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -233,6 +238,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Project created successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -257,6 +263,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Project updated successfully",
+        variant: "success",
        });
     } catch (error) {
       toast({
@@ -279,6 +286,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Project deleted successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -306,6 +314,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Category created successfully",
+        variant: "success",
       });
     } catch (error: any) {
       toast({
@@ -334,6 +343,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Category updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -356,6 +366,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Success",
         description: "Category deleted successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({

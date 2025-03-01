@@ -52,7 +52,7 @@ async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
         toast({
           title: "Success",
           description: "Password has been reset successfully!",
-          variant: "default",
+          variant: "success",
 
       });
       router.push("/auth/signin"); // Redirect to login page after success
@@ -61,7 +61,7 @@ async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
       toast({
         title: "Error",
         description: error.message,
-        variant: "destructive",
+        variant: "error",
       });
     } finally {
       setIsLoading(false);

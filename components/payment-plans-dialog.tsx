@@ -93,6 +93,7 @@ export function PaymentPlansDialog({
       toast({
         title: "Success",
         description: "Payment plans updated successfully",
+        variant: "success",
       });
 
       onOpenChange(false);

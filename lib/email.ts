@@ -117,9 +117,10 @@ export async function sendRecoveryEmail(email: string, name: string, token: stri
       <h1>Recuperação de Senha</h1>
       <p>Você solicitou a recuperação de sua senha. Clique no botão abaixo para redefinir sua senha.</p>
       <div style="text-align: center;">
-        <a href="${recoveryUrl}" style="display: inline-block; padding: 12px 24px; background-color: #5221e6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;>
+        <a href="${recoveryUrl}" style="display: inline-block; padding: 12px 24px; background-color: #5221e6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">
           Redefinir Minha Senha
         </a>
+        <br/>
       </div>
       <p style="margin-top: 20px; font-size: 14px;">Se você não solicitou esta recuperação, por favor ignore este email.</p>
     `;

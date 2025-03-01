@@ -57,6 +57,7 @@ export function ContactForm({ userId }: ContactFormProps) {
       toast({
         title: "Success",
         description: "Your message has been sent successfully!",
+        variant: "success",
       });
       
       form.reset();

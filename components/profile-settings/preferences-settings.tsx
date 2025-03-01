@@ -56,6 +56,7 @@ export function PreferencesSettings({ userId }: PreferencesSettingsProps) {
       toast({
         title: "Success",
         description: "Preferences updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({

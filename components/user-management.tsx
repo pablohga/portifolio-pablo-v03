@@ -102,6 +102,7 @@ export function UserManagement() {
       toast({
         title: "Success",
         description: "User role updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -126,6 +127,7 @@ export function UserManagement() {
       toast({
         title: "Success",
         description: "Subscription tier updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -148,6 +150,7 @@ export function UserManagement() {
       toast({
         title: "Success",
         description: "User deleted successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({

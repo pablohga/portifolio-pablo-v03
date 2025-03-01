@@ -91,6 +91,7 @@ export function ClientDialog({
       toast({
         title: "Success",
         description: `Client ${client?._id ? "updated" : "created"} successfully`,
+        variant: "success",
       });
 
       onSubmit();

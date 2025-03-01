@@ -62,6 +62,7 @@ export function SecuritySettings({ userId }: SecuritySettingsProps) {
       toast({
         title: "Success",
         description: "Password updated successfully",
+        variant: "success",
       });
 
       form.reset();

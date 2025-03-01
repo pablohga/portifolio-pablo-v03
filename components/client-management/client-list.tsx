@@ -84,6 +84,7 @@ export function ClientList({ userId }: ClientListProps) {
       toast({
         title: "Success",
         description: "Client deleted successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({

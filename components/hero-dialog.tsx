@@ -96,6 +96,7 @@ export function HeroDialog({
         toast({
           title: "Success",
           description: "Image charged successfully!",
+          variant: "success",
         });
       } else {
         throw new Error("Error loading the image.");

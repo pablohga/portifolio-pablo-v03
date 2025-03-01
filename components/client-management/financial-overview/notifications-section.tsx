@@ -98,6 +98,7 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
       toast({
         title: "Success",
         description: "Notification settings updated successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
@@ -122,6 +123,7 @@ export function NotificationsSection({ userId }: NotificationsSectionProps) {
       toast({
         title: "Success",
         description: "Test email sent successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({

@@ -64,6 +64,7 @@ export function SubscriptionManagement({ currentTier, email }: SubscriptionManag
       toast({
         title: "Success",
         description: "Your subscription has been cancelled",
+        variant: "success",
       });
 
       router.refresh();

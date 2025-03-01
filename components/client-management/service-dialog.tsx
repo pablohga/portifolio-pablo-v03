@@ -127,6 +127,7 @@ export function ServiceDialog({
       toast({
         title: "Success",
         description: `Service ${service?._id ? "updated" : "created"} successfully`,
+        variant: "success",
       });
 
       onSubmit(updatedService);

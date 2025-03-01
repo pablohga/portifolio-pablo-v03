@@ -115,6 +115,7 @@ export function ServiceList({ userId }: ServiceListProps) {
       toast({
         title: "Success",
         description: "Service deleted successfully",
+        variant: "success",
       });
     } catch (error) {
       toast({
