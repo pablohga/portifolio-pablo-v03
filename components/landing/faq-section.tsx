@@ -14,25 +14,6 @@ interface FAQSectionProps {
   data?: FAQSectionType;
 }
 
-/* FAQ
-
-"question1": "What are the limitations of the free plan?",
-    "answer1": "The free plan allows you to create up to 3 categories, with 3 projects in each category. You will have access to all basic portfolio features, including customization, SEO, and custom domain.",
-    "question2": "How does the Paid plan work?",
-    "answer2": "The Paid plan removes all limitations on categories and projects. You can create as many categories as you want and add as many projects as you need. Additionally, you have access to premium themes and advanced analytics.",
-    "question3": "What is included in the Premium plan?",
-    "answer3": "The Premium plan includes all features of the Paid plan, plus access to the client management system, financial management, an exclusive course on freelance careers, group mentoring, and a VIP community.",
-    "question4": "Can I change plans later?",
-    "answer4": "Yes! You can upgrade or downgrade your plan at any time. When you upgrade, you will have immediate access to all features of the new plan.",
-    "question5": "How does the freelance career course work?",
-    "answer5": "The course is exclusive to Premium subscribers and includes modules on pricing, project management, personal marketing, client acquisition, and much more. The content is regularly updated."
-  
-
-*/
-
-
-
-
 export function FAQSection({ data }: FAQSectionProps) {
   const { t, ready } = useTranslation();
 

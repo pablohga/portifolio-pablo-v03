@@ -201,6 +201,14 @@
     "answer4": "Yes! You can upgrade or downgrade your plan at any time. When you upgrade, you will have immediate access to all features of the new plan.",
     "question5": "How does the freelance career course work?",
     "answer5": "The course is exclusive to Premium subscribers and includes modules on pricing, project management, personal marketing, client acquisition, and much more. The content is regularly updated."
+  },
+  "CTA": {
+    "title": "Start Creating Your Free Portfolio Today",
+    "subtitle": "Join thousands of freelancers showcasing their work and attracting better clients with our platform.",
+    "buttonText": "Create Your Portfolio",
+    "feature1": "100% Free",
+    "feature2": "No Credit Card Required",
+    "feature3": "Set Up in Minutes"
   }
   },
   "welcomeMessage": "Welcome to Portify!",

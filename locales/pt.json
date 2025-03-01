@@ -201,6 +201,14 @@
     "answer4": "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Ao fazer upgrade, você terá acesso imediato a todas as funcionalidades do novo plano.",
     "question5": "Como funciona o curso de carreira freelancer?",
     "answer5": "O curso é exclusivo para assinantes Premium e inclui módulos sobre precificação, gestão de projetos, marketing pessoal, captação de clientes e muito mais. O conteúdo é atualizado regularmente."
+  },
+  "CTA": {
+    "title": "Comece a Criar Seu Portfólio Gratuito Hoje",
+    "subtitle": "Junte-se a milhares de freelancers que estão mostrando seu trabalho e atraindo melhores clientes com nossa plataforma.",
+    "buttonText": "Criar Seu Portfólio",
+    "feature1": "100% Grátis",
+    "feature2": "Sem Cartão de Crédito",
+    "feature3": "Configure em Minutos"
   }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",

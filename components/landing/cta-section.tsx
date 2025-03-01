@@ -4,16 +4,21 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { CTASection as CTASectionType } from "@/types/home";
+import { useTranslation } from "react-i18next";
 
 interface CTASectionProps {
   data?: CTASectionType;
 }
 
 export function CTASection({ data }: CTASectionProps) {
-  const title = data?.title || "Comece a Criar Seu Portfólio Gratuito Hoje";
-  const subtitle = data?.subtitle || "Junte-se a milhares de freelancers que estão mostrando seu trabalho e atraindo melhores clientes com nossa plataforma.";
-  const buttonText = data?.buttonText || "Criar Seu Portfólio";
-  const features = data?.features || ["100% Grátis", "Sem Cartão de Crédito", "Configure em Minutos"];
+
+  const { t, ready } = useTranslation();
+  
+  // FIX QUANDO ESTIVER COM TODAS AS LINGUAGENS NO BANCO DE DADOS
+  const title = /* data?.title || */ t("CTA.title");
+  const subtitle = /* data?.subtitle || */ t("CTA.subtitle");
+  const buttonText = /* data?.buttonText || */ t("CTA.buttonText");
+  const features = /* data?.features || */ [t("CTA.feature1"), t("CTA.feature2"), t("CTA.feature3")];
 
   return (
     <section className="py-20 bg-primary/5">
