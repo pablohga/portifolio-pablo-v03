@@ -103,9 +103,43 @@ const emailTemplate = (content: string) => `
 </body>
 </html>
 `;
+export async function sendRecoveryEmail(email: string, name: string, token: string) {
+  try {
+    // Garantir que o transporter não seja null antes de usar
+    if (!transporter) {
+      console.log('Email sending skipped - SMTP not configured');
+      return;
+    }
+
+    const recoveryUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
+
+    const content = `
+      <h1>Recuperação de Senha</h1>
+      <p>Você solicitou a recuperação de sua senha. Clique no botão abaixo para redefinir sua senha.</p>
+      <div style="text-align: center;">
+        <a href="${recoveryUrl}" style="display: inline-block; padding: 12px 24px; background-color: #5221e6; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;>
+          Redefinir Minha Senha
+        </a>
+      </div>
+      <p style="margin-top: 20px; font-size: 14px;">Se você não solicitou esta recuperação, por favor ignore este email.</p>
+    `;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_FROM || 'noreply@example.com',
+      to: email,
+      subject: 'Recuperação de Senha - Portify',
+      html: emailTemplate(content),
+    });
+
+    console.log('Recovery email sent successfully to:', email);
+  } catch (error) {
+    console.log('Error sending recovery email:', error);
+  }
+  
+}
 
 export async function sendWelcomeEmail(email: string, name: string) {
-  console.log('sendWelcomeEmail');
+console.log('sendWelcomeEmail');
   try {
     // Garantir que o transporter não seja null antes de usar
     if (!transporter) {
@@ -141,6 +175,8 @@ export async function sendWelcomeEmail(email: string, name: string) {
     });
 
     console.log('Welcome email sent successfully to:', email);
+    console.log('Recovery email sent successfully to:', email);
+    console.log('Recovery email sent successfully to:', email);
   } catch (error) {
     /* console.error('Error sending welcome email:', error); */
     console.log('Error sending welcome email:', error);
