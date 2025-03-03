@@ -44,7 +44,8 @@ export async function PUT(request: Request) {
     // Find user with valid reset token
     const hashedToken = crypto.SHA256(token).toString();
     const user = await User.findOne({
-      resetToken: hashedToken,
+      /* resetToken: hashedToken, */
+      resetToken: token,
       resetTokenExpiry: { $gt: Date.now() },
     });
 

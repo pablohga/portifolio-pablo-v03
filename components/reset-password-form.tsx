@@ -7,21 +7,25 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 
-const resetPasswordSchema = z.object({
-  password: z.string().min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string().min(8, "Confirm Password must be at least 8 characters"),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(8, "Confirm Password must be at least 8 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 export function ResetPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
@@ -31,40 +35,37 @@ export function ResetPasswordForm() {
     },
   });
 
-async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
-  // Logic to reset the password goes here
-  const response = await fetch('/api/auth/reset-password', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ password: values.password }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to reset password');
-  }
-
+  async function onSubmit(values: { password: string; confirmPassword: string }) {
+    console.log("📩 Enviando requisição para redefinir senha...");
+  
+    if (!token) {
+      console.error("❌ Erro: Token ausente na URL!");
+      toast({ title: "Error", description: "Invalid or missing token.", variant: "destructive" });
+      return;
+    }
+  
+    console.log("🆔 Token sendo enviado:", token);
+    console.log("🔐 Nova senha:", values.password);
+  
     try {
-      setIsLoading(true);
-      // Logic to reset the password goes here
-      // Simulate success
-        toast({
-          title: "Success",
-          description: "Password has been reset successfully!",
-          variant: "success",
-
+      const response = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: values.password, token }),
       });
-      router.push("/auth/signin"); // Redirect to login page after success
-
+  
+      const data = await response.json();
+      console.log("📨 Resposta da API:", data);
+  
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to reset password");
+      }
+  
+      toast({ title: "Success", description: "Password has been reset successfully!", variant: "success" });
+      router.push("/auth/signin");
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "error",
-      });
-    } finally {
-      setIsLoading(false);
+      console.error("🔥 Erro na requisição:", error.message);
+      toast({ title: "Error", description: error.message || "Something went wrong", variant: "destructive" });
     }
   }
 
