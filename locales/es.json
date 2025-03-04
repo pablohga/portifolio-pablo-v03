@@ -189,7 +189,33 @@
   "ClientList": {
     "title": "Clientes",
     "addClient": "Agregar Cliente"
-  }
+  },
+  "ServiceList": {
+      "title": "Servicios",
+      "addService": "Agregar Servicio",
+      "noServicesFound": "No se encontraron servicios",
+      "edit": "Editar",
+      "deleteService": "Eliminar Servicio",
+      "deleteConfirmation": "¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer."
+    },
+    "ReportsSection": {
+      "selectClient": "Seleccionar cliente",
+      "allClients": "Todos los clientes",
+      "serviceStatus": "Estado del servicio",
+      "allStatus": "Todos los estados",
+      "pending": "Pendiente",
+      "inProgress": "En progreso",
+      "completed": "Completado",
+      "cancelled": "Cancelado",
+      "serviceType": "Tipo de servicio",
+      "allTypes": "Todos los tipos",
+      "exportPDF": "Exportar PDF",
+      "exportExcel": "Exportar Excel",
+      "financialReport": "Informe financiero",
+      "clientsReport": "Informe de clientes",
+      "servicesReport": "Informe de servicios",
+      "productivityReport": "Informe de productividad"
+    }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
   "dashboard": "Panel",

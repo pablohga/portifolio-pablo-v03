@@ -13,6 +13,7 @@ import { ServicesReport } from "./services-report";
 import { ProductivityReport } from "./productivity-report";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 interface ReportsSectionProps {
   userId: string;
@@ -26,7 +27,8 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
   const [selectedClient, setSelectedClient] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedServiceType, setSelectedServiceType] = useState("all");
-
+  const { t, ready } = useTranslation(); // Hook do i18next para traduções
+  
   const handleExportPDF = () => {
     // TODO: Implement PDF export
     console.log("Export to PDF");
@@ -50,41 +52,47 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
           />
           <Select value={selectedClient} onValueChange={setSelectedClient}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select client" />
+              <SelectValue placeholder={t("ReportsSection.selectClient")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Clients</SelectItem>
+              <SelectItem value="all">{t("ReportsSection.allClients")}</SelectItem>
               {/* Add client options dynamically */}
             </SelectContent>
           </Select>
           <Select value={selectedStatus} onValueChange={setSelectedStatus}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Service status" />
+              <SelectValue placeholder={t("ReportsSection.serviceStatus")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="all">{t("ReportsSection.allStatus")}</SelectItem>
+              <SelectItem value="pending">{t("ReportsSection.pending")}</SelectItem>
+              <SelectItem value="in_progress">{t("ReportsSection.inProgress")}</SelectItem>
+              <SelectItem value="completed">{t("ReportsSection.completed")}</SelectItem>
+              <SelectItem value="cancelled">{t("ReportsSection.cancelled")}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={selectedServiceType} onValueChange={setSelectedServiceType}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Service type" />
+              <SelectValue placeholder={t("ReportsSection.serviceType")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="all">{t("ReportsSection.allTypes")}</SelectItem>
               {/* Add service type options dynamically */}
             </SelectContent>
           </Select>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleExportPDF}>
+            <Button variant="outline" onClick={handleExportPDF}>
+              <Download className="mr-2 h-4 w-4" />
+              {t("ReportsSection.exportPDF")}
+
             <Download className="mr-2 h-4 w-4" />
             Export PDF
           </Button>
-          <Button variant="outline" onClick={handleExportExcel}>
+            <Button variant="outline" onClick={handleExportExcel}>
+              <Download className="mr-2 h-4 w-4" />
+              {t("ReportsSection.exportExcel")}
+
             <Download className="mr-2 h-4 w-4" />
             Export Excel
           </Button>
@@ -93,10 +101,10 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
 
       <Tabs defaultValue="financial" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="financial">Financial Report</TabsTrigger>
-          <TabsTrigger value="clients">Clients Report</TabsTrigger>
-          <TabsTrigger value="services">Services Report</TabsTrigger>
-          <TabsTrigger value="productivity">Productivity Report</TabsTrigger>
+          <TabsTrigger value="financial">{t("ReportsSection.financialReport")}</TabsTrigger>
+          <TabsTrigger value="clients">{t("ReportsSection.clientsReport")}</TabsTrigger>
+          <TabsTrigger value="services">{t("ReportsSection.servicesReport")}</TabsTrigger>
+          <TabsTrigger value="productivity">{t("ReportsSection.productivityReport")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="financial">

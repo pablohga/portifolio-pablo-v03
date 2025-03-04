@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -56,6 +57,7 @@ export function ServiceList({ userId }: ServiceListProps) {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const { toast } = useToast();
 
+  const { t, ready } = useTranslation(); // Hook do i18next para traduções
   useEffect(() => {
     Promise.all([
       fetchServices(),
@@ -145,10 +147,10 @@ export function ServiceList({ userId }: ServiceListProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Services</h2>
-        <Button onClick={handleAddService}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add Service
+        <h2 className="text-2xl font-bold">{t("ServiceList.title")}</h2>
+          <Button onClick={handleAddService}>
+            <Plus className="w-4 h-4 mr-2" />
+            {t("ServiceList.addService")}
         </Button>
       </div>
 
@@ -168,7 +170,7 @@ export function ServiceList({ userId }: ServiceListProps) {
             {services.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center">
-                  No services found
+                  {t("ServiceList.noServicesFound")}
                 </TableCell>
               </TableRow>
             ) : (
@@ -217,9 +219,9 @@ export function ServiceList({ userId }: ServiceListProps) {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Service</AlertDialogTitle>
+                            <AlertDialogTitle>{t("ServiceList.deleteService")}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Are you sure you want to delete this service? This action cannot be undone.
+                              {t("ServiceList.deleteConfirmation")}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
