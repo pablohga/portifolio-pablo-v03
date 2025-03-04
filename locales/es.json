@@ -198,6 +198,24 @@
       "deleteService": "Eliminar Servicio",
       "deleteConfirmation": "¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer."
     },
+    "ReportsSection": {
+      "selectClient": "Seleccionar cliente",
+      "allClients": "Todos los Clientes",
+      "serviceStatus": "Estado del servicio",
+      "allStatus": "Todos los Estados",
+      "pending": "Pendiente",
+      "inProgress": "En Progreso",
+      "completed": "Completado",
+      "cancelled": "Cancelado",
+      "serviceType": "Tipo de servicio",
+      "allTypes": "Todos los Tipos",
+      "exportPDF": "Exportar PDF",
+      "exportExcel": "Exportar Excel",
+      "financialReport": "Informe Financiero",
+      "clientsReport": "Informe de Clientes",
+      "servicesReport": "Informe de Servicios",
+      "productivityReport": "Informe de Productividad"
+    },
     "FinancialOverview": {
       "totalRevenue": "Ingresos Totales",
       "pendingPayments": "Pagos Pendientes",

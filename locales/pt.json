@@ -222,6 +222,24 @@
       "deleteService": "Excluir Serviço",
       "deleteConfirmation": "Você tem certeza de que deseja excluir este serviço? Esta ação não pode ser desfeita."
     },
+    "ReportsSection": {
+      "selectClient": "Selecionar cliente",
+      "allClients": "Todos os Clientes",
+      "serviceStatus": "Status do serviço",
+      "allStatus": "Todos os Status",
+      "pending": "Pendente",
+      "inProgress": "Em Progresso",
+      "completed": "Concluído",
+      "cancelled": "Cancelado",
+      "serviceType": "Tipo de serviço",
+      "allTypes": "Todos os Tipos",
+      "exportPDF": "Exportar PDF",
+      "exportExcel": "Exportar Excel",
+      "financialReport": "Relatório Financeiro",
+      "clientsReport": "Relatório de Clientes",
+      "servicesReport": "Relatório de Serviços",
+      "productivityReport": "Relatório de Produtividade"
+    },
     "FinancialOverview": {
       "totalRevenue": "Receita Total",
       "pendingPayments": "Pagamentos Pendentes",

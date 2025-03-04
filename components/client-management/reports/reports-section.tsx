@@ -27,8 +27,8 @@ export function ReportsSection({ userId }: ReportsSectionProps) {
   const [selectedClient, setSelectedClient] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedServiceType, setSelectedServiceType] = useState("all");
-  const { t, ready } = useTranslation(); // Hook do i18next para traduções
   
+  const { t, ready } = useTranslation(); // Hook do i18next para traduções
   const handleExportPDF = () => {
     // TODO: Implement PDF export
     console.log("Export to PDF");
