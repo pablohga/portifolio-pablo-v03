@@ -198,23 +198,18 @@
       "deleteService": "Eliminar Servicio",
       "deleteConfirmation": "¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer."
     },
-    "ReportsSection": {
-      "selectClient": "Seleccionar cliente",
-      "allClients": "Todos los clientes",
-      "serviceStatus": "Estado del servicio",
-      "allStatus": "Todos los estados",
-      "pending": "Pendiente",
-      "inProgress": "En progreso",
-      "completed": "Completado",
-      "cancelled": "Cancelado",
-      "serviceType": "Tipo de servicio",
-      "allTypes": "Todos los tipos",
-      "exportPDF": "Exportar PDF",
-      "exportExcel": "Exportar Excel",
-      "financialReport": "Informe financiero",
-      "clientsReport": "Informe de clientes",
-      "servicesReport": "Informe de servicios",
-      "productivityReport": "Informe de productividad"
+    "FinancialOverview": {
+      "totalRevenue": "Ingresos Totales",
+      "pendingPayments": "Pagos Pendientes",
+      "completedProjects": "Proyectos Completados",
+      "activeProjects": "Proyectos Activos",
+      "overview": "Resumen",
+      "analytics": "Analítica",
+      "reports": "Informes",
+      "notifications": "Notificaciones",
+      "detailedAnalytics": "Analítica Detallada",
+      "financialReports": "Informes Financieros",
+      "financialNotifications": "Notificaciones Financieras"
     }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
