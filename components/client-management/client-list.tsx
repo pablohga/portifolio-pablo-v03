@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ClientDialog } from "./client-dialog";
@@ -30,6 +31,8 @@ interface ClientListProps {
 }
 
 export function ClientList({ userId }: ClientListProps) {
+
+  const { t, ready } = useTranslation(); // Hook do i18next para traduções
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -102,10 +105,10 @@ export function ClientList({ userId }: ClientListProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Clients</h2>
-        <Button onClick={handleAddClient}>
-          <Plus className="w-4 h-4 mr-2" />
-          Add Client
+        <h2 className="text-2xl font-bold">{t("ClientList.title")}</h2>
+          <Button onClick={handleAddClient}>
+            <Plus className="w-4 h-4 mr-2" />
+            {t("ClientList.addClient")}
         </Button>
       </div>
 

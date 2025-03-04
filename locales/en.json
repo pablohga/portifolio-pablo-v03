@@ -209,8 +209,13 @@
     "feature1": "100% Free",
     "feature2": "No Credit Card Required",
     "feature3": "Set Up in Minutes"
+  },
+  "ClientList": {
+    "title": "Clients",
+    "addClient": "Add Client"
   }
   },
+  
   "welcomeMessage": "Welcome to Portify!",
   "dashboard": "Dashboard",
   "login": "Login"

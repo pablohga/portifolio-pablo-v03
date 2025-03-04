@@ -185,6 +185,10 @@
     "feature1": "100% Gratis",
     "feature2": "Sin Tarjeta de Crédito",
     "feature3": "Configura en Minutos"
+  },
+  "ClientList": {
+    "title": "Clientes",
+    "addClient": "Agregar Cliente"
   }
   },
   "welcomeMessage": "¡Bienvenido a Portify!",
