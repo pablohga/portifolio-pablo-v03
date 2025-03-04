@@ -407,7 +407,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               </Link>
             </Button>
             <div className="text-lg font-medium">
-            {t("Dashboard.Welcome")}Welcome, {firstName} <span className="text-primary">{lastName}</span>
+            {t("Dashboard.Welcome")}, {firstName} <span className="text-primary">{lastName}</span>
             </div>
               <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
           </div>
