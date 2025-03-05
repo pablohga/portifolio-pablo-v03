@@ -63,6 +63,14 @@ export function ClientDetailsModal({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
+  useEffect(() => {
+    if (!open) {
+      // onOpenChange(false);  Apenas chama onOpenChange se estiver fechado
+      console.log('onOpenChange(false);')
+      
+    }
+  }, [open, onOpenChange]);
+
   async function fetchServices() {
     try {
       const response = await fetch(`/api/services?clientId=${client?._id}`);
