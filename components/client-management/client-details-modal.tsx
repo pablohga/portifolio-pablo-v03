@@ -60,6 +60,7 @@ export function ClientDetailsModal({
     if (client?._id) {
       fetchServices();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client]);
 
   async function fetchServices() {

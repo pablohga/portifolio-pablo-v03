@@ -3,17 +3,10 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "./ui/f
 import { Input } from "./ui/input";
 import { RichTextEditor } from "./rich-text-editor";
 import * as z from "zod"; // Importing zod
-<<<<<<< HEAD
 import { homeSchema, zodHomeSchema } from "@/models/home"; // Corrected import path
 
 interface HeroSectionProps {
   control: Control<z.infer<typeof zodHomeSchema>>;
-=======
-import { homeSchema } from "@/models/home"; // Corrected import path
-
-interface HeroSectionProps {
-  control: Control<z.infer<typeof homeSchema>>;
->>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
 }
 
 export function HeroSection({ control }: HeroSectionProps) {

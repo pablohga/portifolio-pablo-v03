@@ -1,9 +1,5 @@
 import { useFieldArray, Control, FieldValues } from "react-hook-form";
-<<<<<<< HEAD
 import { zodHomeSchema } from "../models/home"; // Added import for homeSchema
-=======
-import { homeSchema } from "../models/home"; // Added import for homeSchema
->>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
 
 
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "./ui/form";
@@ -12,7 +8,6 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Plus, Trash2 } from "lucide-react";
-<<<<<<< HEAD
 import { z } from "zod";
 
 export type HomeSchema = z.infer<typeof zodHomeSchema>;
@@ -22,13 +17,6 @@ interface FAQSectionProps {
   fields: FieldValues[];
   append: (data: z.infer<typeof zodHomeSchema>['faqSection']['faqs'][number]) => void;
   /* append: (data: FieldValues) => void; */
-=======
-
-interface FAQSectionProps {
-  control: Control<FieldValues>;
-  fields: FieldValues[];
-  append: (data: FieldValues) => void;
->>>>>>> d8d51fa5b5ececd53280b784d5ec2ecaf7bfd4af
   remove: (index: number) => void;
 }
 
