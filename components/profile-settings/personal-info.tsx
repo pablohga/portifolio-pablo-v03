@@ -26,6 +26,7 @@ const profileSchema = z.object({
 
 interface PersonalInfoProps {
   user: any;
+  onAvatarUpdate: (newAvatar: string) => void;
 }
 
 export function PersonalInfo({ user }: PersonalInfoProps) {
