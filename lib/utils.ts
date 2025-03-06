@@ -1,10 +1,15 @@
 // Add this function to the existing utils.ts file
+import crypto from 'crypto';
 
 export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   }).format(value);
+}
+
+export const generateToken = () => {
+  return crypto.randomBytes(32).toString('hex'); /// Gera um token seguro
 }
 
 export function formatName(name?: string | null | undefined): { firstName: string; lastName: string } {
