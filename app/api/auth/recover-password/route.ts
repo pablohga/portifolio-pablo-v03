@@ -4,7 +4,7 @@ import { sendRecoveryEmail } from "@/lib/email";
 import crypto from 'crypto';
 
 export const generateToken = () => {
-  return crypto.randomBytes(32).toString('hex'); // Gera um token seguro
+  return crypto.randomBytes(32).toString('hex'); /// Gera um token seguro
 }
 
 export async function POST(request: Request) {
