@@ -26,6 +26,7 @@ export function useAnalyticsData(userId: string) {
     try {
       const response = await fetch(`/api/services?userId=${userId}`);
       const data = await response.json();
+      console.log("📊 Dados recebidos da API:", data);
       setServices(data);
     } catch (error) {
       toast({

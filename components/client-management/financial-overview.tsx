@@ -6,6 +6,7 @@ import { DollarSign, TrendingUp, TrendingDown, Activity } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnalyticsSection } from "./financial-overview/analytics-section";
 import { useTranslation } from "react-i18next";
+import { PerformanceAnalysis } from "./financial-overview/performance-analysis";
 interface FinancialOverviewProps {
   userId: string;
 }
@@ -192,6 +193,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
               <p className="text-sm text-muted-foreground">
                 Detailed analytics will be implemented here
               </p>
+              <PerformanceAnalysis userId={userId}/>
             </CardContent>
           </Card>
         </TabsContent>

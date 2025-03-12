@@ -1,4 +1,5 @@
 export interface Service {
+  expense: any;
   _id: string;
   clientId: string;
   title: string;
