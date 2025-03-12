@@ -26,8 +26,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ExpenseDialog } from "./financial-overview/expense-dialog";
 
 interface Service {
+  _id: string;
+  clientId: string;
+  title: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  value: number;
+  paymentStatus: 'pending' | 'partial' | 'paid';
+  startDate?: Date;
+  endDate?: Date;
+}
+interface Expense {
   _id: string;
   clientId: string;
   title: string;
@@ -51,10 +63,13 @@ interface ServiceListProps {
 
 export function ServiceList({ userId }: ServiceListProps) {
   const [services, setServices] = useState<Service[]>([]);
+  const [expenses, setExpenses] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpenExpense, setIsDialogOpenExpense] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const { toast } = useToast();
 
   const { t, ready } = useTranslation(); // Hook do i18next para traduções
@@ -63,6 +78,7 @@ export function ServiceList({ userId }: ServiceListProps) {
       fetchServices(),
       fetchClients()
     ]).finally(() => setIsLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchServices() {
@@ -99,10 +115,18 @@ export function ServiceList({ userId }: ServiceListProps) {
     setSelectedService(null);
     setIsDialogOpen(true);
   }
+  function handleAddExpense() {
+    setSelectedExpense(null);
+    setIsDialogOpenExpense(true);
+  }
 
   function handleEditService(service: Service) {
     setSelectedService(service);
     setIsDialogOpen(true);
+  }
+  function handleEditExpense(expense: Service) {
+    setSelectedExpense(expense);
+    setIsDialogOpenExpense(true);
   }
 
   async function handleDeleteService(id: string) {
@@ -127,10 +151,32 @@ export function ServiceList({ userId }: ServiceListProps) {
       });
     }
   }
+  async function handleDeleteExpense(id: string) {
+    try {
+      const response = await fetch(`/api/services/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error();
+
+      setServices(expenses.filter(expense => expense._id !== id));
+      toast({
+        title: "Success",
+        description: "Service deleted successfully",
+        variant: "success",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete service",
+        variant: "destructive",
+      });
+    }
+  }
 
   function handleServiceSubmit(updatedService: Service) {
     if (selectedService) {
-      // Update existing service
+      // Update existing service +++ selectedExpense
       setServices(services.map(service => 
         service._id === updatedService._id ? updatedService : service
       ));
@@ -144,14 +190,36 @@ export function ServiceList({ userId }: ServiceListProps) {
     return <div>Loading...</div>;
   }
 
+  function handleExpenseSubmit(updatedExpense: Service) {
+    if (selectedExpense) {
+      // Update existing service +++ selectedExpense
+      setServices(services.map(service => 
+        service._id === updatedExpense._id ? updatedExpense : service
+      ));
+    } else {
+      // Add new service
+      setExpenses([...services, updatedExpense]);
+    }
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">{t("ServiceList.title")}</h2>
-          <Button onClick={handleAddService}>
+          <Button id="Adicionar Serviço" onClick={handleAddService}> 
             <Plus className="w-4 h-4 mr-2" />
             {t("ServiceList.addService")}
-        </Button>
+          </Button>
+          {/* Add button for adding expenses */}
+          <Button id="Adicionar Dispesa" onClick={handleAddExpense}>
+          {/* <Button id="Adicionar Dispesa" onClick={() => setIsDialogOpen(true)}> */}
+            <Plus className="w-4 h-4 mr-2" />
+            Adicionar Dispesa
+          </Button>
       </div>
 
       <div className="rounded-md border">
@@ -244,12 +312,16 @@ export function ServiceList({ userId }: ServiceListProps) {
         </Table>
       </div>
 
-      <ServiceDialog
+      <ServiceDialog 
         clients={clients}
         service={selectedService}
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onSubmit={handleServiceSubmit}
+      />
+      <ExpenseDialog 
+        setShowExpenseDialog={setIsDialogOpenExpense}
+        open={isDialogOpenExpense} // Pass the open prop
       />
     </div>
   );
