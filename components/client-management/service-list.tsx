@@ -39,6 +39,7 @@ interface Service {
   startDate?: Date;
   endDate?: Date;
 }
+
 interface Expense {
   _id: string;
   clientId: string;
@@ -63,22 +64,18 @@ interface ServiceListProps {
 
 export function ServiceList({ userId }: ServiceListProps) {
   const [services, setServices] = useState<Service[]>([]);
-  const [expenses, setExpenses] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenExpense, setIsDialogOpenExpense] = useState(false);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const { toast } = useToast();
+  const { t, ready } = useTranslation();
 
-  const { t, ready } = useTranslation(); // Hook do i18next para traduções
   useEffect(() => {
-    Promise.all([
-      fetchServices(),
-      fetchClients()
-    ]).finally(() => setIsLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    Promise.all([fetchExpenses(), fetchServices(), fetchClients()]).finally(() => setIsLoading(false));
   }, []);
 
   async function fetchServices() {
@@ -91,6 +88,21 @@ export function ServiceList({ userId }: ServiceListProps) {
       toast({
         title: "Error",
         description: "Failed to fetch services",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchExpenses() {
+    try {
+      const response = await fetch(`/api/expenses?userId=${userId}`);
+      if (!response.ok) throw new Error();
+      const data = await response.json();
+      setExpenses(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch expenses",
         variant: "destructive",
       });
     }
@@ -115,6 +127,7 @@ export function ServiceList({ userId }: ServiceListProps) {
     setSelectedService(null);
     setIsDialogOpen(true);
   }
+
   function handleAddExpense() {
     setSelectedExpense(null);
     setIsDialogOpenExpense(true);
@@ -124,81 +137,49 @@ export function ServiceList({ userId }: ServiceListProps) {
     setSelectedService(service);
     setIsDialogOpen(true);
   }
-  function handleEditExpense(expense: Service) {
+
+  function handleEditExpense(expense: Expense) {
     setSelectedExpense(expense);
     setIsDialogOpenExpense(true);
   }
 
   async function handleDeleteService(id: string) {
     try {
-      const response = await fetch(`/api/services/${id}`, {
-        method: "DELETE",
-      });
-
+      const response = await fetch(`/api/services/${id}`, { method: "DELETE" });
       if (!response.ok) throw new Error();
 
       setServices(services.filter(service => service._id !== id));
-      toast({
-        title: "Success",
-        description: "Service deleted successfully",
-        variant: "success",
-      });
+      toast({ title: "Success", description: "Service deleted successfully", variant: "success" });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete service",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to delete service", variant: "destructive" });
     }
   }
+
   async function handleDeleteExpense(id: string) {
     try {
-      const response = await fetch(`/api/services/${id}`, {
-        method: "DELETE",
-      });
-
+      const response = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
       if (!response.ok) throw new Error();
 
-      setServices(expenses.filter(expense => expense._id !== id));
-      toast({
-        title: "Success",
-        description: "Service deleted successfully",
-        variant: "success",
-      });
+      setExpenses(expenses.filter(expense => expense._id !== id));
+      toast({ title: "Success", description: "Expense deleted successfully", variant: "success" });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete service",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to delete expense", variant: "destructive" });
     }
   }
 
   function handleServiceSubmit(updatedService: Service) {
     if (selectedService) {
-      // Update existing service +++ selectedExpense
-      setServices(services.map(service => 
-        service._id === updatedService._id ? updatedService : service
-      ));
+      setServices(services.map(service => (service._id === updatedService._id ? updatedService : service)));
     } else {
-      // Add new service
       setServices([...services, updatedService]);
     }
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  function handleExpenseSubmit(updatedExpense: Service) {
+  function handleExpenseSubmit(updatedExpense: Expense) {
     if (selectedExpense) {
-      // Update existing service +++ selectedExpense
-      setServices(services.map(service => 
-        service._id === updatedExpense._id ? updatedExpense : service
-      ));
+      setExpenses(expenses.map(expense => (expense._id === updatedExpense._id ? updatedExpense : expense)));
     } else {
-      // Add new service
-      setExpenses([...services, updatedExpense]);
+      setExpenses([...expenses, updatedExpense]);
     }
   }
 
@@ -210,18 +191,15 @@ export function ServiceList({ userId }: ServiceListProps) {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">{t("ServiceList.title")}</h2>
-          <Button id="Adicionar Serviço" onClick={handleAddService}> 
-            <Plus className="w-4 h-4 mr-2" />
-            {t("ServiceList.addService")}
-          </Button>
-          {/* Add button for adding expenses */}
-          <Button id="Adicionar Dispesa" onClick={handleAddExpense}>
-          {/* <Button id="Adicionar Dispesa" onClick={() => setIsDialogOpen(true)}> */}
-            <Plus className="w-4 h-4 mr-2" />
-            Adicionar Dispesa
-          </Button>
+        <Button onClick={handleAddService}>
+          <Plus className="w-4 h-4 mr-2" />
+          {t("ServiceList.addService")}
+        </Button>
+        <Button onClick={handleAddExpense}>
+          <Plus className="w-4 h-4 mr-2" />
+          {t("ServiceList.addExpense")}
+        </Button>
       </div>
-
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -312,17 +290,9 @@ export function ServiceList({ userId }: ServiceListProps) {
         </Table>
       </div>
 
-      <ServiceDialog 
-        clients={clients}
-        service={selectedService}
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        onSubmit={handleServiceSubmit}
-      />
-      <ExpenseDialog 
-        setShowExpenseDialog={setIsDialogOpenExpense}
-        open={isDialogOpenExpense} // Pass the open prop
-      />
+      <ServiceDialog clients={clients} service={selectedService} open={isDialogOpen} onOpenChange={setIsDialogOpen} onSubmit={handleServiceSubmit} />
+
+      <ExpenseDialog clients={clients} expense={selectedExpense} open={isDialogOpenExpense} onOpenChange={setIsDialogOpenExpense} onSubmit={handleExpenseSubmit} />
     </div>
   );
 }
