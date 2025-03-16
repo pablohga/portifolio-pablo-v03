@@ -126,7 +126,7 @@ export async function sendRecoveryEmail(email: string, name: string, token: stri
     `;
 
     await transporter.sendMail({
-      from: process.env.SMTP_FROM || 'noreply@example.com',
+      from: process.env.SMTP_FROM || 'noreply@portify.pt',
       to: email,
       subject: 'Recuperação de Senha - Portify',
       html: emailTemplate(content),
