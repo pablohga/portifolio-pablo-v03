@@ -65,6 +65,7 @@ interface ServiceListProps {
 export function ServiceList({ userId }: ServiceListProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenExpense, setIsDialogOpenExpense] = useState(false);
