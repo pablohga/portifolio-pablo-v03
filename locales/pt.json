@@ -222,6 +222,14 @@
       "deleteService": "Excluir Serviço",
       "deleteConfirmation": "Você tem certeza de que deseja excluir este serviço? Esta ação não pode ser desfeita."
     },
+    "ExpenseList": {
+      "title": "Dispesas",
+      "addExpense": "Adicionar Dispesas",
+      "noServicesFound": "Nenhuma dispesa encontrada",
+      "edit": "Editar",
+      "deleteExpense": "Deletar Dispesas",
+      "deleteConfirmation": "Tem certeza de que deseja excluir esta despesa? Esta ação não pode ser desfeita."
+    },
     "ReportsSection": {
       "selectClient": "Selecionar cliente",
       "allClients": "Todos os Clientes",

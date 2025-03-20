@@ -26,7 +26,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { ExpenseDialog } from "./expense-dialog";
+import { ExpenseDialog } from "./financial-overview/expense-dialog";
 
 interface Service {
   _id: string;
@@ -65,6 +65,7 @@ interface ServiceListProps {
 export function ServiceList({ userId }: ServiceListProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenExpense, setIsDialogOpenExpense] = useState(false);
@@ -74,8 +75,7 @@ export function ServiceList({ userId }: ServiceListProps) {
   const { t, ready } = useTranslation();
 
   useEffect(() => {
-    Promise.all([ fetchServices(), fetchClients()]).finally(() => setIsLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    Promise.all([fetchExpenses(), fetchServices(), fetchClients()]).finally(() => setIsLoading(false));
   }, []);
 
   async function fetchServices() {
@@ -93,7 +93,20 @@ export function ServiceList({ userId }: ServiceListProps) {
     }
   }
 
-  
+  async function fetchExpenses() {
+    try {
+      const response = await fetch(`/api/expenses?userId=${userId}`);
+      if (!response.ok) throw new Error();
+      const data = await response.json();
+      setExpenses(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch expenses",
+        variant: "destructive",
+      });
+    }
+  }
 
   async function fetchClients() {
     try {
@@ -125,6 +138,10 @@ export function ServiceList({ userId }: ServiceListProps) {
     setIsDialogOpen(true);
   }
 
+  function handleEditExpense(expense: Expense) {
+    setSelectedExpense(expense);
+    setIsDialogOpenExpense(true);
+  }
 
   async function handleDeleteService(id: string) {
     try {
@@ -138,6 +155,17 @@ export function ServiceList({ userId }: ServiceListProps) {
     }
   }
 
+  async function handleDeleteExpense(id: string) {
+    try {
+      const response = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
+      if (!response.ok) throw new Error();
+
+      setExpenses(expenses.filter(expense => expense._id !== id));
+      toast({ title: "Success", description: "Expense deleted successfully", variant: "success" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete expense", variant: "destructive" });
+    }
+  }
 
   function handleServiceSubmit(updatedService: Service) {
     if (selectedService) {
@@ -147,6 +175,13 @@ export function ServiceList({ userId }: ServiceListProps) {
     }
   }
 
+  function handleExpenseSubmit(updatedExpense: Expense) {
+    if (selectedExpense) {
+      setExpenses(expenses.map(expense => (expense._id === updatedExpense._id ? updatedExpense : expense)));
+    } else {
+      setExpenses([...expenses, updatedExpense]);
+    }
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -254,8 +289,10 @@ export function ServiceList({ userId }: ServiceListProps) {
           </TableBody>
         </Table>
       </div>
+
       <ServiceDialog clients={clients} service={selectedService} open={isDialogOpen} onOpenChange={setIsDialogOpen} onSubmit={handleServiceSubmit} />
 
+      <ExpenseDialog clients={clients} expense={selectedExpense} open={isDialogOpenExpense} onOpenChange={setIsDialogOpenExpense} onSubmit={handleExpenseSubmit} />
     </div>
   );
 }

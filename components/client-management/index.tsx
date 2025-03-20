@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ClientList } from "./client-list";
 import { ServiceList } from "./service-list";
+import { ExpenseList } from "./expense-list";
 import { FinancialOverview } from "./financial-overview";
 import { ReportsSection } from "./reports/reports-section";
 
@@ -20,6 +21,7 @@ export function ClientManagement({ userId }: ClientManagementProps) {
         <TabsList className="grid w-full grid-cols-4 mb-8">
           <TabsTrigger value="clients">Clients</TabsTrigger>
           <TabsTrigger value="services">Services</TabsTrigger>
+          <TabsTrigger value="expenses">Expenses</TabsTrigger>
           <TabsTrigger value="financial">Financial Overview</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
@@ -30,6 +32,10 @@ export function ClientManagement({ userId }: ClientManagementProps) {
 
         <TabsContent value="services">
           <ServiceList userId={userId} />
+        </TabsContent>
+
+        <TabsContent value="expenses">
+          <ExpenseList userId={userId} />
         </TabsContent>
 
         <TabsContent value="financial">

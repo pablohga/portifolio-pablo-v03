@@ -14,7 +14,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { ServiceDialog } from "./service-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,18 +26,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { ExpenseDialog } from "./expense-dialog";
-
-interface Service {
-  _id: string;
-  clientId: string;
-  title: string;
-  description: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
-  value: number;
-  paymentStatus: 'pending' | 'partial' | 'paid';
-  startDate?: Date;
-  endDate?: Date;
-}
 
 interface Expense {
   _id: string;
@@ -58,42 +45,41 @@ interface Client {
   email: string;
 }
 
-interface ServiceListProps {
+interface ExpenseListProps {
   userId: string;
 }
 
-export function ServiceList({ userId }: ServiceListProps) {
-  const [services, setServices] = useState<Service[]>([]);
+export function ExpenseList({ userId }: ExpenseListProps) {
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogOpenExpense, setIsDialogOpenExpense] = useState(false);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const { toast } = useToast();
-  const { t, ready } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    Promise.all([ fetchServices(), fetchClients()]).finally(() => setIsLoading(false));
+    Promise.all([fetchExpenses(), fetchClients()]).finally(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function fetchServices() {
+  async function fetchExpenses() {
     try {
-      const response = await fetch(`/api/services?userId=${userId}`);
+      const response = await fetch(`/api/expenses?userId=${userId}`);
+      
       if (!response.ok) throw new Error();
       const data = await response.json();
-      setServices(data);
+      console.log('data exense', data)
+      setExpenses(data);
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to fetch services",
+        description: "Failed to fetch expenses",
         variant: "destructive",
       });
     }
   }
-
-  
 
   async function fetchClients() {
     try {
@@ -110,43 +96,35 @@ export function ServiceList({ userId }: ServiceListProps) {
     }
   }
 
-  function handleAddService() {
-    setSelectedService(null);
-    setIsDialogOpen(true);
-  }
-
   function handleAddExpense() {
     setSelectedExpense(null);
     setIsDialogOpenExpense(true);
   }
 
-  function handleEditService(service: Service) {
-    setSelectedService(service);
-    setIsDialogOpen(true);
+  function handleEditExpense(expense: Expense) {
+    setSelectedExpense(expense);
+    setIsDialogOpenExpense(true);
   }
 
-
-  async function handleDeleteService(id: string) {
+  async function handleDeleteExpense(id: string) {
     try {
-      const response = await fetch(`/api/services/${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
       if (!response.ok) throw new Error();
 
-      setServices(services.filter(service => service._id !== id));
-      toast({ title: "Success", description: "Service deleted successfully", variant: "success" });
+      setExpenses(expenses.filter(expense => expense._id !== id));
+      toast({ title: "Success", description: "Expense deleted successfully", variant: "success" });
     } catch (error) {
-      toast({ title: "Error", description: "Failed to delete service", variant: "destructive" });
+      toast({ title: "Error", description: "Failed to delete expense", variant: "destructive" });
     }
   }
 
-
-  function handleServiceSubmit(updatedService: Service) {
-    if (selectedService) {
-      setServices(services.map(service => (service._id === updatedService._id ? updatedService : service)));
+  function handleExpenseSubmit(updatedExpense: Expense) {
+    if (selectedExpense) {
+      setExpenses(expenses.map(expense => (expense._id === updatedExpense._id ? updatedExpense : expense)));
     } else {
-      setServices([...services, updatedService]);
+      setExpenses([...expenses, updatedExpense]);
     }
   }
-
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -155,16 +133,17 @@ export function ServiceList({ userId }: ServiceListProps) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">{t("ServiceList.title")}</h2>
-        <Button onClick={handleAddService}>
+        <h2 className="text-2xl font-bold">{t("ExpenseList.title")}</h2>
+        <Button onClick={handleAddExpense}>
           <Plus className="w-4 h-4 mr-2" />
-          {t("ServiceList.addService")}
+          {t("ExpenseList.addExpense")}
         </Button>
         <Button onClick={handleAddExpense}>
           <Plus className="w-4 h-4 mr-2" />
-          {t("ServiceList.addExpense")}
+          {t("ExpenseList.addExpense")}
         </Button>
       </div>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -178,39 +157,39 @@ export function ServiceList({ userId }: ServiceListProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {services.length === 0 ? (
+            {expenses.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center">
-                  {t("ServiceList.noServicesFound")}
+                  {t("ExpenseList.noExpensesFound")}
                 </TableCell>
               </TableRow>
             ) : (
-              services.map((service) => (
-                <TableRow key={service._id}>
-                  <TableCell>{service.title}</TableCell>
+              expenses.map((expense) => (
+                <TableRow key={expense._id}>
+                  <TableCell>{expense.title}</TableCell>
                   <TableCell>
-                    {clients.find(c => c._id === service.clientId)?.name || 'Unknown Client'}
+                    {clients.find(c => c._id === expense.clientId)?.name || 'Unknown Client'}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline">{service.status}</Badge>
+                    <Badge variant="outline">{expense.status}</Badge>
                   </TableCell>
                   <TableCell>
                     {new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL'
-                    }).format(service.value)}
+                    }).format(expense.value)}
                   </TableCell>
                   <TableCell>
                     <Badge 
                       variant={
-                        service.paymentStatus === 'paid' 
+                        expense.paymentStatus === 'paid' 
                           ? 'default' 
-                          : service.paymentStatus === 'partial' 
+                          : expense.paymentStatus === 'partial' 
                           ? 'secondary' 
                           : 'destructive'
                       }
                     >
-                      {service.paymentStatus}
+                      {expense.paymentStatus}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -218,7 +197,7 @@ export function ServiceList({ userId }: ServiceListProps) {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleEditService(service)}
+                        onClick={() => handleEditExpense(expense)}
                       >
                         Edit
                       </Button>
@@ -230,15 +209,15 @@ export function ServiceList({ userId }: ServiceListProps) {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>{t("ServiceList.deleteService")}</AlertDialogTitle>
+                            <AlertDialogTitle>{t("ExpenseList.deleteExpense")}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              {t("ServiceList.deleteConfirmation")}
+                              {t("ExpenseList.deleteConfirmation")}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction
-                              onClick={() => handleDeleteService(service._id)}
+                              onClick={() => handleDeleteExpense(expense._id)}
                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                             >
                               Delete
@@ -254,8 +233,10 @@ export function ServiceList({ userId }: ServiceListProps) {
           </TableBody>
         </Table>
       </div>
-      <ServiceDialog clients={clients} service={selectedService} open={isDialogOpen} onOpenChange={setIsDialogOpen} onSubmit={handleServiceSubmit} />
 
+      <ExpenseDialog clients={clients} expense={selectedExpense} open={isDialogOpen} onOpenChange={setIsDialogOpen} onSubmit={handleExpenseSubmit} />
+
+      <ExpenseDialog clients={clients} expense={selectedExpense} open={isDialogOpenExpense} onOpenChange={setIsDialogOpenExpense} onSubmit={handleExpenseSubmit} />
     </div>
   );
 }

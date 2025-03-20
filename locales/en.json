@@ -222,6 +222,14 @@
       "deleteService": "Delete Service",
       "deleteConfirmation": "Are you sure you want to delete this service? This action cannot be undone."
     },
+    "ExpenseList": {
+      "title": "Expense",
+      "addExpense": "Add Expense",
+      "noServicesFound": "No expenses found",
+      "edit": "Edit",
+      "deleteExpense": "Delete Expense",
+      "deleteConfirmation": "Are you sure you want to delete this expense? This action cannot be undone."
+    },
     "ReportsSection": {
       "selectClient": "Select client",
       "allClients": "All Clients",
