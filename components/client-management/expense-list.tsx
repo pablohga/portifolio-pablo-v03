@@ -106,17 +106,21 @@ export function ExpenseList({ userId }: ExpenseListProps) {
     setIsDialogOpenExpense(true);
   }
 
-  async function handleDeleteExpense(id: string) {
-    try {
-      const response = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error();
+async function handleDeleteExpense(id: string) {
+  try {
+    const response = await fetch(`/api/expenses/${id}`, { method: "DELETE" });
 
-      setExpenses(expenses.filter(expense => expense._id !== id));
-      toast({ title: "Success", description: "Expense deleted successfully", variant: "success" });
-    } catch (error) {
-      toast({ title: "Error", description: "Failed to delete expense", variant: "destructive" });
+    if (!response.ok) {
+      throw new Error(`Erro ao deletar despesa. Status: ${response.status}`);
     }
+
+    setExpenses(expenses.filter(expense => expense._id !== id));
+    toast({ title: "Success", description: "Expense deleted successfully", variant: "success" });
+  } catch (error) {
+    console.error("Erro ao deletar a despesa:", error); // ✅ Logando erro no console
+    toast({ title: "Error", description: "Failed to delete expense", variant: "destructive" });
   }
+}
 
   function handleExpenseSubmit(updatedExpense: Expense) {
     if (selectedExpense) {
