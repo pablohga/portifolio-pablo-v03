@@ -18,12 +18,12 @@ export function ClientManagement({ userId }: ClientManagementProps) {
       <h1 className="text-3xl font-bold mb-8">Client Management</h1>
 
       <Tabs defaultValue="clients" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="clients">Clients</TabsTrigger>
-          <TabsTrigger value="services">Services</TabsTrigger>
-          <TabsTrigger value="expenses">Expenses</TabsTrigger>
-          <TabsTrigger value="financial">Financial Overview</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-5 mb-8 font-bold">
+          <TabsTrigger className="font-bold" value="clients">Clients</TabsTrigger>
+          <TabsTrigger className="font-bold" value="services">Services</TabsTrigger>
+          <TabsTrigger className="font-bold" value="expenses">Expenses</TabsTrigger>
+          <TabsTrigger className="font-bold" value="financial">Financial Overview</TabsTrigger>
+          <TabsTrigger className="font-bold" value="reports">Reports</TabsTrigger>
         </TabsList>
 
         <TabsContent value="clients">

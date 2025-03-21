@@ -161,10 +161,7 @@ export function ServiceList({ userId }: ServiceListProps) {
           <Plus className="w-4 h-4 mr-2" />
           {t("ServiceList.addService")}
         </Button>
-        <Button onClick={handleAddExpense}>
-          <Plus className="w-4 h-4 mr-2" />
-          {t("ServiceList.addExpense")}
-        </Button>
+        
       </div>
       <div className="rounded-md border">
         <Table>

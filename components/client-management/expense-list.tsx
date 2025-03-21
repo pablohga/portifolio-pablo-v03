@@ -138,10 +138,7 @@ async function handleDeleteExpense(id: string) {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">{t("ExpenseList.title")}</h2>
-        <Button onClick={handleAddExpense}>
-          <Plus className="w-4 h-4 mr-2" />
-          {t("ExpenseList.addExpense")}
-        </Button>
+        
         <Button onClick={handleAddExpense}>
           <Plus className="w-4 h-4 mr-2" />
           {t("ExpenseList.addExpense")}
