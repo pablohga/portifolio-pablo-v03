@@ -13,6 +13,7 @@ interface FinancialOverviewProps {
 
 interface FinancialMetrics {
   totalRevenue: number;
+  totalExpenses: number; // Added totalExpenses to the interface
   pendingPayments: number;
   completedProjects: number;
   activeProjects: number;
@@ -23,6 +24,7 @@ interface FinancialMetrics {
 export function FinancialOverview({ userId }: FinancialOverviewProps) {
   const [metrics, setMetrics] = useState<FinancialMetrics>({
     totalRevenue: 0,
+    totalExpenses: 0,
     pendingPayments: 0,
     completedProjects: 0,
     activeProjects: 0,
@@ -30,6 +32,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
     lastMonthRevenue: 0,
   });
   const { t, ready } = useTranslation(); // Hook do i18next para traduções
+  const [totalExpenses, setTotalExpenses] = useState<number>(0); // New state for total expenses
 
   useEffect(() => {
     async function fetchMetrics() {
@@ -53,6 +56,13 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
         );
 
         const totalRevenue = completedServices.reduce(
+          (sum: number, service: any) => sum + service.value,
+          0
+        );
+
+        const totalExpenses = services.filter(
+          (service: any) => service.status !== "completed" // Assuming non-completed services are expenses
+        ).reduce(
           (sum: number, service: any) => sum + service.value,
           0
         );
@@ -83,6 +93,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
           .reduce((sum: number, service: any) => sum + service.value, 0);
 
         setMetrics({
+          totalExpenses, // Set the total expenses in metrics
           totalRevenue,
           pendingPayments,
           completedProjects: completedServices.length,
@@ -108,6 +119,33 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
   return (
     <div className="space-y-8">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{t("FinancialOverview.totalExpenses")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(totalExpenses)}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{t("FinancialOverview.averageEarningsExpenses")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format((metrics.totalRevenue + totalExpenses) / 2)}
+            </div>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{t("FinancialOverview.totalRevenue")}</CardTitle>
