@@ -58,7 +58,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
 
 const heroContent = defaultHeroContent; // Garantir que há um fallback caso `data.features` não exista.
 
-console.log('setCurrentLanguage HERO!!!!', currentLanguage)
+/* console.log('setCurrentLanguage HERO!!!!', currentLanguage) */
 
   return (
     <section className="relative min-h-screen flex items-center justify-left overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean-transformed_new1.png')] bg-cover h-64 w-full">
