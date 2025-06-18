@@ -34,6 +34,8 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
+import { TemplateProvider } from "@/components/template-context";
+import { TemplateSelector } from "@/components/template-selector";
 /* import { fetchSubscritionByEmail } from "@/lib/stripe"; */
 
 interface DashboardContentProps {
@@ -386,158 +388,158 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   }
 
   return (
-    <div className="container mx-auto py-20 max-w-[960px]">
-      <div className="mb-8 space-y-4">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
-            <Link 
-              href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
-              className="inline-flex items-center text-primary hover:underline"
-            >
-              {t("Dashboard.ViewYourPortfolio")}
-              <ExternalLink className="ml-1 h-4 w-4" />
-            </Link>
-          </div>
-          <div className="flex flex-col gap-4 md:flex-row md:items-center">
-            <Button variant="outline" asChild>
-              <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
-                <Settings className="h-4 w-4" />
-                {t("Dashboard.ProfileSettings")}
+    <TemplateProvider>
+      <div className="container mx-auto py-20 max-w-[960px]">
+        <TemplateSelector />
+        <div className="mb-8 space-y-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
+              <Link 
+                href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
+                className="inline-flex items-center text-primary hover:underline"
+              >
+                {t("Dashboard.ViewYourPortfolio")}
+                <ExternalLink className="ml-1 h-4 w-4" />
               </Link>
-            </Button>
-            <div className="text-lg font-medium">
-            {t("Dashboard.Welcome")}, {firstName} <span className="text-primary">{lastName}</span>
             </div>
-              <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <Button onClick={() => setIsHeroDialogOpen(true)}>
-            {t("Dashboard.EditHeroBannerSection")}
-          </Button>
-          <Button onClick={() => setIsAboutDialogOpen(true)}>
-            {t("Dashboard.EditSectionAboutYou")}
-          </Button>
-          <Button onClick={() => setIsSEODialogOpen(true)}>
-            {t("Dashboard.EditSeoSettings")}
-          </Button>
-          <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
-            {t("Dashboard.EditContactSettings")}
-          </Button>
-          {session?.user?.subscriptionTier === 'premium' && (
-            <Button asChild>
-              <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
-                <UserCircle className="h-4 w-4" />
-                {t("Dashboard.ManageCustomers")}
-              </Link>
-            </Button>
-          )}
-          {session?.user?.role === 'admin' && (
-            <>
-              <Button onClick={() => setIsHomeEditorOpen(true)}>
-                <Home className="mr-2 h-4 w-4" />
-                {t("Dashboard.HomePageEdit")}
-              </Button>
-              <Button onClick={() => setIsPaymentPlansOpen(true)}>
-                <DollarSign className="mr-2 h-4 w-4" />
-                {t("Dashboard.PaymentPlans")}
-              </Button>
-              <Button asChild>
-                <Link href="/dashboard/users" className="inline-flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  {t("Dashboard.ManagePortifyUsers")}
+            <div className="flex flex-col gap-4 md:flex-row md:items-center">
+              <Button variant="outline" asChild>
+                <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
+                  <Settings className="h-4 w-4" />
+                  {t("Dashboard.ProfileSettings")}
                 </Link>
               </Button>
-            </>
-          )}
+              <div className="text-lg font-medium">
+              {t("Dashboard.Welcome")}, {firstName} <span className="text-primary">{lastName}</span>
+              </div>
+                <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <Button onClick={() => setIsHeroDialogOpen(true)}>
+              {t("Dashboard.EditHeroBannerSection")}
+            </Button>
+            <Button onClick={() => setIsAboutDialogOpen(true)}>
+              {t("Dashboard.EditSectionAboutYou")}
+            </Button>
+            <Button onClick={() => setIsSEODialogOpen(true)}>
+              {t("Dashboard.EditSeoSettings")}
+            </Button>
+            <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
+              {t("Dashboard.EditContactSettings")}
+            </Button>
+            {session?.user?.subscriptionTier === 'premium' && (
+              <Button asChild>
+                <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
+                  <UserCircle className="h-4 w-4" />
+                  {t("Dashboard.ManageCustomers")}
+                </Link>
+              </Button>
+            )}
+            {session?.user?.role === 'admin' && (
+              <>
+                <Button onClick={() => setIsHomeEditorOpen(true)}>
+                  <Home className="mr-2 h-4 w-4" />
+                  {t("Dashboard.HomePageEdit")}
+                </Button>
+                <Button onClick={() => setIsPaymentPlansOpen(true)}>
+                  <DollarSign className="mr-2 h-4 w-4" />
+                  {t("Dashboard.PaymentPlans")}
+                </Button>
+                <Button asChild>
+                  <Link href="/dashboard/users" className="inline-flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    {t("Dashboard.ManagePortifyUsers")}
+                  </Link>
+                </Button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">
-            {t("Dashboard.Categories")}
-          </h2>
-          <Button onClick={() => {
-            setSelectedCategory(null);
-            setIsCategoryDialogOpen(true);
-          }}>
-            <Plus className="w-4 h-4 mr-2" />
-            {t("Dashboard.AddCategories")}
-          </Button>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <Card key={category._id}>
-              <CardContent className="pt-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
-                    {category.description && (
-                      <div 
-                        className="text-muted-foreground prose prose-sm dark:prose-invert"
-                        dangerouslySetInnerHTML={{ __html: category.description }}
-                      />
-                    )}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">
+              {t("Dashboard.Categories")}
+            </h2>
+            <Button onClick={() => {
+              setSelectedCategory(null);
+              setIsCategoryDialogOpen(true);
+            }}>
+              <Plus className="w-4 h-4 mr-2" />
+              {t("Dashboard.AddCategories")}
+            </Button>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category) => (
+              <Card key={category._id}>
+                <CardContent className="pt-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
+                      {category.description && (
+                        <div 
+                          className="text-muted-foreground prose prose-sm dark:prose-invert"
+                          dangerouslySetInnerHTML={{ __html: category.description }}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedCategory(category);
-                      setIsCategoryDialogOpen(true);
-                    }}
-                  >
-                    {t("Dashboard.Edit")}
-                  </Button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm">
-                        {t("Dashboard.Delete")}
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          {t("Dashboard.DeleteCategory")}
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t("Dashboard.DeleteThisCategory")}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>
-                          {t("Dashboard.Cancel")}
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDeleteCategory(category._id)}
-                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                        >
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedCategory(category);
+                        setIsCategoryDialogOpen(true);
+                      }}
+                    >
+                      {t("Dashboard.Edit")}
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm">
                           {t("Dashboard.Delete")}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            {t("Dashboard.DeleteCategory")}
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t("Dashboard.DeleteThisCategory")}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>
+                            {t("Dashboard.Cancel")}
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteCategory(category._id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            {t("Dashboard.Delete")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">
-            {t("Dashboard.Projects")}
-          </h2>
-          <Button onClick={() => setIsProjectDialogOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            {t("Dashboard.AddProjects")}
-          </Button>
-        </div>
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">
+              {t("Dashboard.Projects")}
+            </h2>
+            <Button onClick={() => setIsProjectDialogOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              {t("Dashboard.AddProjects")}
+            </Button>
+          </div>
 
         <Tabs defaultValue={categories[0]?.id} className="w-full">
           <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent">
@@ -629,5 +631,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         onOpenChange={setIsPaymentPlansOpen}
       />
     </div>
+    </TemplateProvider>
   );
 }
