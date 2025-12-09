@@ -9,6 +9,9 @@ import { ContactSection } from "@/components/contact-section";
 import { SEO } from "@/models/seo";
 import { Category } from "@/models/category";
 import { Metadata } from "next";
+import Template1 from "@/components/templates/Template1";
+import Template2 from "@/components/templates/Template2";
+import Template3 from "@/components/templates/Template3";
 
 interface UserPortfolioPageProps {
   params: {
@@ -80,12 +83,42 @@ export default async function UserPortfolioPage({
     getUserProjects(userId),
   ]);
 
+  // Determine which template to render based on user's portfolioTemplate
+  const template = user.portfolioTemplate || "default";
+
+  type TemplateComponentProps = {
+    userId: string;
+    categories: any[];
+    projects: any[];
+  };
+
+  let TemplateComponent: React.ComponentType<TemplateComponentProps> | null = null;
+  switch (template) {
+    case "template1":
+      TemplateComponent = Template1;
+      break;
+    case "template2":
+      TemplateComponent = Template2;
+      break;
+    case "template3":
+      TemplateComponent = Template3;
+      break;
+    default:
+      TemplateComponent = null;
+  }
+
   return (
     <div className="min-h-screen bg-background">
-      <HeroSection userId={userId} />
-      <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
-      <AboutSection userId={userId} />
-      <ContactSection userId={userId} />
+      {TemplateComponent ? (
+        <TemplateComponent userId={userId} categories={categories} projects={projects} />
+      ) : (
+        <>
+          <HeroSection userId={userId} />
+          <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
+          <AboutSection userId={userId} />
+          <ContactSection userId={userId} />
+        </>
+      )}
     </div>
   );
 }

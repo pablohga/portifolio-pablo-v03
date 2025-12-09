@@ -76,7 +76,7 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   return (
     <section
       id="features"
-      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain bg-[url('https://mundonews.pt/portify/hero_footer.png')]"
+      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain bg-[url('https://agenciaaimagic.com.br/portify/hero_footer.png')]"
     >
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div

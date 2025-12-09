@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         seo?.description ||
         "Create your professional portfolio with Portify - the platform that helps freelancers showcase their work and attract better clients.",
-      images: [{ url: seo?.ogImage || "https://mundonews.pt/portify_logo_new_p.png" }],
+      images: [{ url: seo?.ogImage || "https://agenciaaimagic.com.br/portify_logo_new_p.png" }],
     },
     twitter: {
       card: "summary_large_image",
@@ -64,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         seo?.description ||
         "Create your professional portfolio with Portify. the platform that helps freelancers showcase their work and attract better clients.",
-      images: [seo?.ogImage || "https://mundonews.pt/portify_logo_new_p.png"],
+      images: [seo?.ogImage || "https://agenciaaimagic.com.br/portify_logo_new_p.png"],
     },
     robots: {
       index: true,

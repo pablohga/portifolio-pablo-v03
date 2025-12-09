@@ -8,7 +8,9 @@ import { ContactSection } from "@/components/contact-section";
 export default function Template1() {
   return (
     <div className="min-h-screen bg-gray-50">
+      
       <HeroSection />
+      <h1>t1</h1>
       <AboutSection />
       <ProjectsSection />
       <ContactSection />

@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Portify Logo" width="350"/>
+   <img src="https://agenciaaimagic.com.br/portify/logo_nova_txt_m_dark.png" alt="Portify Logo" width="350"/>
 </div>
 ##  Portify 🚀
 
@@ -102,9 +102,9 @@ Website: https://portify.pt
 
 ## Screenshots 📸
 <div align="center">
-<img src="https://mundonews.pt/portify/hero_img_clean-transformed_new1.png" alt="Screenshot do Hero Section" width="600"/>
+<img src="https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1.png" alt="Screenshot do Hero Section" width="600"/>
 <br/>
-<img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Logo do Portify" width="300"/>
+<img src="https://agenciaaimagic.com.br/portify/logo_nova_txt_m_dark.png" alt="Logo do Portify" width="300"/>
 </div>
 
 ## FAQ ❓

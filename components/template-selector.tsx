@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useTemplate } from "./template-context";
 
 const templates = [
@@ -12,24 +12,36 @@ const templates = [
 
 export function TemplateSelector() {
   const { template, setTemplate } = useTemplate();
+  const [selectedTemplate, setSelectedTemplate] = useState<"default" | "template1" | "template2" | "template3">(template);
+
+  const handleSave = () => {
+    setTemplate(selectedTemplate);
+  };
 
   return (
     <div className="mb-6">
-      <label htmlFor="template-select" className="block mb-2 font-semibold">
-        Selecione o Template do Portfólio:
-      </label>
-      <select
-        id="template-select"
-        value={template}
-      onChange={(e) => setTemplate(e.target.value as any)}
-        className="border border-gray-300 rounded px-3 py-2"
-      >
+      <label className="block mb-2 font-semibold">Selecione o Template do Portfólio:</label>
+      <div className="flex flex-col space-y-2 mb-4">
         {templates.map((t) => (
-          <option key={t.id} value={t.id}>
-            {t.name}
-          </option>
+          <label key={t.id} className="inline-flex items-center space-x-2">
+            <input
+              type="radio"
+              name="template"
+              value={t.id}
+              checked={selectedTemplate === t.id}
+              onChange={() => setSelectedTemplate(t.id as "default" | "template1" | "template2" | "template3")}
+              className="form-radio"
+            />
+            <span>{t.name}</span>
+          </label>
         ))}
-      </select>
+      </div>
+      <button
+        onClick={handleSave}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Salvar
+      </button>
     </div>
   );
 }

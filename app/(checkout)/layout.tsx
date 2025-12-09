@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <section className="flex flex-col items-center py-40">
       <Link href={'/'} className="justify-center">
         <Logo 
-        alterIcon="https://mundonews.pt/portify/logo_nova_txt_g_dark.png"
+        alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
         alterH={80}
         alterW={120}/>
         

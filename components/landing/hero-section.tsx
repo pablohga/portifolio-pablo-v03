@@ -61,7 +61,7 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
 /* console.log('setCurrentLanguage HERO!!!!', currentLanguage) */
 
   return (
-    <section className="relative min-h-screen flex items-center justify-left overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://mundonews.pt/portify/hero_img_clean-transformed_new1.png')] bg-cover h-64 w-full">
+    <section className="relative min-h-screen flex items-center justify-left overflow-hidden sm:bg-contain md:bg-cover lg:bg-center bg-[url('https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1.png')] bg-cover h-64 w-full">
     <div className="absolute inset-0 bg-grid-white/10" />
       <div className="flex flex-row justify-items-start container px-4 mx-auto max-w-[960px] relative z-10">
         <div className="text-primary max-w-[400px] text-left">

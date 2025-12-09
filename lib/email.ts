@@ -91,7 +91,7 @@ const emailTemplate = (content: string) => `
 <body>
   <div class="container">
     <div class="logo">
-      <img src="https://mundonews.pt/portify/logo_nova_txt_m_dark.png" alt="Portify">
+      <img src="https://agenciaaimagic.com.br/portify/logo_nova_txt_m_dark.png" alt="Portify">
     </div>
     <div class="content">
       ${content}

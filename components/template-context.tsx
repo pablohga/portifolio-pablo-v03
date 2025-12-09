@@ -12,20 +12,42 @@ interface TemplateContextProps {
 const TemplateContext = createContext<TemplateContextProps | undefined>(undefined);
 
 export const TemplateProvider = ({ children }: { children: ReactNode }) => {
-  const [template, setTemplate] = useState<TemplateType>("default");
+  const [template, setTemplateState] = useState<TemplateType>("default");
 
-  // Load saved template from localStorage or API on mount
+  // Load saved template from backend API on mount
   useEffect(() => {
-    const savedTemplate = localStorage.getItem("selectedTemplate") as TemplateType | null;
-    if (savedTemplate) {
-      setTemplate(savedTemplate);
+    async function fetchTemplate() {
+      try {
+        const res = await fetch("/api/user/template");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.template) {
+            setTemplateState(data.template);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch template:", error);
+      }
     }
+    fetchTemplate();
   }, []);
 
-  // Save template selection to localStorage or API
-  useEffect(() => {
-    localStorage.setItem("selectedTemplate", template);
-  }, [template]);
+  // Update template state and persist to backend API
+  const setTemplate = async (newTemplate: TemplateType) => {
+    setTemplateState(newTemplate);
+    try {
+      const res = await fetch("/api/user/template", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ template: newTemplate }),
+      });
+      if (!res.ok) {
+        console.error("Failed to update template");
+      }
+    } catch (error) {
+      console.error("Failed to update template:", error);
+    }
+  };
 
   return (
     <TemplateContext.Provider value={{ template, setTemplate }}>
