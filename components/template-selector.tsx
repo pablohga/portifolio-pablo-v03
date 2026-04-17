@@ -20,7 +20,9 @@ export function TemplateSelector() {
 
   return (
     <div className="mb-6">
-      <label className="block mb-2 font-semibold">Selecione o Template do Portfólio:</label>
+      <label className="block mb-2 font-semibold">
+        Selecione o Template do seu Portfólio:
+      </label>
       <div className="flex flex-col space-y-2 mb-4">
         {templates.map((t) => (
           <label key={t.id} className="inline-flex items-center space-x-2">
