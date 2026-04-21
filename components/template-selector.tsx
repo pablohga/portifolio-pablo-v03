@@ -34,7 +34,7 @@ export function TemplateSelector() {
               onChange={() => setSelectedTemplate(t.id as "default" | "template1" | "template2" | "template3")}
               className="form-radio"
             />
-            <span>{t.name}</span>
+            <span>- {t.name}</span>
           </label>
         ))}
       </div>
