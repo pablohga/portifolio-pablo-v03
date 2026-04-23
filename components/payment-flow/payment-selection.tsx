@@ -45,7 +45,6 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
   }, []);
 
   const handlePlanSelection = async (planName: string) => {
-    console.log('planName', planName)
     // id da conta grtuita no stripe 678d59b6b00ec115aea40c53 
     // free: 6796c14e9e2378cd53291e33
     // Assinante: 6796c14e9e2378cd53291e34
@@ -83,17 +82,23 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
       });
     }
   };
-
+  const planDisplayNames: Record<string, string> = {
+    Free: 'Grátis',
+    Paid: 'Básico',
+    'Premium ': 'Premium',
+  };
   return (
+    
     <div className="grid gap-6 md:grid-cols-3">
-      {/* Renderiza os planos dinamicamente */}
+      {/* Renderiza os planos dinamicamente */ }
       {plans.map((plan) => (
+        
         <Card key={plan._id} className={plan.popular ? "border-primary" : ""}>
           <CardHeader>
-            <CardTitle>{plan.name}</CardTitle>
+            <CardTitle>{planDisplayNames[plan.name] ?? plan.name}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">$ {plan.price}/mês</p>
+            <p className="text-2xl font-bold">R$ {plan.price}/mês</p>
             <p className="mt-2 text-muted-foreground">{plan.description}</p>
             <ul className="mt-4 space-y-2">
               {plan.features.map((feature, index) => (

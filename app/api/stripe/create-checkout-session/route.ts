@@ -4,12 +4,15 @@ import { stripe } from '@/lib/stripe';
 export async function POST(request: Request) {
   try {
     const { plan } = await request.json();
+    console.log('PLAN RECEBIDO:', JSON.stringify(plan)); // ← adicione esta linha
     const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 // id da conta premium no stripe 6796bbdb9e2378cd53291bd6
 // _id 6796c14e9e2378cd53291e34
-    const priceId = plan === 'Premium ' 
-      ? process.env.STRIPE_PRICE_ID_PREMIUM 
-      : process.env.STRIPE_PRICE_ID_PAID;
+    const planNormalized = plan?.toString().trim().toLowerCase();
+
+    const priceId = planNormalized === 'premium' 
+          ? process.env.STRIPE_PRICE_ID_PREMIUM 
+          : process.env.STRIPE_PRICE_ID_PAID;
 
     if (!priceId) {
       throw new Error('Invalid plan or missing price ID');
