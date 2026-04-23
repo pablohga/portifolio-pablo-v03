@@ -105,23 +105,7 @@
           ],
           "buttonText": "Começar Grátis"
         },
-        {
-          "name": "Assinante",
-          "price": "29.90",
-          "description": "Para freelancers estabelecidos",
-          "features": [
-            "Categorias Ilimitadas",
-            "Projetos Ilimitados",
-            "Portfólio Personalizado",
-            "Domínio Personalizado",
-            "Otimizado para SEO",
-            "Suporte Prioritário",
-            "Temas Premium",
-            "Analytics Avançado"
-          ],
-          "buttonText": "Comece Agora",
-          "popular": true
-        },
+        
         {
           "name": "Premium",
           "price": "79.90",
@@ -137,6 +121,23 @@
             "Suporte 24/7"
           ],
           "buttonText": "Comece Agora"
+        },
+        {
+          "name": "Básico",
+          "price": "29.90",
+          "description": "Para freelancers estabelecidos",
+          "features": [
+            "Categorias Ilimitadas",
+            "Projetos Ilimitados",
+            "Portfólio Personalizado",
+            "Domínio Personalizado",
+            "Otimizado para SEO",
+            "Suporte Prioritário",
+            "Temas Premium",
+            "Analytics Avançado"
+          ],
+          "buttonText": "Comece Agora",
+          "popular": true
         }
       ]
     },
