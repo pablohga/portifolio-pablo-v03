@@ -151,7 +151,7 @@ export function PricingSection({ data }: PricingSectionProps) {
                 <div className="mb-4">
                   <span className="text-4xl font-bold"
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(`$ ${plan.price}`),
+                    __html: DOMPurify.sanitize(`R$ ${plan.price}`),
                     }} suppressHydrationWarning={true}/>
                   <span className="text-muted-foreground">/mês</span>
                 </div>
