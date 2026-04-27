@@ -22,6 +22,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { ChangePasswordDialog } from "./user-management/change-password-dialog";
 import { EditProfileDialog } from "./user-management/edit-profile-dialog";
 import { useSession } from "next-auth/react";
@@ -44,6 +46,7 @@ interface User {
   email: string;
   role: string;
   subscriptionTier: SubscriptionTier;
+  manualTierOverride: boolean; // ✅ adicionar
   createdAt: string;
   image?: string;
 }
@@ -138,6 +141,31 @@ export function UserManagement() {
     }
   }
 
+  async function handleManualOverrideChange(userId: string, value: boolean) {
+  try {
+    const response = await fetch(`/api/users/${userId}/subscription`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ manualTierOverride: value }),
+    });
+    if (!response.ok) throw new Error();
+    await fetchUsers();
+    toast({
+      title: "Sucesso",
+      description: value
+        ? "Override ativado — plano protegido do Stripe"
+        : "Override desativado — usuário retornou ao plano Free",
+      variant: "success",
+    });
+  } catch (error) {
+    toast({
+      title: "Erro",
+      description: "Falha ao atualizar o override",
+      variant: "destructive",
+    });
+  }
+}
+
   async function handleDeleteUser(userId: string) {
     try {
       const response = await fetch(`/api/users/${userId}`, {
@@ -188,6 +216,7 @@ export function UserManagement() {
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Subscription</TableHead>
+              <TableHead>Override</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -234,6 +263,21 @@ export function UserManagement() {
                     </Select>
                   ) : (
                     user.subscriptionTier
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isCurrentUserAdmin && (
+                    <div className="flex flex-col items-center gap-1">
+                      <Switch
+                        checked={user.manualTierOverride}
+                        onCheckedChange={(checked) =>
+                          handleManualOverrideChange(user._id, checked)
+                        }
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        {user.manualTierOverride ? "Manual" : "Stripe"}
+                      </span>
+                    </div>
                   )}
                 </TableCell>
                 <TableCell>

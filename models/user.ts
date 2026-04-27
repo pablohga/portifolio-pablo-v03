@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
   emailVerified: Date,
   role: { type: String, enum: ["user", "admin"], default: "user" },
   subscriptionTier: { type: String, enum: ["free", "paid", "premium"], default: "free" },
+  manualTierOverride: { type: Boolean, default: false },
   resetToken: String,
   resetTokenExpiry: Date,
   // Campos de configurações de notificações

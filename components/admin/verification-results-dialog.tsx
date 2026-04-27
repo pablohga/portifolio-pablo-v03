@@ -27,35 +27,37 @@ export function VerificationResultsDialog({
 }: VerificationResultsDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>Verification Results</DialogTitle>
         </DialogHeader>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Email</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Error</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {results.map((result, index) => (
-              <TableRow key={index}>
-                <TableCell>{result.email}</TableCell>
-                <TableCell>{result.status}</TableCell>
-                <TableCell>{result.error || '-'}</TableCell>
-              </TableRow>
-            ))}
-            {results.length === 0 && (
+        <div className="max-h-[60vh] overflow-y-auto">
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={3} className="text-center">
-                  No results to display
-                </TableCell>
+                <TableHead>Email</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Error</TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {results.map((result, index) => (
+                <TableRow key={index}>
+                  <TableCell>{result.email}</TableCell>
+                  <TableCell>{result.status}</TableCell>
+                  <TableCell>{result.error || '-'}</TableCell>
+                </TableRow>
+              ))}
+              {results.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center">
+                    No results to display
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </DialogContent>
     </Dialog>
   );

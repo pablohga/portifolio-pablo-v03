@@ -40,10 +40,18 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email is required");
         }
         const stripeTier = await verifyStripeSubscription(email);
-        if (stripeTier !== user.subscriptionTier) {
+        /* if (stripeTier !== user.subscriptionTier) {
           user.subscriptionTier = stripeTier;
           await user.save();
-        }
+        } */
+        // ✅ Depois — só sincroniza com Stripe se NÃO tiver override manual
+        if (!user.manualTierOverride) {
+          const stripeTier = await verifyStripeSubscription(email);
+          if (stripeTier !== user.subscriptionTier) {
+            user.subscriptionTier = stripeTier;
+            await user.save();
+          }
+}
         return {
           id: user._id.toString(),
           name: user.name,
@@ -71,7 +79,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email is required");
         }
         const existingUser = await User.findOne({ email });
-        if (!existingUser) {
+        /* if (!existingUser) {
           const stripeTier = await verifyStripeSubscription(email);
           await User.create({
             name: user.name,
@@ -86,11 +94,31 @@ export const authOptions: NextAuthOptions = {
             existingUser.subscriptionTier = stripeTier;
             await existingUser.save();
           }
+        } */
+        if (!existingUser) {
+          const stripeTier = await verifyStripeSubscription(email);
+          await User.create({
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role: "user",
+            subscriptionTier: stripeTier,
+            manualTierOverride: false,
+          });
+        } else {
+          // ✅ Usuário existente — só sincroniza com Stripe se não tiver override
+          if (!existingUser.manualTierOverride) {
+            const stripeTier = await verifyStripeSubscription(email);
+            if (stripeTier !== existingUser.subscriptionTier) {
+              existingUser.subscriptionTier = stripeTier;
+              await existingUser.save();
+            }
+          }
         }
       }
       return true;
     },
-    async jwt({ token, user }) {
+    /* async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
         token.subscriptionTier = user.subscriptionTier;
@@ -104,6 +132,27 @@ export const authOptions: NextAuthOptions = {
           }
         }
       }
+      return token;
+    } */
+    async jwt({ token, user, trigger }) {
+      if (user) {
+        token.role = user.role;
+        token.subscriptionTier = user.subscriptionTier;
+        token.fetchedAt = Date.now();
+      }
+
+      // ✅ Só consulta o banco se o token tiver mais de 5 minutos
+      const fiveMinutes = 5 * 60 * 1000;
+      if (token.sub && (!token.fetchedAt || Date.now() - (token.fetchedAt as number) > fiveMinutes)) {
+        await dbConnect();
+        const dbUser = await User.findById(token.sub).select('subscriptionTier role');
+        if (dbUser) {
+          token.subscriptionTier = dbUser.subscriptionTier;
+          token.role = dbUser.role;
+          token.fetchedAt = Date.now();
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {

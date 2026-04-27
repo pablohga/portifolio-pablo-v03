@@ -13,6 +13,9 @@ export async function POST(request: Request) {
     });
 
     const updates = await Promise.all(users.map(async (user) => {
+      if (user.manualTierOverride) {
+        return { email: user.email, status: 'skipped (manual override active)' };
+      }
       try {
         // Find customer in Stripe
         const customers = await stripe.customers.list({
