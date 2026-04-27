@@ -1,29 +1,16 @@
 "use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 
+// ✅ currentPassword removido do schema — admin não precisa informar
 const passwordSchema = z.object({
-  currentPassword: z.string().min(8, "Password must be at least 8 characters"),
   newPassword: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),
 }).refine((data) => data.newPassword === data.confirmPassword, {
@@ -37,18 +24,13 @@ interface ChangePasswordDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function ChangePasswordDialog({
-  userId,
-  open,
-  onOpenChange,
-}: ChangePasswordDialogProps) {
+export function ChangePasswordDialog({ userId, open, onOpenChange }: ChangePasswordDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof passwordSchema>>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
-      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -60,8 +42,9 @@ export function ChangePasswordDialog({
       const response = await fetch(`/api/users/${userId}/password`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        // ✅ currentPassword enviado vazio — backend ignora para admins
         body: JSON.stringify({
-          currentPassword: values.currentPassword,
+          currentPassword: "",
           newPassword: values.newPassword,
         }),
       });
@@ -71,20 +54,11 @@ export function ChangePasswordDialog({
         throw new Error(error.error);
       }
 
-      toast({
-        title: "Success",
-        description: "Password updated successfully",
-        variant: "success",
-      });
-      
+      toast({ title: "Sucesso", description: "Senha atualizada com sucesso", variant: "success" });
       onOpenChange(false);
       form.reset();
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
@@ -94,30 +68,19 @@ export function ChangePasswordDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Change Password</DialogTitle>
+          <DialogTitle>Alterar Senha</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="currentPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Current Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            {/* ✅ Campo "Current Password" removido — desnecessário para admin */}
 
             <FormField
               control={form.control}
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
+                  <FormLabel>Nova Senha</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -125,13 +88,12 @@ export function ChangePasswordDialog({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm New Password</FormLabel>
+                  <FormLabel>Confirmar Nova Senha</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -139,9 +101,8 @@ export function ChangePasswordDialog({
                 </FormItem>
               )}
             />
-
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Updating..." : "Update Password"}
+              {isLoading ? "Atualizando..." : "Atualizar Senha"}
             </Button>
           </form>
         </Form>
