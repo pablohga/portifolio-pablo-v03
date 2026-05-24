@@ -28,7 +28,7 @@ O **Portify** é uma plataforma moderna e intuitiva que permite aos freelancers 
 ## Demonstração 🖥️
 
 Confira uma demonstração ao vivo do Portify:
-[![Demo](https://img.shields.io/badge/demo-online-blue.svg)](https://portify.pt)
+[![Demo](https://img.shields.io/badge/demo-online-blue.svg)](https://portify.art)
 
 ---
 
@@ -37,7 +37,7 @@ Confira uma demonstração ao vivo do Portify:
 ### Para Todos os Usuários:
 - **SEO Otimizado:** Seja descoberto por clientes com nossas ferramentas integradas de SEO.
 - **Personalização Completa:** Personalize seu portfólio com cores, fontes e layouts diferentes.
-- **URL Personalizada:** Crie um domínio personalizado para seu portfólio (ex.: `https://portify.pt/seu-nome`).
+- **URL Personalizada:** Crie um domínio personalizado para seu portfólio (ex.: `https://portify.art/seu-nome`).
 
 ### Planos Pagos:
 - **Recursos Ilimitados:** Acesse categorias e projetos ilimitados.
@@ -96,9 +96,9 @@ Se precisar de ajuda, sinta-se à vontade para entrar em contato conosco ou abri
 ## Contato 📞
 Para mais informações, entre em contato conosco:
 
-Email: support@portify.pt
+Email: support@portify.art
 Email: pablohga@gmail.com
-Website: https://portify.pt
+Website: https://portify.art
 
 ## Screenshots 📸
 <div align="center">

@@ -233,7 +233,7 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                   <FormItem>
                     <FormLabel>
                       URL do seu Portfólio: <br /> 
-                      https://portify.pt/
+                      https://portify.art/
                       <span className="text-primary">{form.watch("slug")}</span>
                     </FormLabel>
                     <FormControl>
