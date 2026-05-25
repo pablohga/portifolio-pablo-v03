@@ -51,7 +51,8 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
     // Premium: 6796c14e9e2378cd53291e35
     /* if (planName === "6796bbdb9e2378cd53291bd5") { */
 
-    if (planName === 'Free') {
+    /* if (planName === 'Free') { */
+    if (planName === 'Gratis' || planName === 'Grátis' || planName === 'free' || planName === 'Free') {
       if (onSelectFreePlan) {
         onSelectFreePlan();
       } else {
@@ -85,6 +86,7 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
   const planDisplayNames: Record<string, string> = {
     Free: 'Grátis',
     Paid: 'Básico',
+    Assinante: 'Básico',
     'Premium ': 'Premium',
   };
   return (
