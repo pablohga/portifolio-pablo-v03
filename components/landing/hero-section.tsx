@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HeroSection as HeroSectionType } from "@/types/home";
 import DOMPurify from "isomorphic-dompurify";
+import { useTheme } from "next-themes";
 
 import i18next from "@/lib/i18next-config";
 import { useTranslation } from "react-i18next";
@@ -19,6 +20,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ data }: HeroSectionProps) {
   const { t, ready } = useTranslation(); // Hook do i18next para traduções
+  const { theme } = useTheme();
   const [currentLanguage, setCurrentLanguage] = useState(i18next.language || 'en');
 
   ///////
@@ -61,7 +63,10 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
 /* console.log('setCurrentLanguage HERO!!!!', currentLanguage) */
 
   return (
-  <section className="relative min-h-screen flex items-center justify-left overflow-hidden bg-cover bg-center bg-[url('https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1.png')] w-full">
+  <section
+    style={{ backgroundImage: `url(${theme === 'light' ? 'https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1-light.png' : 'https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1.png'})` }}
+    className="relative min-h-screen flex items-center justify-left overflow-hidden bg-cover bg-center w-full"
+  >
     <div className="absolute inset-0 bg-grid-white/10" />
       <div className="flex flex-row justify-items-start container px-4 mx-auto max-w-[960px] relative z-10">
         <div className="text-primary max-w-[400px] text-left">
