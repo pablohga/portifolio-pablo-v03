@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 import { motion } from "framer-motion";
-import { Code2, Palette, Rocket, Search, Shield, Zap } from "lucide-react";
+import { Code2, Palette, Rocket, Search, Shield, Zap, Users, DollarSign, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LanguageContext } from "../LanguageProvider";
 import DOMPurify from "isomorphic-dompurify";
@@ -28,6 +28,9 @@ const iconComponents = {
   Shield,
   Palette,
   Rocket,
+  Users,
+  DollarSign,
+  Calendar,
 };
 
 export function FeaturesSection({ data }: FeaturesSectionProps) {
@@ -68,6 +71,21 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
       icon: "Rocket",
       title: t("featuresSection.features.feature6.title"),
       description: t("featuresSection.features.feature6.description"),
+    },
+    {
+      icon: "Users",
+      title: t("featuresSection.features.feature7.title"),
+      description: t("featuresSection.features.feature7.description"),
+    },
+    {
+      icon: "DollarSign",
+      title: t("featuresSection.features.feature8.title"),
+      description: t("featuresSection.features.feature8.description"),
+    },
+    {
+      icon: "Calendar",
+      title: t("featuresSection.features.feature9.title"),
+      description: t("featuresSection.features.feature9.description"),
     },
   ];
 

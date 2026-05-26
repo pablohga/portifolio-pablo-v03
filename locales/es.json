@@ -60,6 +60,21 @@
           "icon": "Rocket",
           "title": "Configuración Rápida",
           "description": "Publica tu portafolio en línea en minutos con nuestro proceso intuitivo. Sin necesidad de conocimientos técnicos."
+        },
+        "feature7": {
+          "icon": "Users",
+          "title": "Gestión de Clientes",
+          "description": "Administra información de clientes, proyectos y comunicación en un solo lugar."
+        },
+        "feature8": {
+          "icon": "DollarSign",
+          "title": "Gestión Financiera",
+          "description": "Haz un seguimiento de tus ganancias, gastos y márgenes de beneficio en tiempo real."
+        },
+        "feature9": {
+          "icon": "Calendar",
+          "title": "Gestión de Proyectos",
+          "description": "Programa proyectos, define hitos y sigue los plazos de manera eficiente."
         }
       }
     },

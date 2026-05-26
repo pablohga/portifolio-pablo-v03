@@ -84,6 +84,21 @@
           "icon": "Rocket",
           "title": "Quick Setup",
           "description": "Get your portfolio online in minutes with our intuitive process. No technical knowledge required."
+        },
+        "feature7": {
+          "icon": "Users",
+          "title": "Client Management",
+          "description": "Manage client information, projects, and communication in one place."
+        },
+        "feature8": {
+          "icon": "DollarSign",
+          "title": "Financial Management",
+          "description": "Track your earnings, expenses, and profit margins in real-time."
+        },
+        "feature9": {
+          "icon": "Calendar",
+          "title": "Project Management",
+          "description": "Schedule projects, set milestones, and track deadlines efficiently."
         }
       }
     },
