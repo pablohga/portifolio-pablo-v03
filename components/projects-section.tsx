@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Folder } from "lucide-react";
@@ -34,7 +34,6 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
         !initialCategories.length && fetchCategories(),
       ].filter(Boolean)).finally(() => setIsLoading(false));
     } else {
-      // Initialize pagination for each category
       const pages: Record<string, number> = {};
       initialCategories.forEach((category) => {
         pages[category.id] = 1;
@@ -66,8 +65,7 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
       const data = await response.json();
       const sortedCategories = data.sort((a: Category, b: Category) => a.order - b.order);
       setCategories(sortedCategories);
-      
-      // Initialize pagination for each category
+
       const pages: Record<string, number> = {};
       sortedCategories.forEach((category: Category) => {
         pages[category.id] = 1;
@@ -103,8 +101,8 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
 
   if (isLoading || categories.length === 0) {
     return (
-      <section id="projects" className="py-20 bg-background">
-        <div className="container px-4 mx-auto max-w-[960px]">
+      <section id="projects" className="py-24 bg-background">
+        <div className="container px-4 mx-auto max-w-[1100px]">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Projects</h2>
             <p className="text-muted-foreground">Loading projects...</p>
@@ -115,103 +113,108 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
   }
 
   return (
-    <section id="projects" className="py-20 bg-background">
-      <div className="container px-4 mx-auto max-w-[960px]">
+    <section id="projects" className="py-24 bg-background">
+      <div className="container px-4 mx-auto max-w-[1100px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">Projects</h2>
-          <p className="text-muted-foreground">Some of my recent work</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Meus Projetos</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Uma curadoria do meu trabalho mais recente, combinando design estratégico e engenharia de software.
+          </p>
         </motion.div>
 
         <Tabs defaultValue={categories[0]?.id} className="w-full">
-          <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${categories.length}, 1fr)` }}>
-            {categories.map((category) => {
-              const Icon = Icons[category.icon as keyof typeof Icons] || Folder;
-              return (
-                <TabsTrigger 
-                  key={category.id} 
-                  value={category.id}
-                  className="data-[state=active]:bg-[#5221e6] data-[state=active]:text-white"
-                >
-                  <div className="flex items-center gap-2">
-                    {/* <Icon className="h-4 w-4" /> */}
-                    <span>{category.name}</span>
-                  </div>
-                </TabsTrigger>
-              );
-            })}
+          <TabsList className="flex flex-wrap justify-center h-auto p-1 bg-muted/50 backdrop-blur-sm rounded-full mb-12 max-w-fit mx-auto">
+            {categories.map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                className="rounded-full px-6 py-2 data-[state=active]:bg-[#5221e6] data-[state=active]:text-white transition-all duration-300"
+              >
+                <span className="text-sm font-medium">{category.name}</span>
+              </TabsTrigger>
+            ))}
           </TabsList>
 
           {categories.map((category) => (
-            <TabsContent key={category.id} value={category.id}>
+            <TabsContent key={category.id} value={category.id} className="outline-none">
               {category.description && (
-                <div 
-                  className="prose dark:prose-invert max-w-none mb-8"
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="prose prose-sm dark:prose-invert max-w-none mb-12 text-center text-muted-foreground"
                   dangerouslySetInnerHTML={{ __html: category.description }}
                 />
               )}
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                {getPaginatedProjects(category.id).map((project, index) => (
-                  <motion.div
-                    key={project._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                    viewport={{ once: true }}
-                    onClick={() => handleProjectClick(project)}
-                    className="cursor-pointer"
-                  >
-                    <Card className="overflow-hidden hover:shadow-lg hover:shadow-[#5221e6]/10 transition-all duration-300">
-                      <div className="aspect-video relative overflow-hidden">
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <CardHeader>
-                        <CardTitle>{project.title}</CardTitle>
-                        <CardDescription>{project.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex gap-2 flex-wrap">
-                          {project.tech.map((tech, techIndex) => (
-                            <span
-                              key={techIndex}
-                              className="px-3 py-1 bg-[#5221e6]/10 text-[#5221e6] rounded-full text-sm"
-                            >
-                              {tech}
-                            </span>
-                          ))}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <AnimatePresence mode="popLayout">
+                  {getPaginatedProjects(category.id).map((project, index) => (
+                    <motion.div
+                      key={project._id}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      onClick={() => handleProjectClick(project)}
+                      className="group cursor-pointer"
+                    >
+                      <div className="relative h-full rounded-3xl overflow-hidden bg-card border border-border/50 hover:border-[#5221e6]/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-[#5221e6]/20">
+                        <div className="aspect-video relative overflow-hidden">
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold mb-2 group-hover:text-[#5221e6] transition-colors duration-300">
+                            {project.title}
+                          </h3>
+                          <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                            {project.description}
+                          </p>
+                          <div className="flex gap-2 flex-wrap">
+                            {project.tech.map((tech, techIndex) => (
+                              <span
+                                key={techIndex}
+                                className="px-2.5 py-0.5 bg-[#5221e6]/10 text-[#5221e6] rounded-full text-xs font-medium border border-[#5221e6]/20"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
 
               {getPageCount(category.id) > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-4">
+                <div className="mt-12 flex items-center justify-center gap-6">
                   <Button
                     variant="outline"
                     size="icon"
+                    className="rounded-full w-10 h-10"
                     onClick={() => handlePageChange(category.id, -1)}
                     disabled={currentPage[category.id] === 1}
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
-                  <span className="text-sm">
-                    Page {currentPage[category.id]} of {getPageCount(category.id)}
+                  <span className="text-sm font-medium">
+                    Página {currentPage[category.id]} de {getPageCount(category.id)}
                   </span>
                   <Button
                     variant="outline"
                     size="icon"
+                    className="rounded-full w-10 h-10"
                     onClick={() => handlePageChange(category.id, 1)}
                     disabled={currentPage[category.id] === getPageCount(category.id)}
                   >

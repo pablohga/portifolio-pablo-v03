@@ -6,6 +6,7 @@ import { AboutSection } from "@/components/about-section";
 import { ContactSection } from "@/components/contact-section";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
+import { motion } from "framer-motion";
 
 interface TemplateProps {
   userId: string;
@@ -15,13 +16,16 @@ interface TemplateProps {
 
 export default function Template1({ userId, categories, projects }: TemplateProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
-
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-background"
+    >
       <HeroSection userId={userId} />
-      <h1 className="hidden">t1</h1>
       <AboutSection userId={userId} />
       <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
       <ContactSection userId={userId} />
-    </div>
+    </motion.div>
   );
 }

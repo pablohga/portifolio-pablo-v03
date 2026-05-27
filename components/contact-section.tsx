@@ -34,41 +34,49 @@ export function ContactSection({ userId }: ContactSectionProps) {
   }, [userId]);
 
   return (
-    <section id="contact" className="py-20 bg-background">
-      <div className="container px-4 mx-auto max-w-[960px]">
+    <section id="contact" className="py-24 bg-background relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#5221e6]/10 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#5221e6]/5 rounded-full blur-3xl -z-10" />
+
+      <div className="container px-4 mx-auto max-w-[1100px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">Entre em contato</h2>
-          <p className="text-muted-foreground">Vamos trabalhar juntos</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Entre em contato</h2>
+          <p className="text-muted-foreground text-lg">Vamos transformar sua ideia em realidade</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
             viewport={{ once: true }}
-            className="relative aspect-square rounded-lg overflow-hidden"
+            className="relative group"
           >
-            <Image
-              src={contactImage?.imageUrl || "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"}
-              alt="Contact"
-              className="object-cover w-full h-full"
-              width={450}
-              height={450}
-            />
+            <div className="absolute -inset-4 bg-gradient-to-tr from-[#5221e6]/20 to-transparent rounded-3xl blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative aspect-square rounded-3xl overflow-hidden border border-border/50 shadow-2xl">
+              <Image
+                src={contactImage?.imageUrl || "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"}
+                alt="Contact"
+                className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
+                width={500}
+                height={500}
+              />
+            </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.7 }}
             viewport={{ once: true }}
+            className="relative p-8 md:p-12 rounded-3xl bg-card border border-border/50 shadow-xl backdrop-blur-sm"
           >
             <ContactForm userId={userId} />
           </motion.div>
