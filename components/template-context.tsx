@@ -6,7 +6,7 @@ type TemplateType = "default" | "template1" | "template2" | "template3";
 
 interface TemplateContextProps {
   template: TemplateType;
-  setTemplate: (template: TemplateType) => void;
+  setTemplate: (template: TemplateType) => Promise<boolean>;
 }
 
 const TemplateContext = createContext<TemplateContextProps | undefined>(undefined);
@@ -33,7 +33,7 @@ export const TemplateProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // Update template state and persist to backend API
-  const setTemplate = async (newTemplate: TemplateType) => {
+  const setTemplate = async (newTemplate: TemplateType): Promise<boolean> => {
     setTemplateState(newTemplate);
     try {
       const res = await fetch("/api/user/template", {
@@ -41,11 +41,10 @@ export const TemplateProvider = ({ children }: { children: ReactNode }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ template: newTemplate }),
       });
-      if (!res.ok) {
-        console.error("Failed to update template");
-      }
+      return res.ok;
     } catch (error) {
       console.error("Failed to update template:", error);
+      return false;
     }
   };
 

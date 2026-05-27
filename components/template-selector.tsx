@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useTemplate } from "./template-context";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const templates = [
   { id: "default", name: "Default" },
@@ -15,9 +17,22 @@ const templates = [
 export function TemplateSelector() {
   const { template, setTemplate } = useTemplate();
   const [selectedTemplate, setSelectedTemplate] = useState<"default" | "template1" | "template2" | "template3">(template);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSave = () => {
-    setTemplate(selectedTemplate);
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      const success = await setTemplate(selectedTemplate);
+      if (success) {
+        toast.success("Template atualizado com sucesso!");
+      } else {
+        toast.error("Erro ao atualizar o template. Por favor, tente novamente.");
+      }
+    } catch (error) {
+      toast.error("Ocorreu um erro inesperado ao salvar o template.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,8 +66,15 @@ export function TemplateSelector() {
           </label>
         ))}
       </div>
-      <Button onClick={handleSave}>
-        Gravar
+      <Button onClick={handleSave} disabled={isLoading}>
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Gravando...
+          </>
+        ) : (
+          "Gravar"
+        )}
       </Button>
     </div>
   );
