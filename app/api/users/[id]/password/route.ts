@@ -5,6 +5,7 @@ import dbConnect from "@/lib/db";
 import { User } from "@/models/user";
 import { authOptions } from "@/lib/auth-options";
 import { isAdmin } from "@/lib/auth";
+import mongoose from "mongoose";
 
 // Força a rota a ser dinâmica
 export const dynamic = 'force-dynamic';
@@ -22,6 +23,10 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+      return NextResponse.json({ error: "Invalid user ID" }, { status: 400 });
+    }
+
     const { currentPassword, newPassword } = await request.json();
     await dbConnect();
 
@@ -32,6 +37,12 @@ export async function PUT(
 
     // Se não for admin, verifique a senha atual
     if (!admin) {
+      if (!currentPassword) {
+        return NextResponse.json(
+          { error: "Current password is required" },
+          { status: 400 }
+        );
+      }
       const isValid = await bcrypt.compare(currentPassword, user.password);
       if (!isValid) {
         return NextResponse.json(
@@ -41,10 +52,10 @@ export async function PUT(
       }
     }
 
-    // Hasheia a nova senha e atualiza o usuário
+    // Hasheia a nova senha e atualiza o usuário usando findByIdAndUpdate
+    // Isso evita disparar middlewares de 'save' (como a geração de slug) que podem causar erros em usuários antigos
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    await user.save();
+    await User.findByIdAndUpdate(params.id, { password: hashedPassword });
 
     return NextResponse.json({ message: "Password updated successfully" });
   } catch (error) {

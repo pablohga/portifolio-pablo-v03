@@ -390,7 +390,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   return (
     <TemplateProvider>
       <div className="container mx-auto py-20 max-w-[960px]">
-        <TemplateSelector />
+        
         <div className="mb-8 space-y-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
@@ -456,6 +456,11 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               </>
             )}
           </div>
+          
+          <div  className="my-10">
+            <TemplateSelector/>
+          </div>
+          
         </div>
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">

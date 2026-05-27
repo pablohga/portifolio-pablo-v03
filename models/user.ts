@@ -30,7 +30,12 @@ const userSchema = new mongoose.Schema({
 
 // Middleware para validar e normalizar o slug antes de salvar
 userSchema.pre("save", async function (next) {
-  if (this.isModified("name") || this.isNew) {
+  // Garante que o portfolioTemplate seja válido (evita erro de enum com string vazia)
+  if (!this.portfolioTemplate || this.portfolioTemplate === "") {
+    this.portfolioTemplate = "default";
+  }
+
+  if (!this.slug || this.isModified("name") || this.isNew) {
     if (!this.slug) {
       const baseSlug = this.name
         ?.toLowerCase()

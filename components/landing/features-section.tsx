@@ -6,6 +6,7 @@ import { Code2, Palette, Rocket, Search, Shield, Zap, Users, DollarSign, Calenda
 import { useTranslation } from "react-i18next";
 import { LanguageContext } from "../LanguageProvider";
 import DOMPurify from "isomorphic-dompurify";
+import { useTheme } from "next-themes";
 
 interface Feature {
   icon: string;
@@ -35,6 +36,7 @@ const iconComponents = {
 
 export function FeaturesSection({ data }: FeaturesSectionProps) {
   const { t, ready } = useTranslation();
+  const { theme } = useTheme();
   const { language } = useContext(LanguageContext);
 
   if (!ready) {
@@ -90,11 +92,16 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   ];
 
   const features = defaultFeatures;
-  
+
+  const bgImage = theme === 'light'
+    ? 'https://agenciaaimagic.com.br/portify/hero_footer-light.png'
+    : 'https://agenciaaimagic.com.br/portify/hero_footer.png';
+
   return (
     <section
       id="features"
-      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain bg-[url('https://agenciaaimagic.com.br/portify/hero_footer.png')]"
+      style={{ backgroundImage: `url(${bgImage})` }}
+      className="pt-0 pb-10 bg-top bg-no-repeat sm:bg-contain md:bg-cover lg:bg-contain w-full"
     >
       <div className="container px-4 mx-auto max-w-[960px]">
         <motion.div
