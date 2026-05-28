@@ -64,7 +64,7 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
 
   return (
   <section
-    style={{ backgroundImage: `url(${theme === 'light' ? 'https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1-light.png' : 'https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1.png'})` }}
+    style={{ backgroundImage: `url(${theme === 'light' ? 'https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1-light.png' : 'https://agenciaaimagic.com.br/portify/hero_img_clean-transformed_new1.png?v=2'})` }}
     className="relative min-h-screen flex items-center justify-left overflow-hidden bg-cover bg-center w-full"
   >
     <div className="absolute inset-0 bg-grid-white/10" />
