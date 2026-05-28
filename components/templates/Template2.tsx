@@ -6,6 +6,7 @@ import { About } from "@/types/about";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import DOMPurify from "isomorphic-dompurify";
+import { FeatureDetailsModal } from "@/components/feature-details-modal";
 
 interface TemplateProps {
   userId: string;
@@ -17,6 +18,8 @@ export default function Template2({ userId, categories, projects }: TemplateProp
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedFeature, setSelectedFeature] = useState<About["features"][0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,6 +41,22 @@ export default function Template2({ userId, categories, projects }: TemplateProp
     }
     fetchData();
   }, [userId]);
+
+  const truncateText = (text: string, limit: number) => {
+    if (text.length <= limit) return { truncated: false, text };
+    const plainText = text.replace(/<[^>]*>/g, "");
+    if (plainText.length <= limit) return { truncated: false, text };
+
+    return {
+      truncated: true,
+      text: plainText.substring(0, limit) + "...",
+    };
+  };
+
+  const handleFeatureClick = (feature: About["features"][0]) => {
+    setSelectedFeature(feature);
+    setIsModalOpen(true);
+  };
 
   if (loading) {
     return (
@@ -696,7 +715,7 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           <p className="hero-desc">
             {hero?.subtitle || "Bem-vindo ao meu espaço profissional. Aqui você encontra minha trajetória, especialidades e formas de entrar em contato para uma parceria de sucesso."}
           </p>
-          <div className="hero-actions">
+          <div className="hero-actions my-6">
             <a href="#contato" className="btn-primary">▶ Fale Comigo</a>
             <a href="#especialidades" className="btn-ghost">→ Ver Serviços</a>
           </div>
@@ -741,15 +760,23 @@ export default function Template2({ userId, categories, projects }: TemplateProp
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.description || "Sou Pablo Azevedo, profissional com anos de experiência no mercado. Meu trabalho é entregar resultados reais, com comprometimento, estratégia e uma abordagem personalizada para cada cliente.") }}
           />
           <div className="sobre-features">
-            {about?.features?.map((feature, i) => (
-              <div className="feature-item" key={i}>
-                <div className="feature-icon">✦</div>
-                <div className="feature-text">
-                  <strong>{feature.title}</strong>
-                  <span>{feature.description}</span>
+            {about?.features?.map((feature, i) => {
+              const { truncated, text: truncatedText } = truncateText(feature.description, 250);
+              return (
+                <div
+                  className="feature-item"
+                  key={i}
+                  onClick={() => truncated && handleFeatureClick(feature)}
+                  style={{ cursor: truncated ? "pointer" : "default" }}
+                >
+                  <div className="feature-icon">✦</div>
+                  <div className="feature-text">
+                    <strong>{feature.title}</strong>
+                    <span dangerouslySetInnerHTML={{ __html: truncated ? truncatedText : DOMPurify.sanitize(feature.description) }}></span>
+                  </div>
                 </div>
-              </div>
-            )) || [
+              );
+            }) || [
               { title: "Plano personalizado", description: "Soluções únicas para cada objetivo e necessidade específica." },
               { title: "Acompanhamento contínuo", description: "Suporte constante para garantir evolução e resultados consistentes." },
               { title: "Orientações claras", description: "Comunicação transparente e objetiva em cada etapa do processo." }
@@ -945,6 +972,11 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           <a href="#contato">Contato</a>
         </div>
       </footer>
+      <FeatureDetailsModal
+        feature={selectedFeature}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
     </div>
   );
 }
