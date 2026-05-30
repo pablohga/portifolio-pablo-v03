@@ -7,7 +7,7 @@ import { SecuritySettings } from "./security-settings";
 import { SubscriptionInfo } from "./subscription-info";
 import { PreferencesSettings } from "./preferences-settings";
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatName } from "@/lib/utils";
 
 interface ProfileSettingsProps {
@@ -21,10 +21,7 @@ export function ProfileSettings({ user }: ProfileSettingsProps) {
   return (
     <div className="container mx-auto py-20 max-w-[960px]">
       <div className="flex items-center gap-6 mb-8">
-        <Avatar className="h-24 w-24">
-          <AvatarImage src={avatarUrl} />
-          <AvatarFallback>{firstName[0]}{lastName[0]}</AvatarFallback>
-        </Avatar>
+        <UserAvatar user={{ ...user, image: avatarUrl }} size="xl" />
         <div>
           <h1 className="text-3xl font-bold">{user.name}</h1>
           <p className="text-muted-foreground">{user.email}</p>

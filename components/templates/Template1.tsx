@@ -1014,29 +1014,42 @@ export default function Template1({ userId, categories, projects }: TemplateProp
       <section id="bonus">
         <div className="container">
           <div className="reveal" style={{ textAlign: "center" }}>
-            <div className="badge">Bônus Exclusivos</div>
-            <h2 className="section-title">Você ainda leva <span className="teal">bônus exclusivos</span></h2>
-            <p className="section-sub">Conteúdos extras que complementam e aceleram sua jornada — entregues junto com o curso.</p>
+            <div className="badge">Habilidades Exclusivas</div>
+            <h2 className="section-title">Você ainda conta com <span className="teal">habilidades exclusivas</span></h2>
+            <p className="section-sub">Competências técnicas e habilidades que complementam e aceleram a entrega do seu projeto.</p>
           </div>
           <div className="bonus-grid">
-            <div className="bonus-card reveal">
-              <div className="bonus-icon">📋</div>
-              <h4>Pack de Templates de Anúncios</h4>
-              <p>Mais de 40 templates testados de copy e criativo para Meta e Google Ads prontos para adaptar ao seu negócio.</p>
-              <div className="bonus-val">Valor: R$ 97,00</div>
-            </div>
-            <div className="bonus-card reveal">
-              <div className="bonus-icon">📊</div>
-              <h4>Dashboard de Métricas no Notion</h4>
-              <p>Planilha + dashboard completo para acompanhar performance de campanhas e apresentar resultados para clientes.</p>
-              <div className="bonus-val">Valor: R$ 97,00</div>
-            </div>
-            <div className="bonus-card reveal">
-              <div className="bonus-icon">🎤</div>
-              <h4>Masterclass de Prospecção</h4>
-              <p>Aula ao vivo gravada sobre como conseguir os primeiros clientes e estruturar uma proposta que fecha negócio.</p>
-              <div className="bonus-val">Valor: R$ 97,00</div>
-            </div>
+            {about && about.features && about.features.length > 0 ? (
+              about.features.map((feature, i) => {
+                const icons = ['🚀', '🛠️ ', '🎨', '⚡', '🎯', '📈', '💎', '🛡️ '];
+                const selectedIcon = feature.icon || icons[i % icons.length];
+                return (
+                  <div className="bonus-card reveal" key={i}>
+                    <div className="bonus-icon">{selectedIcon}</div>
+                    <h4>{feature.title}</h4>
+                    <p>{feature.description}</p>
+                  </div>
+                );
+              })
+            ) : (
+              <>
+                <div className="bonus-card reveal">
+                  <div className="bonus-icon">🛠️ </div>
+                  <h4>Desenvolvimento Fullstack</h4>
+                  <p>Criação de soluções completas, do front-end ao back-end, com foco em escalabilidade.</p>
+                </div>
+                <div className="bonus-card reveal">
+                  <div className="bonus-icon">🎨</div>
+                  <h4>UI/UX Design</h4>
+                  <p>Design de interfaces intuitivas e focadas na melhor experiência para o usuário final.</p>
+                </div>
+                <div className="bonus-card reveal">
+                  <div className="bonus-icon">⚡</div>
+                  <h4>Otimização de Performance</h4>
+                  <p>Técnicas avançadas de SEO e performance para garantir carregamentos instantâneos.</p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>

@@ -29,7 +29,7 @@ interface PersonalInfoProps {
   onAvatarUpdate: (newAvatar: string) => void;
 }
 
-export function PersonalInfo({ user }: PersonalInfoProps) {
+export function PersonalInfo({ user, onAvatarUpdate }: PersonalInfoProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false); // New state for image upload
   const { toast } = useToast();
@@ -106,6 +106,7 @@ export function PersonalInfo({ user }: PersonalInfoProps) {
       const data = await res.json();
       if (data.secure_url) {
         form.setValue("image", data.secure_url); // Update the form state with the uploaded URL
+        onAvatarUpdate(data.secure_url);
         toast({
           title: "Success",
           description: "Profile picture updated successfully!",
