@@ -88,7 +88,7 @@ export function ContactForm({ userId }: ContactFormProps) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input placeholder="Seu nome/Your name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

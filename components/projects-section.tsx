@@ -15,11 +15,12 @@ interface ProjectsSectionProps {
   userId?: string;
   initialCategories?: Category[];
   initialProjects?: Project[];
+  title?: string;
 }
 
 const ITEMS_PER_PAGE = 6;
 
-export function ProjectsSection({ userId, initialCategories = [], initialProjects = [] }: ProjectsSectionProps) {
+export function ProjectsSection({ userId, initialCategories = [], initialProjects = [], title = "Meus Projetos" }: ProjectsSectionProps) {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isLoading, setIsLoading] = useState(!initialProjects.length || !initialCategories.length);
@@ -102,7 +103,8 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
   if (isLoading || categories.length === 0) {
     return (
       <section id="projects" className="py-24 bg-background">
-        <div className="container px-4 mx-auto max-w-[1100px]">
+        <div className="container px-4 mx-auto">
+        {/* <div className="container px-4 mx-auto max-w-[1100px]"> */}
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Projects</h2>
             <p className="text-muted-foreground">Loading projects...</p>
@@ -122,9 +124,9 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Meus Projetos</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Uma curadoria do meu trabalho mais recente, combinando design estratégico e engenharia de software.
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">{title}</h2>
+          <p className="text-muted-foreground text-lg mx-auto">
+            Uma curadoria do meu trabalho mais recente.
           </p>
         </motion.div>
 
@@ -173,7 +175,7 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         </div>
-                        <div className="p-6">
+                        <div className="p-10">
                           <h3 className="text-xl font-bold mb-2 group-hover:text-[#5221e6] transition-colors duration-300">
                             {project.title}
                           </h3>

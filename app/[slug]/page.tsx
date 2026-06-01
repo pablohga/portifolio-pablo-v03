@@ -90,6 +90,8 @@ export default async function UserPortfolioPage({
     userId: string;
     categories: any[];
     projects: any[];
+    userImage?: string;
+    userName?: string;
   };
 
   let TemplateComponent: React.ComponentType<TemplateComponentProps> | null = null;
@@ -110,12 +112,18 @@ export default async function UserPortfolioPage({
   return (
     <div className="min-h-screen bg-background">
       {TemplateComponent ? (
-        <TemplateComponent userId={userId} categories={categories} projects={projects} />
+        <TemplateComponent
+          userId={userId}
+          categories={categories}
+          projects={projects}
+          userImage={user.image}
+          userName={user.name}
+        />
       ) : (
         <>
           <HeroSection userId={userId} />
-          <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
           <AboutSection userId={userId} />
+          <ProjectsSection userId={userId} initialCategories={categories} initialProjects={projects} />
           <ContactSection userId={userId} />
         </>
       )}

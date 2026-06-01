@@ -6,6 +6,7 @@ import { About } from "@/types/about";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import DOMPurify from "isomorphic-dompurify";
+import { ProjectsSection } from "@/components/projects-section";
 import { FeatureDetailsModal } from "@/components/feature-details-modal";
 
 interface TemplateProps {
@@ -667,6 +668,69 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           transition: color 0.2s;
         }
         .template-2-wrapper .footer-links a:hover { color: var(--cyan); }
+
+        /* ProjectsSection Overrides for Template 2 */
+        .template-2-wrapper #projects {
+          background: var(--black) !important;
+          color: var(--white) !important;
+          padding: 100px 0 !important;
+        }
+        .template-2-wrapper #projects h2 {
+          font-family: var(--font-display) !important;
+          color: var(--white) !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.05em !important;
+        }
+        .template-2-wrapper #projects p {
+          color: var(--gray-text) !important;
+          font-family: var(--font-body) !important;
+        }
+        .template-2-wrapper #projects [role="tablist"] {
+          background: var(--gray-dark) !important;
+          border: 1px solid rgba(0,229,255,0.2) !important;
+          color: var(--white) !important;
+        }
+        .template-2-wrapper #projects [role="tab"][data-state="active"] {
+          background: var(--cyan) !important;
+          color: var(--black) !important;
+        }
+        .template-2-wrapper #projects [role="tab"] {
+          color: var(--gray-text) !important;
+        }
+        .template-2-wrapper #projects .group {
+          background: var(--gray-dark) !important;
+          border: 1px solid var(--gray-light) !important;
+        }
+        .template-2-wrapper #projects .group:hover {
+          border-color: var(--cyan) !important;
+          box-shadow: 0 0 30px rgba(0,229,255,0.15) !important;
+        }
+        .template-2-wrapper #projects .group h3 {
+          color: var(--white) !important;
+          font-family: var(--font-display) !important;
+          text-transform: uppercase !important;
+        }
+        .template-2-wrapper #projects .group h3:hover {
+          color: var(--cyan) !important;
+        }
+        .template-2-wrapper #projects .group span {
+          background: rgba(0,229,255,0.1) !important;
+          color: var(--cyan) !important;
+          border: 1px solid rgba(0,229,255,0.3) !important;
+          font-family: var(--font-mono) !important;
+          text-transform: uppercase !important;
+          font-size: 10px !important;
+        }
+        .template-2-wrapper #projects button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .template-2-wrapper #projects .rounded-full.w-10.h-10 {
+          background: var(--gray-dark) !important;
+          border: 1px solid rgba(0,229,255,0.3) !important;
+          color: var(--cyan) !important;
+        }
+
         @media (max-width: 900px) {
           .template-2-wrapper header { padding: 14px 20px; }
           .template-2-wrapper nav { display: none; }
@@ -828,6 +892,13 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           )}
         </div>
       </section>
+
+      <ProjectsSection
+        title="Projetos"
+        userId={userId}
+        initialCategories={categories}
+        initialProjects={projects}
+      />
 
       <section className="processo" id="processo">
         <div className="section-header">

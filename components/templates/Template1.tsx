@@ -5,15 +5,20 @@ import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
+import { ProjectsSection } from "@/components/projects-section";
+import { ContactSection } from "@/components/contact-section";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import DOMPurify from "isomorphic-dompurify";
 
 interface TemplateProps {
   userId: string;
   categories: Category[];
   projects: Project[];
+  userImage?: string;
+  userName?: string;
 }
 
-export default function Template1({ userId, categories, projects }: TemplateProps) {
+export default function Template1({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +43,8 @@ export default function Template1({ userId, categories, projects }: TemplateProp
     }
     fetchData();
   }, [userId]);
+
+  const fullName = userName || hero?.title || "Pablo Azevedo";
 
   if (loading) {
     return (
@@ -149,7 +156,6 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         .template-1-wrapper .section-sub {
           font-size: 1rem;
           color: var(--muted);
-          max-width: 600px;
           margin-top: 12px;
         }
         .template-1-wrapper nav {
@@ -178,9 +184,9 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         }
         .template-1-wrapper .hero-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-          align-items: flex-end;
+          grid-template-columns: 1fr 1.25fr;
+          gap: 30px;
+          align-items: stretch;
         }
         .template-1-wrapper .hero-copy { padding-bottom: 80px }
         .template-1-wrapper .hero-copy h1 {
@@ -206,20 +212,31 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         }
         .template-1-wrapper .hero-stat small { font-size: .78rem; color: var(--muted) }
         .template-1-wrapper .hero-img-wrap {
-          position: relative; align-self: flex-end;
-          display: flex; justify-content: center;
+position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 720px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
         }
         .template-1-wrapper .hero-img-wrap::before {
-          content: ''; position: absolute;
-          bottom: 0; left: 50%; transform: translateX(-50%);
-          width: 340px; height: 340px;
-          background: radial-gradient(circle, var(--teal-glow) 0%, transparent 70%);
-          border-radius: 50%;
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle, rgba(0,212,192,.18) 0%, transparent 70%);
+          filter: blur(40px);
+          z-index: 0;
         }
         .template-1-wrapper .hero-img-wrap img {
-          position: relative; z-index: 1;
-          max-height: 520px; object-fit: contain;
-          filter: drop-shadow(0 0 40px rgba(0,212,192,.2));
+            width: 100%;
+            height: 100%;
+            min-height: 720px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            display: block;
         }
         .template-1-wrapper .hero-banner {
           width: 100%;
@@ -278,11 +295,13 @@ export default function Template1({ userId, categories, projects }: TemplateProp
           padding: 90px 0;
           background: var(--bg);
         }
+        .template-1-wrapper #modules .container { text-align: center }
         .template-1-wrapper .modules-header { margin-bottom: 52px }
         .template-1-wrapper .modules-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 20px;
+          margin-top: 14px;
         }
         .template-1-wrapper .module-card {
           background: var(--card);
@@ -429,8 +448,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
           overflow: hidden;
         }
         .template-1-wrapper .instructor-grid {
-          display: grid; grid-template-columns: 1fr 1.2fr;
-          gap: 60px; align-items: center;
+          display: grid;
+          grid-template-columns: 1.1fr 1fr;
+          gap: 40px;
+          align-items: center;
         }
         .template-1-wrapper .instructor-img {
           position: relative;
@@ -442,11 +463,15 @@ export default function Template1({ userId, categories, projects }: TemplateProp
           border-radius: 50%;
         }
         .template-1-wrapper .instructor-img img {
-          position: relative; z-index: 1;
-          width: 100%; border-radius: var(--r2);
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          min-height: 620px;
+          max-height: 760px;
           object-fit: cover;
+          border-radius: 24px;
           border: 1px solid var(--border);
-          filter: drop-shadow(0 20px 60px rgba(0,0,0,.5));
+          filter: drop-shadow(0 20px 60px rgba(0,0,0,.6));
         }
         .template-1-wrapper .instructor-copy .badge { margin-bottom: 14px }
         .template-1-wrapper .instructor-copy h2 {
@@ -587,7 +612,7 @@ export default function Template1({ userId, categories, projects }: TemplateProp
           font-size: .8rem; color: var(--green); font-weight: 700;
         }
         .template-1-wrapper #faq {
-          padding: 90px 0;
+          padding: 70px 0 30px;
           background: var(--bg2);
         }
         .template-1-wrapper #faq .container { text-align: center }
@@ -625,7 +650,7 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         .template-1-wrapper .faq-item.open .faq-a { display: block }
         .template-1-wrapper .faq-item.open .arr { transform: rotate(45deg) }
         .template-1-wrapper #cta-final {
-          padding: 100px 0;
+          padding: 50px 0 80px;
           background: var(--bg);
           position: relative; overflow: hidden;
           text-align: center;
@@ -675,12 +700,179 @@ export default function Template1({ userId, categories, projects }: TemplateProp
           font-size: .78rem; color: var(--muted);
         }
         .template-1-wrapper .footer-logo-small { height: 22px }
+
+        .template-1-wrapper #projects {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+.template-1-wrapper #projects h2 {
+  font-family: 'Syne', sans-serif !important;
+  color: var(--text) !important;
+  letter-spacing: -.02em !important;
+}
+.template-1-wrapper #projects p {
+  color: var(--muted) !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* TabsList — container das tabs */
+  .template-1-wrapper #projects [role="tablist"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    height: auto !important;
+    padding: 6px 10px !important;
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 999px !important;
+    max-width: fit-content !important;
+    margin: 0 auto 48px auto !important;
+  }
+
+  /* TabsTrigger — cada aba */
+  .template-1-wrapper #projects [role="tab"] {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: .88rem !important;
+    font-weight: 600 !important;
+    color: var(--muted) !important;
+    padding: 8px 20px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    background: transparent !important;
+    transition: all .2s ease !important;
+    white-space: nowrap !important;
+    letter-spacing: .02em !important;
+  }
+  .template-1-wrapper #projects [role="tab"]:hover {
+    color: var(--teal) !important;
+    background: var(--teal-dim) !important;
+  }
+  .template-1-wrapper #projects [role="tab"][data-state="active"] {
+    background: var(--teal) !important;
+    color: #050c0f !important;
+    font-weight: 700 !important;
+  }
+
+  /* Cards de projeto */
+  .template-1-wrapper #projects .group {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--r2) !important;
+  }
+  .template-1-wrapper #projects .group:hover {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 30px rgba(0,212,192,0.15) !important;
+  }
+  .template-1-wrapper #projects .group h3 {
+    color: var(--text) !important;
+    font-family: 'Syne', sans-serif !important;
+  }
+  .template-1-wrapper #projects .group h3:hover {
+    color: var(--teal) !important;
+  }
+  .template-1-wrapper #projects .group span {
+    background: var(--teal-dim) !important;
+    color: var(--teal) !important;
+    border: 1px solid var(--border) !important;
+  }
+
+  /* Botões de paginação */
+  .template-1-wrapper #projects button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+  .template-1-wrapper #projects .rounded-full.w-10.h-10 {
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--teal) !important;
+  }
+  .template-1-wrapper #projects .rounded-full.w-10.h-10:hover:not(:disabled) {
+    background: var(--teal-dim) !important;
+    border-color: var(--teal) !important;
+  }
+
+  /* Texto de paginação */
+  .template-1-wrapper #projects span.text-sm.font-medium {
+    color: var(--muted) !important;
+    font-family: 'DM Sans', sans-serif !important;
+  }
+
+        /* ContactSection Overrides */
+        .template-1-wrapper #contact {
+          background: var(--bg) !important;
+          padding: 90px 0 !important;
+          color: var(--text) !important;
+        }
+        .template-1-wrapper #contact div[class*="bg-[#5221e6"] {
+          background: var(--teal-glow) !important;
+        }
+        .template-1-wrapper #contact h2 {
+          font-family: 'Syne', sans-serif !important;
+          font-size: clamp(1.7rem, 3.5vw, 2.6rem) !important;
+          font-weight: 700 !important;
+          color: var(--text) !important;
+          letter-spacing: -.02em !important;
+        }
+        .template-1-wrapper #contact p {
+          color: var(--muted) !important;
+          font-family: 'DM Sans', sans-serif !important;
+        }
+        .template-1-wrapper #contact .bg-card {
+          background: var(--card) !important;
+          border: 1px solid var(--border) !important;
+          border-radius: var(--r2) !important;
+        }
+        .template-1-wrapper #contact .bg-gradient-to-tr {
+          background: linear-gradient(to top right, var(--teal-glow), transparent) !important;
+        }
+        .template-1-wrapper #contact .border-border\/50 {
+          border-color: var(--border) !important;
+        }
+        .template-1-wrapper #contact label {
+          color: var(--text) !important;
+          font-family: 'DM Sans', sans-serif !important;
+          font-size: 0.85rem !important;
+        }
+        .template-1-wrapper #contact input,
+        .template-1-wrapper #contact textarea {
+          background: var(--bg2) !important;
+          border: 1px solid var(--border) !important;
+          color: var(--text) !important;
+          border-radius: var(--r) !important;
+          font-family: 'DM Sans', sans-serif !important;
+        }
+        .template-1-wrapper #contact input:focus,
+        .template-1-wrapper #contact textarea:focus {
+          border-color: var(--teal) !important;
+          outline: none !important;
+        }
+        .template-1-wrapper #contact button[type="submit"] {
+          background: var(--teal) !important;
+          color: #050c0f !important;
+          font-family: 'Syne', sans-serif !important;
+          font-weight: 700 !important;
+          border-radius: var(--r) !important;
+          transition: all .22s ease !important;
+          box-shadow: 0 0 20px rgba(0,212,192,.3) !important;
+        }
+        .template-1-wrapper #contact button[type="submit"]:hover {
+          background: var(--teal2) !important;
+          transform: translateY(-2px) !important;
+          box-shadow: 0 0 30px rgba(0,212,192,.5) !important;
+        }
+
+
         @media(max-width:860px) {
           .template-1-wrapper .hero-grid, .template-1-wrapper .method-grid, .template-1-wrapper .instructor-grid, .template-1-wrapper .forwho-grid { grid-template-columns: 1fr }
           .template-1-wrapper .pain-grid, .template-1-wrapper .modules-grid, .template-1-wrapper .testi-grid, .template-1-wrapper .bonus-grid { grid-template-columns: 1fr 1fr }
           .template-1-wrapper .footer-grid { grid-template-columns: 1fr 1fr }
-          .template-1-wrapper .hero-img-wrap { max-height: 340px; overflow: hidden }
-          .template-1-wrapper .hero-img-wrap img { max-height: 320px }
+          .template-1-wrapper .hero-img-wrap {  max-height: unset;
+            overflow: visible}
+          .template-1-wrapper .hero-img-wrap img {   width: 100%;
+            max-height: 420px;
+            object-fit: cover }
           .template-1-wrapper .hero-copy { padding-bottom: 40px }
         }
         @media(max-width:560px) {
@@ -689,11 +881,33 @@ export default function Template1({ userId, categories, projects }: TemplateProp
           .template-1-wrapper .pricing-wrap { padding: 28px 20px }
           .template-1-wrapper .price-val { font-size: 3.5rem }
           .template-1-wrapper .hero-stats { flex-wrap: wrap; gap: 20px }
+          .template-1-wrapper #projects .group {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+            min-height: 420px !important;
+          }
+
+          .template-1-wrapper #projects .group img {
+            height: 240px !important;
+            object-fit: cover !important;
+          }
+
+          .template-1-wrapper #projects .group .p-10 {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+          }
         }
       ` }} />
       
       <nav>
         <div className="container">
+          <UserAvatar
+            user={{ name: fullName, image: userImage || hero?.backgroundImage }}
+            className="border-2 border-[var(--teal)]"
+          />
           <a href="#contato" className="btn-primary nav-cta">Entrar em Contato →</a>
         </div>
       </nav>
@@ -728,11 +942,27 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         </div>
         <div className="hero-banner">
           <div className="container">
-            <div className="hb-item"><span className="dot"></span>Design de Alta Performance</div>
+            <div className="instructor-stats">
+                {about && about.features && about.features.length > 0 ? (
+                  about.features.slice(0, 3).map((f, i) => (
+                    <div className="hb-item" key={i}>
+                      <span className="dot"></span>{f.title}
+                      
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="hb-item"><span className="dot"></span><span>R$12M+</span>Em verba gerenciada</div>
+                    <div className="hb-item"><span>320+</span>Freelancer Jobs</div>
+                    <div className="hb-item"><span>10+</span>Anos de mercado</div>
+                  </>
+                )}
+              </div>
+            {/* <div className="hb-item"><span className="dot"></span>Design de Alta Performance</div>
             <div className="hb-item"><span className="dot"></span>Estratégias Digitais</div>
             <div className="hb-item"><span className="dot"></span>Foco em Conversão</div>
             <div className="hb-item"><span className="dot"></span>Desenvolvimento Moderno</div>
-            <div className="hb-item"><span className="dot"></span>Análise de Resultados</div>
+            <div className="hb-item"><span className="dot"></span>Análise de Resultados</div> */}
           </div>
         </div>
       </section>
@@ -740,38 +970,40 @@ export default function Template1({ userId, categories, projects }: TemplateProp
       <section id="pain">
         <div className="container">
           <div className="badge">Minha Abordagem</div>
-          <h2 className="section-title">Design & Estratégia<br /><span className="teal">focados em resultados</span></h2>
-          <p className="section-sub">Não acredito em soluções genéricas. Cada projeto é tratado como único, unindo estética refinada com objetivos de negócio claros.</p>
+          <h2 className="section-title">Qualidade & Comprometimento<br />
+            <span className="teal">focados em você</span>
+          </h2>
+          <p className="section-sub">Não acredito em soluções genéricas. Cada projeto é tratado com atenção única, unindo expertise técnica com os objetivos reais do seu negócio.</p>
           <div className="pain-grid">
             <div className="pain-card reveal">
-              <div className="pain-icon">🎯</div>
-              <h4>Foco no Objetivo</h4>
-              <p>Cada elemento visual é pensado para guiar o usuário e maximizar as conversões do seu negócio.</p>
+              
+              <h4>Foco no Resultado</h4>
+              <p>Cada entrega é pensada para atender exatamente o que você precisa, gerando valor real e impacto direto no seu negócio.</p>
             </div>
             <div className="pain-card reveal">
-              <div className="pain-icon">📈</div>
-              <h4>Alta Performance</h4>
-              <p>Código limpo e otimizado para garantir que seu site seja rápido, seguro e eficiente em qualquer dispositivo.</p>
+              
+              <h4>Alta Qualidade</h4>
+              <p>Trabalho cuidadoso e criterioso para garantir que cada projeto seja entregue com excelência, sem atalhos.</p>
             </div>
             <div className="pain-card reveal">
-              <div className="pain-icon">🎨</div>
-              <h4>Estética Premium</h4>
-              <p>Design moderno e sofisticado que eleva a percepção de valor da sua marca no mercado digital.</p>
+              
+              <h4>Identidade Única</h4>
+              <p>Soluções personalizadas que refletem a essência da sua marca e se destacam no mercado.</p>
             </div>
             <div className="pain-card reveal">
-              <div className="pain-icon">⏳</div>
-              <h4>Entrega Ágil</h4>
-              <p>Processo de trabalho organizado com cronogramas claros para que seu projeto entre no ar no prazo certo.</p>
+              
+              <h4>Entrega no Prazo</h4>
+              <p>Gestão eficiente do tempo com prazos claros para que seu projeto esteja pronto quando você precisa.</p>
             </div>
             <div className="pain-card reveal">
-              <div className="pain-icon">🤝</div>
+              
               <h4>Parceria Real</h4>
-              <p>Acompanhamento próximo durante todo o desenvolvimento para garantir que a visão final seja alcançada.</p>
+              <p>Comunicação próxima e transparente em todas as etapas, garantindo que sua visão seja respeitada.</p>
             </div>
             <div className="pain-card reveal">
-              <div className="pain-icon">📊</div>
-              <h4>Escalabilidade</h4>
-              <p>Sistemas construídos para crescer junto com a sua empresa, permitindo expansões futuras sem retrabalho.</p>
+              
+              <h4>Visão de Crescimento</h4>
+              <p>Soluções planejadas para evoluir junto com a sua empresa, preparadas para os próximos passos.</p>
             </div>
           </div>
         </div>
@@ -779,11 +1011,11 @@ export default function Template1({ userId, categories, projects }: TemplateProp
 
       <section id="modules">
         <div className="container">
-          <div className="modules-header reveal">
+          
             <div className="badge">Minhas Especialidades</div>
             <h2 className="section-title">Áreas de <span className="teal">Atuação</span></h2>
             <p className="section-sub">Soluções especializadas com foco em qualidade, design moderno e entrega de valor real para o cliente.</p>
-          </div>
+          
           <div className="modules-grid">
             {categories.length > 0 ? (
               categories.map((cat, i) => (
@@ -821,31 +1053,38 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         </div>
       </section>
 
+      <ProjectsSection
+        title="Projetos"
+        userId={userId}
+        initialCategories={categories}
+        initialProjects={projects}
+      />
+
       <section id="forwho">
         <div className="container">
           <div className="reveal" style={{ textAlign: "center" }}>
             <div className="badge">Perfil Profissional</div>
-            <h2 className="section-title">Comprometimento com <span className="teal">resultados reais</span>,<br />estética e função</h2>
+            <h2 className="section-title">Comprometimento com <span className="teal">qualidade real</span>,<br />propósito e dedicação</h2>
           </div>
           <div className="forwho-grid">
             <div className="fw-col reveal">
               <h3 className="green">✓ O que entrego</h3>
               <ul className="fw-list">
-                <li><span className="ico">✦</span>Desenvolvimento de sites modernos e responsivos</li>
-                <li><span className="ico">✦</span>Criação de interfaces focadas na experiência do usuário</li>
-                <li><span className="ico">✦</span>Otimização de performance e carregamento rápido</li>
-                <li><span className="ico">✦</span>Consultoria técnica para viabilizar ideias complexas</li>
-                <li><span className="ico">✦</span>Cuidado rigoroso com cada detalhe visual e funcional</li>
+                <li><span className="ico">✦</span>Soluções sob medida alinhadas aos objetivos do seu projeto</li>
+                <li><span className="ico">✦</span>Comunicação clara e transparente em todas as etapas</li>
+                <li><span className="ico">✦</span>Entregas dentro do prazo combinado, sem surpresas</li>
+                <li><span className="ico">✦</span>Atenção aos detalhes que fazem a diferença no resultado final</li>
+                <li><span className="ico">✦</span>Suporte e acompanhamento mesmo após a conclusão do projeto</li>
               </ul>
             </div>
             <div className="fw-col reveal">
               <h3 style={{ color: "#e05555" }}>✗ O que não faço</h3>
               <ul className="fw-list">
-                <li><span className="ico no">✗</span>Entregas superficiais ou sem embasamento técnico</li>
-                <li><span className="ico no">✗</span>Design genérico baseado apenas em templates prontos</li>
-                <li><span className="ico no">✗</span>Promessas de resultados irreais sem estratégia</li>
-                <li><span className="ico no">✗</span>Suporte inexistente após a entrega do projeto</li>
-                <li><span className="ico no">✗</span>Negligência com acessibilidade e performance</li>
+                <li><span className="ico no">✗</span>Entregas genéricas sem entender a real necessidade do cliente</li>
+                <li><span className="ico no">✗</span>Promessas impossíveis só para fechar o contrato</li>
+                <li><span className="ico no">✗</span>Desaparecimento após o pagamento sem suporte pós-entrega</li>
+                <li><span className="ico no">✗</span>Trabalho sem planejamento ou sem alinhamento prévio</li>
+                <li><span className="ico no">✗</span>Negligência com qualidade por excesso de projetos simultâneos</li>
               </ul>
             </div>
           </div>
@@ -915,7 +1154,7 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         </div>
       </section>
 
-      <section id="testimonials">
+      {/* <section id="testimonials">
         <div className="container">
           <div className="reveal" style={{ textAlign: "center" }}>
             <div className="badge">Resultados Reais</div>
@@ -972,21 +1211,23 @@ export default function Template1({ userId, categories, projects }: TemplateProp
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section id="instructor">
         <div className="container">
           <div className="instructor-grid">
             <div className="instructor-img reveal">
-              <img src={hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="Instructor" />
+              {/* <img src={hero?.backgroundImage || "https://agenciaaimagic.com.br/portify/no-image.jpg"} alt="Instructor" /> */}
+              <img src={userImage || "https://agenciaaimagic.com.br/portify/no-image.jpg"} alt="Instructor" />
             </div>
             <div className="instructor-copy reveal">
-              <div className="badge">Seu mentor</div>
-              <h2 className="section-title">Quem vai te guiar<br />nessa jornada</h2>
-              <div className="sub-name teal">{hero?.title || "Pablo Azevedo"}</div>
+              <div className="badge">Seu parceiro de jornada</div>
+              <h2 className="section-title">Quem vai te acompanhar<br />neste desafio</h2>
+              <div className="sub-name teal">{hero?.title || "O parceiro certo para sua jornada."}</div>
               <div
                 className="instructor-desc"
-                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.description || "Especialista em tráfego pago com mais de 10 anos de experiência em gestão de campanhas para negócios locais, e-commerces e infoprodutores.") }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.description 
+                  || "Mais do que entregar projetos, meu compromisso é com o seu sucesso estratégico. Com foco em resultados, flexibilidade e uma comunicação transparente, traduzo suas necessidades em soluções criativas e eficientes. Vamos elevar seu negócio juntos? Estou pronto para transformar desafios em grandes conquistas e ser o braço direito que o seu projeto exige.") }}
               />
               <div className="instructor-stats">
                 {about && about.features && about.features.length > 0 ? (
@@ -999,7 +1240,7 @@ export default function Template1({ userId, categories, projects }: TemplateProp
                 ) : (
                   <>
                     <div className="i-stat"><span>R$12M+</span><small>Em verba gerenciada</small></div>
-                    <div className="i-stat"><span>3.200+</span><small>Alunos formados</small></div>
+                    <div className="i-stat"><span>320+</span><small>Freelancer Jobs</small></div>
                     <div className="i-stat"><span>10+</span><small>Anos de mercado</small></div>
                   </>
                 )}
@@ -1066,10 +1307,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
               if(!isOpen) item.classList.add("open");
             }}>
               <button className="faq-q">
-                Preciso de experiência prévia com anúncios?
+                Como funciona o seu processo de trabalho?
                 <span className="arr">+</span>
               </button>
-              <div className="faq-a">Não. O curso começa do zero e vai até o nível avançado. Mesmo sem nenhuma experiência com plataformas de anúncios você vai acompanhar tranquilamente.</div>
+              <div className="faq-a">Trabalho com etapas claras: briefing detalhado, planejamento estratégico, design de interface, desenvolvimento técnico e testes rigorosos. Isso garante que o resultado final esteja perfeitamente alinhado aos seus objetivos.</div>
             </div>
             <div className="faq-item reveal" onClick={(e) => {
               const item = e.currentTarget;
@@ -1078,10 +1319,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
               if(!isOpen) item.classList.add("open");
             }}>
               <button className="faq-q">
-                Quanto tempo tenho acesso ao conteúdo?
+                Quais tipos de projetos você costuma atender?
                 <span className="arr">+</span>
               </button>
-              <div className="faq-a">O acesso é vitalício. Você assiste no seu ritmo e, sempre que o curso receber atualizações, você recebe automaticamente — sem pagar nada a mais.</div>
+              <div className="faq-a">Atendo desde landing pages de alta conversão e sites institucionais até aplicações web complexas e e-commerces, focando sempre em performance, SEO e a melhor experiência para o usuário final.</div>
             </div>
             <div className="faq-item reveal" onClick={(e) => {
               const item = e.currentTarget;
@@ -1090,10 +1331,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
               if(!isOpen) item.classList.add("open");
             }}>
               <button className="faq-q">
-                Preciso investir em anúncios para fazer o curso?
+                Quanto tempo leva a entrega de um projeto?
                 <span className="arr">+</span>
               </button>
-              <div className="faq-a">Não é obrigatório. Você pode aprender toda a teoria e estrutura primeiro. Mas para praticar recomendamos um orçamento inicial mínimo de R$10/dia para testar as campanhas.</div>
+              <div className="faq-a">O prazo varia conforme a complexidade do escopo. Um site institucional, por exemplo, pode levar de 2 a 4 semanas. Para projetos maiores, definimos juntos um cronograma com entregas parciais para que você acompanhe cada etapa.</div>
             </div>
             <div className="faq-item reveal" onClick={(e) => {
               const item = e.currentTarget;
@@ -1102,10 +1343,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
               if(!isOpen) item.classList.add("open");
             }}>
               <button className="faq-q">
-                O curso tem certificado?
+                Como podemos iniciar uma parceria?
                 <span className="arr">+</span>
               </button>
-              <div className="faq-a">Sim! Ao concluir todos os módulos você recebe um certificado digital que pode ser adicionado ao seu LinkedIn e portfólio profissional.</div>
+              <div className="faq-a">O primeiro passo é preencher o formulário de contato abaixo. Após analisar sua necessidade, agendamos uma conversa rápida para alinhar expectativas e, em seguida, envio uma proposta comercial detalhada.</div>
             </div>
             <div className="faq-item reveal" onClick={(e) => {
               const item = e.currentTarget;
@@ -1114,10 +1355,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
               if(!isOpen) item.classList.add("open");
             }}>
               <button className="faq-q">
-                Funciona para qualquer nicho de mercado?
+                Você oferece suporte após a entrega do projeto?
                 <span className="arr">+</span>
               </button>
-              <div className="faq-a">Sim. Os princípios de tráfego pago ensinados no Método Supremo 7 se aplicam a e-commerce, infoprodutos, negócios locais, prestadores de serviço e muito mais.</div>
+              <div className="faq-a">Sim. Além da entrega final, ofereço pacotes de manutenção mensal que incluem atualizações de segurança, backups e melhorias contínuas para garantir que sua plataforma nunca fique obsoleta.</div>
             </div>
             <div className="faq-item reveal" onClick={(e) => {
               const item = e.currentTarget;
@@ -1126,10 +1367,10 @@ export default function Template1({ userId, categories, projects }: TemplateProp
               if(!isOpen) item.classList.add("open");
             }}>
               <button className="faq-q">
-                Como funciona a garantia?
+                Como funciona a questão do orçamento e pagamentos?
                 <span className="arr">+</span>
               </button>
-              <div className="faq-a">Você tem 7 dias após a compra para solicitar reembolso integral, sem nenhuma justificativa necessária. É só entrar em contato com nosso suporte e o valor é devolvido na forma de pagamento original.</div>
+              <div className="faq-a">Trabalho com orçamentos personalizados baseados no valor e complexidade do projeto. Geralmente, opera-se com um sinal para início dos trabalhos e o restante dividido entre as etapas de entrega ou no fechamento do projeto.</div>
             </div>
           </div>
         </div>
@@ -1139,11 +1380,9 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         <div className="container">
           <div className="reveal">
             <div className="badge">Última chamada</div>
-            <h2 className="section-title">Pare de queimar verba no escuro.<br /><span className="teal">Aprenda tráfego pago do jeito certo.</span></h2>
-            <p>Mais de 3.200 alunos já tomaram essa decisão. Chegou a sua vez de parar de adivinhar e começar a crescer com método.</p>
-            <a href="#pricing" className="btn-primary" style={{ fontSize: "1.05rem", padding: "18px 40px" }}>
-              Garantir minha vaga por R$ 97 →
-            </a>
+            <h2 className="section-title">Pare de queimar verba no escuro.<br /><span className="teal">Tenha a parceria ideial para seu projeto.</span></h2>
+            <p>Experiencia e comprometimento ao seu dispor.</p>
+            <ContactSection userId={userId} />
           </div>
         </div>
       </section>
@@ -1152,14 +1391,14 @@ export default function Template1({ userId, categories, projects }: TemplateProp
         <div className="container">
           <div className="footer-grid">
             <div className="footer-brand">
-              <p>Formando profissionais de tráfego pago com método, prática e resultado real desde 2019.</p>
+              <p>Otimize seu tempo e potencialize seus resultados com um parceiro dedicado: transformar sua visão em realidade é a minha especialidade.</p>
             </div>
             <div className="footer-col">
               <h5>Conteúdo</h5>
-              <a href="#modules">Módulos</a>
-              <a href="#instructor">Instrutor</a>
-              <a href="#bonus">Bônus</a>
-              <a href="#pricing">Preço</a>
+              <a href="#modules">Minhas Especialidades</a>
+              <a href="#instructor">Seu parceiro de jornada</a>
+              <a href="#bonus">Habilidades Exclusivas</a>
+              <a href="#cta-final">Contato {userName}</a>
             </div>
             <div className="footer-col">
               <h5>Suporte</h5>
