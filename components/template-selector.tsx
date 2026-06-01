@@ -44,7 +44,7 @@ export function TemplateSelector() {
         {templates.map((t) => (
           <label key={t.id} className="inline-flex items-center space-x-2">
             
-            <div class="flex flex-col gap-4 mb-4">
+            <div className="flex flex-col gap-4 mb-4">
               <Image
               src={`https://agenciaaimagic.com.br/portify/${t.name}.png`}
               alt="Portify"

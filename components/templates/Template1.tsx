@@ -593,7 +593,7 @@ position: relative;
           position: relative; overflow: hidden;
         }
         .template-1-wrapper .bonus-card::before {
-          content: 'BÔNUS'; position: absolute;
+          content: 'VANTAGEM'; position: absolute;
           top: 14px; right: -20px;
           background: var(--teal); color: #050c0f;
           font-size: .62rem; font-weight: 700; letter-spacing: .1em;
@@ -702,18 +702,22 @@ position: relative;
         .template-1-wrapper .footer-logo-small { height: 22px }
 
         .template-1-wrapper #projects {
-  background: var(--bg) !important;
-  color: var(--text) !important;
-}
-.template-1-wrapper #projects h2 {
-  font-family: 'Syne', sans-serif !important;
-  color: var(--text) !important;
-  letter-spacing: -.02em !important;
-}
-.template-1-wrapper #projects p {
-  color: var(--muted) !important;
-  font-family: 'DM Sans', sans-serif !important;
-}
+          background: var(--bg) !important;
+          color: var(--text) !important;
+        }
+        .template-1-wrapper #projects h2 {
+          font-family: 'Syne', sans-serif !important;
+          color: var(--text) !important;
+          letter-spacing: -.02em !important;
+        }
+        .template-1-wrapper #projects p {
+          color: var(--muted) !important;
+          font-family: 'DM Sans', sans-serif !important;
+        }
+          .template-1-wrapper #projects div{
+          padding: 3px;
+          
+        }
 
 /* TabsList — container das tabs */
   .template-1-wrapper #projects [role="tablist"] {
@@ -804,6 +808,12 @@ position: relative;
           background: var(--bg) !important;
           padding: 90px 0 !important;
           color: var(--text) !important;
+        }
+        .template-1-wrapper #contact form {
+          padding: 20px !important;
+        }
+        .template-1-wrapper #contact form input{
+          padding: 10px !important;
         }
         .template-1-wrapper #contact div[class*="bg-[#5221e6"] {
           background: var(--teal-glow) !important;
@@ -908,7 +918,7 @@ position: relative;
             user={{ name: fullName, image: userImage || hero?.backgroundImage }}
             className="border-2 border-[var(--teal)]"
           />
-          <a href="#contato" className="btn-primary nav-cta">Entrar em Contato →</a>
+          <a href="#cta-final" className="btn-primary nav-cta">Entrar em Contato →</a>
         </div>
       </nav>
 
@@ -1234,7 +1244,10 @@ position: relative;
                   about.features.slice(0, 3).map((f, i) => (
                     <div className="i-stat" key={i}>
                       <span>{f.title}</span>
-                      <small>{f.description.substring(0, 20)}...</small>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(f.description.substring(0, 20) || "") }}
+                      />
+                      {/* <small>{f.description.substring(0, 20)}...</small> */}
                     </div>
                   ))
                 ) : (
@@ -1262,13 +1275,38 @@ position: relative;
           <div className="bonus-grid">
             {about && about.features && about.features.length > 0 ? (
               about.features.map((feature, i) => {
-                const icons = ['🚀', '🛠️ ', '🎨', '⚡', '🎯', '📈', '💎', '🛡️ '];
-                const selectedIcon = feature.icon || icons[i % icons.length];
+                /* const icons = ['🚀', '🛠️ ', '🎨', '⚡', '🎯', '📈', '💎', '🛡️ '];
+                const selectedIcon = feature.icon || icons[i % icons.length]; */
+                const iconMap: Record<string, string> = {
+                  // Nomes que vêm do banco
+                  'Code2': '💻',
+                  'Palette': '🎨',
+                  'Rocket': '🚀',
+                  'Zap': '⚡',
+                  'Target': '🎯',
+                  'TrendingUp': '📈',
+                  'Shield': '🛡️',
+                  'Diamond': '💎',
+                  'Wrench': '🛠️',
+                  'Star': '⭐',
+                  'Globe': '🌐',
+                  'Layers': '📦',
+                  'Settings': '⚙️',
+                  'Users': '👥',
+                  'BarChart': '📊',
+                  'Award': '🏆',
+                };
+
+                const fallbackIcons = ['🚀', '🛠️', '🎨', '⚡', '🎯', '📈', '💎', '🛡️'];
+                const selectedIcon = iconMap[feature.icon] || fallbackIcons[i % fallbackIcons.length];
                 return (
                   <div className="bonus-card reveal" key={i}>
                     <div className="bonus-icon">{selectedIcon}</div>
                     <h4>{feature.title}</h4>
-                    <p>{feature.description}</p>
+                    {/* <p>{feature.description}</p> */}
+                    <p
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(feature.description || "") }}
+                    />
                   </div>
                 );
               })

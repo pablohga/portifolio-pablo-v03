@@ -90,8 +90,8 @@ export default function Navbar() {
   const AuthenticatedNavbarPort = () => {
     const links = [
       { label: t('Navbar.Home'), href: "/" },
-      { label: t('Navbar.About'), href: "/about" },
-      { label: t('Navbar.Projects'), href: "/projects" },
+      { label: t('Navbar.About'), href: "#about" },
+      { label: t('Navbar.Projects'), href: "#projects" },
       { label: t('Navbar.EditPortfolio'), href: "/dashboard" },
     ];
     console.log('setCurrentLanguage NAVBAR!!!!', currentLanguage)

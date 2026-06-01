@@ -20,10 +20,10 @@ export default function Navbar() {
         <Link href="/" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Home
         </Link>
-        <Link href="/about" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="#about" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Sobre o Criador
         </Link>
-        <Link href="/projects" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
+        <Link href="#projects" className="px-2 text-gray-700 dark:text-gray-300 hover:underline">
           Projetos
         </Link>
         <Link href="/register" className="text-primary font-bold hover:underline">
