@@ -19,6 +19,10 @@ export function TemplateSelector() {
   const [selectedTemplate, setSelectedTemplate] = useState<"default" | "template1" | "template2" | "template3">(template);
   const [isLoading, setIsLoading] = useState(false);
 
+  React.useEffect(() => {
+    setSelectedTemplate(template);
+  }, [template]);
+
   const handleSave = async () => {
     setIsLoading(true);
     try {
@@ -42,25 +46,31 @@ export function TemplateSelector() {
       </label>
       <div className="flex flex-row gap-4 mb-4">
         {templates.map((t) => (
-          <label key={t.id} className="inline-flex items-center space-x-2">
-            
-            <div className="flex flex-col gap-4 mb-4">
+          <label key={t.id} className="inline-flex items-center space-x-2 cursor-pointer">
+            <div className="flex flex-col gap-4 mb-4 p-2 border rounded-lg hover:bg-accent/50 transition-colors relative">
               <Image
-              src={`https://agenciaaimagic.com.br/portify/${t.name}.png`}
-              alt="Portify"
-              width={120}
-              height={52}
-              priority
-              className="logo-img"/>
-              <div>
+                src={`https://agenciaaimagic.com.br/portify/${t.name}.png`}
+                alt={t.name}
+                width={120}
+                height={52}
+                priority
+                className="logo-img"
+              />
+              <div className="flex items-center gap-2">
                 <input
-                type="radio"
-                name="template"
-                value={t.id}
-                checked={selectedTemplate === t.id}
-                onChange={() => setSelectedTemplate(t.id as "default" | "template1" | "template2" | "template3")}
-                className="form-radio"/>
-                <span>- {t.name}</span>
+                  type="radio"
+                  name="template"
+                  value={t.id}
+                  checked={selectedTemplate === t.id}
+                  onChange={() => setSelectedTemplate(t.id as any)}
+                  className="form-radio"
+                />
+                <span className="text-sm font-medium">{t.name}</span>
+                {template === t.id && (
+                  <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-green-500 text-white">
+                    Ativo
+                  </span>
+                )}
               </div>
             </div>
           </label>

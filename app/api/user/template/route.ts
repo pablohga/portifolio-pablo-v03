@@ -4,6 +4,26 @@ import { authOptions } from "@/lib/auth-options";
 import { User } from "@/models/user";
 import dbConnect from "@/lib/db";
 
+export async function GET(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user?.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  await dbConnect();
+
+  const user = await User.findOne({ email: session.user.email });
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({
+    template: user.portfolioTemplate || "default"
+  });
+}
+
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
 

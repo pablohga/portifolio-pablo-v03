@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import * as LucideIcons from "lucide-react";
 import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
 import { Project } from "@/types/project";
@@ -45,6 +46,22 @@ export default function Template1({ userId, categories, projects, userImage, use
   }, [userId]);
 
   const fullName = userName || hero?.title || "Pablo Azevedo";
+
+  // Renderiza ícone Lucide pelo nome, com fallback para emoji
+  const getLucideIcon = (iconName: string, fallbackIndex: number) => {
+    const fallbackNames = ["Rocket", "Wrench", "Palette", "Zap", "Target", "TrendingUp", "Diamond", "Shield"];
+    const emojiFallback = ["🚀", "🛠️", "🎨", "⚡", "🎯", "📈", "💎", "🛡️"];
+
+    const name = iconName || fallbackNames[fallbackIndex % fallbackNames.length];
+    const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ size?: number; color?: string }>>)[name];
+
+    if (IconComponent) {
+      return <IconComponent size={32} color="var(--teal)" />;
+    }
+
+    // Fallback para emoji se o nome não corresponder a nenhum ícone Lucide
+    return <span style={{ fontSize: "2rem" }}>{emojiFallback[fallbackIndex % emojiFallback.length]}</span>;
+  };
 
   if (loading) {
     return (
@@ -601,7 +618,14 @@ position: relative;
           transform: rotate(40deg);
         }
         .template-1-wrapper .bonus-card:hover { border-color: var(--teal); transform: translateY(-3px) }
-        .template-1-wrapper .bonus-icon { font-size: 2rem; margin-bottom: 14px }
+        .template-1-wrapper .bonus-icon {
+          display: flex; align-items: center; justify-content: flex-start;
+          margin-bottom: 14px;
+          width: 48px; height: 48px;
+          background: var(--teal-dim);
+          border-radius: 10px;
+          padding: 8px;
+        }
         .template-1-wrapper .bonus-card h4 {
           font-family: 'Syne', sans-serif;
           font-size: .98rem; font-weight: 700; margin-bottom: 8px;
@@ -957,7 +981,6 @@ position: relative;
                   about.features.slice(0, 3).map((f, i) => (
                     <div className="hb-item" key={i}>
                       <span className="dot"></span>{f.title}
-                      
                     </div>
                   ))
                 ) : (
@@ -968,11 +991,6 @@ position: relative;
                   </>
                 )}
               </div>
-            {/* <div className="hb-item"><span className="dot"></span>Design de Alta Performance</div>
-            <div className="hb-item"><span className="dot"></span>Estratégias Digitais</div>
-            <div className="hb-item"><span className="dot"></span>Foco em Conversão</div>
-            <div className="hb-item"><span className="dot"></span>Desenvolvimento Moderno</div>
-            <div className="hb-item"><span className="dot"></span>Análise de Resultados</div> */}
           </div>
         </div>
       </section>
@@ -986,32 +1004,26 @@ position: relative;
           <p className="section-sub">Não acredito em soluções genéricas. Cada projeto é tratado com atenção única, unindo expertise técnica com os objetivos reais do seu negócio.</p>
           <div className="pain-grid">
             <div className="pain-card reveal">
-              
               <h4>Foco no Resultado</h4>
               <p>Cada entrega é pensada para atender exatamente o que você precisa, gerando valor real e impacto direto no seu negócio.</p>
             </div>
             <div className="pain-card reveal">
-              
               <h4>Alta Qualidade</h4>
               <p>Trabalho cuidadoso e criterioso para garantir que cada projeto seja entregue com excelência, sem atalhos.</p>
             </div>
             <div className="pain-card reveal">
-              
               <h4>Identidade Única</h4>
               <p>Soluções personalizadas que refletem a essência da sua marca e se destacam no mercado.</p>
             </div>
             <div className="pain-card reveal">
-              
               <h4>Entrega no Prazo</h4>
               <p>Gestão eficiente do tempo com prazos claros para que seu projeto esteja pronto quando você precisa.</p>
             </div>
             <div className="pain-card reveal">
-              
               <h4>Parceria Real</h4>
               <p>Comunicação próxima e transparente em todas as etapas, garantindo que sua visão seja respeitada.</p>
             </div>
             <div className="pain-card reveal">
-              
               <h4>Visão de Crescimento</h4>
               <p>Soluções planejadas para evoluir junto com a sua empresa, preparadas para os próximos passos.</p>
             </div>
@@ -1021,11 +1033,9 @@ position: relative;
 
       <section id="modules">
         <div className="container">
-          
-            <div className="badge">Minhas Especialidades</div>
-            <h2 className="section-title">Áreas de <span className="teal">Atuação</span></h2>
-            <p className="section-sub">Soluções especializadas com foco em qualidade, design moderno e entrega de valor real para o cliente.</p>
-          
+          <div className="badge">Minhas Especialidades</div>
+          <h2 className="section-title">Áreas de <span className="teal">Atuação</span></h2>
+          <p className="section-sub">Soluções especializadas com foco em qualidade, design moderno e entrega de valor real para o cliente.</p>
           <div className="modules-grid">
             {categories.length > 0 ? (
               categories.map((cat, i) => (
@@ -1164,70 +1174,10 @@ position: relative;
         </div>
       </section>
 
-      {/* <section id="testimonials">
-        <div className="container">
-          <div className="reveal" style={{ textAlign: "center" }}>
-            <div className="badge">Resultados Reais</div>
-            <h2 className="section-title">Palavras de quem já <span className="teal">passou por esse caminho</span></h2>
-          </div>
-          <div className="testi-grid">
-            <div className="testi-card reveal">
-              <div className="stars">★★★★★</div>
-              <p className="testi-text">Em dois meses eu já tinha clientes pagantes e um processo claro. Antes ficava perdido tentando copiar estratégias aleatórias da internet.</p>
-              <div className="testi-author">
-                <div className="testi-avatar">RV</div>
-                <div><div className="testi-name">Rafael V.</div><div className="testi-role">Gestor de Tráfego</div></div>
-              </div>
-            </div>
-            <div className="testi-card reveal">
-              <div className="stars">★★★★★</div>
-              <p className="testi-text">Finalmente entendi o que estava errado nas minhas campanhas. O ROAS saiu de 1,2 para 4,8 em menos de 30 dias aplicando o método.</p>
-              <div className="testi-author">
-                <div className="testi-avatar">CM</div>
-                <div><div className="testi-name">Camila M.</div><div className="testi-role">E-commerce Owner</div></div>
-              </div>
-            </div>
-            <div className="testi-card reveal">
-              <div className="stars">★★★★★</div>
-              <p className="testi-text">O módulo de análise de métricas mudou minha cabeça. Parei de olhar só para curtidas e comecei a focar em números que pagam as contas.</p>
-              <div className="testi-author">
-                <div className="testi-avatar">LP</div>
-                <div><div className="testi-name">Lucas P.</div><div className="testi-role">Empreendedor Digital</div></div>
-              </div>
-            </div>
-            <div className="testi-card reveal">
-              <div className="stars">★★★★★</div>
-              <p className="testi-text">Passei de estagiário para head de mídia em 8 meses. O Método Supremo 7 foi o que me deu base técnica e confiança para crescer.</p>
-              <div className="testi-author">
-                <div className="testi-avatar">FO</div>
-                <div><div className="testi-name">Felipe O.</div><div className="testi-role">Head de Mídia</div></div>
-              </div>
-            </div>
-            <div className="testi-card reveal">
-              <div className="stars">★★★★★</div>
-              <p className="testi-text">Tinha medo de investir em curso. Recuperei o investimento na primeira semana aplicando apenas o que aprendi no módulo 3.</p>
-              <div className="testi-author">
-                <div className="testi-avatar">AS</div>
-                <div><div className="testi-name">Ana S.</div><div className="testi-role">Afiliada Digital</div></div>
-              </div>
-            </div>
-            <div className="testi-card reveal">
-              <div className="stars">★★★★★</div>
-              <p className="testi-text">O suporte da comunidade é diferente. Não é só o curso — é um grupo de pessoas sérias comprometidas com resultado. Vale cada centavo.</p>
-              <div className="testi-author">
-                <div className="testi-avatar">MR</div>
-                <div><div className="testi-name">Marcelo R.</div><div className="testi-role">Infoprodutor</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-
       <section id="instructor">
         <div className="container">
           <div className="instructor-grid">
             <div className="instructor-img reveal">
-              {/* <img src={hero?.backgroundImage || "https://agenciaaimagic.com.br/portify/no-image.jpg"} alt="Instructor" /> */}
               <img src={userImage || "https://agenciaaimagic.com.br/portify/no-image.jpg"} alt="Instructor" />
             </div>
             <div className="instructor-copy reveal">
@@ -1247,7 +1197,6 @@ position: relative;
                       <p
                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(f.description.substring(0, 20) || "") }}
                       />
-                      {/* <small>{f.description.substring(0, 20)}...</small> */}
                     </div>
                   ))
                 ) : (
@@ -1263,8 +1212,6 @@ position: relative;
         </div>
       </section>
 
-      
-
       <section id="bonus">
         <div className="container">
           <div className="reveal" style={{ textAlign: "center" }}>
@@ -1274,56 +1221,31 @@ position: relative;
           </div>
           <div className="bonus-grid">
             {about && about.features && about.features.length > 0 ? (
-              about.features.map((feature, i) => {
-                /* const icons = ['🚀', '🛠️ ', '🎨', '⚡', '🎯', '📈', '💎', '🛡️ '];
-                const selectedIcon = feature.icon || icons[i % icons.length]; */
-                const iconMap: Record<string, string> = {
-                  // Nomes que vêm do banco
-                  'Code2': '💻',
-                  'Palette': '🎨',
-                  'Rocket': '🚀',
-                  'Zap': '⚡',
-                  'Target': '🎯',
-                  'TrendingUp': '📈',
-                  'Shield': '🛡️',
-                  'Diamond': '💎',
-                  'Wrench': '🛠️',
-                  'Star': '⭐',
-                  'Globe': '🌐',
-                  'Layers': '📦',
-                  'Settings': '⚙️',
-                  'Users': '👥',
-                  'BarChart': '📊',
-                  'Award': '🏆',
-                };
-
-                const fallbackIcons = ['🚀', '🛠️', '🎨', '⚡', '🎯', '📈', '💎', '🛡️'];
-                const selectedIcon = iconMap[feature.icon] || fallbackIcons[i % fallbackIcons.length];
-                return (
-                  <div className="bonus-card reveal" key={i}>
-                    <div className="bonus-icon">{selectedIcon}</div>
-                    <h4>{feature.title}</h4>
-                    {/* <p>{feature.description}</p> */}
-                    <p
-                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(feature.description || "") }}
-                    />
+              about.features.map((feature, i) => (
+                <div className="bonus-card reveal" key={i}>
+                  <div className="bonus-icon">
+                    {getLucideIcon(feature.icon, i)}
                   </div>
-                );
-              })
+                  <h4>{feature.title}</h4>
+                  <p
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(feature.description || "") }}
+                  />
+                </div>
+              ))
             ) : (
               <>
                 <div className="bonus-card reveal">
-                  <div className="bonus-icon">🛠️ </div>
+                  <div className="bonus-icon">{getLucideIcon("Wrench", 0)}</div>
                   <h4>Desenvolvimento Fullstack</h4>
                   <p>Criação de soluções completas, do front-end ao back-end, com foco em escalabilidade.</p>
                 </div>
                 <div className="bonus-card reveal">
-                  <div className="bonus-icon">🎨</div>
+                  <div className="bonus-icon">{getLucideIcon("Palette", 1)}</div>
                   <h4>UI/UX Design</h4>
                   <p>Design de interfaces intuitivas e focadas na melhor experiência para o usuário final.</p>
                 </div>
                 <div className="bonus-card reveal">
-                  <div className="bonus-icon">⚡</div>
+                  <div className="bonus-icon">{getLucideIcon("Zap", 2)}</div>
                   <h4>Otimização de Performance</h4>
                   <p>Técnicas avançadas de SEO e performance para garantir carregamentos instantâneos.</p>
                 </div>
