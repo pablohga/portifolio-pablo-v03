@@ -7,17 +7,21 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
-import { Crown, AlertTriangle } from "lucide-react";
+import { Crown, AlertTriangle, CreditCard } from "lucide-react";
 
 interface SubscriptionManagementProps {
   currentTier: string;
+  currentStatus?: string;
   email: string;
+  pastDueSince?: string | null;
 }
 
-export function SubscriptionManagement({ currentTier, email }: SubscriptionManagementProps) {
+export function SubscriptionManagement({ currentTier, currentStatus = 'active', email, pastDueSince }: SubscriptionManagementProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+
+  const isPastDue = currentStatus === 'past_due';
 
   const handleUpgrade = async (plan: string) => {
     try {
@@ -25,9 +29,9 @@ export function SubscriptionManagement({ currentTier, email }: SubscriptionManag
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           plan,
-          email 
+          email
         }),
       });
 
@@ -46,6 +50,11 @@ export function SubscriptionManagement({ currentTier, email }: SubscriptionManag
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleUpdatePayment = () => {
+    // Redireciona para o portal do cliente Stripe para atualizar o método de pagamento
+    window.open('https://billing.stripe.com/p-login/billing-portal', '_blank');
   };
 
   const handleCancel = async () => {
@@ -79,6 +88,23 @@ export function SubscriptionManagement({ currentTier, email }: SubscriptionManag
     }
   };
 
+  const getStatusBadge = () => {
+    if (isPastDue) {
+      return (
+        <Badge variant="destructive" className="gap-1">
+          <AlertTriangle className="h-3 w-3" />
+          Pagamento Pendente
+        </Badge>
+      );
+    }
+    return (
+      <Badge variant={currentTier === 'premium' ? 'default' : currentTier === 'paid' ? 'secondary' : 'outline'}>
+        <Crown className="mr-1 h-4 w-4" />
+        {currentTier.charAt(0).toUpperCase() + currentTier.slice(1)}
+      </Badge>
+    );
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -87,25 +113,52 @@ export function SubscriptionManagement({ currentTier, email }: SubscriptionManag
             <CardTitle>Subscription Plan</CardTitle>
             <CardDescription>Manage your subscription plan</CardDescription>
           </div>
-          <Badge variant={currentTier === 'premium' ? 'default' : currentTier === 'paid' ? 'secondary' : 'outline'}>
-            <Crown className="mr-1 h-4 w-4" />
-            {currentTier.charAt(0).toUpperCase() + currentTier.slice(1)}
-          </Badge>
+          {getStatusBadge()}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
+        {isPastDue && (
+          <Card className="border-destructive bg-destructive/10">
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-5 w-5 text-destructive mt-0.5" />
+                <div className="space-y-2">
+                  <p className="font-medium text-destructive">Pagamento Falhou</p>
+                  <p className="text-sm text-muted-foreground">
+                    O pagamento da sua assinatura falhou. Por favor, atualize seus dados de pagamento para evitar o cancelamento.
+                    {pastDueSince && (
+                      <span className="block mt-1">
+                        Pendente desde: {new Date(pastDueSince).toLocaleDateString('pt-BR')}
+                      </span>
+                    )}
+                  </p>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={handleUpdatePayment}
+                    className="gap-2"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    Atualizar Pagamento
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {currentTier === 'free' && (
           <div className="space-y-4">
             <p>Upgrade to unlock premium features:</p>
             <div className="flex gap-4">
-              <Button 
-                onClick={() => handleUpgrade('paid')} 
+              <Button
+                onClick={() => handleUpgrade('paid')}
                 disabled={isLoading}
               >
                 Upgrade to Paid
               </Button>
-              <Button 
-                onClick={() => handleUpgrade('premium')} 
+              <Button
+                onClick={() => handleUpgrade('premium')}
                 disabled={isLoading}
               >
                 Upgrade to Premium
@@ -117,8 +170,8 @@ export function SubscriptionManagement({ currentTier, email }: SubscriptionManag
         {currentTier === 'paid' && (
           <div className="space-y-4">
             <div className="flex gap-4">
-              <Button 
-                onClick={() => handleUpgrade('premium')} 
+              <Button
+                onClick={() => handleUpgrade('premium')}
                 disabled={isLoading}
               >
                 Upgrade to Premium

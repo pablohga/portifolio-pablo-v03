@@ -53,7 +53,7 @@ export default function Template1({ userId, categories, projects, userImage, use
     const emojiFallback = ["🚀", "🛠️", "🎨", "⚡", "🎯", "📈", "💎", "🛡️"];
 
     const name = iconName || fallbackNames[fallbackIndex % fallbackNames.length];
-    const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ size?: number; color?: string }>>)[name];
+    const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number; color?: string }>>)[name];
 
     if (IconComponent) {
       return <IconComponent size={32} color="var(--teal)" />;

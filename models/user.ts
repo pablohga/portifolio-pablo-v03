@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
   emailVerified: Date,
   role: { type: String, enum: ["user", "admin"], default: "user" },
   subscriptionTier: { type: String, enum: ["free", "paid", "premium"], default: "free" },
+  subscriptionStatus: { type: String, enum: ["active", "past_due", "canceled", "trialing"], default: "active" },
+  subscriptionPastDueSince: { type: Date, default: null },
   manualTierOverride: { type: Boolean, default: false },
   resetToken: String,
   resetTokenExpiry: Date,
@@ -31,7 +33,7 @@ const userSchema = new mongoose.Schema({
 // Middleware para validar e normalizar o slug antes de salvar
 userSchema.pre("save", async function (next) {
   // Garante que o portfolioTemplate seja válido (evita erro de enum com string vazia)
-  if (!this.portfolioTemplate || this.portfolioTemplate === "") {
+  if (!this.portfolioTemplate) {
     this.portfolioTemplate = "default";
   }
 
