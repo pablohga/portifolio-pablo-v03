@@ -85,7 +85,7 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
                 __html: DOMPurify.sanitize(t("HeroSection.subtitle")),
               }} suppressHydrationWarning={true}/>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text to-primary/70"
+            <h1 className=" text-4xl md:text-6xl font-bold mb-6 text-[#A2D9F7] bg-clip-text to-primary/70 drop-shadow-lg"
             dangerouslySetInnerHTML={{ __html: t("HeroSection.title") }} />
               {/* <span dangerouslySetInnerHTML={{ __html: dataTitle }} /> */}
               {/* {t("HeroSection.title")} */}

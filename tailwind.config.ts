@@ -95,6 +95,7 @@ const config: Config = {
             h1: {
               fontFamily: 'var(--font-oxanium)',
               color: 'inherit',
+              /* color: '#A2D9F7', */
             },
             h2: {
               fontFamily: 'var(--font-oxanium)',

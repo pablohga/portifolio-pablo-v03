@@ -86,7 +86,7 @@ export function PaymentSelection({ onSelectFreePlan }: PaymentSelectionProps) {
   const planDisplayNames: Record<string, string> = {
     Free: 'Grátis',
     Paid: 'Básico',
-    Assinante: 'Básico',
+    Básico: 'Básico',
     'Premium ': 'Premium',
   };
   return (

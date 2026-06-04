@@ -64,7 +64,12 @@ export default function HeroSection({ userId }: HeroSectionProps) {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-6xl md:text-8xl font-extrabold mb-6 tracking-tighter leading-tight"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#5221e6] via-[#7c3aed] to-[#5221e6] bg-[length:200%_auto] animate-gradient-x">
+            <span
+              className="bg-clip-text text-transparent bg-gradient-to-r from-[#5221e6] via-[#7c3aed] to-[#5221e6] bg-[length:200%_auto] animate-gradient-x"
+              style={{
+                textShadow: `0 2px 4px hsl(var(--foreground) / 0.1)`
+              }}
+            >
               {hero.title}
             </span>
           </motion.h1>
