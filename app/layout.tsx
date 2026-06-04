@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 /* import { Inter } from "next/font/google"; */
 import { Montserrat, Oxanium } from 'next/font/google';
+// @ts-ignore: allow importing global CSS without type declarations
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar";
