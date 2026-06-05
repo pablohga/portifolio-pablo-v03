@@ -12,6 +12,13 @@ import { Metadata } from "next";
 import Template1 from "@/components/templates/Template1";
 import Template2 from "@/components/templates/Template2";
 import Template3 from "@/components/templates/Template3";
+import Template4 from "@/components/templates/Template4";
+import Template5 from "@/components/templates/Template5";
+import Template6 from "@/components/templates/Template6";
+import Template7 from "@/components/templates/Template7";
+import Template8 from "@/components/templates/Template8";
+import Template9 from "@/components/templates/Template9";
+import Template10 from "@/components/templates/Template10";
 
 interface UserPortfolioPageProps {
   params: {
@@ -104,6 +111,27 @@ export default async function UserPortfolioPage({
       break;
     case "template3":
       TemplateComponent = Template3;
+      break;
+    case "template4":
+      TemplateComponent = Template4;
+      break;
+    case "template5":
+      TemplateComponent = Template5;
+      break;
+    case "template6":
+      TemplateComponent = Template6;
+      break;
+    case "template7":
+      TemplateComponent = Template7;
+      break;
+    case "template8":
+      TemplateComponent = Template8;
+      break;
+    case "template9":
+      TemplateComponent = Template9;
+      break;
+    case "template10":
+      TemplateComponent = Template10;
       break;
     default:
       TemplateComponent = null;

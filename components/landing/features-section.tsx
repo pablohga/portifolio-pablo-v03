@@ -111,8 +111,9 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
+          {/* text-primary text-[#A2D9F7] text-4xl font-bold mb-4 bg-clip-text to-primary/70 drop-shadow-lg */}
           <h2
-            className="text-primary text-4xl font-bold mb-4"
+            className="text-primary text-[#A2D9F7] text-4xl font-bold mb-4 bg-clip-text"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(t("featuresSection.title")),
             }}

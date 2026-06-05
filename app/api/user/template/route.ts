@@ -33,7 +33,19 @@ export async function POST(request: NextRequest) {
 
   const { template } = await request.json();
 
-  if (!template || !["default", "template1", "template2", "template3"].includes(template)) {
+  if (!template || ![
+    "default", 
+    "template1", 
+    "template2", 
+    "template3", 
+    "template4", 
+    "template5", 
+    "template6", 
+    "template7", 
+    "template8", 
+    "template9", 
+    "template10"
+  ].includes(template)) {
     return NextResponse.json({ error: "Invalid template" }, { status: 400 });
   }
 
@@ -46,7 +58,16 @@ export async function POST(request: NextRequest) {
   }
 
   user.portfolioTemplate = template;
-  await user.save();
+  /* await user.save(); */
+  await User.findOneAndUpdate(
+  { email: session.user.email },
+  { portfolioTemplate: template },
+  { new: true }
+);
 
-  return NextResponse.json({ message: "Template updated successfully" });
+  // Busca de novo para confirmar
+const updated = await User.findOne({ email: session.user.email });
+console.log("Template guardado:", updated.portfolioTemplate);
+
+  return NextResponse.json({ message: "Template updated successfully!" });
 }

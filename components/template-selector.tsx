@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useTemplate } from "./template-context";
+import { useTemplate, type TemplateType } from "./template-context";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -12,11 +12,19 @@ const templates = [
   { id: "template1", name: "Template 1" },
   { id: "template2", name: "Template 2" },
   { id: "template3", name: "Template 3" },
+  { id: "template4", name: "Template 4" },
+  { id: "template5", name: "Template 5" },
+  { id: "template6", name: "Template 6" },
+  { id: "template7", name: "Template 7" },
+  { id: "template8", name: "Template 8" },
+  { id: "template9", name: "Template 9" },
+  { id: "template10", name: "Template 10" },
 ];
 
 export function TemplateSelector() {
   const { template, setTemplate } = useTemplate();
-  const [selectedTemplate, setSelectedTemplate] = useState<"default" | "template1" | "template2" | "template3">(template);
+  const [selectedTemplate, setSelectedTemplate] = useState<"default" | "template1" | "template2" | "template3" | "template4" | "template5" | "template6" | "template7" | "template8" | "template9" | "template10">(template);
+  /* const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>(template); */
   const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
@@ -44,7 +52,7 @@ export function TemplateSelector() {
       <label className="block mb-2 font-semibold">
         Selecione o Template do seu Portfólio:
       </label>
-      <div className="flex flex-row gap-4 mb-4">
+      <div className="flex flex-row flex-wrap gap-4 mb-4">
         {templates.map((t) => (
           <label key={t.id} className="inline-flex items-center space-x-2 cursor-pointer">
             <div className="flex flex-col gap-4 mb-4 p-2 border rounded-lg hover:bg-accent/50 transition-colors relative">

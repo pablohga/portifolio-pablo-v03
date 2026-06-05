@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-type TemplateType = "default" | "template1" | "template2" | "template3";
+export type TemplateType = "default" | "template1" | "template2" | "template3" | "template4" | "template5" | "template6" | "template7" | "template8" | "template9" | "template10";
 
 interface TemplateContextProps {
   template: TemplateType;
@@ -21,6 +21,7 @@ export const TemplateProvider = ({ children }: { children: ReactNode }) => {
         const res = await fetch("/api/user/template");
         if (res.ok) {
           const data = await res.json();
+          console.log("Template recebido da API:", data.template);
           if (data.template) {
             setTemplateState(data.template);
           }

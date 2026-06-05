@@ -9,6 +9,7 @@ import { ContactSection } from "@/components/contact-section";
 import Template1 from "@/components/templates/Template1";
 import Template2 from "@/components/templates/Template2";
 import Template3 from "@/components/templates/Template3";
+import Template4 from "@/components/templates/Template4";
 import { Category } from "@/types/category";
 import { Project } from "@/types/project";
 
@@ -105,6 +106,62 @@ function PortfolioContent() {
           categories={categories}
           projects={projects}
         />
+      );
+      case "template4":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
+      );
+      case "template5":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
+      );
+      case "template6":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
+      );
+      case "template7":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
+      );
+      case "template8":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
+      );
+      case "template9":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
+      );
+      case "template10":
+        return (
+          <Template4
+            userId={userId}
+            categories={categories}
+            projects={projects}
+          />
       );
     case "default":
     default:

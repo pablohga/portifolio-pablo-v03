@@ -25,7 +25,12 @@ const userSchema = new mongoose.Schema({
   paymentReminders: { type: Boolean, default: false },
   reportAlerts: { type: Boolean, default: false },
   revenueThreshold: { type: Number, default: 1000 },
-  portfolioTemplate: { type: String, enum: ["default", "template1", "template2", "template3"], default: "default" },
+  /* portfolioTemplate: { type: String, enum: ["default", "template1", "template2", "template3"], default: "default" }, */
+  portfolioTemplate: {
+    type: String,
+    enum: ["default", "template1", "template2", "template3", "template4", "template5", "template6", "template7", "template8", "template9", "template10"],
+    default: "default"
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
