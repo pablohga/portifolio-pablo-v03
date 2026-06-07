@@ -1003,12 +1003,20 @@ useEffect(() => {
         .about-image-wrap { position: relative; border-radius: var(--radius-xl); overflow: hidden; }
 
         .about-image {
-          width: 100%;
+        width: 100%;
+          aspect-ratio: 3/4;
+          object-fit: cover;
+          object-position: top center;
+          border-radius: var(--radius-xl);
+          display: block;
+          position: relative; z-index: 2;
+          box-shadow: 0 32px 80px rgba(0,0,0,0.5), var(--shadow-glow);
+          /* width: 100%;
           aspect-ratio: 3/2;
           object-fit: cover;
           object-position: center 20%;
           display: block;
-          border-radius: var(--radius-xl);
+          border-radius: var(--radius-xl); */
         }
 
         .about-image-overlay {
@@ -1507,11 +1515,11 @@ useEffect(() => {
 <section id="sobre">
   <div className="about-section">
     <div className="about-image-wrap">
-      <img
+      {/* <img
         src={ hero?.backgroundImage ||userImage }
         alt={fullName}
         className="hero-photo"
-      />
+      /> */}
       <img
         src={userImage || hero?.backgroundImage}
         alt={fullName}
