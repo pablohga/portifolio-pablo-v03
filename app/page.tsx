@@ -99,13 +99,19 @@ function HeroSection({ dark }: { dark: boolean }) {
             <span
               style={{
                 display: "inline-block",
-                background: `linear-gradient(135deg, ${c.primary}, ${
-                  dark ? "#7EDCFF" : "#5DBBDD"
-                })`,
+                backgroundImage: `linear-gradient(
+                  135deg,
+                  ${c.primary},
+                  ${dark ? "#7EDCFF" : "#5DBBDD"}
+                )`,
+                backgroundSize: "100%",
+                backgroundRepeat: "repeat",
+
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
-                color: "transparent",
+
                 WebkitTextFillColor: "transparent",
+                color: "transparent",
               }}
             >
               profissional
