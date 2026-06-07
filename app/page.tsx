@@ -1,40 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, type ReactNode } from "react";
-const HERO_DARK = "https://agenciaaimagic.com.br/portify/hero_img_dark.png"
-const HERO_LIGHT = "https://agenciaaimagic.com.br/portify/hero_img_light.png"
-const LOGO_DARK = "https://agenciaaimagic.com.br/portify/logo_nova_txt_m_dark.png"
-const LOGO_LIGHT = "https://agenciaaimagic.com.br/portify/logo_nova_txt_g_light.png"
-// ── Tokens ───────────────────────────────────────────────────────────────────
-const DARK = {
-  bgPrimary: "#1E1F25",
-  bgSecondary: "#252730",
-  heroBg: "#1E1F25",
-  heroOverlay: "#071B3B",
-  navbar: "#20222B",
-  card: "#2A2D36",
-  border: "#5A6778",
-  primary: "#A6E7FF",
-  primaryHover: "#8DE5FF",
-  primaryGlow: "#7EDCFF",
-  textPrimary: "#FFFFFF",
-  textSecondary: "#D6D6D6",
-  textMuted: "#A1A1AA",
-  iconLight: "#DDF6FF",
-};
-const LIGHT = {
-  bgPrimary: "#F5F5F5",
-  bgSecondary: "#FFFFFF",
-  heroBg: "#F8F7F5",
-  card: "#FFFFFF",
-  border: "#E8E8E8",
-  primary: "#A6E7FF",
-  primaryHover: "#8DDBF5",
-  primarySoft: "#D8F5FF",
-  textPrimary: "#4B4B4B",
-  textSecondary: "#7B7B7B",
-  textMuted: "#AFAFAF",
-};
+import { useTheme } from "next-themes";
+import { DARK, LIGHT } from "@/constants/theme";
+import { HERO_DARK, HERO_LIGHT, LOGO_DARK, LOGO_LIGHT, ICONS } from "@/constants/assets";
 
 // ── Hook: useInView ───────────────────────────────────────────────────────────
 function useInView<T extends HTMLElement = HTMLElement>(options: IntersectionObserverInit = {}) {
@@ -79,118 +48,6 @@ const Icon = ({ d, size = 22, color = "currentColor" }: { d: string; size?: numb
   </svg>
 );
 
-const ICONS = {
-  free: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",
-  seo: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
-  fast: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-  secure: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
-  templates: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
-  config: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
-  clients: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 7a4 4 0 100 8 4 4 0 000-8z M23 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75",
-  finance: "M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6",
-  projects: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2",
-  invoices: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
-  reports: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-  calendar: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-  check: "M5 13l4 4L19 7",
-  star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
-  arrow: "M5 12h14M12 5l7 7-7 7",
-  menu: "M4 6h16M4 12h16M4 18h16",
-  close: "M6 18L18 6M6 6l12 12",
-  sun: "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42 M12 17a5 5 0 100-10 5 5 0 000 10z",
-  moon: "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z",
-  plus: "M12 5v14M5 12h14",
-  minus: "M5 12h14",
-};
-
-// ── Navbar ────────────────────────────────────────────────────────────────────
-type NavbarProps = { dark: boolean; toggle: () => void };
-function Navbar({ dark, toggle }: NavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const c = dark ? DARK : LIGHT;
-
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
-
-  const links = ["Início", "Recursos", "Planos", "Suporte"];
-
-  return (
-    <>
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      background: scrolled
-        ? dark ? "rgba(32,34,43,0.97)" : "rgba(255,255,255,0.97)"
-        : "transparent",
-      backdropFilter: scrolled ? "blur(16px)" : "none",
-      borderBottom: scrolled ? `1px solid ${dark ? "rgba(90,103,120,0.3)" : "rgba(0,0,0,0.08)"}` : "none",
-      transition: "all 0.3s ease",
-      padding: "0 24px",
-    }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        
-        <img src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Portify" style={{ height: 28, objectFit: "contain" }} />
-
-        
-        <div style={{ display: "flex", alignItems: "center", gap: 32, fontFamily: "Poppins, sans-serif" }} className="desktop-nav">
-          {links.map(l => (
-            <a key={l} href="#" style={{
-              color: c.textSecondary, textDecoration: "none", fontSize: 14, fontWeight: 500,
-              transition: "color 0.2s",
-            }}
-              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => e.currentTarget.style.color = c.primary}
-              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => e.currentTarget.style.color = c.textSecondary}
-            >
-              {l}
-            </a>
-          ))}
-          <button onClick={toggle} style={{
-            background: "none", border: "none", cursor: "pointer",
-            color: c.textSecondary, padding: 6, borderRadius: 6,
-            display: "flex", alignItems: "center",
-          }}>
-            <Icon d={dark ? ICONS.sun : ICONS.moon} size={18} color={c.textSecondary} />
-          </button>
-          <a href="#" style={{
-            color: c.textSecondary, textDecoration: "none", fontSize: 14,
-            fontFamily: "Poppins, sans-serif", fontWeight: 500,
-          }}>Entrar</a>
-          <a href="#" style={{
-            background: `linear-gradient(135deg, ${c.primary}, ${dark ? DARK.primaryGlow : "#8DDBF5"})`,
-            color: "#1B1B1B", textDecoration: "none", fontSize: 13, fontWeight: 600,
-            fontFamily: "Poppins, sans-serif", padding: "9px 20px", borderRadius: 8,
-            boxShadow: `0 0 16px rgba(166,231,255,0.3)`,
-          }}>Cadastrar-se</a>
-          <button onClick={() => setMobileOpen(!mobileOpen)} style={{
-            background: "none", border: "none", cursor: "pointer", display: "none",
-            color: c.textPrimary, padding: 4,
-          }} className="mobile-menu-btn">
-            <Icon d={mobileOpen ? ICONS.close : ICONS.menu} size={22} color={c.textPrimary} />
-          </button>
-        </div>
-      </div>
-      
-      {mobileOpen && (
-        <div style={{
-          background: dark ? DARK.navbar : "#fff",
-          borderTop: `1px solid ${dark ? DARK.border : "#eee"}`,
-          padding: "16px 24px 20px",
-        }}>
-          {links.map(l => (
-            <div key={l} style={{ padding: "10px 0", borderBottom: `1px solid ${dark ? "rgba(255,255,255,0.06)" : "#f0f0f0"}` }}>
-              <a href="#" style={{ color: c.textPrimary, textDecoration: "none", fontFamily: "Poppins, sans-serif", fontSize: 15 }}>{l}</a>
-            </div>
-          ))}
-        </div>
-      )}
-    </nav>
-    </>
-  );
-}
-
 // ── HeroSection ───────────────────────────────────────────────────────────────
 function HeroSection({ dark }: { dark: boolean }) {
   const c = dark ? DARK : LIGHT;
@@ -222,19 +79,6 @@ function HeroSection({ dark }: { dark: boolean }) {
       {/* Content */}
       <div style={{ position: "relative", zIndex: 2, maxWidth: 1200, margin: "0 auto", padding: "0 32px", width: "100%" }}>
         <div style={{ maxWidth: 620 }}>
-          {/* Badge */}
-          {/* <div style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            background: dark ? "rgba(166,231,255,0.1)" : "rgba(166,231,255,0.2)",
-            border: `1px solid ${dark ? "rgba(166,231,255,0.25)" : "rgba(166,231,255,0.5)"}`,
-            borderRadius: 100, padding: "6px 16px", marginBottom: 28,
-            opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(20px)",
-            transition: "all 0.6s ease 0.1s",
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: c.primary, display: "block", boxShadow: `0 0 8px ${c.primary}` }} />
-            <span style={{ fontFamily: "Poppins, sans-serif", fontSize: 12, fontWeight: 500, color: c.primary }}>100% Gratuito para Sempre</span>
-          </div> */}
-
           {/* Headline */}
           <h1
             style={{
@@ -396,11 +240,7 @@ function FeaturesSection({ dark }: { dark?: boolean }) {
             }}>
               Tudo o que Você Precisa
             </div>
-            <h2 style={{
-              fontFamily: "Poppins, sans-serif", fontSize: "clamp(30px, 4vw, 44px)",
-              fontWeight: 700, color: dark ? c.textPrimary : c.textPrimary,
-              margin: "0 0 16px",
-            }}>Tudo o que Você Precisa, <span style={{ color: dark ? c.primary : "#2299BB" }}>Grátis</span></h2>
+            <h2 style={{ fontFamily: "Poppins, sans-serif", fontSize: "clamp(30px, 4vw, 44px)", fontWeight: 700, color: dark ? c.textPrimary : c.textPrimary, margin: "0 0 16px" }}>Tudo o que Você Precisa, <span style={{ color: dark ? c.primary : "#2299BB" }}>Grátis</span></h2>
             <p style={{ fontFamily: "Inter, sans-serif", fontSize: 16, color: c.textMuted, maxWidth: 520, margin: "0 auto", lineHeight: 1.65 }}>
               Acreditamos que todo freelancer merece uma presença profissional online.
             </p>
@@ -577,7 +417,6 @@ function ComingSoonSection({ dark }: { dark?: boolean }) {
 
   return (
     <section style={{ background: dark ? c.bgPrimary : c.bgPrimary, padding: "96px 32px", position: "relative", overflow: "hidden" }}>
-      {/* decorative blob */}
       <div style={{
         position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
         width: 600, height: 600, borderRadius: "50%",
@@ -779,7 +618,7 @@ function FAQSection({ dark }: { dark?: boolean }) {
   );
 }
 
-// ── CTASection ────────────────────────────────────────────────────────────────
+// ── CTASectionFull ────────────────────────────────────────────────────────────────
 function CTASectionFull({ dark }: { dark: boolean }) {
   const c = dark ? DARK : LIGHT;
   return (
@@ -842,7 +681,8 @@ function Footer({ dark }: { dark?: boolean }) {
 
 // ── Main App ──────────────────────────────────────────────────────────────────
 export default function PortifyLanding() {
-  const [dark, setDark] = useState(true);
+  const { theme } = useTheme();
+  const dark = theme === "dark";
 
   return (
     <div style={{ fontFamily: "Inter, sans-serif", minHeight: "100vh", background: dark ? DARK.bgPrimary : LIGHT.bgPrimary }}>
@@ -858,7 +698,6 @@ export default function PortifyLanding() {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(166,231,255,0.2); border-radius: 3px; }
       `}</style>
-      <Navbar dark={dark} toggle={() => setDark(!dark)} />
       <HeroSection dark={dark} />
       <FeaturesSection dark={dark} />
       <PricingSection dark={dark} />

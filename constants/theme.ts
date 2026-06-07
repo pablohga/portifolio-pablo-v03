@@ -1,0 +1,30 @@
+export const DARK = {
+  bgPrimary: "#1E1F25",
+  bgSecondary: "#252730",
+  heroBg: "#1E1F25",
+  heroOverlay: "#071B3B",
+  navbar: "#20222B",
+  card: "#2A2D36",
+  border: "#5A6778",
+  primary: "#A6E7FF",
+  primaryHover: "#8DE5FF",
+  primaryGlow: "#7EDCFF",
+  textPrimary: "#FFFFFF",
+  textSecondary: "#D6D6D6",
+  textMuted: "#A1A1AA",
+  iconLight: "#DDF6FF",
+};
+
+export const LIGHT = {
+  bgPrimary: "#F5F5F5",
+  bgSecondary: "#FFFFFF",
+  heroBg: "#F8F7F5",
+  card: "#FFFFFF",
+  border: "#E8E8E8",
+  primary: "#A6E7FF",
+  primaryHover: "#8DDBF5",
+  primarySoft: "#D8F5FF",
+  textPrimary: "#4B4B4B",
+  textSecondary: "#7B7B7B",
+  textMuted: "#AFAFAF",
+};
