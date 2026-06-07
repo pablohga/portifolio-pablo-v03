@@ -35,6 +35,9 @@ const featureSchema = z.object({
 const aboutSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  projectsDelivered: z.string().optional(),
+  satisfiedClients: z.string().optional(),
+  experienceTime: z.string().optional(),
   features: z.array(featureSchema).min(1, "At least one feature is required"),
 });
 
@@ -58,12 +61,15 @@ export function AboutDialog({
   onSubmit,
 }: AboutDialogProps) {
   const { about, isLoading } = useAboutData(userId);
-  
+
   const form = useForm<z.infer<typeof aboutSchema>>({
     resolver: zodResolver(aboutSchema),
     defaultValues: {
       title: "",
       description: "",
+      projectsDelivered: "",
+      satisfiedClients: "",
+      experienceTime: "",
       features: defaultFeatures,
     },
   });
@@ -78,6 +84,9 @@ export function AboutDialog({
       form.reset({
         title: about.title,
         description: about.description,
+        projectsDelivered: about.projectsDelivered || "",
+        satisfiedClients: about.satisfiedClients || "",
+        experienceTime: about.experienceTime || "",
         features: about.features,
       });
     }
@@ -132,6 +141,48 @@ export function AboutDialog({
                 </FormItem>
               )}
             />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="projectsDelivered"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Projects Delivered</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. 100+" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="satisfiedClients"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Satisfied Clients</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. 50+" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="experienceTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Experience Time</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. 5 years" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="space-y-4">
               <div className="flex justify-between items-center">

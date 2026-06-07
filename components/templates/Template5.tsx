@@ -9,6 +9,7 @@ import { Category } from "@/types/category";
 import { ProjectsSection } from "@/components/projects-section";
 import { ContactSection } from "@/components/contact-section";
 import { UserAvatar } from "@/components/ui/user-avatar";
+import { ProjectsDelivered, SatisfiedClients, ExperienceTime } from "@/components/about-metrics";
 import { Logo } from "@/components/brand/logo";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
@@ -88,6 +89,7 @@ useEffect(() => {
         ]);
         const heroData = await heroRes.json();
         const aboutData = await aboutRes.json();
+        console.log("About Data from DB:", aboutData);
 
         if (heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
@@ -101,6 +103,7 @@ useEffect(() => {
   }, [userId]);
 
   const fullName = userName || hero?.title || "Freelancer Profissional";
+  console.log("Current About State:", about);
   return (
     <div className="template-converted-wrapper" data-theme={theme}>
       < style global dangerouslySetInnerHTML={{
@@ -1218,15 +1221,15 @@ useEffect(() => {
 
     <div className="hero-stats">
       <div className="stat-item">
-        <div className="stat-number">120+</div>
+        <div className="stat-number"><ProjectsDelivered about={about || undefined} dark={true} /></div>
         <div className="stat-label">Projetos Entregues</div>
       </div>
       <div className="stat-item">
-        <div className="stat-number">98%</div>
+        <div className="stat-number"><SatisfiedClients about={about || undefined} dark={true} /></div>
         <div className="stat-label">Clientes Satisfeitos</div>
       </div>
       <div className="stat-item">
-        <div className="stat-number">7 Anos</div>
+        <div className="stat-number"><ExperienceTime about={about || undefined} dark={true} /></div>
         <div className="stat-label">De Experiência</div>
       </div>
     </div>
