@@ -105,7 +105,18 @@ useEffect(() => {
   const fullName = userName || hero?.title || "Freelancer Profissional";
 
   const userProjects = projects.filter(p => p.userId === userId);
-  const featuredProjects = [...userProjects].reverse().slice(0, 5);
+
+  const featuredProjects = (() => {
+    const sorted = [...userProjects].sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    const featured = sorted.find(p => p.isFeatured);
+    if (featured) {
+      const others = sorted.filter(p => p._id !== featured._id);
+      return [featured, ...others].slice(0, 5);
+    }
+    return sorted.slice(0, 5);
+  })();
 
   const allCategories = ['Todos', ...Array.from(new Set(userProjects.map(p => p.category).filter(Boolean)))];
 
@@ -967,19 +978,6 @@ useEffect(() => {
         }
 
         .portfolio-load-more {
-          /* display: block;
-          margin: 2rem auto 0;
-          font-family: var(--font-display);
-          font-weight: 700;
-          font-size: 0.85rem;
-          text-transform: uppercase;
-          background: transparent;
-          color: var(--text-primary);
-          border: 1.5px solid var(--border);
-          padding: 0.8rem 2rem;
-          border-radius: 50px;
-          cursor: pointer;
-          transition: var(--transition); */
           display: block;
           margin: 2rem auto 0;
           font-family: var(--font-display);
@@ -999,8 +997,6 @@ useEffect(() => {
         }
 
         .portfolio-load-more:hover {
-          /* border-color: var(--accent);
-          color: var(--accent); */
           background: #fff;
           transform: translateY(-1px);
           box-shadow: 0 8px 24px rgba(0,212,232,0.3);
@@ -1148,12 +1144,6 @@ useEffect(() => {
           display: block;
           position: relative; z-index: 2;
           box-shadow: 0 32px 80px rgba(0,0,0,0.5), var(--shadow-glow);
-          /* width: 100%;
-          aspect-ratio: 3/2;
-          object-fit: cover;
-          object-position: center 20%;
-          display: block;
-          border-radius: var(--radius-xl); */
         }
 
         .about-image-overlay {
@@ -1409,9 +1399,6 @@ useEffect(() => {
 
     {/*  NAV  */}
     <nav>
-      {/* <a href="#" className="nav-logo">
-        <img src="logo.png" alt="Portify" />
-      </a> */}
       <Link href={'/'} className="justify-center">
         <Logo
         alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
@@ -1441,20 +1428,10 @@ useEffect(() => {
       <div className="hero-glow"></div>
 
       <div className="hero-content">
-        {/* <div className="hero-badge">
-          <div className="badge-dot"></div>
-          TEMPLATE 5 - Designer UI/UX · Desenvolvedor · Marketing Digital
-        </div> */}
-
         <h1 className="hero-name">
           <span>{fullName}</span>
         </h1>
-        {/* <h1 className="hero-name">
-          Alex<br /><span>Ferreira</span>
-        </h1> */}
-
         <p className="hero-role">Freelancer Criativo & <strong>Especialista Digital</strong></p>
-
         <p className="hero-bio">
           Transformo ideias em experiências digitais que geram resultados.
           Com mais de 7 anos de experiência, ajudo empresas a crescer online
@@ -1463,16 +1440,22 @@ useEffect(() => {
 
         <div className="hero-stats">
           <div className="stat-item">
-            <div className="stat-number"><ProjectsDelivered about={about || undefined} dark={true} /></div>
-            <div className="stat-label">Projetos Entregues</div>
+            <div className="stat-label">
+              <ProjectsDelivered about={about || undefined} dark={true} />
+            </div>
+            {/* <div className="stat-label">Projetos Entregues</div> */}
           </div>
           <div className="stat-item">
-            <div className="stat-number"><SatisfiedClients about={about || undefined} dark={true} /></div>
-            <div className="stat-label">Clientes Satisfeitos</div>
+            <div className="stat-label">
+              <SatisfiedClients about={about || undefined} dark={true} />
+            </div>
+            {/* <div className="stat-label">Clientes Satisfeitos</div> */}
           </div>
           <div className="stat-item">
-            <div className="stat-number"><ExperienceTime about={about || undefined} dark={true} /></div>
-            <div className="stat-label">De Experiência</div>
+            <div className="stat-label">
+              <ExperienceTime about={about || undefined} dark={true} />
+            </div>
+            {/* <div className="stat-label">De Experiência</div> */}
           </div>
         </div>
 
@@ -1766,7 +1749,7 @@ useEffect(() => {
         <div className="testimonial-card">
           <div className="testimonial-stars">★★★★★</div>
           <p className="testimonial-text">
-            &quot;O Alex entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!&quot;
+            &quot;Entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!&quot;
           </p>
           <div className="testimonial-author">
             <div className="author-avatar">👩</div>
