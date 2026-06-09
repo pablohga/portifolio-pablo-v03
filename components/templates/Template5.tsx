@@ -28,13 +28,20 @@ export default function Template5({ userId, categories, projects, userImage, use
     const [hero, setHero] = useState<Hero | null>(null);
     const [about, setAbout] = useState<About | null>(null);
     const [loading, setLoading] = useState(true);
-    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+    const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+      if (typeof window !== 'undefined') {
+        return (localStorage.getItem('theme') as 'light' | 'dark') || 'dark';
+      }
+      return 'dark';
+    });
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeCategory, setActiveCategory] = useState<string>('Todos');
     const [visibleLimit, setVisibleLimit] = useState<number>(8);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   
-  const applyTheme = useCallback(() => {
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+
     if (theme === 'dark') {
       document.documentElement.style.setProperty('--bg', '#050c0f');
       document.documentElement.style.setProperty('--bg2', '#081318');
@@ -71,19 +78,6 @@ export default function Template5({ userId, categories, projects, userImage, use
       document.documentElement.style.setProperty('--r2', '20px');
     }
   }, [theme]);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-    applyTheme();
-  }, [applyTheme]);
-
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
-    applyTheme();
-  }, [theme, applyTheme]);
 
   
 useEffect(() => {
