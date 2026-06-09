@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, ExternalLink, Users, Home, UserCircle, DollarSign } from "lucide-react";
+import Image from "next/image";
+import { Plus, ExternalLink, Users, Home, UserCircle, DollarSign, Star } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { ProjectDialog } from "@/components/project-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
@@ -14,8 +15,10 @@ import { AboutDialog } from "@/components/about-dialog";
 import { ContactSettingsDialog } from "@/components/contact-settings-dialog";
 import { HomeEditorDialog } from "@/components/home-editor-dialog_edited";
 import { PaymentPlansDialog } from "@/components/payment-plans-dialog";
+import { TestimonialDialog } from "@/components/testimonial-dialog";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
+import { Testimonial } from "@/types/testimonial";
 import { formatName } from "@/lib/utils";
 import { SubscriptionBadge } from "@/components/subscription-badge";
 import { Settings } from "lucide-react";
@@ -45,6 +48,7 @@ interface DashboardContentProps {
 export function DashboardContent({ userId }: DashboardContentProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
@@ -54,7 +58,9 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const [isContactSettingsDialogOpen, setIsContactSettingsDialogOpen] = useState(false);
   const [isHomeEditorOpen, setIsHomeEditorOpen] = useState(false);
   const [isPaymentPlansOpen, setIsPaymentPlansOpen] = useState(false);
+  const [isTestimonialDialogOpen, setIsTestimonialDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
   const { data: session } = useSession();
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
@@ -66,6 +72,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       Promise.all([
       fetchProjects(),
       fetchCategories(),
+      fetchTestimonials(),
       /* fetchSubscritionByEmail(userEmail) */
     ]).finally(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,6 +91,92 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       toast({
         title: "Error",
         description: "Failed to fetch projects",
+        variant: "destructive",
+      });
+    }
+  }
+  async function fetchTestimonials() {
+    try {
+      const res = await fetch(`/api/testimonials?userId=${userId}`);
+      const data = await res.json();
+      setTestimonials(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch testimonials",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleCreateTestimonial(data: Testimonial) {
+    try {
+      const res = await fetch("/api/testimonials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchTestimonials();
+      toast({
+        title: "Success",
+        description: "Testimonial created successfully",
+        variant: "success",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create testimonial",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleUpdateTestimonial(data: Testimonial) {
+    try {
+      const res = await fetch(`/api/testimonials/${data._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchTestimonials();
+      toast({
+        title: "Success",
+        description: "Testimonial updated successfully",
+        variant: "success",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update testimonial",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleDeleteTestimonial(id: string) {
+    try {
+      const res = await fetch(`/api/testimonials/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error();
+
+      await fetchTestimonials();
+      toast({
+        title: "Success",
+        description: "Testimonial deleted successfully",
+        variant: "success",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete testimonial",
         variant: "destructive",
       });
     }
@@ -538,6 +631,91 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">
+              {t("Dashboard.Testimonials")}
+            </h2>
+            <Button onClick={() => {
+              setSelectedTestimonial(null);
+              setIsTestimonialDialogOpen(true);
+            }}>
+              <Plus className="w-4 h-4 mr-2" />
+              {t("Dashboard.AddTestimonials")}
+            </Button>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {testimonials.map((testimonial) => (
+              <Card key={testimonial._id}>
+                <CardContent className="pt-6">
+                  <div className="flex gap-4 mb-4">
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden border">
+                      <Image src={testimonial.image} alt={testimonial.name} fill className="object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold">{testimonial.name}</h3>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-1 mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-4 w-4 ${i < testimonial.stars ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"}`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedTestimonial(testimonial);
+                        setIsTestimonialDialogOpen(true);
+                      }}
+                    >
+                      {t("Dashboard.Edit")}
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive" size="sm">
+                          {t("Dashboard.Delete")}
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            {t("Dashboard.DeleteTestimonial")}
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t("Dashboard.DeleteThisTestimonial")}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>
+                            {t("Dashboard.Cancel")}
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDeleteTestimonial(testimonial._id!)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            {t("Dashboard.Delete")}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            {testimonials.length === 0 && (
+              <p className="col-span-full text-center text-muted-foreground py-8">
+                {t("Dashboard.NoTestimonials")}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">
               {t("Dashboard.Projects")}
             </h2>
             <Button onClick={() => setIsProjectDialogOpen(true)}>
@@ -634,6 +812,13 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       <PaymentPlansDialog
         open={isPaymentPlansOpen}
         onOpenChange={setIsPaymentPlansOpen}
+      />
+
+      <TestimonialDialog
+        testimonial={selectedTestimonial || undefined}
+        open={isTestimonialDialogOpen}
+        onOpenChange={setIsTestimonialDialogOpen}
+        onSubmit={selectedTestimonial ? handleUpdateTestimonial : handleCreateTestimonial}
       />
     </div>
     </TemplateProvider>
