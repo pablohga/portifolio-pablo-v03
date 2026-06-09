@@ -30,7 +30,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
   return (
     <Card>
       <CardHeader className="relative">
-        <div className="absolute right-4 top-4 flex gap-2">
+        <div className="absolute flex-auto flex-row items-center right-4 top-4 flex gap-2 mb-4">
           {project.isFeatured && (
             <div
               className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-400 text-yellow-900"
@@ -72,8 +72,12 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-        <CardTitle>{project.title}</CardTitle>
+        
       </CardHeader>
+      <div className="text-center mb-4 mt-2">
+        <CardTitle>{project.title}</CardTitle>
+      </div>
+      
       <CardContent>
         <div className="aspect-video relative overflow-hidden rounded-md mb-4">
           <img
