@@ -29,6 +29,9 @@ export default function Template5({ userId, categories, projects, userImage, use
     const [loading, setLoading] = useState(true);
     const [theme, setTheme] = useState<'light' | 'dark'>('dark');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [activeCategory, setActiveCategory] = useState<string>('Todos');
+    const [visibleLimit, setVisibleLimit] = useState<number>(8);
+    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -103,6 +106,57 @@ useEffect(() => {
   }, [userId]);
 
   const fullName = userName || hero?.title || "Freelancer Profissional";
+
+  const userProjects = projects.filter(p => p.userId === userId);
+  const featuredProjects = [...userProjects].reverse().slice(0, 5);
+
+  const allCategories = ['Todos', ...Array.from(new Set(userProjects.map(p => p.category).filter(Boolean)))];
+
+  const filteredProjects = activeCategory === 'Todos'
+    ? userProjects
+    : userProjects.filter(p => p.category === activeCategory);
+
+  const displayedCategoryProjects = filteredProjects.slice(0, visibleLimit);
+  const hasMoreProjects = filteredProjects.length > visibleLimit;
+
+  const totalProjectsCount = userProjects.length;
+  const techCounts = userProjects.reduce((acc, p) => {
+    (p.tech || []).forEach(tech => {
+      acc[tech] = (acc[tech] || 0) + 1;
+    });
+    return acc;
+  }, {} as Record<string, number>);
+
+  const techWithPercentages = Object.entries(techCounts)
+    .map(([tech, count]) => ({
+      tech,
+      percentage: totalProjectsCount > 0 ? parseFloat(((count / totalProjectsCount) * 100).toFixed(2)) : 0,
+    }))
+    .sort((a, b) => b.percentage - a.percentage);
+
+  const sortedTech = techWithPercentages.map(tp => tp.tech);
+  const techPercentages = techWithPercentages.reduce((acc, tp) => {
+    acc[tp.tech] = tp.percentage;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const techEmojiMap: Record<string, string> = {
+    'React': '⚛️',
+    'Next.js': '▲',
+    'TypeScript': '🔷',
+    'Node.js': '🟢',
+    'MongoDB': '🍃',
+    'Tailwind': '💨',
+    'Figma': '🎨',
+    'GitHub': '🐈',
+    'Google Ads': '🎯',
+    'Meta Ads': '🎯',
+    'SASS': '🎨',
+    'CSS': '🎨',
+    'HTML': '🌐',
+    'JavaScript': '📜',
+  };
+
   console.log("Current About State:", about);
   return (
     <div className="template-converted-wrapper" data-theme={theme}>
@@ -778,9 +832,24 @@ useEffect(() => {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           gap: 1.2rem;
+          margin-bottom: 4rem;
+        }
+
+        .portfolio-grid-filtered {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1.2rem;
+          margin-bottom: 2rem;
+        }
+
+        .portfolio-grid-filtered .portfolio-card {
+          width: calc((100% - 3 * 1.2rem) / 4);
+          flex: 0 0 auto;
         }
 
         .portfolio-card {
+          display: flex;
+          flex-direction: column;
           background: var(--card);
           border: 1px solid var(--border);
           border-radius: var(--radius-lg);
@@ -818,6 +887,9 @@ useEffect(() => {
 
         .portfolio-info {
           padding: 1.2rem 1.4rem;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
         }
 
         .portfolio-tag {
@@ -838,8 +910,9 @@ useEffect(() => {
         }
 
         .portfolio-year {
-          font-size: 0.75rem;
-          color: var(--text-secondary);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: auto;
         }
 
         .portfolio-overlay {
@@ -869,6 +942,54 @@ useEffect(() => {
         }
 
         .portfolio-card:hover .overlay-btn { transform: translateY(0); }
+
+        .portfolio-tabs {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 2rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .portfolio-tab {
+          background: var(--card);
+          border: 1px solid var(--border);
+          color: var(--text-secondary);
+          padding: 0.5rem 1.2rem;
+          border-radius: 50px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: var(--transition);
+        }
+
+        .portfolio-tab.active {
+          background: var(--accent);
+          color: #050a14;
+          border-color: var(--accent);
+        }
+
+        .portfolio-load-more {
+          display: block;
+          margin: 2rem auto 0;
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          background: transparent;
+          color: var(--text-primary);
+          border: 1.5px solid var(--border);
+          padding: 0.8rem 2rem;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: var(--transition);
+        }
+
+        .portfolio-load-more:hover {
+          border-color: var(--accent);
+          color: var(--accent);
+        }
+
 
         /* ─── PROCESS ─── */
         .process-section { background: var(--surface); }
@@ -1143,10 +1264,107 @@ useEffect(() => {
 
         .footer-links a:hover { color: var(--accent); }
 
+        /* ─── PROJECT MODAL ─── */
+        .project-modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.85);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          padding: 2rem;
+          animation: fadeIn 0.3s ease;
+        }
+
+        .project-modal-content {
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-xl);
+          max-width: 900px;
+          width: 100%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          box-shadow: 0 0 50px rgba(0,212,232,0.2);
+        }
+
+        .project-modal-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          background: rgba(0,0,0,0.5);
+          color: white;
+          border: none;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          cursor: pointer;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s;
+        }
+
+        .project-modal-close:hover { background: var(--accent); color: #050a14; }
+
+        .project-modal-image {
+          width: 100%;
+          aspect-ratio: 16/9;
+          object-fit: cover;
+          display: block;
+        }
+
+        .project-modal-info {
+          padding: 2.5rem;
+        }
+
+        .project-modal-title {
+          font-family: var(--font-display);
+          font-size: 2rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+          color: var(--text);
+        }
+
+        .project-modal-meta {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .project-modal-meta span {
+          background: var(--bg3);
+          padding: 4px 12px;
+          border-radius: 50px;
+          border: 1px solid var(--border);
+        }
+
+        .project-modal-desc {
+          font-size: 1rem;
+          line-height: 1.7;
+          color: var(--text-secondary);
+          margin-bottom: 2rem;
+        }
+
+        .project-modal-footer {
+          display: flex;
+          gap: 1rem;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
         /* ─── MOBILE ─── */
         @media (max-width: 900px) {
           .nav-links { display: none; }
           .hamburger { display: flex; }
+
 
           .hero { grid-template-columns: 1fr; }
           .hero-visual { display: none; }
@@ -1171,506 +1389,491 @@ useEffect(() => {
       ` }}
       />
 
-      
 
-{/*  NAV  */}
-<nav>
-  {/* <a href="#" className="nav-logo">
-    <img src="logo.png" alt="Portify" />
-  </a> */}
-  <Link href={'/'} className="justify-center">
-    <Logo 
-    alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
-    alterH={80}
-    alterW={120}/>
-  </Link>
-  <ul className="nav-links">
-    <li><a href="#servicos">Serviços</a></li>
-    <li><a href="#portfolio">Portfólio</a></li>
-    <li><a href="#sobre">Sobre</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ul>
-  <div className="nav-actions">
-    <button className="btn-theme" id="themeToggle" title="Alternar tema" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-      {theme === 'dark' ? '☀️' : '🌙'}
-    </button>
-    <a href="#contato" className="btn-hire">✦ Contratar</a>
-  </div>
-  <button className="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
 
-{/*  HERO  */}
-<section className="hero" id="hero">
-  <div className="hero-bg"></div>
-  <div className="hero-glow"></div>
-
-  <div className="hero-content">
-    <div className="hero-badge">
-      <div className="badge-dot"></div>
-      Designer UI/UX · Desenvolvedor · Marketing Digital
-    </div>
-
-    <h1 className="hero-name">
-      <span>{fullName}</span>
-    </h1>
-    {/* <h1 className="hero-name">
-      Alex<br /><span>Ferreira</span>
-    </h1> */}
-
-    <p className="hero-role">Freelancer Criativo & <strong>Especialista Digital</strong></p>
-
-    <p className="hero-bio">
-      Transformo ideias em experiências digitais que geram resultados. 
-      Com mais de 7 anos de experiência, ajudo empresas a crescer online 
-      através de design estratégico, código limpo e marketing orientado a dados.
-    </p>
-
-    <div className="hero-stats">
-      <div className="stat-item">
-        <div className="stat-number"><ProjectsDelivered about={about || undefined} dark={true} /></div>
-        <div className="stat-label">Projetos Entregues</div>
+    {/*  NAV  */}
+    <nav>
+      {/* <a href="#" className="nav-logo">
+        <img src="logo.png" alt="Portify" />
+      </a> */}
+      <Link href={'/'} className="justify-center">
+        <Logo
+        alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
+        alterH={80}
+        alterW={120}/>
+      </Link>
+      <ul className="nav-links">
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <div className="nav-actions">
+        <button className="btn-theme" id="themeToggle" title="Alternar tema" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <a href="#contato" className="btn-hire">✦ Contratar</a>
       </div>
-      <div className="stat-item">
-        <div className="stat-number"><SatisfiedClients about={about || undefined} dark={true} /></div>
-        <div className="stat-label">Clientes Satisfeitos</div>
-      </div>
-      <div className="stat-item">
-        <div className="stat-number"><ExperienceTime about={about || undefined} dark={true} /></div>
-        <div className="stat-label">De Experiência</div>
-      </div>
-    </div>
+      <button className="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
 
-    <div className="hero-ctas">
-      <a href="#portfolio" className="btn-primary">▶ Ver Projetos</a>
-      <a href="#contato" className="btn-secondary">↗ Fale Comigo</a>
-    </div>
-  </div>
+    {/*  HERO  */}
+    <section className="hero" id="hero">
+      <div className="hero-bg"></div>
+      <div className="hero-glow"></div>
 
-  <div className="hero-visual">
-    <div className="hero-photo-wrap">
-      <div className="hero-photo-ring"></div>
-      <img
-        src={ hero?.backgroundImage ||userImage }
-        alt={fullName}
-        className="hero-photo"
-      />
-      <div className="hero-photo-tag">
-        <div className="tag-icon">⚡</div>
-        <div className="tag-text">
-          <strong>Disponível</strong>
-          <span>Para novos projetos</span>
-        </div>
-      </div>
-      <div className="hero-photo-tag2">
-        <span>⭐ 5.0 · 120+ Reviews</span>
-      </div>
-    </div>
-  </div>
-</section>
+      <div className="hero-content">
+        {/* <div className="hero-badge">
+          <div className="badge-dot"></div>
+          TEMPLATE 5 - Designer UI/UX · Desenvolvedor · Marketing Digital
+        </div> */}
 
-{/*  SOCIAL STRIP  */}
-<div className="social-strip">
-  <div className="social-links">
-    <a href="#" className="social-btn" title="LinkedIn">in</a>
-    <a href="#" className="social-btn" title="Behance">Be</a>
-    <a href="#" className="social-btn" title="GitHub">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
-    </a>
-    <a href="#" className="social-btn" title="Instagram">✦</a>
-    <a href="#" className="social-btn" title="WhatsApp">✉</a>
-  </div>
-  <div className="availability-pill">
-    <div className="avail-dot"></div>
-    Disponível para projetos em Junho 2025
-  </div>
-</div>
+        <h1 className="hero-name">
+          <span>{fullName}</span>
+        </h1>
+        {/* <h1 className="hero-name">
+          Alex<br /><span>Ferreira</span>
+        </h1> */}
 
-{/*  SERVICES  */}
-<section id="servicos">
-  <div className="section-label">O que eu faço</div>
-  <h2 className="section-title">Serviços que <em>Geram Resultado</em></h2>
-  <p className="section-desc">Cada projeto é tratado com atenção aos detalhes e foco em resultados reais. Combino criatividade com estratégia para entregar soluções que funcionam de verdade.</p>
+        <p className="hero-role">Freelancer Criativo & <strong>Especialista Digital</strong></p>
 
-  <div className="services-grid">
-    <div className="service-card">
-      <div className="service-icon">🎨</div>
-      <div className="service-title">Design UI/UX</div>
-      <div className="service-desc">Interfaces bonitas e intuitivas que os usuários adoram. Do wireframe ao protótipo interativo, com foco em conversão e experiência.</div>
-      <div className="service-price">A partir de <span>R$ 1.500</span></div>
-    </div>
-    <div className="service-card">
-      <div className="service-icon">💻</div>
-      <div className="service-title">Desenvolvimento Web</div>
-      <div className="service-desc">Sites e sistemas rápidos, responsivos e otimizados para SEO. Código limpo, escalável e com performance de alto nível.</div>
-      <div className="service-price">A partir de <span>R$ 2.500</span></div>
-    </div>
-    <div className="service-card">
-      <div className="service-icon">📈</div>
-      <div className="service-title">Marketing Digital</div>
-      <div className="service-desc">Estratégias de growth hacking, gestão de tráfego pago e orgânico. Campanhas que convertem visitantes em clientes reais.</div>
-      <div className="service-price">A partir de <span>R$ 1.200/mês</span></div>
-    </div>
-    <div className="service-card">
-      <div className="service-icon">🖋</div>
-      <div className="service-title">Branding & Identidade Visual</div>
-      <div className="service-desc">Criação de marcas memoráveis. Logo, paleta de cores, tipografia e guia de estilo para posicionar seu negócio com autoridade.</div>
-      <div className="service-price">A partir de <span>R$ 2.000</span></div>
-    </div>
-    <div className="service-card">
-      <div className="service-icon">⚙️</div>
-      <div className="service-title">Automação & Integrações</div>
-      <div className="service-desc">Automatize processos repetitivos. Integrações via API, bots, webhooks e fluxos que economizam tempo e dinheiro da sua empresa.</div>
-      <div className="service-price">A partir de <span>R$ 800</span></div>
-    </div>
-    <div className="service-card">
-      <div className="service-icon">📊</div>
-      <div className="service-title">Consultoria Estratégica</div>
-      <div className="service-desc">Análise do seu negócio digital e roadmap de crescimento. Diagnóstico preciso e plano de ação com métricas claras de sucesso.</div>
-      <div className="service-price">A partir de <span>R$ 500/h</span></div>
-    </div>
-  </div>
-</section>
+        <p className="hero-bio">
+          Transformo ideias em experiências digitais que geram resultados.
+          Com mais de 7 anos de experiência, ajudo empresas a crescer online
+          através de design estratégico, código limpo e marketing orientado a dados.
+        </p>
 
-{/*  SKILLS  */}
-<section id="habilidades" className="skills-section">
-  <div className="section-label">Habilidades Técnicas</div>
-  <h2 className="section-title">Ferramentas & <em>Tecnologias</em></h2>
-
-  <div className="skills-layout">
-    <div>
-      <div className="skills-stack">
-        <div className="skill-bar-item">
-          <div className="skill-bar-header">
-            <span className="skill-bar-name">UI/UX Design · Figma</span>
-            <span className="skill-bar-pct">96%</span>
+        <div className="hero-stats">
+          <div className="stat-item">
+            <div className="stat-number"><ProjectsDelivered about={about || undefined} dark={true} /></div>
+            <div className="stat-label">Projetos Entregues</div>
           </div>
-          <div className="skill-bar-track"><div className="skill-bar-fill" style={{ width: "96%" }}></div></div>
-        </div>
-        <div className="skill-bar-item">
-          <div className="skill-bar-header">
-            <span className="skill-bar-name">React · Next.js · TypeScript</span>
-            <span className="skill-bar-pct">90%</span>
+          <div className="stat-item">
+            <div className="stat-number"><SatisfiedClients about={about || undefined} dark={true} /></div>
+            <div className="stat-label">Clientes Satisfeitos</div>
           </div>
-          <div className="skill-bar-track"><div className="skill-bar-fill" style={{ width: "90%" }}></div></div>
-        </div>
-        <div className="skill-bar-item">
-          <div className="skill-bar-header">
-            <span className="skill-bar-name">Google Ads · Meta Ads</span>
-            <span className="skill-bar-pct">88%</span>
-          </div>
-          <div className="skill-bar-track"><div className="skill-bar-fill" style={{ width: "88%" }}></div></div>
-        </div>
-        <div className="skill-bar-item">
-          <div className="skill-bar-header">
-            <span className="skill-bar-name">Node.js · APIs REST</span>
-            <span className="skill-bar-pct">82%</span>
-          </div>
-          <div className="skill-bar-track"><div className="skill-bar-fill" style={{ width: "82%" }}></div></div>
-        </div>
-        <div className="skill-bar-item">
-          <div className="skill-bar-header">
-            <span className="skill-bar-name">SEO Técnico · Analytics</span>
-            <span className="skill-bar-pct">85%</span>
-          </div>
-          <div className="skill-bar-track"><div className="skill-bar-fill" style={{ width: "85%" }}></div></div>
-        </div>
-        <div className="skill-bar-item">
-          <div className="skill-bar-header">
-            <span className="skill-bar-name">Branding · Illustrator</span>
-            <span className="skill-bar-pct">78%</span>
-          </div>
-          <div className="skill-bar-track"><div className="skill-bar-fill" style={{ width: "78%" }}></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      {/* <p style={{fontSize:0.85rem; color:var('--text-secondary'); marginBottom:1.5rem; lineHeight:1.7;}}> */}
-      <p style={{
-      fontSize:"0.85rem", color:"var('--text-secondary')", marginBottom:"1.5rem", lineHeight:"1.7"  
-      }}>
-        Ferramentas que uso no dia a dia para criar soluções digitais de alto impacto:
-      </p>
-      <div className="tools-grid">
-        <div className="tool-chip"><span className="tool-emoji">🎨</span>Figma</div>
-        <div className="tool-chip"><span className="tool-emoji">⚛️</span>React</div>
-        <div className="tool-chip"><span className="tool-emoji">▲</span>Next.js</div>
-        <div className="tool-chip"><span className="tool-emoji">🔷</span>TypeScript</div>
-        <div className="tool-chip"><span className="tool-emoji">🟢</span>Node.js</div>
-        <div className="tool-chip"><span className="tool-emoji">🍃</span>MongoDB</div>
-        <div className="tool-chip"><span className="tool-emoji">📊</span>GA4</div>
-        <div className="tool-chip"><span className="tool-emoji">🎯</span>Meta Ads</div>
-        <div className="tool-chip"><span className="tool-emoji">🔍</span>Google Ads</div>
-        <div className="tool-chip"><span className="tool-emoji">🐈</span>GitHub</div>
-        <div className="tool-chip"><span className="tool-emoji">🎭</span>Webflow</div>
-        <div className="tool-chip"><span className="tool-emoji">💨</span>Tailwind</div>
-        <div className="tool-chip"><span className="tool-emoji">✉️</span>Mailchimp</div>
-        <div className="tool-chip"><span className="tool-emoji">⚡</span>Zapier</div>
-        <div className="tool-chip"><span className="tool-emoji">🖋</span>Notion</div>
-        <div className="tool-chip"><span className="tool-emoji">🌐</span>WordPress</div>
-        <div className="tool-chip"><span className="tool-emoji">🔴</span>Adobe XD</div>
-        <div className="tool-chip"><span className="tool-emoji">📱</span>Framer</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-{/*  PORTFOLIO  */}
-<section id="portfolio">
-  <div className="section-label">Trabalhos Recentes</div>
-  <h2 className="section-title">Portfólio <em>Selecionado</em></h2>
-  <p className="section-desc">Uma seleção dos projetos que mais me orgulho. Cada entrega com foco em resultado e atenção aos detalhes.</p>
-
-  <div className="portfolio-grid">
-    <div className="portfolio-card">
-      <div className="portfolio-thumb-placeholder">🚀</div>
-      <div className="portfolio-info">
-        <div className="portfolio-tag">Desenvolvimento Web</div>
-        <div className="portfolio-title">Plataforma SaaS para Gestão de Projetos</div>
-        <div className="portfolio-year">2024 · Next.js · Tailwind · MongoDB</div>
-      </div>
-      <div className="portfolio-overlay"><button className="overlay-btn">Ver Projeto →</button></div>
-    </div>
-
-    <div className="portfolio-card">
-      <div className="portfolio-thumb-placeholder">🎨</div>
-      <div className="portfolio-info">
-        <div className="portfolio-tag">UI/UX Design</div>
-        <div className="portfolio-title">App de Finanças Pessoais</div>
-        <div className="portfolio-year">2024 · Figma · Protótipo</div>
-      </div>
-      <div className="portfolio-overlay"><button className="overlay-btn">Ver Projeto →</button></div>
-    </div>
-
-    <div className="portfolio-card">
-      <div className="portfolio-thumb-placeholder">📈</div>
-      <div className="portfolio-info">
-        <div className="portfolio-tag">Marketing Digital</div>
-        <div className="portfolio-title">Campanha que gerou +320% em conversões</div>
-        <div className="portfolio-year">2024 · Google Ads · Meta</div>
-      </div>
-      <div className="portfolio-overlay"><button className="overlay-btn">Ver Projeto →</button></div>
-    </div>
-
-    <div className="portfolio-card">
-      <div className="portfolio-thumb-placeholder">🖋</div>
-      <div className="portfolio-info">
-        <div className="portfolio-tag">Branding</div>
-        <div className="portfolio-title">Identidade Visual — Startup Fintech</div>
-        <div className="portfolio-year">2023 · Adobe Illustrator</div>
-      </div>
-      <div className="portfolio-overlay"><button className="overlay-btn">Ver Projeto →</button></div>
-    </div>
-
-    <div className="portfolio-card">
-      <div className="portfolio-thumb-placeholder">⚡</div>
-      <div className="portfolio-info">
-        <div className="portfolio-tag">Automação</div>
-        <div className="portfolio-title">CRM com Automações via API</div>
-        <div className="portfolio-year">2023 · Node.js · Zapier</div>
-      </div>
-      <div className="portfolio-overlay"><button className="overlay-btn">Ver Projeto →</button></div>
-    </div>
-  </div>
-</section>
-
-{/*  PROCESS  */}
-<section id="processo" className="process-section">
-  <div className="section-label">Como Trabalho</div>
-  <h2 className="section-title" style={{textAlign:"center"}}>Do Briefing ao <em>Resultado Final</em></h2>
-  <p className="section-desc" style={{textAlign:"center", margin:"0"}}>Um processo claro e transparente para que você saiba exatamente o que esperar em cada etapa do projeto.</p>
-
-  <div className="process-steps">
-    <div className="process-step">
-      <div className="step-number">01</div>
-      <div className="step-title">Briefing & Descoberta</div>
-      <div className="step-desc">Reunião inicial para entender seus objetivos, público-alvo e expectativas. Alinhamos visão e definimos o escopo.</div>
-    </div>
-    <div className="process-step">
-      <div className="step-number">02</div>
-      <div className="step-title">Proposta & Estratégia</div>
-      <div className="step-desc">Elaboro uma proposta detalhada com cronograma, entregáveis e investimento. Tudo muito transparente.</div>
-    </div>
-    <div className="process-step">
-      <div className="step-number">03</div>
-      <div className="step-title">Execução & Updates</div>
-      <div className="step-desc">Trabalho com comunicação constante. Você acompanha o progresso em tempo real e tem acesso direto a mim.</div>
-    </div>
-    <div className="process-step">
-      <div className="step-number">04</div>
-      <div className="step-title">Revisão & Aprovação</div>
-      <div className="step-desc">Rodadas de feedback para garantir que o resultado final supere suas expectativas antes da entrega.</div>
-    </div>
-    <div className="process-step">
-      <div className="step-number">05</div>
-      <div className="step-title">Entrega & Suporte</div>
-      <div className="step-desc">Entrega completa com documentação e suporte pós-lançamento. Seu projeto fica em boas mãos a longo prazo.</div>
-    </div>
-  </div>
-</section>
-
-{/*  ABOUT  */}
-<section id="sobre">
-  <div className="about-section">
-    <div className="about-image-wrap">
-      {/* <img
-        src={ hero?.backgroundImage ||userImage }
-        alt={fullName}
-        className="hero-photo"
-      /> */}
-      <img
-        src={userImage || hero?.backgroundImage}
-        alt={fullName}
-        className="about-image"
-      />
-      <div className="about-image-overlay"></div>
-    </div>
-    <div className="about-content">
-      <div className="section-label">Sobre mim</div>
-      <h2 className="section-title">Mais do que um<br /><em>Prestador de Serviço</em></h2>
-      <p className="about-text">
-        Sou um profissional digital apaixonado por resolver problemas complexos com soluções simples e elegantes. Acredito que o melhor design é aquele que o usuário nem percebe — só sente que funciona perfeitamente.
-      </p>
-      <p className="about-text">
-        Trabalho de forma remota com clientes no Brasil e exterior, com foco total na entrega de valor real. Meu diferencial é unir visão criativa com raciocínio analítico — pensando sempre no impacto do negócio.
-      </p>
-      <div className="about-highlights">
-        <div className="highlight-item">
-          <div className="highlight-icon">🌍</div>
-          <div className="highlight-text">
-            <strong>100% Remoto</strong>
-            <span>Atendo clientes em todo o Brasil e exterior</span>
+          <div className="stat-item">
+            <div className="stat-number"><ExperienceTime about={about || undefined} dark={true} /></div>
+            <div className="stat-label">De Experiência</div>
           </div>
         </div>
-        <div className="highlight-item">
-          <div className="highlight-icon">⚡</div>
-          <div className="highlight-text">
-            <strong>Entrega Rápida</strong>
-            <span>Prazo médio 2x mais rápido que o mercado</span>
-          </div>
+
+        <div className="hero-ctas">
+          <a href="#portfolio" className="btn-primary">▶ Ver Projetos</a>
+          <a href="#contato" className="btn-secondary">↗ Fale Comigo</a>
         </div>
-        <div className="highlight-item">
-          <div className="highlight-icon">💬</div>
-          <div className="highlight-text">
-            <strong>Comunicação Clara</strong>
-            <span>Resposta em até 4h em horário comercial</span>
+      </div>
+
+      <div className="hero-visual">
+        <div className="hero-photo-wrap">
+          <div className="hero-photo-ring"></div>
+          <img
+            src={ hero?.backgroundImage ||userImage }
+            alt={fullName}
+            className="hero-photo"
+          />
+          <div className="hero-photo-tag">
+            <div className="tag-icon">⚡</div>
+            <div className="tag-text">
+              <strong>Disponível</strong>
+              <span>Para novos projetos</span>
+            </div>
           </div>
-        </div>
-        <div className="highlight-item">
-          <div className="highlight-icon">🔒</div>
-          <div className="highlight-text">
-            <strong>Contrato Seguro</strong>
-            <span>NDA, contrato e pagamento protegido</span>
+          <div className="hero-photo-tag2">
+            <span>⭐ 5.0 · 120+ Reviews</span>
           </div>
         </div>
       </div>
-      <a href="#contato" className="btn-primary">✦ Vamos conversar</a>
+    </section>
+
+    {/*  SOCIAL STRIP  */}
+    <div className="social-strip">
+      <div className="social-links">
+        <a href="#" className="social-btn" title="LinkedIn">in</a>
+        <a href="#" className="social-btn" title="Behance">Be</a>
+        <a href="#" className="social-btn" title="GitHub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.72-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="#" className="social-btn" title="Instagram">✦</a>
+        <a href="#" className="social-btn" title="WhatsApp">✉</a>
+      </div>
+      <div className="availability-pill">
+        <div className="avail-dot"></div>
+        Disponível para projetos em Junho 2025
+      </div>
     </div>
-  </div>
-</section>
 
-{/*  TESTIMONIALS  */}
-<section id="depoimentos" style={{background:"var(--surface)"}}>
-  <div className="section-label">Depoimentos</div>
-  <h2 className="section-title">O que meus <em>Clientes Dizem</em></h2>
+    {/*  SERVICES  */}
+    <section id="servicos">
+      <div className="section-label">O que eu faço</div>
+      <h2 className="section-title">Serviços que <em>Geram Resultado</em></h2>
+      <p className="section-desc">Cada projeto é tratado com atenção aos detalhes e foco em resultados reais. Combino criatividade com estratégia para entregar soluções que funcionam de verdade.</p>
 
-  <div className="testimonials-grid">
-    <div className="testimonial-card">
-      <div className="testimonial-stars">★★★★★</div>
-      <p className="testimonial-text">
-        "O Alex entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!"
-      </p>
-      <div className="testimonial-author">
-        <div className="author-avatar">👩</div>
+      <div className="services-grid">
+        {about?.features?.map((service, idx) => {
+          const Icon = (LucideIcons as any)[service.icon] || LucideIcons.Layout;
+          return (
+            <div className="service-card" key={idx}>
+              <div className="service-icon">
+                <Icon size={28} color="var(--accent)" />
+              </div>
+              <div className="service-title">{service.title}</div>
+              <div
+                className="service-desc"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(service.description) }}
+              />
+              <div className="service-price">Sob consulta</div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    {/*  SKILLS  */}
+    <section id="habilidades" className="skills-section">
+      <div className="section-label">Habilidades Técnicas</div>
+      <h2 className="section-title">Ferramentas & <em>Tecnologias</em></h2>
+
+      <div className="skills-layout">
         <div>
-          <div className="author-name">Camila Rocha</div>
-          <div className="author-role">CEO · Startup de RH</div>
+          <div className="skills-stack">
+            {sortedTech.slice(0, 10).map((tech, idx) => (
+              <div className="skill-bar-item" key={idx}>
+                <div className="skill-bar-header">
+                  <span className="skill-bar-name">{tech}</span>
+                  <span className="skill-bar-pct">{techPercentages[tech]}%</span>
+                </div>
+                <div className="skill-bar-track">
+                  <div className="skill-bar-fill" style={{ width: `${techPercentages[tech]}%` }}></div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
-    <div className="testimonial-card">
-      <div className="testimonial-stars">★★★★★</div>
-      <p className="testimonial-text">
-        "Trabalho impecável! Comunicação excelente durante todo o processo, entrega no prazo e o resultado superou todas as expectativas. Com certeza voltarei a contratar."
-      </p>
-      <div className="testimonial-author">
-        <div className="author-avatar">👨</div>
+
         <div>
-          <div className="author-name">Rafael Mendes</div>
-          <div className="author-role">Diretor de Marketing · E-commerce</div>
+          <p style={{
+            fontSize: "0.85rem", color: "var(--text-secondary)", marginBottom: "1.5rem", lineHeight: "1.7"
+          }}>
+            Ferramentas que uso no dia a dia para criar soluções digitais de alto impacto:
+          </p>
+          <div className="tools-grid">
+            {sortedTech.map((tech, idx) => (
+              <div className="tool-chip" key={idx}>
+                <span className="tool-emoji">{techEmojiMap[tech] || '🛠️'}</span>
+                {tech}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-    <div className="testimonial-card">
-      <div className="testimonial-stars">★★★★★</div>
-      <p className="testimonial-text">
-        "A consultoria de marketing transformou o nosso negócio. Em 3 meses triplicamos o tráfego orgânico e reduzimos o custo por lead em 60%. Resultado real e mensurável."
+    </section>
+
+    {/*  PORTFOLIO  */}
+    <section id="portfolio">
+      <div className="section-label">Trabalhos Recentes</div>
+      <h2 className="section-title">Portfólio <em>Selecionado</em></h2>
+      <p className="section-desc">Uma seleção dos projetos que mais me orgulho. Cada entrega com foco em resultado e atenção aos detalhes.</p>
+
+      <div className="portfolio-grid">
+        {featuredProjects.map((project, idx) => (
+          <div className="portfolio-card" key={project._id || idx}>
+            {project.image ? (
+              <img src={project.image} alt={project.title} className="portfolio-thumb" />
+            ) : (
+              <div className="portfolio-thumb-placeholder">
+                {['🚀', '🎨', '📈', '🖋', '⚡'][idx % 5]}
+              </div>
+            )}
+            <div className="portfolio-info">
+              <div className="portfolio-tag">{project.category || "Projeto"}</div>
+              <div className="portfolio-title">{project.title}</div>
+              <div className="project-modal-desc">
+                {project.description?.length > 150
+                  ? `${project.description.slice(0, 150)}...`
+                  : project.description}
+              </div>
+              <div className="portfolio-year">
+                {project.year || "Technologies: "} · {project.tech?.join(' · ') || "Tecnologias"}
+              </div>
+            </div>
+            <div className="portfolio-overlay">
+              <button className="overlay-btn" onClick={() => setSelectedProject(project)}>Ver Projeto →</button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="portfolio-tabs">
+        {allCategories.map(cat => (
+          <button
+            key={cat}
+            className={`portfolio-tab ${activeCategory === cat ? 'active' : ''}`}
+            onClick={() => {
+              setActiveCategory(cat);
+              setVisibleLimit(8);
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="portfolio-grid-filtered">
+        {displayedCategoryProjects.map((project, idx) => (
+          <div className="portfolio-card" key={project._id || idx}>
+            {project.image ? (
+              <img src={project.image} alt={project.title} className="portfolio-thumb" />
+            ) : (
+              <div className="portfolio-thumb-placeholder">
+                {['🚀', '🎨', '📈', '🖋', '⚡'][idx % 5]}
+              </div>
+            )}
+            <div className="portfolio-info">
+              <div className="portfolio-tag">{project.category || "Projeto"}</div>
+              <div className="portfolio-title">{project.title}</div>
+              <div className="portfolio-year">
+                {project.year || "2024"} · {project.tech?.join(' · ') || "Tecnologias"}
+              </div>
+            </div>
+            <div className="portfolio-overlay">
+              <button className="overlay-btn" onClick={() => setSelectedProject(project)}>Ver Projeto →</button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {hasMoreProjects && (
+        <button
+          className="portfolio-load-more"
+          onClick={() => setVisibleLimit(prev => prev + 8)}
+        >
+          Exibir mais projetos
+        </button>
+      )}
+    </section>
+
+    {/*  PROCESS  */}
+    <section id="processo" className="process-section">
+      <div className="section-label">Como Trabalho</div>
+      <h2 className="section-title" style={{textAlign:"center"}}>Do Briefing ao <em>Resultado Final</em></h2>
+      <p className="section-desc" style={{textAlign:"center", margin:"0"}}>Um processo claro e transparente para que você saiba exatamente o que esperar em cada etapa do projeto.</p>
+
+      <div className="process-steps">
+        <div className="process-step">
+          <div className="step-number">01</div>
+          <div className="step-title">Briefing & Descoberta</div>
+          <div className="step-desc">Reunião inicial para entender seus objetivos, público-alvo e expectativas. Alinhamos visão e definimos o escopo.</div>
+        </div>
+        <div className="process-step">
+          <div className="step-number">02</div>
+          <div className="step-title">Proposta & Estratégia</div>
+          <div className="step-desc">Elaboro uma proposta detalhada com cronograma, entregáveis e investimento. Tudo muito transparente.</div>
+        </div>
+        <div className="process-step">
+          <div className="step-number">03</div>
+          <div className="step-title">Execução & Updates</div>
+          <div className="step-desc">Trabalho com comunicação constante. Você acompanha o progresso em tempo real e tem acesso direto a mim.</div>
+        </div>
+        <div className="process-step">
+          <div className="step-number">04</div>
+          <div className="step-title">Revisão & Aprovação</div>
+          <div className="step-desc">Rodadas de feedback para garantir que o resultado final supere suas expectativas antes da entrega.</div>
+        </div>
+        <div className="process-step">
+          <div className="step-number">05</div>
+          <div className="step-title">Entrega & Suporte</div>
+          <div className="step-desc">Entrega completa com documentação e suporte pós-lançamento. Seu projeto fica em boas mãos a longo prazo.</div>
+        </div>
+      </div>
+    </section>
+
+    {/*  ABOUT  */}
+    <section id="sobre">
+      <div className="about-section">
+        <div className="about-image-wrap">
+          {/* <img
+            src={ hero?.backgroundImage ||userImage }
+            alt={fullName}
+            className="hero-photo"
+          /> */}
+          <img
+            src={userImage || hero?.backgroundImage}
+            alt={fullName}
+            className="about-image"
+          />
+          <div className="about-image-overlay"></div>
+        </div>
+        <div className="about-content">
+          <div className="section-label">Sobre mim</div>
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: about?.title || "Sobre Mim" }} />
+          <div
+            className="about-text"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.description || "") }}
+          />
+          <div className="about-highlights">
+            {about?.features?.map((feature, idx) => {
+              const Icon = (LucideIcons as any)[feature.icon] || LucideIcons.Info;
+              return (
+                <div className="highlight-item" key={idx}>
+                  <div className="highlight-icon">
+                    <Icon size={24} color="var(--accent)" />
+                  </div>
+                  <div className="highlight-text">
+                    <strong>{feature.title}</strong>
+                    <div
+                      className="text-primary"
+                      style={{ fontSize: '0.78rem' }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(feature.description) }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <a href="#contato" className="btn-primary">✦ Vamos conversar</a>
+        </div>
+      </div>
+    </section>
+
+    {/*  TESTIMONIALS  */}
+    <section id="depoimentos" style={{background:"var(--surface)"}}>
+      <div className="section-label">Depoimentos</div>
+      <h2 className="section-title">O que meus <em>Clientes Dizem</em></h2>
+
+      <div className="testimonials-grid">
+        <div className="testimonial-card">
+          <div className="testimonial-stars">★★★★★</div>
+          <p className="testimonial-text">
+            "O Alex entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!"
+          </p>
+          <div className="testimonial-author">
+            <div className="author-avatar">👩</div>
+            <div>
+              <div className="author-name">Camila Rocha</div>
+              <div className="author-role">CEO · Startup de RH</div>
+            </div>
+          </div>
+        </div>
+        <div className="testimonial-card">
+          <div className="testimonial-stars">★★★★★</div>
+          <p className="testimonial-text">
+            "Trabalho impecável! Comunicação excelente durante todo o processo, entrega no prazo e o resultado superou todas as expectativas. Com certeza voltarei a contratar."
+          </p>
+          <div className="testimonial-author">
+            <div className="author-avatar">👨</div>
+            <div>
+              <div className="author-name">Rafael Mendes</div>
+              <div className="author-role">Diretor de Marketing · E-commerce</div>
+            </div>
+          </div>
+        </div>
+        <div className="testimonial-card">
+          <div className="testimonial-stars">★★★★★</div>
+          <p className="testimonial-text">
+            "A consultoria de marketing transformou o nosso negócio. Em 3 meses triplicamos o tráfego orgânico e reduzimos o custo por lead em 60%. Resultado real e mensurável."
+          </p>
+          <div className="testimonial-author">
+            <div className="author-avatar">👩‍💼</div>
+            <div>
+              <div className="author-name">Juliana Costa</div>
+              <div className="author-role">Fundadora · SaaS B2B</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/*  CONTACT CTA  */}
+    <section id="contato" className="contact-section">
+      <div className="contact-content">
+        <div className="section-label" style={{textAlign:"center"}}>Vamos Trabalhar Juntos</div>
+        <h2 className="contact-title">Pronto para <em>Elevar</em> seu Negócio Digital?</h2>
+        <p className="contact-desc">
+          Seja um site novo, uma campanha de marketing ou uma identidade visual que vai fazer sua marca ser lembrada — estou aqui para transformar sua visão em realidade.
+        </p>
+        <div className="contact-btns">
+          <a href="mailto:alex@email.com" className="btn-primary">✉ Enviar Mensagem</a>
+          <a href="https://wa.me/5511999999999" className="btn-secondary">📱 WhatsApp</a>
+        </div>
+        <div className="contact-info">
+          <div className="contact-info-item">
+            <span>📍</span>
+            <span>São Paulo, Brasil · Remoto</span>
+          </div>
+          <div className="contact-info-item">
+            <span>⏰</span>
+            <span>Disponível Seg–Sex, 9h–18h</span>
+          </div>
+          <div className="contact-info-item">
+            <span>🌐</span>
+            <span>Atendo em PT, EN, ES</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/*  FOOTER  */}
+    <footer>
+      <div className="footer-logo">
+        {/* <img src="==" alt="Portify" /> */}
+        <Link href={'/'} className="justify-center">
+          <Logo
+          alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
+          alterH={80}
+          alterW={120}/>
+        </Link>
+      </div>
+      <p className="footer-text">
+        Portfólio criado com <a href="https://portify.art" target="_blank">Portify</a> · O portfólio profissional para freelancers
       </p>
-      <div className="testimonial-author">
-        <div className="author-avatar">👩‍💼</div>
-        <div>
-          <div className="author-name">Juliana Costa</div>
-          <div className="author-role">Fundadora · SaaS B2B</div>
+      <ul className="footer-links">
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#portfolio">Portfólio</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </footer>
+
+
+
+      {selectedProject && (
+      <div className="project-modal-overlay" onClick={() => setSelectedProject(null)}>
+        <div className="project-modal-content" onClick={e => e.stopPropagation()}>
+          <button className="project-modal-close" onClick={() => setSelectedProject(null)}>✕</button>
+
+          {selectedProject.image ? (
+            <img src={selectedProject.image} alt={selectedProject.title} className="project-modal-image" />
+          ) : (
+            <div className="project-modal-image" style={{ background: 'var(--bg3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
+              🚀
+            </div>
+          )}
+
+          <div className="project-modal-info">
+            <h3 className="project-modal-title">{selectedProject.title}</h3>
+            <div className="project-modal-meta">
+              <span>📅 {selectedProject.year || "2024"}</span>
+              <span>📁 {selectedProject.category || "Projeto"}</span>
+              <span>🛠️ {selectedProject.tech?.join(', ') || "Tecnologias"}</span>
+            </div>
+            <div className="project-modal-desc">
+              {selectedProject.description}
+            </div>
+            <div className="project-modal-footer">
+              {selectedProject.liveUrl && (
+                <a href={selectedProject.liveUrl} target="_blank" className="btn-primary" style={{ textDecoration: 'none' }}>Visualizar Site →</a>
+              )}
+              {selectedProject.githubUrl && (
+                <a href={selectedProject.githubUrl} target="_blank" className="btn-secondary" style={{ textDecoration: 'none' }}>GitHub ↗</a>
+              )}
+            </div>
+          </div>
         </div>
       </div>
+    )}
     </div>
-  </div>
-</section>
-
-{/*  CONTACT CTA  */}
-<section id="contato" className="contact-section">
-  <div className="contact-content">
-    <div className="section-label" style={{textAlign:"center"}}>Vamos Trabalhar Juntos</div>
-    <h2 className="contact-title">Pronto para <em>Elevar</em> seu Negócio Digital?</h2>
-    <p className="contact-desc">
-      Seja um site novo, uma campanha de marketing ou uma identidade visual que vai fazer sua marca ser lembrada — estou aqui para transformar sua visão em realidade.
-    </p>
-    <div className="contact-btns">
-      <a href="mailto:alex@email.com" className="btn-primary">✉ Enviar Mensagem</a>
-      <a href="https://wa.me/5511999999999" className="btn-secondary">📱 WhatsApp</a>
-    </div>
-    <div className="contact-info">
-      <div className="contact-info-item">
-        <span>📍</span>
-        <span>São Paulo, Brasil · Remoto</span>
-      </div>
-      <div className="contact-info-item">
-        <span>⏰</span>
-        <span>Disponível Seg–Sex, 9h–18h</span>
-      </div>
-      <div className="contact-info-item">
-        <span>🌐</span>
-        <span>Atendo em PT, EN, ES</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-{/*  FOOTER  */}
-<footer>
-  <div className="footer-logo">
-    {/* <img src="==" alt="Portify" /> */}
-    <Link href={'/'} className="justify-center">
-      <Logo 
-      alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
-      alterH={80}
-      alterW={120}/>
-    </Link>
-  </div>
-  <p className="footer-text">
-    Portfólio criado com <a href="https://portify.art" target="_blank">Portify</a> · O portfólio profissional para freelancers
-  </p>
-  <ul className="footer-links">
-    <li><a href="#servicos">Serviços</a></li>
-    <li><a href="#portfolio">Portfólio</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ul>
-</footer>
-
-
-
-    </div>
-  );
+    );
 }

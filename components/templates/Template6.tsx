@@ -721,7 +721,8 @@ export default function Template3({ userId, categories, projects }: TemplateProp
         <div className="container">
           <div className="hero-grid">
             <div className="hero-copy reveal-l">
-              <div className="badge">Atendimento personalizado e estratégico</div>
+              <div className="badge">TEMPLATE 6 - Atendimento personalizado e estratégico</div>
+              <h1>TEMPLATE 6</h1>
               <h1>
                 {hero?.title?.split(" ").slice(0, -2).join(" ") || "Resultados digitais para"}<br />
                 <em className="olive">{hero?.title?.split(" ").slice(-2).join(" ") || "leveza e estratégia"}</em>

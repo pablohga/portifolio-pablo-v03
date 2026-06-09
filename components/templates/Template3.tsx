@@ -718,6 +718,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
       </nav>
 
       <section id="hero">
+        <h1>TEMPLATE 3</h1>
         <div className="container">
           <div className="hero-grid">
             <div className="hero-copy reveal-l">

@@ -39,6 +39,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 const projectSchema = z.object({
   title: z.string().min(2, "Title must be at least 2 characters"),
+  year: z.string().min(1, "Year is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   image: z.string().url("Must be a valid URL"),
   tech: z.string(),
@@ -66,6 +67,7 @@ export function ProjectDialog({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       title: project?.title || "",
+      year: project?.year || "",
       description: project?.description || "",
       image: project?.image || "",
       tech: project?.tech.join(", ") || "",
@@ -117,6 +119,20 @@ export function ProjectDialog({
                   <FormLabel>Project Title</FormLabel>
                   <FormControl>
                     <Input placeholder="My Awesome Project" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="year"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Year</FormLabel>
+                  <FormControl>
+                    <Input placeholder="2024" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

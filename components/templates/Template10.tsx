@@ -69,6 +69,7 @@ export default function Template2({ userId, categories, projects }: TemplateProp
 
   return (
     <div className="template-2-wrapper">
+      <h1>TEMPLATE 10</h1>
       teste
     </div>
   );

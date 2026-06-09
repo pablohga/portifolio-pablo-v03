@@ -769,6 +769,7 @@ export default function Template2({ userId, categories, projects }: TemplateProp
       </header>
 
       <section className="hero">
+        <h1>TEMPLATE 2</h1>
         <div className="hero-left">
           <div className="hero-tag">Portify — Perfil Profissional</div>
           <h1 className="hero-title">

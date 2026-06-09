@@ -940,6 +940,7 @@ export default function Template1({ userId, categories, projects, userImage, use
       </nav>
 
       <section id="hero">
+        <h1>TEMPLATE 4</h1>
         <div className="container">
           <div className="hero-grid">
             <div className="hero-copy reveal">

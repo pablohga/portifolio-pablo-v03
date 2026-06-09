@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, type ReactNode } from "react";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { DARK, LIGHT } from "@/constants/theme";
 import { HERO_DARK, HERO_LIGHT, LOGO_DARK, LOGO_LIGHT, ICONS } from "@/constants/assets";
@@ -17,7 +18,7 @@ function useInView<T extends HTMLElement = HTMLElement>(options: IntersectionObs
     }, { threshold: 0.12, ...options });
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [options]);
   return [ref, inView] as const;
 }
 
@@ -530,7 +531,7 @@ function TestimonialsSection({ dark }: { dark?: boolean }) {
                     <svg key={j} width={14} height={14} viewBox="0 0 24 24" fill="#F59E0B"><path d={ICONS.star} /></svg>
                   ))}
                 </div>
-                <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: dark ? c.textSecondary : c.textSecondary, lineHeight: 1.7, margin: "0 0 20px" }}>"{t.text}"</p>
+                <p style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: dark ? c.textSecondary : c.textSecondary, lineHeight: 1.7, margin: "0 0 20px" }}>&quot;{t.text}&quot;</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{
                     width: 40, height: 40, borderRadius: "50%",
@@ -673,7 +674,7 @@ function Footer({ dark }: { dark?: boolean }) {
   return (
     <footer style={{ background: dark ? "#17181E" : "#E8E8E8", padding: "40px 32px", borderTop: `1px solid ${dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}` }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-        <img src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Portify" style={{ height: 22, objectFit: "contain" }} />
+        <Image src={dark ? LOGO_DARK : LOGO_LIGHT} alt="Portify" width={100} height={22} style={{ height: 22, width: 'auto', objectFit: "contain" }} />
         <div style={{ display: "flex", gap: 24 }}>
           {["Termos de Uso", "Política de Privacidade", "Configurações"].map(l => (
             <a key={l} href="#" style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: c.textMuted, textDecoration: "none" }}>{l}</a>
