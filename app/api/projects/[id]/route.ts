@@ -16,6 +16,15 @@ export async function PUT(
 
     await dbConnect();
     const data = await request.json();
+
+    // If isFeatured is true, unset all other featured projects for this user
+    if (data.isFeatured) {
+      await Project.updateMany(
+        { userId: session.user.id, _id: { $ne: params.id } },
+        { $set: { isFeatured: false } }
+      );
+    }
+
     const project = await Project.findOneAndUpdate(
       { _id: params.id, userId: session.user.id },
       { ...data, updatedAt: new Date() },

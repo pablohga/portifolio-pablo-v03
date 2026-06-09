@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Star } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,6 +31,14 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
     <Card>
       <CardHeader className="relative">
         <div className="absolute right-4 top-4 flex gap-2">
+          {project.isFeatured && (
+            <div
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-400 text-yellow-900"
+              title="Projeto em Destaque"
+            >
+              <Star className="h-4 w-4 fill-current" />
+            </div>
+          )}
           <Button
             variant="ghost"
             size="icon"

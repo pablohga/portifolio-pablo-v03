@@ -11,4 +11,5 @@ export interface Project {
   updatedAt: string;
   liveUrl?: string;
   githubUrl?: string;
+  isFeatured?: boolean;
 }

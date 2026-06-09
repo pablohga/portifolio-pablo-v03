@@ -967,7 +967,7 @@ useEffect(() => {
         }
 
         .portfolio-load-more {
-          display: block;
+          /* display: block;
           margin: 2rem auto 0;
           font-family: var(--font-display);
           font-weight: 700;
@@ -979,12 +979,31 @@ useEffect(() => {
           padding: 0.8rem 2rem;
           border-radius: 50px;
           cursor: pointer;
+          transition: var(--transition); */
+          display: block;
+          margin: 2rem auto 0;
+          font-family: var(--font-display);
+          font-weight: 700;
+          font-size: 0.78rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          background: var(--accent);
+          color: #050a14;
+          border: none;
+          padding: 0.55rem 1.4rem;
+          border-radius: 50px;
+          cursor: pointer;
+          text-decoration: none;
           transition: var(--transition);
+          display: inline-flex; align-items: center; gap: 6px;
         }
 
         .portfolio-load-more:hover {
-          border-color: var(--accent);
-          color: var(--accent);
+          /* border-color: var(--accent);
+          color: var(--accent); */
+          background: #fff;
+          transform: translateY(-1px);
+          box-shadow: 0 8px 24px rgba(0,212,232,0.3);
         }
 
 
@@ -1649,6 +1668,7 @@ useEffect(() => {
         >
           Exibir mais projetos
         </button>
+        
       )}
     </section>
 

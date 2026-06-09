@@ -39,6 +39,14 @@ export async function POST(request: Request) {
 
     const data = await request.json();
 
+    // If isFeatured is true, unset all other featured projects for this user
+    if (data.isFeatured) {
+      await Project.updateMany(
+        { userId: session.user.id },
+        { $set: { isFeatured: false } }
+      );
+    }
+
     // Check project limits for the specific category
     await checkProjectLimits(session.user.id, data.category, user.subscriptionTier);
 
