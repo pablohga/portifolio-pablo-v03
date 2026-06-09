@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import * as LucideIcons from "lucide-react";
 import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
@@ -12,6 +12,7 @@ import { UserAvatar } from "@/components/ui/user-avatar";
 import { ProjectsDelivered, SatisfiedClients, ExperienceTime } from "@/components/about-metrics";
 import { Logo } from "@/components/brand/logo";
 import Link from "next/link";
+import Image from "next/image";
 import DOMPurify from "isomorphic-dompurify";
 
 interface TemplateProps {
@@ -32,21 +33,8 @@ export default function Template5({ userId, categories, projects, userImage, use
     const [activeCategory, setActiveCategory] = useState<string>('Todos');
     const [visibleLimit, setVisibleLimit] = useState<number>(8);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    }
-    applyTheme();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('theme', theme);
-    applyTheme();
-  }, [theme]);
-
-  const applyTheme = () => {
+  
+  const applyTheme = useCallback(() => {
     if (theme === 'dark') {
       document.documentElement.style.setProperty('--bg', '#050c0f');
       document.documentElement.style.setProperty('--bg2', '#081318');
@@ -82,7 +70,22 @@ export default function Template5({ userId, categories, projects, userImage, use
       document.documentElement.style.setProperty('--r', '12px');
       document.documentElement.style.setProperty('--r2', '20px');
     }
-  };
+  }, [theme]);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+    applyTheme();
+  }, [applyTheme]);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    applyTheme();
+  }, [theme, applyTheme]);
+
+  
 useEffect(() => {
     async function fetchData() {
       try {
@@ -1581,7 +1584,7 @@ useEffect(() => {
         {featuredProjects.map((project, idx) => (
           <div className="portfolio-card" key={project._id || idx}>
             {project.image ? (
-              <img src={project.image} alt={project.title} className="portfolio-thumb" />
+              <Image src={project.image} alt={project.title} className="portfolio-thumb" width={500} height={300} />
             ) : (
               <div className="portfolio-thumb-placeholder">
                 {['🚀', '🎨', '📈', '🖋', '⚡'][idx % 5]}
@@ -1625,7 +1628,7 @@ useEffect(() => {
         {displayedCategoryProjects.map((project, idx) => (
           <div className="portfolio-card" key={project._id || idx}>
             {project.image ? (
-              <img src={project.image} alt={project.title} className="portfolio-thumb" />
+              <Image src={project.image} alt={project.title} className="portfolio-thumb" width={500} height={300} />
             ) : (
               <div className="portfolio-thumb-placeholder">
                 {['🚀', '🎨', '📈', '🖋', '⚡'][idx % 5]}
@@ -1635,7 +1638,7 @@ useEffect(() => {
               <div className="portfolio-tag">{project.category || "Projeto"}</div>
               <div className="portfolio-title">{project.title}</div>
               <div className="portfolio-year">
-                {project.year || "2024"} · {project.tech?.join(' · ') || "Tecnologias"}
+                {project.year || ""} · {project.tech?.join(' · ') || "Tecnologias"}
               </div>
             </div>
             <div className="portfolio-overlay">
@@ -1699,10 +1702,12 @@ useEffect(() => {
             alt={fullName}
             className="hero-photo"
           /> */}
-          <img
-            src={userImage || hero?.backgroundImage}
+          <Image
+            src={userImage || hero?.backgroundImage || ""}
             alt={fullName}
             className="about-image"
+            width={600}
+            height={800}
           />
           <div className="about-image-overlay"></div>
         </div>
@@ -1747,7 +1752,7 @@ useEffect(() => {
         <div className="testimonial-card">
           <div className="testimonial-stars">★★★★★</div>
           <p className="testimonial-text">
-            "O Alex entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!"
+            &quot;O Alex entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!&quot;
           </p>
           <div className="testimonial-author">
             <div className="author-avatar">👩</div>
@@ -1760,7 +1765,7 @@ useEffect(() => {
         <div className="testimonial-card">
           <div className="testimonial-stars">★★★★★</div>
           <p className="testimonial-text">
-            "Trabalho impecável! Comunicação excelente durante todo o processo, entrega no prazo e o resultado superou todas as expectativas. Com certeza voltarei a contratar."
+            &quot;Trabalho impecável! Comunicação excelente durante todo o processo, entrega no prazo e o resultado superou todas as expectativas. Com certeza voltarei a contratar.&quot;
           </p>
           <div className="testimonial-author">
             <div className="author-avatar">👨</div>
@@ -1773,7 +1778,7 @@ useEffect(() => {
         <div className="testimonial-card">
           <div className="testimonial-stars">★★★★★</div>
           <p className="testimonial-text">
-            "A consultoria de marketing transformou o nosso negócio. Em 3 meses triplicamos o tráfego orgânico e reduzimos o custo por lead em 60%. Resultado real e mensurável."
+            &quot;A consultoria de marketing transformou o nosso negócio. Em 3 meses triplicamos o tráfego orgânico e reduzimos o custo por lead em 60%. Resultado real e mensurável.&quot;
           </p>
           <div className="testimonial-author">
             <div className="author-avatar">👩‍💼</div>
@@ -1845,7 +1850,7 @@ useEffect(() => {
           <button className="project-modal-close" onClick={() => setSelectedProject(null)}>✕</button>
 
           {selectedProject.image ? (
-            <img src={selectedProject.image} alt={selectedProject.title} className="project-modal-image" />
+            <Image src={selectedProject.image} alt={selectedProject.title} className="project-modal-image" width={900} height={500} />
           ) : (
             <div className="project-modal-image" style={{ background: 'var(--bg3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
               🚀
@@ -1855,7 +1860,7 @@ useEffect(() => {
           <div className="project-modal-info">
             <h3 className="project-modal-title">{selectedProject.title}</h3>
             <div className="project-modal-meta">
-              <span>📅 {selectedProject.year || "2024"}</span>
+              <span>📅 {selectedProject.year || ""}</span>
               <span>📁 {selectedProject.category || "Projeto"}</span>
               <span>🛠️ {selectedProject.tech?.join(', ') || "Tecnologias"}</span>
             </div>
