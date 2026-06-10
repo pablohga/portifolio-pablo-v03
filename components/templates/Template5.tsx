@@ -9,6 +9,12 @@ import { Category } from "@/types/category";
 import { Testimonial } from "@/types/testimonial";
 import { ProjectsSection } from "@/components/projects-section";
 import { ContactSection } from "@/components/contact-section";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { ProjectsDelivered, SatisfiedClients, ExperienceTime } from "@/components/about-metrics";
 import { Logo } from "@/components/brand/logo";
@@ -28,6 +34,7 @@ export default function Template5({ userId, categories, projects, userImage, use
 
     const [hero, setHero] = useState<Hero | null>(null);
     const [about, setAbout] = useState<About | null>(null);
+    const [contact, setContact] = useState<any>(null);
     const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
     const [loading, setLoading] = useState(true);
     const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -40,7 +47,8 @@ export default function Template5({ userId, categories, projects, userImage, use
     const [activeCategory, setActiveCategory] = useState<string>('Todos');
     const [visibleLimit, setVisibleLimit] = useState<number>(8);
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  
+    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('theme', theme);
 
@@ -85,18 +93,21 @@ export default function Template5({ userId, categories, projects, userImage, use
 useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, aboutRes, testimonialsRes] = await Promise.all([
+        const [heroRes, aboutRes, testimonialsRes, contactRes] = await Promise.all([
           fetch(`/api/hero?userId=${userId}`),
           fetch(`/api/about?userId=${userId}`),
           fetch(`/api/testimonials?userId=${userId}`),
+          fetch(`/api/contact?userId=${userId}`),
         ]);
         const heroData = await heroRes.json();
         const aboutData = await aboutRes.json();
         const testimonialsData = await testimonialsRes.json();
+        const contactData = await contactRes.json();
         console.log("About Data from DB:", aboutData);
 
         if (heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        if (contactData && contactData._id) setContact(contactData);
         setTestimonials(testimonialsData);
       } catch (error) {
         console.error("Failed to fetch template data:", error);
@@ -173,7 +184,7 @@ useEffect(() => {
   console.log("Current About State:", about);
   return (
     <div className="template-converted-wrapper" data-theme={theme}>
-      < style global dangerouslySetInnerHTML={{
+      <style dangerouslySetInnerHTML={{
           __html:`
 
         :root {
@@ -226,8 +237,8 @@ useEffect(() => {
           --text-secondary: var(--text-secondary-light);
           --nav-bg: rgba(245,242,236,0.92);
           --logo-src: url("https://agenciaaimagic.com.br/portify/logo_nova_txt_g_light.png");
-          --hero-img: url("https://agenciaaimagic.com.br/portify/hero_img_light.png"); }
-          background: var(--light-bg);
+          --hero-img: url("https://agenciaaimagic.com.br/portify/hero_img_light.png");
+        }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1791,22 +1802,46 @@ useEffect(() => {
           Seja um site novo, uma campanha de marketing ou uma identidade visual que vai fazer sua marca ser lembrada — estou aqui para transformar sua visão em realidade.
         </p>
         <div className="contact-btns">
-          <a href="mailto:alex@email.com" className="btn-primary">✉ Enviar Mensagem</a>
-          <a href="https://wa.me/5511999999999" className="btn-secondary">📱 WhatsApp</a>
+          <button
+            onClick={() => setIsContactModalOpen(true)}
+            className="btn-primary"
+          >
+            ✉ Enviar Mensagem
+          </button>
+          {contact?.whatsapp && (
+            <a
+              href={`https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary"
+            >
+              📱 WhatsApp
+            </a>
+          )}
         </div>
         <div className="contact-info">
-          <div className="contact-info-item">
-            <span>📍</span>
-            <span>São Paulo, Brasil · Remoto</span>
-          </div>
-          <div className="contact-info-item">
-            <span>⏰</span>
-            <span>Disponível Seg–Sex, 9h–18h</span>
-          </div>
-          <div className="contact-info-item">
-            <span>🌐</span>
-            <span>Atendo em PT, EN, ES</span>
-          </div>
+          {contact?.address && (contact.address.street || contact.address.city || contact.address.state) && (
+            <div className="contact-info-item">
+              <span>📍</span>
+              <span>
+                {[contact.address.street, contact.address.city, contact.address.state]
+                  .filter(Boolean)
+                  .join(", ") || "Remoto"}
+              </span>
+            </div>
+          )}
+          {contact?.availability && (
+            <div className="contact-info-item">
+              <span>⏰</span>
+              <span>{contact.availability}</span>
+            </div>
+          )}
+          {contact?.languages && contact.languages.length > 0 && (
+            <div className="contact-info-item">
+              <span>🌐</span>
+              <span>Atendo em {contact.languages.join(", ")}</span>
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -1870,6 +1905,15 @@ useEffect(() => {
         </div>
       </div>
     )}
+
+    <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Entre em Contato</DialogTitle>
+        </DialogHeader>
+        <ContactSection userId={userId} compact />
+      </DialogContent>
+    </Dialog>
     </div>
     );
 }
