@@ -662,7 +662,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                       />
                     ))}
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
+                  <p className="text-sm text-muted-foreground mb-4 italic">&quot;{testimonial.text}&quot;</p>
                   <div className="flex gap-2">
                     <Button
                       variant="outline"

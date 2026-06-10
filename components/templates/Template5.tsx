@@ -6,6 +6,7 @@ import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
+import { Testimonial } from "@/types/testimonial";
 import { ProjectsSection } from "@/components/projects-section";
 import { ContactSection } from "@/components/contact-section";
 import { UserAvatar } from "@/components/ui/user-avatar";
@@ -27,6 +28,7 @@ export default function Template5({ userId, categories, projects, userImage, use
 
     const [hero, setHero] = useState<Hero | null>(null);
     const [about, setAbout] = useState<About | null>(null);
+    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
     const [loading, setLoading] = useState(true);
     const [theme, setTheme] = useState<'light' | 'dark'>(() => {
       if (typeof window !== 'undefined') {
@@ -83,16 +85,19 @@ export default function Template5({ userId, categories, projects, userImage, use
 useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, aboutRes] = await Promise.all([
+        const [heroRes, aboutRes, testimonialsRes] = await Promise.all([
           fetch(`/api/hero?userId=${userId}`),
           fetch(`/api/about?userId=${userId}`),
+          fetch(`/api/testimonials?userId=${userId}`),
         ]);
         const heroData = await heroRes.json();
         const aboutData = await aboutRes.json();
+        const testimonialsData = await testimonialsRes.json();
         console.log("About Data from DB:", aboutData);
 
         if (heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        setTestimonials(testimonialsData);
       } catch (error) {
         console.error("Failed to fetch template data:", error);
       } finally {
@@ -1746,45 +1751,34 @@ useEffect(() => {
       <h2 className="section-title">O que meus <em>Clientes Dizem</em></h2>
 
       <div className="testimonials-grid">
-        <div className="testimonial-card">
-          <div className="testimonial-stars">★★★★★</div>
-          <p className="testimonial-text">
-            &quot;Entregou muito mais do que prometeu. O site ficou incrível e as métricas de conversão subiram 180% no primeiro mês. Profissional altamente recomendado!&quot;
-          </p>
-          <div className="testimonial-author">
-            <div className="author-avatar">👩</div>
-            <div>
-              <div className="author-name">Camila Rocha</div>
-              <div className="author-role">CEO · Startup de RH</div>
+        {testimonials.map((testimonial, idx) => (
+          <div className="testimonial-card" key={testimonial._id || idx}>
+            <div className="testimonial-stars">
+              {"★".repeat(testimonial.stars).padStart(5, "☆")}
+            </div>
+            <p className="testimonial-text">
+              &quot;{testimonial.text}&quot;
+            </p>
+            <div className="testimonial-author">
+              <div className="author-avatar">
+                {testimonial.image ? (
+                  <Image src={testimonial.image} alt={testimonial.name} width={42} height={42} />
+                ) : (
+                  <span style={{fontSize: '1.1rem'}}>👤</span>
+                )}
+              </div>
+              <div>
+                <div className="author-name">{testimonial.name}</div>
+                <div className="author-role">{testimonial.role}</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="testimonial-card">
-          <div className="testimonial-stars">★★★★★</div>
-          <p className="testimonial-text">
-            &quot;Trabalho impecável! Comunicação excelente durante todo o processo, entrega no prazo e o resultado superou todas as expectativas. Com certeza voltarei a contratar.&quot;
+        ))}
+        {testimonials.length === 0 && (
+          <p className="text-center text-muted-foreground col-span-full py-8">
+            Nenhum depoimento disponível no momento.
           </p>
-          <div className="testimonial-author">
-            <div className="author-avatar">👨</div>
-            <div>
-              <div className="author-name">Rafael Mendes</div>
-              <div className="author-role">Diretor de Marketing · E-commerce</div>
-            </div>
-          </div>
-        </div>
-        <div className="testimonial-card">
-          <div className="testimonial-stars">★★★★★</div>
-          <p className="testimonial-text">
-            &quot;A consultoria de marketing transformou o nosso negócio. Em 3 meses triplicamos o tráfego orgânico e reduzimos o custo por lead em 60%. Resultado real e mensurável.&quot;
-          </p>
-          <div className="testimonial-author">
-            <div className="author-avatar">👩‍💼</div>
-            <div>
-              <div className="author-name">Juliana Costa</div>
-              <div className="author-role">Fundadora · SaaS B2B</div>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </section>
 

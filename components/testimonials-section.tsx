@@ -24,24 +24,24 @@ export function TestimonialsSection({
   const [isLoading, setIsLoading] = useState(!initialTestimonials.length);
 
   useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        setIsLoading(true);
+        const url = userId ? `/api/testimonials?userId=${userId}` : "/api/testimonials";
+        const response = await fetch(url);
+        const data = await response.json();
+        setTestimonials(data);
+      } catch (error) {
+        console.error("Failed to fetch testimonials:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     if (!initialTestimonials.length) {
       fetchTestimonials();
     }
   }, [userId, initialTestimonials]);
-
-  async function fetchTestimonials() {
-    try {
-      setIsLoading(true);
-      const url = userId ? `/api/testimonials?userId=${userId}` : "/api/testimonials";
-      const response = await fetch(url);
-      const data = await response.json();
-      setTestimonials(data);
-    } catch (error) {
-      console.error("Failed to fetch testimonials:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   if (isLoading) {
     return (
@@ -110,7 +110,7 @@ export function TestimonialsSection({
                   </div>
 
                   <p className="text-muted-foreground leading-relaxed italic">
-                    "{testimonial.text}"
+                    &quot;{testimonial.text}&quot;
                   </p>
                 </CardContent>
               </Card>
