@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -28,7 +28,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { useContactSettings } from "@/hooks/use-contact-settings";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
 
 const contactSettingsSchema = z.object({
   emailTo: z.string().email("Invalid email address"),
@@ -43,7 +48,16 @@ const contactSettingsSchema = z.object({
     }),
   }).optional(),
   resendApiKey: z.string().optional(),
-  imageUrl: z.string().url("Must be a valid URL").optional(),
+  imageUrl: z.string().optional(),
+  phone: z.string().optional(),
+  whatsapp: z.string().optional(),
+  address: z.object({
+    street: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+  }).optional(),
+  availability: z.string().optional(),
+  languages: z.array(z.string()).optional(),
 });
 
 interface ContactSettingsDialogProps {
@@ -59,8 +73,10 @@ export function ContactSettingsDialog({
   onOpenChange,
   onSubmit,
 }: ContactSettingsDialogProps) {
+  const { data: session } = useSession();
+  const { toast } = useToast();
   const { settings, isLoading } = useContactSettings(userId);
-  
+
   const form = useForm<z.infer<typeof contactSettingsSchema>>({
     resolver: zodResolver(contactSettingsSchema),
     defaultValues: {
@@ -77,6 +93,15 @@ export function ContactSettingsDialog({
       },
       resendApiKey: "",
       imageUrl: "",
+      phone: "",
+      whatsapp: "",
+      address: {
+        street: "",
+        city: "",
+        state: "",
+      },
+      availability: "",
+      languages: [],
     },
   });
 
@@ -110,9 +135,49 @@ export function ContactSettingsDialog({
               name="imageUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact Image URL</FormLabel>
+                  <FormLabel>Contact Image</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://images.unsplash.com/photo-1423666639041-f56000c27a9a" {...field} />
+                    <div className="space-y-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="text-sm"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
+
+                          const userId = session?.user?.id;
+                          const currentDate = new Date();
+                          const timestamp = currentDate.toISOString().replace(/[-:.TZ]/g, "");
+                          const newFileName = `contact-${userId}-${timestamp}.${file.type.split("/")[1]}`;
+                          const renamedFile = new File([file], newFileName, { type: file.type });
+
+                          const formData = new FormData();
+                          formData.append("file", renamedFile);
+                          formData.append("upload_preset", "user-projects-imgs");
+                          formData.append("folder", `user_uploads/contact/${userId}`);
+
+                          try {
+                            const res = await fetch("/api/upload", { method: "POST", body: formData });
+                            const data = await res.json();
+                            if (data.secure_url) {
+                              field.onChange(data.secure_url);
+                              toast({ title: "Success", description: "Image uploaded successfully!", variant: "success" });
+                            } else {
+                              toast({ title: "Error", description: "Failed to upload image.", variant: "destructive" });
+                            }
+                          } catch (error) {
+                            console.error("Upload error:", error);
+                            toast({ title: "Error", description: "An error occurred while uploading the image.", variant: "destructive" });
+                          }
+                        }}
+                      />
+                      {field.value && (
+                        <div className="relative w-20 h-20 rounded-full overflow-hidden border">
+                          <Image src={field.value} alt="Preview" fill className="object-cover" />
+                        </div>
+                      )}
+                    </div>
                   </FormControl>
                   <FormDescription>
                     Image to display in the contact section (recommended: square image)
@@ -120,6 +185,145 @@ export function ContactSettingsDialog({
                   <FormMessage />
                 </FormItem>
               )}
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl>
+                      <Input placeholder="+55 (11) 99999-9999" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="whatsapp"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp</FormLabel>
+                    <FormControl>
+                      <Input placeholder="+55 (11) 99999-9999" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="space-y-4 p-4 border rounded-lg bg-muted/30">
+              <FormLabel className="text-base font-semibold">Address</FormLabel>
+              <div className="grid grid-cols-1 gap-4">
+                <FormField
+                  control={form.control}
+                  name="address.street"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs">Street</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Main St, 123" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="address.city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs">City</FormLabel>
+                        <FormControl>
+                          <Input placeholder="New York" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address.state"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs">State/Region</FormLabel>
+                        <FormControl>
+                          <Input placeholder="NY" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <FormField
+              control={form.control}
+              name="availability"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Availability</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Mon-Fri: 9am - 6pm (GMT-3)"
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>Your working hours and availability</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="languages"
+              render={({ field }) => {
+                const commonLanguages = ["Portuguese", "English", "Spanish", "French", "German", "Japanese"];
+                return (
+                  <FormItem>
+                    <FormLabel>Languages</FormLabel>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {commonLanguages.map((lang) => (
+                        <FormField
+                          key={lang}
+                          control={form.control}
+                          name="languages"
+                          render={({ field: langField }) => (
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-2">
+                              <FormControl>
+                                <Checkbox
+                                  checked={langField.value?.includes(lang)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? langField.onChange([...(langField.value || []), lang])
+                                      : langField.onChange(
+                                          langField.value?.filter((value) => value !== lang) || []
+                                        );
+                                  }}
+                                />
+                              </FormControl>
+                              <div className="space-y-1 leading-none">
+                                <FormLabel className="text-sm font-normal cursor-pointer">
+                                  {lang}
+                                </FormLabel>
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
