@@ -10,6 +10,7 @@ import { ProjectsSection } from "@/components/projects-section";
 import { ContactSection } from "@/components/contact-section";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import DOMPurify from "isomorphic-dompurify";
+import { ExperienceTime, ProjectsDelivered, SatisfiedClients } from "../about-metrics";
 
 interface TemplateProps {
   userId: string;
@@ -828,73 +829,72 @@ position: relative;
   }
 
         /* ContactSection Overrides */
-        .template-1-wrapper #contact {
+        .template-1-wrapper .section-contact {
           background: var(--bg) !important;
-          padding: 90px 0 !important;
+          padding: 60px 0 !important;
           color: var(--text) !important;
         }
-        .template-1-wrapper #contact form {
-          padding: 20px !important;
-        }
-        .template-1-wrapper #contact form input{
-          padding: 10px !important;
-        }
-        .template-1-wrapper #contact div[class*="bg-[#5221e6"] {
-          background: var(--teal-glow) !important;
-        }
-        .template-1-wrapper #contact h2 {
+        .template-1-wrapper .section-contact h2 {
           font-family: 'Syne', sans-serif !important;
           font-size: clamp(1.7rem, 3.5vw, 2.6rem) !important;
           font-weight: 700 !important;
           color: var(--text) !important;
           letter-spacing: -.02em !important;
+          margin-bottom: 1rem !important;
         }
-        .template-1-wrapper #contact p {
+        .template-1-wrapper .section-contact p {
           color: var(--muted) !important;
           font-family: 'DM Sans', sans-serif !important;
+          margin-bottom: 3rem !important;
         }
-        .template-1-wrapper #contact .bg-card {
+        .template-1-wrapper .section-contact .bg-card {
           background: var(--card) !important;
           border: 1px solid var(--border) !important;
           border-radius: var(--r2) !important;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important;
         }
-        .template-1-wrapper #contact .bg-gradient-to-tr {
-          background: linear-gradient(to top right, var(--teal-glow), transparent) !important;
-        }
-        .template-1-wrapper #contact .border-border\/50 {
-          border-color: var(--border) !important;
-        }
-        .template-1-wrapper #contact label {
+        .template-1-wrapper .section-contact label {
           color: var(--text) !important;
           font-family: 'DM Sans', sans-serif !important;
           font-size: 0.85rem !important;
+          font-weight: 500 !important;
         }
-        .template-1-wrapper #contact input,
-        .template-1-wrapper #contact textarea {
+        .template-1-wrapper .section-contact input,
+        .template-1-wrapper .section-contact textarea {
           background: var(--bg2) !important;
           border: 1px solid var(--border) !important;
           color: var(--text) !important;
           border-radius: var(--r) !important;
           font-family: 'DM Sans', sans-serif !important;
+          transition: all .2s ease !important;
         }
-        .template-1-wrapper #contact input:focus,
-        .template-1-wrapper #contact textarea:focus {
+        .template-1-wrapper .section-contact input:focus,
+        .template-1-wrapper .section-contact textarea:focus {
           border-color: var(--teal) !important;
           outline: none !important;
+          box-shadow: 0 0 0 2px var(--teal-dim) !important;
         }
-        .template-1-wrapper #contact button[type="submit"] {
+        .template-1-wrapper .section-contact button[type="submit"] {
           background: var(--teal) !important;
           color: #050c0f !important;
           font-family: 'Syne', sans-serif !important;
           font-weight: 700 !important;
           border-radius: var(--r) !important;
+          padding: 14px 32px !important;
           transition: all .22s ease !important;
           box-shadow: 0 0 20px rgba(0,212,192,.3) !important;
+          border: none !important;
         }
-        .template-1-wrapper #contact button[type="submit"]:hover {
+        .template-1-wrapper .section-contact button[type="submit"]:hover {
           background: var(--teal2) !important;
           transform: translateY(-2px) !important;
           box-shadow: 0 0 30px rgba(0,212,192,.5) !important;
+        }
+        .template-1-wrapper .section-contact .relative.group .relative.rounded-3xl {
+          border-color: var(--border) !important;
+        }
+        .template-1-wrapper .section-contact .bg-gradient-to-tr {
+          background: linear-gradient(to top right, var(--teal-glow), transparent) !important;
         }
 
 
@@ -957,16 +957,19 @@ position: relative;
               <a href="#modules" className="btn-primary">Ver Especialidades →</a>
               <div className="hero-stats">
                 <div className="hero-stat">
-                  <span>10+</span>
-                  <small>Anos de Exp.</small>
+                  <ProjectsDelivered about={about || undefined} dark={true} />
+                  {/* <span>10+</span>
+                  <small>Anos de Exp.</small> */}
                 </div>
                 <div className="hero-stat">
-                  <span>500+</span>
-                  <small>Clientes</small>
+                  {/* <span>500+</span>
+                  <small>Clientes</small> */}
+                  <SatisfiedClients about={about || undefined} dark={true} />
                 </div>
                 <div className="hero-stat">
-                  <span>100%</span>
-                  <small>Dedicação</small>
+                  {/* <span>100%</span>
+                  <small>Dedicação</small> */}
+                  <ExperienceTime about={about || undefined} dark={true} />
                 </div>
               </div>
             </div>
