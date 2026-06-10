@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -61,6 +61,26 @@ export function TestimonialDialog({
       text: testimonial?.text || "",
     },
   });
+
+  useEffect(() => {
+    if (testimonial) {
+      form.reset({
+        name: testimonial.name,
+        role: testimonial.role,
+        image: testimonial.image,
+        stars: testimonial.stars,
+        text: testimonial.text,
+      });
+    } else {
+      form.reset({
+        name: "",
+        role: "",
+        image: "",
+        stars: 5,
+        text: "",
+      });
+    }
+  }, [testimonial, form]);
 
   function handleSubmit(values: z.infer<typeof testimonialSchema>) {
     onSubmit({

@@ -10,8 +10,15 @@ import Template1 from "@/components/templates/Template1";
 import Template2 from "@/components/templates/Template2";
 import Template3 from "@/components/templates/Template3";
 import Template4 from "@/components/templates/Template4";
+import Template5 from "@/components/templates/Template5";
+import Template6 from "@/components/templates/Template6";
+import Template7 from "@/components/templates/Template7";
+import Template8 from "@/components/templates/Template8";
+import Template9 from "@/components/templates/Template9";
+import Template10 from "@/components/templates/Template10";
 import { Category } from "@/types/category";
 import { Project } from "@/types/project";
+import { TestimonialsSection } from "@/components/testimonials-section";
 
 function PortfolioContent() {
   const { template } = useTemplate();
@@ -114,55 +121,55 @@ function PortfolioContent() {
             categories={categories}
             projects={projects}
           />
-      );
+        );
       case "template5":
         return (
-          <Template4
+          <Template5
             userId={userId}
             categories={categories}
             projects={projects}
           />
-      );
+        );
       case "template6":
         return (
-          <Template4
+          <Template6
             userId={userId}
             categories={categories}
             projects={projects}
           />
-      );
+        );
       case "template7":
         return (
-          <Template4
+          <Template7
             userId={userId}
             categories={categories}
             projects={projects}
           />
-      );
+        );
       case "template8":
         return (
-          <Template4
+          <Template8
             userId={userId}
             categories={categories}
             projects={projects}
           />
-      );
+        );
       case "template9":
         return (
-          <Template4
+          <Template9
             userId={userId}
             categories={categories}
             projects={projects}
           />
-      );
+        );
       case "template10":
         return (
-          <Template4
+          <Template10
             userId={userId}
             categories={categories}
             projects={projects}
           />
-      );
+        );
     case "default":
     default:
       return (
@@ -174,6 +181,7 @@ function PortfolioContent() {
             initialProjects={projects}
           />
           <AboutSection userId={userId} />
+          <TestimonialsSection userId={userId} />
           <ContactSection userId={userId} />
         </div>
       );
