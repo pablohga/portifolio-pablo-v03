@@ -97,13 +97,15 @@ useEffect(() => {
           fetch(`/api/hero?userId=${userId}`),
           fetch(`/api/about?userId=${userId}`),
           fetch(`/api/testimonials?userId=${userId}`),
-          fetch(`/api/contact?userId=${userId}`),
+          fetch(`/api/contact/settings?userId=${userId}`),
         ]);
         const heroData = await heroRes.json();
         const aboutData = await aboutRes.json();
         const testimonialsData = await testimonialsRes.json();
         const contactData = await contactRes.json();
         console.log("About Data from DB:", aboutData);
+        console.log("contact Data from DB:", contactData);
+        console.log("contact :", contact);
 
         if (heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
@@ -678,6 +680,7 @@ useEffect(() => {
           text-transform: uppercase;
           color: var(--accent);
           margin-bottom: 0.75rem;
+          text-align: center;
         }
 
         .section-title {
@@ -686,16 +689,18 @@ useEffect(() => {
           font-weight: 800;
           line-height: 1.15;
           margin-bottom: 1rem;
+          text-align: center;
         }
 
         .section-title em { font-style: normal; color: var(--accent); }
 
         .section-desc {
           color: var(--text-secondary);
-          max-width: 560px;
+          /* max-width: 560px; */
           font-size: 1rem;
           line-height: 1.75;
           margin-bottom: 3rem;
+          text-align: center;
         }
 
         /* ─── SERVICES ─── */
@@ -1832,7 +1837,7 @@ useEffect(() => {
           )}
           {contact?.availability && (
             <div className="contact-info-item">
-              <span>⏰</span>
+              <span>⏰ Disponível </span>
               <span>{contact.availability}</span>
             </div>
           )}

@@ -4,23 +4,34 @@ import dbConnect from "@/lib/db";
 import { ContactSettings } from "@/models/contact";
 import { authOptions } from "@/lib/auth-options";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+
     await dbConnect();
-    const settings = await ContactSettings.findOne().sort({ createdAt: -1 });
-    
-    // Remove sensitive information before sending to client
-    const safeSettings = settings ? {
+    const settings = await ContactSettings.findOne(userId ? { userId } : {}).sort({ createdAt: -1 });
+
+    if (!settings) return NextResponse.json({});
+
+    // Return public settings, exclude sensitive ones (API keys, SMTP passwords)
+    const safeSettings = {
       _id: settings._id,
       emailTo: settings.emailTo,
       emailService: settings.emailService,
+      imageUrl: settings.imageUrl,
+      phone: settings.phone,
+      whatsapp: settings.whatsapp,
+      address: settings.address,
+      availability: settings.availability,
+      languages: settings.languages,
       hasSmtpSettings: !!settings.smtpSettings?.host,
       hasResendApiKey: !!settings.resendApiKey,
       createdAt: settings.createdAt,
       updatedAt: settings.updatedAt,
-    } : null;
-    
-    return NextResponse.json(safeSettings || {});
+    };
+
+    return NextResponse.json(safeSettings);
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch contact settings" },
