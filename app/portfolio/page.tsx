@@ -32,8 +32,12 @@ function PortfolioContent() {
   useEffect(() => {
     async function fetchPortfolioData() {
       try {
-        // Busca dados do usuário logado
         const userRes = await fetch("/api/auth/session");
+        if (!userRes.ok) {
+          console.error("Session fetch failed");
+          setLoading(false);
+          return;
+        }
         const session = await userRes.json();
 
         if (!session?.user?.id) {

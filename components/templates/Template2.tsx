@@ -25,17 +25,33 @@ export default function Template2({ userId, categories, projects }: TemplateProp
   useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, aboutRes] = await Promise.all([
-          fetch(`/api/hero?userId=${userId}`),
-          fetch(`/api/about?userId=${userId}`),
-        ]);
-        const heroData = await heroRes.json();
-        const aboutData = await aboutRes.json();
+        const endpoints = [
+          { key: 'hero', url: `/api/hero?userId=${userId}` },
+          { key: 'about', url: `/api/about?userId=${userId}` },
+        ];
 
-        if (heroData._id) setHero(heroData);
+        const results = await Promise.all(
+          endpoints.map(async (end) => {
+            const res = await fetch(end.url);
+            if (!res.ok) {
+              console.error(`Fetch failed for ${end.key} (${end.url}): ${res.status}`);
+              return null;
+            }
+            try {
+              return await res.json();
+            } catch (e) {
+              console.error(`JSON parse failed for ${end.key} (${end.url}):`, e);
+              return null;
+            }
+          })
+        );
+
+        const [heroData, aboutData] = results;
+
+        if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
       } catch (error) {
-        console.error("Failed to fetch template data:", error);
+        console.error("Critical error fetching template data:", error);
       } finally {
         setLoading(false);
       }
