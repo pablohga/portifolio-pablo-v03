@@ -93,26 +93,37 @@ export default function Template5({ userId, categories, projects, userImage, use
 useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, aboutRes, testimonialsRes, contactRes] = await Promise.all([
-          fetch(`/api/hero?userId=${userId}`),
-          fetch(`/api/about?userId=${userId}`),
-          fetch(`/api/testimonials?userId=${userId}`),
-          fetch(`/api/contact/settings?userId=${userId}`),
-        ]);
-        const heroData = await heroRes.json();
-        const aboutData = await aboutRes.json();
-        const testimonialsData = await testimonialsRes.json();
-        const contactData = await contactRes.json();
-        console.log("About Data from DB:", aboutData);
-        console.log("contact Data from DB:", contactData);
-        console.log("contact :", contact);
+        const endpoints = [
+          { key: 'hero', url: `/api/hero?userId=${userId}` },
+          { key: 'about', url: `/api/about?userId=${userId}` },
+          { key: 'testimonials', url: `/api/testimonials?userId=${userId}` },
+          { key: 'contact', url: `/api/contact/settings?userId=${userId}` },
+        ];
 
-        if (heroData._id) setHero(heroData);
+        const results = await Promise.all(
+          endpoints.map(async (end) => {
+            const res = await fetch(end.url);
+            if (!res.ok) {
+              console.error(`Fetch failed for ${end.key} (${end.url}): ${res.status}`);
+              return null;
+            }
+            try {
+              return await res.json();
+            } catch (e) {
+              console.error(`JSON parse failed for ${end.key} (${end.url}):`, e);
+              return null;
+            }
+          })
+        );
+
+        const [heroData, aboutData, testimonialsData, contactData] = results;
+
+        if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
         if (contactData && contactData._id) setContact(contactData);
-        setTestimonials(testimonialsData);
+        if (testimonialsData) setTestimonials(Array.isArray(testimonialsData) ? testimonialsData : []);
       } catch (error) {
-        console.error("Failed to fetch template data:", error);
+        console.error("Critical error fetching template data:", error);
       } finally {
         setLoading(false);
       }

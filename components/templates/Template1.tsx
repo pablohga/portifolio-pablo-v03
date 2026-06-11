@@ -29,20 +29,35 @@ export default function Template1({ userId, categories, projects, userImage, use
   useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, aboutRes, contactRes] = await Promise.all([
-          fetch(`/api/hero?userId=${userId}`),
-          fetch(`/api/about?userId=${userId}`),
-          fetch(`/api/contact/settings?userId=${userId}`),
-        ]);
-        const heroData = await heroRes.json();
-        const aboutData = await aboutRes.json();
-        const contactData = await contactRes.json();
+        const endpoints = [
+          { key: 'hero', url: `/api/hero?userId=${userId}` },
+          { key: 'about', url: `/api/about?userId=${userId}` },
+          { key: 'contact', url: `/api/contact/settings?userId=${userId}` },
+        ];
 
-        if (heroData._id) setHero(heroData);
+        const results = await Promise.all(
+          endpoints.map(async (end) => {
+            const res = await fetch(end.url);
+            if (!res.ok) {
+              console.error(`Fetch failed for ${end.key} (${end.url}): ${res.status}`);
+              return null;
+            }
+            try {
+              return await res.json();
+            } catch (e) {
+              console.error(`JSON parse failed for ${end.key} (${end.url}):`, e);
+              return null;
+            }
+          })
+        );
+
+        const [heroData, aboutData, contactData] = results;
+
+        if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
         if (contactData && contactData._id) setContact(contactData);
       } catch (error) {
-        console.error("Failed to fetch template data:", error);
+        console.error("Critical error fetching template data:", error);
       } finally {
         setLoading(false);
       }
