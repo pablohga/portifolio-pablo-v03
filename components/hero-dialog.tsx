@@ -66,6 +66,7 @@ export function HeroDialog({
         title: hero.title || "",
         subtitle: hero.subtitle || "",
         backgroundImage: hero.backgroundImage || "",
+        backgroundImageId: hero.backgroundImageId || "",
       });
     }
   }, [hero, form]);

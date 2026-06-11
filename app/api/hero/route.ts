@@ -39,9 +39,8 @@ export async function POST(request: Request) {
     // Verifique se há um Hero existente para o usuário atual
     const existingHero = await Hero.findOne({ userId: session.user.id });
 
-    // Excluir a imagem antiga do Cloudinary se ela existir
-    if (existingHero?.backgroundImageId) {
-      
+    // Excluir a imagem antiga do Cloudinary se ela existir e se uma nova imagem for fornecida
+    if (existingHero?.backgroundImageId && data.backgroundImage !== existingHero.backgroundImage) {
       try {
         await cloudinary.v2.uploader.destroy(existingHero.backgroundImageId);
         console.log("Imagem antiga removida do Cloudinary:", existingHero.backgroundImageId);
