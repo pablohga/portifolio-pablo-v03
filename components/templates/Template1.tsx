@@ -23,20 +23,24 @@ interface TemplateProps {
 export default function Template1({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
+  const [contact, setContact] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [heroRes, aboutRes] = await Promise.all([
+        const [heroRes, aboutRes, contactRes] = await Promise.all([
           fetch(`/api/hero?userId=${userId}`),
           fetch(`/api/about?userId=${userId}`),
+          fetch(`/api/contact/settings?userId=${userId}`),
         ]);
         const heroData = await heroRes.json();
         const aboutData = await aboutRes.json();
+        const contactData = await contactRes.json();
 
         if (heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        if (contactData && contactData._id) setContact(contactData);
       } catch (error) {
         console.error("Failed to fetch template data:", error);
       } finally {
@@ -1342,11 +1346,23 @@ position: relative;
 
       <section id="cta-final">
         <div className="container">
-          <div className="reveal">
+          <div className="reveal" style={{ textAlign: "center" }}>
             <div className="badge">Última chamada</div>
             <h2 className="section-title">Pare de queimar verba no escuro.<br /><span className="teal">Tenha a parceria ideial para seu projeto.</span></h2>
             <p>Experiencia e comprometimento ao seu dispor.</p>
-            <ContactSection userId={userId} />
+            <div className="flex flex-col items-center gap-6 mt-8">
+              {contact?.whatsapp && (
+                <a
+                  href={`https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  📱 WhatsApp
+                </a>
+              )}
+              <ContactSection userId={userId} />
+            </div>
           </div>
         </div>
       </section>
