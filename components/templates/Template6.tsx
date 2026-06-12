@@ -5,11 +5,19 @@ import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
+import { Testimonial } from "@/types/testimonial";
 import { ProjectsSection } from "@/components/projects-section";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatName } from "@/lib/utils";
 import DOMPurify from "isomorphic-dompurify";
 import { SatisfiedClients } from "../about-metrics";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ContactSection } from "@/components/contact-section";
 
 interface TemplateProps {
   userId: string;
@@ -20,6 +28,9 @@ interface TemplateProps {
 export default function Template6({ userId, categories, projects }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
+  const [contact, setContact] = useState<any>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,6 +39,8 @@ export default function Template6({ userId, categories, projects }: TemplateProp
         const endpoints = [
           { key: 'hero', url: `/api/hero?userId=${userId}` },
           { key: 'about', url: `/api/about?userId=${userId}` },
+          { key: 'testimonials', url: `/api/testimonials?userId=${userId}` },
+          { key: 'contact', url: `/api/contact/settings?userId=${userId}` },
         ];
 
         const results = await Promise.all(
@@ -46,10 +59,12 @@ export default function Template6({ userId, categories, projects }: TemplateProp
           })
         );
 
-        const [heroData, aboutData] = results;
+        const [heroData, aboutData, testimonialsData, contactData] = results;
 
         if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        if (testimonialsData) setTestimonials(Array.isArray(testimonialsData) ? testimonialsData : []);
+        if (contactData && contactData._id) setContact(contactData);
       } catch (error) {
         console.error("Critical error fetching template data:", error);
       } finally {
@@ -85,7 +100,8 @@ export default function Template6({ userId, categories, projects }: TemplateProp
   const fullName = hero?.title || "Freelancer Digital";
 
   return (
-    <div className="template-6-wrapper">
+    <>
+      <div className="template-6-wrapper">
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Nunito+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap');
         /* AUDREY font would be imported here if available via URL */
@@ -466,6 +482,35 @@ export default function Template6({ userId, categories, projects }: TemplateProp
         .template-6-wrapper .cv-item:last-child { border-bottom: none }
         .template-6-wrapper .cv-item .ck { color: var(--olive3); flex-shrink: 0; margin-top: 1px }
         .template-6-wrapper .cv-item strong { color: rgba(255,255,255,.85); display: block }
+S
+        .template-6-wrapper .testimonial-grid {
+          display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+        }
+        .template-6-wrapper .testimonial-card {
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: var(--r2);
+          padding: 30px;
+          position: relative;
+          transition: all .25s ease;
+        }
+        .template-6-wrapper .testimonial-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.05); border-color: var(--olive2); }
+        .template-6-wrapper .testimonial-stars { color: #fbbf24; font-size: .9rem; margin-bottom: 16px; }
+        .template-6-wrapper .testimonial-text {
+          font-size: .95rem; color: var(--dark2);
+          line-height: 1.7; margin-bottom: 24px;
+          font-style: italic;
+        }
+        .template-6-wrapper .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .template-6-wrapper .author-avatar {
+          width: 44px; height: 44px; border-radius: 50%;
+          background: var(--oliveL); overflow: hidden;
+          flex-shrink: 0;
+        }
+        .template-6-wrapper .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .template-6-wrapper .author-name { font-weight: 700; font-size: .9rem; color: var(--text); }
+        .template-6-wrapper .author-role { font-size: .75rem; color: var(--muted); }
 
         .template-6-wrapper #howitworks {
           padding: 96px 0;
@@ -1010,6 +1055,33 @@ export default function Template6({ userId, categories, projects }: TemplateProp
           <div className="stat-label" style={{display: 'flex', justifyContent: 'center', marginBottom: '40px'}}>
             <SatisfiedClients about={about || undefined} dark={false} />
           </div>
+          <div className="testimonial-grid">
+            {testimonials.length > 0 ? (
+              testimonials.map((t, i) => (
+                <div className="testimonial-card reveal" key={t._id || i} style={{transitionDelay: `${i * 0.1}s`}}>
+                  <div className="testimonial-stars">
+                    {"★".repeat(t.stars || 5).padStart(5, "☆")}
+                  </div>
+                  <p className="testimonial-text">&quot;{t.text}&quot;</p>
+                  <div className="testimonial-author">
+                    <div className="author-avatar">
+                      {t.image ? (
+                        <img src={t.image} alt={t.name} />
+                      ) : (
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: '1.2rem'}}>👤</div>
+                      )}
+                    </div>
+                    <div>
+                      <div className="author-name">{t.name}</div>
+                      <div className="author-role">{t.role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="muted" style={{textAlign: 'center', gridColumn: '1/-1'}}>Nenhum depoimento disponível no momento.</p>
+            )}
+          </div>
         </div>
       </section>
       <section id="howitworks">
@@ -1067,9 +1139,18 @@ export default function Template6({ userId, categories, projects }: TemplateProp
               <p className="section-sub">Respondo em até 24 horas. Escolha o canal que preferir para iniciarmos nossa conversa.</p>
               <div className="contact-items" style={{marginTop: '28px'}}>
                 {[
-                  { icon: "📞", text: "(00) 00000-0000", sub: "WhatsApp disponível" },
-                  { icon: "✉️", text: "contato@freelancer.com", sub: "Resposta em até 24h" },
-                  { icon: "📍", text: "Atendimento online e presencial", sub: "Global / Remoto" },
+                  ...(contact?.whatsapp ? [{ icon: "📞", text: contact.whatsapp, sub: "WhatsApp disponível" }] : []),
+                  ...(contact?.email ? [{ icon: "✉️", text: contact.email, sub: "Resposta em até 24h" }] : []),
+                  ...(contact?.address && (contact.address.street || contact.address.city || contact.address.state) ? [{
+                    icon: "📍",
+                    text: [contact.address.street, contact.address.city, contact.address.state].filter(Boolean).join(", "),
+                    sub: "Localização"
+                  }] : []),
+                  ...(!contact?.whatsapp && !contact?.email && !contact?.address ? [
+                    { icon: "📞", text: "(00) 00000-0000", sub: "WhatsApp disponível" },
+                    { icon: "✉️", text: "contato@freelancer.com", sub: "Resposta em até 24h" },
+                    { icon: "📍", text: "Atendimento online e presencial", sub: "Global / Remoto" },
+                  ] : []),
                 ].map((item, i) => (
                   <div className="contact-item" key={i}>
                     <div className="contact-icon">{item.icon}</div>
@@ -1079,6 +1160,24 @@ export default function Template6({ userId, categories, projects }: TemplateProp
                     </div>
                   </div>
                 ))}
+                <div className="contact-btns" style={{display: 'flex', gap: '12px', marginTop: '32px', flexWrap: 'wrap'}}>
+                  <button
+                    onClick={() => setIsContactModalOpen(true)}
+                    className="btn-primary"
+                  >
+                    ✉ Enviar Mensagem
+                  </button>
+                  {contact?.whatsapp && (
+                    <a
+                      href={`https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-outline"
+                    >
+                      📱 WhatsApp
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
             <div className="reveal-r">
@@ -1141,5 +1240,14 @@ export default function Template6({ userId, categories, projects }: TemplateProp
         </div>
       </footer>
     </div>
+    <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Entre em Contato</DialogTitle>
+        </DialogHeader>
+        <ContactSection userId={userId} compact />
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
