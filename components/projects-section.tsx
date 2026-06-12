@@ -130,12 +130,13 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
           </p>
         </motion.div>
 
-        <Tabs defaultValue={categories[0]?.id} className="w-full">
-          <TabsList className="flex flex-wrap justify-center h-auto p-1 bg-muted/50 backdrop-blur-sm rounded-full mb-12 max-w-fit mx-auto">
+        <Tabs defaultValue={categories[0]?.id} id="projects-tabs" className="w-full">
+          <TabsList id="tab-list" className="flex flex-wrap justify-center h-auto p-1 bg-muted/50 backdrop-blur-sm rounded-full mb-12 max-w-fit mx-auto">
             {categories.map((category) => (
               <TabsTrigger
                 key={category.id}
                 value={category.id}
+                id="tab-trigger"
                 className="rounded-full px-6 py-2 data-[state=active]:bg-[#5221e6] data-[state=active]:text-white transition-all duration-300"
               >
                 <span className="text-sm font-medium">{category.name}</span>
@@ -154,7 +155,7 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
                 />
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-20">
                 <AnimatePresence mode="popLayout">
                   {getPaginatedProjects(category.id).map((project, index) => (
                     <motion.div
@@ -166,8 +167,8 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
                       onClick={() => handleProjectClick(project)}
                       className="group cursor-pointer"
                     >
-                      <div className="relative h-full rounded-3xl overflow-hidden bg-card border border-border/50 hover:border-[#5221e6]/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-[#5221e6]/20">
-                        <div className="aspect-video relative overflow-hidden">
+                      <div id="card-projects-wrapper" className="p-10 relative h-full rounded-3xl overflow-hidden bg-card border border-border/50 hover:border-[#5221e6]/50 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-[#5221e6]/20">
+                        <div id="card-projects" className="aspect-video relative overflow-hidden">
                           <img
                             src={project.image}
                             alt={project.title}

@@ -1475,13 +1475,11 @@ useEffect(() => {
             <div className="stat-label">
               <ProjectsDelivered about={about || undefined} dark={true} />
             </div>
-            {/* <div className="stat-label">Projetos Entregues</div> */}
           </div>
           <div className="stat-item">
             <div className="stat-label">
               <SatisfiedClients about={about || undefined} dark={true} />
             </div>
-            {/* <div className="stat-label">Clientes Satisfeitos</div> */}
           </div>
           <div className="stat-item">
             <div className="stat-label">

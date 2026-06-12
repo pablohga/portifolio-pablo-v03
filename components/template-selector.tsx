@@ -56,14 +56,14 @@ export function TemplateSelector() {
         {templates.map((t) => (
           <label key={t.id} className="inline-flex items-center space-x-2 cursor-pointer">
             <div className="flex flex-col gap-4 mb-4 p-2 border rounded-lg hover:bg-accent/50 transition-colors relative">
-              <Image
-                src={`https://agenciaaimagic.com.br/portify/${t.name}.png`}
-                alt={t.name}
-                width={120}
-                height={52}
-                priority
-                className="logo-img"
-              />
+                <Image
+                  src={t.id === "default" ? "/images/templates-thumbs/default.png" : `/images/templates-thumbs/${t.name}.png`}
+                  alt={t.name}
+                  width={120}
+                  height={52}
+                  priority
+                  className="logo-img object-cover rounded-md max-h-64 object-top"
+                />
               <div className="flex items-center gap-2">
                 <input
                   type="radio"

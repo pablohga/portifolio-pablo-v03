@@ -199,8 +199,11 @@ export default function Template3({ userId, categories, projects }: TemplateProp
           border-radius: 50%; pointer-events: none;
         }
         .template-3-wrapper .hero-grid {
-          display: grid; grid-template-columns: 1.05fr .95fr;
-          gap: 40px; align-items: flex-end;
+          display: grid; 
+          grid-template-columns: 1.05fr .95fr;
+          gap: 40px; 
+          /* align-items: flex-end; */
+          align-items: stretch;
         }
         .template-3-wrapper .hero-copy { padding-bottom: 80px }
         .template-3-wrapper .hero-copy h1 {
@@ -219,12 +222,14 @@ export default function Template3({ userId, categories, projects }: TemplateProp
         }
         .template-3-wrapper .hero-btns { display: flex; gap: 14px; flex-wrap: wrap }
         .template-3-wrapper .hero-img-wrap {
-          position: relative; align-self: flex-end;
-          display: flex; justify-content: flex-end;
+          position: relative; 
+          /* align-self: flex-end; */
+          display: flex; 
+          justify-content: flex-end;
         }
         .template-3-wrapper .hero-img-box {
           position: relative;
-          width: 100%; max-width: 420px;
+          width: 100%;
         }
         .template-3-wrapper .hero-img-box::before {
           content: ''; position: absolute;
@@ -234,11 +239,12 @@ export default function Template3({ userId, categories, projects }: TemplateProp
           z-index: 1;
         }
         .template-3-wrapper .hero-img-box img {
-          width: 100%; object-fit: cover;
+          width: 100%; 
+          height: 100%; 
+          object-fit: cover;
           object-position: top;
           border-radius: var(--r3) var(--r3) 0 0;
           display: block;
-          max-height: 540px;
         }
         .template-3-wrapper .hero-chip {
           position: absolute;
@@ -280,8 +286,10 @@ export default function Template3({ userId, categories, projects }: TemplateProp
           background: var(--white);
         }
         .template-3-wrapper .about-grid {
-          display: grid; grid-template-columns: 1fr 1.1fr;
-          gap: 64px; align-items: center;
+          display: grid; 
+          grid-template-columns: 1fr 1.1fr;
+          gap: 64px; 
+          align-items: start;
         }
         .template-3-wrapper .about-img-wrap { position: relative }
         .template-3-wrapper .about-img-card {
@@ -734,7 +742,6 @@ export default function Template3({ userId, categories, projects }: TemplateProp
       </nav>
 
       <section id="hero">
-        <h1>TEMPLATE 3</h1>
         <div className="container">
           <div className="hero-grid">
             <div className="hero-copy reveal-l">

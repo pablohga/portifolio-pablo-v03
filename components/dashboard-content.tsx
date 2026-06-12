@@ -628,7 +628,54 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             ))}
           </div>
         </div>
+        
         <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">
+              {t("Dashboard.Projects")}
+            </h2>
+            <Button onClick={() => setIsProjectDialogOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              {t("Dashboard.AddProjects")}
+            </Button>
+          </div>
+
+        <Tabs defaultValue={categories[0]?.id} className="w-full">
+          <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent">
+            {categories.map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                {category.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {categories.map((category) => (
+            <TabsContent key={category.id} value={category.id}>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {projects
+                  .filter((project) => project.category === category.id)
+                  .map((project) => (
+                    <ProjectCard
+                      key={project._id}
+                      project={project}
+                      onEdit={handleUpdateProject}
+                      onDelete={handleDeleteProject}
+                    />
+                  ))}
+              </div>
+              {projects.filter((project) => project.category === category.id).length === 0 && (
+                <p className="text-center text-muted-foreground py-8">
+                  {t("Dashboard.NoProjects")}
+                </p>
+              )}
+            </TabsContent>
+          ))}
+        </Tabs>
+        <div className="mb-8 mt-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">
               {t("Dashboard.Testimonials")}
@@ -713,52 +760,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             )}
           </div>
         </div>
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">
-              {t("Dashboard.Projects")}
-            </h2>
-            <Button onClick={() => setIsProjectDialogOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              {t("Dashboard.AddProjects")}
-            </Button>
-          </div>
-
-        <Tabs defaultValue={categories[0]?.id} className="w-full">
-          <TabsList className="w-full flex flex-wrap h-auto gap-2 bg-transparent">
-            {categories.map((category) => (
-              <TabsTrigger
-                key={category.id}
-                value={category.id}
-                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-              >
-                {category.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {categories.map((category) => (
-            <TabsContent key={category.id} value={category.id}>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects
-                  .filter((project) => project.category === category.id)
-                  .map((project) => (
-                    <ProjectCard
-                      key={project._id}
-                      project={project}
-                      onEdit={handleUpdateProject}
-                      onDelete={handleDeleteProject}
-                    />
-                  ))}
-              </div>
-              {projects.filter((project) => project.category === category.id).length === 0 && (
-                <p className="text-center text-muted-foreground py-8">
-                  {t("Dashboard.NoProjects")}
-                </p>
-              )}
-            </TabsContent>
-          ))}
-        </Tabs>
       </div>
 
       <ProjectDialog

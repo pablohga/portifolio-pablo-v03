@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import * as LucideIcons from "lucide-react";
+import { Mail, MessageCircle } from "lucide-react";
 import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
 import { Project } from "@/types/project";
@@ -23,6 +24,8 @@ export default function Template1({ userId, categories, projects, userImage, use
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [showContactForm, setShowContactForm] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -145,13 +148,16 @@ export default function Template1({ userId, categories, projects, userImage, use
           padding: 4px 12px; border-radius: 6px;
         }
         .template-1-wrapper .btn-primary {
-          display: inline-flex; align-items: center; gap: 8px;
+          display: inline-flex; 
+          align-items: flex-start; 
+          gap: 8px;
           background: var(--gold);
           color: #1A1208;
           font-family: 'Syne', sans-serif;
           font-weight: 700; font-size: .95rem;
           letter-spacing: .03em;
           padding: 14px 32px;
+          margin-right: 12px;
           border-radius: var(--r);
           border: none; cursor: pointer;
           text-decoration: none;
@@ -848,14 +854,83 @@ export default function Template1({ userId, categories, projects, userImage, use
           padding: 90px 0 !important;
           color: var(--text) !important;
         }
+        .template-1-wrapper #contact .contact-btn-group {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          margin-top: 32px;
+        }
+        .template-1-wrapper #contact .btn-contact {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 14px 32px;
+          border-radius: var(--r);
+          font-family: 'Syne', sans-serif;
+          font-weight: 700;
+          font-size: .95rem;
+          cursor: pointer;
+          transition: all .22s ease;
+          text-decoration: none;
+        }
+        .template-1-wrapper #contact .btn-msg {
+          background: var(--gold);
+          color: #1A1208;
+          border: none;
+          box-shadow: 0 0 20px rgba(201,168,76,.3);
+        }
+        .template-1-wrapper #contact .btn-msg:hover {
+          background: var(--gold2);
+          transform: translateY(-2px);
+          box-shadow: 0 0 30px rgba(201,168,76,.5);
+        }
+        .template-1-wrapper #contact .btn-whatsapp {
+          background: transparent;
+          color: var(--gold);
+          border: 1.5px solid var(--border);
+        }
+        .template-1-wrapper #contact .btn-whatsapp:hover {
+          background: var(--gold-dim);
+          border-color: var(--gold);
+          transform: translateY(-2px);
+        }
         .template-1-wrapper #contact form {
           padding: 20px !important;
+          background: var(--card) !important;
+          border: 1px solid var(--border) !important;
+          border-radius: var(--r2) !important;
+          font-family: 'DM Sans', sans-serif !important;
         }
-        .template-1-wrapper #contact form input {
-          padding: 10px !important;
+        .template-1-wrapper #contact form input,
+        .template-1-wrapper #contact form textarea {
+          background: var(--bg2) !important;
+          border: 1px solid var(--border) !important;
+          color: var(--text) !important;
+          border-radius: var(--r) !important;
+          font-family: 'DM Sans', sans-serif !important;
+          padding: 12px !important;
         }
-        .template-1-wrapper #contact div[class*="bg-[#5221e6"] {
-          background: var(--gold-glow) !important;
+        .template-1-wrapper #contact form label {
+          color: var(--text) !important;
+          font-family: 'DM Sans', sans-serif !important;
+          font-size: 0.85rem !important;
+          margin-bottom: 4px !important;
+          display: block !important;
+        }
+        .template-1-wrapper #contact button[type="submit"] {
+          background: var(--gold) !important;
+          color: #1A1208 !important;
+          font-family: 'Syne', sans-serif !important;
+          font-weight: 700 !important;
+          border-radius: var(--r) !important;
+          transition: all .22s ease !important;
+          box-shadow: 0 0 20px rgba(201,168,76,.3) !important;
+          padding: 14px 32px !important;
+        }
+        .template-1-wrapper #contact button[type="submit"]:hover {
+          background: var(--gold2) !important;
+          transform: translateY(-2px) !important;
+          box-shadow: 0 0 30px rgba(201,168,76,.5) !important;
         }
         .template-1-wrapper #contact h2 {
           font-family: 'Syne', sans-serif !important;
@@ -868,48 +943,45 @@ export default function Template1({ userId, categories, projects, userImage, use
           color: var(--muted) !important;
           font-family: 'DM Sans', sans-serif !important;
         }
-        .template-1-wrapper #contact .bg-card {
-          background: var(--card) !important;
-          border: 1px solid var(--border) !important;
-          border-radius: var(--r2) !important;
+        .template-1-wrapper .contact-modal-overlay {
+          position: fixed; inset: 0;
+          background: rgba(44, 36, 22, 0.6);
+          backdrop-filter: blur(8px);
+          display: flex; align-items: center; justify-content: center;
+          z-index: 1000; padding: 20px;
         }
-        .template-1-wrapper #contact .bg-gradient-to-tr {
-          background: linear-gradient(to top right, var(--gold-glow), transparent) !important;
+        .template-1-wrapper .contact-modal-content {
+          background: var(--bg);
+          border: 1px solid var(--border);
+          border-radius: var(--r2);
+          position: relative;
+          max-width: 800px; width: 100%;
+          max-height: 90vh; overflow-y: auto;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        .template-1-wrapper #contact .border-border\/50 {
-          border-color: var(--border) !important;
+        .template-1-wrapper .contact-modal-close {
+          position: absolute; top: 20px; right: 20px;
+          background: var(--bg2); border: 1px solid var(--border);
+          color: var(--text); width: 32px; height: 32px;
+          border-radius: 50%; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 14px; z-index: 10; transition: all .2s;
         }
-        .template-1-wrapper #contact label {
-          color: var(--text) !important;
-          font-family: 'DM Sans', sans-serif !important;
-          font-size: 0.85rem !important;
+        .template-1-wrapper .contact-modal-close:hover {
+          background: var(--card); color: var(--gold);
         }
-        .template-1-wrapper #contact input,
-        .template-1-wrapper #contact textarea {
-          background: var(--bg2) !important;
-          border: 1px solid var(--border) !important;
-          color: var(--text) !important;
-          border-radius: var(--r) !important;
-          font-family: 'DM Sans', sans-serif !important;
+        .template-1-wrapper #contact-form-section {
+          background: var(--bg) !important;
+          padding: 20px;
         }
-        .template-1-wrapper #contact input:focus,
-        .template-1-wrapper #contact textarea:focus {
-          border-color: var(--gold) !important;
-          outline: none !important;
+        .template-1-wrapper #contact-form-section form {
+          background: var(--bg) !important;
+          border: none !important;
+          box-shadow: none !important;
         }
-        .template-1-wrapper #contact button[type="submit"] {
+        .template-1-wrapper #contact-form-section button[type="submit"] {
           background: var(--gold) !important;
           color: #1A1208 !important;
-          font-family: 'Syne', sans-serif !important;
-          font-weight: 700 !important;
-          border-radius: var(--r) !important;
-          transition: all .22s ease !important;
-          box-shadow: 0 0 20px rgba(201,168,76,.3) !important;
-        }
-        .template-1-wrapper #contact button[type="submit"]:hover {
-          background: var(--gold2) !important;
-          transform: translateY(-2px) !important;
-          box-shadow: 0 0 30px rgba(201,168,76,.5) !important;
         }
 
         @media(max-width:860px) {
@@ -956,7 +1028,6 @@ export default function Template1({ userId, categories, projects, userImage, use
       </nav>
 
       <section id="hero">
-        <h1>TEMPLATE 4</h1>
         <div className="container">
           <div className="hero-grid">
             <div className="hero-copy reveal">
@@ -1348,11 +1419,51 @@ export default function Template1({ userId, categories, projects, userImage, use
 
       <section id="cta-final">
         <div className="container">
-          <div className="reveal">
-            <div className="badge">Última chamada</div>
+          <div className="reveal" style={{ textAlign: "center" }}>
+            <div className="badge">Está na hora de agir</div>
             <h2 className="section-title">Pare de queimar verba no escuro.<br /><span className="teal">Tenha a parceria ideal para seu projeto.</span></h2>
-            <p>Experiência e comprometimento ao seu dispor.</p>
-            <ContactSection userId={userId} />
+            <div className="contact-btn-group flex-wrap justify-center">
+              <button
+                className="btn-contact btn-msg btn-primary"
+                onClick={() => setShowContactForm(true)}
+              >
+                <Mail size={18} />
+                Envie uma mensagem
+              </button>
+              <a
+                  href={`https://wa.me/${userId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  📱 WhatsApp
+                </a>
+              {/* <a
+                href={`https://wa.me/${userId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-contact btn-whatsapp"
+              >
+                <MessageCircle size={18} />
+                Whatsapp
+              </a> */}
+            </div>
+            {showContactForm && (
+              <div className="contact-modal-overlay">
+                <button
+                    className="contact-modal-close"
+                    onClick={() => setShowContactForm(false)}
+                  >
+                    ✕
+                  </button>
+                <div className="contact-modal-content">
+                  
+                  <div id="contact-form-section">
+                    <ContactSection userId={userId} compact={true} />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
