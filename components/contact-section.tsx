@@ -43,7 +43,7 @@ export function ContactSection({ userId, compact }: ContactSectionProps) {
         </>
       )}
 
-      <div className={`container px-4 mx-auto ${compact ? "max-w-none" : "max-w-[1100px]"}`}>
+      <div id="contact-wrapper" className={`container px-4 mx-auto ${compact ? "max-w-none" : "max-w-[1100px]"}`}>
         {!compact && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -68,6 +68,7 @@ export function ContactSection({ userId, compact }: ContactSectionProps) {
             {!compact && <div className="absolute -inset-4 bg-gradient-to-tr from-[#5221e6]/20 to-transparent rounded-3xl blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500" />}
             <div className={`relative rounded-3xl overflow-hidden border border-border/50 shadow-2xl ${compact ? "aspect-square max-w-[200px] mx-auto md:mx-0" : "aspect-square"}`}>
               <Image
+                id="contact-image"
                 src={contactImage?.imageUrl || "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"}
                 alt="Contact"
                 className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700"
@@ -82,6 +83,7 @@ export function ContactSection({ userId, compact }: ContactSectionProps) {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
+            id="contact-form-wrapper"
             className={`relative p-6 rounded-3 la l-3xl bg-card border shadow-xl backdrop-blur-sm ${
               compact
                 ? "max-w-md mx-auto w-full border-teal-500/30 ring-1 ring-teal-500/20 bg-gradient-to-b from-card to-teal-900/10"
