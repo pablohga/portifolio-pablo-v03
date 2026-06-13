@@ -132,6 +132,8 @@ function PortfolioContent() {
             userId={userId}
             categories={categories}
             projects={projects}
+            userImage={userImage}
+            userName={userName}
           />
         );
       case "template6":
@@ -140,6 +142,8 @@ function PortfolioContent() {
             userId={userId}
             categories={categories}
             projects={projects}
+            userImage={userImage}
+            userName={userName}
           />
         );
       case "template7":

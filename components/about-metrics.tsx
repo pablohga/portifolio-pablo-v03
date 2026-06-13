@@ -5,6 +5,7 @@ import { DARK, LIGHT } from "@/constants/theme";
 interface MetricProps {
   about: About | undefined;
   dark?: boolean;
+  style?: string | React.CSSProperties;
 }
 
 const c = (dark?: boolean) => (dark ? DARK : LIGHT);

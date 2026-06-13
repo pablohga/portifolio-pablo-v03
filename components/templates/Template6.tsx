@@ -10,7 +10,8 @@ import { ProjectsSection } from "@/components/projects-section";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatName } from "@/lib/utils";
 import DOMPurify from "isomorphic-dompurify";
-import { SatisfiedClients } from "../about-metrics";
+import Image from "next/image";
+import { ProjectsDelivered, SatisfiedClients } from "../about-metrics";
 import {
   Dialog,
   DialogContent,
@@ -23,9 +24,11 @@ interface TemplateProps {
   userId: string;
   categories: Category[];
   projects: Project[];
+  userImage?: string;
+  userName?: string;
 }
 
-export default function Template6({ userId, categories, projects }: TemplateProps) {
+export default function Template6({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
   const [contact, setContact] = useState<any>(null);
@@ -97,7 +100,7 @@ export default function Template6({ userId, categories, projects }: TemplateProp
 }, [loading]);
 
   const { firstName, lastName } = formatName(hero?.title || "Freelancer Digital");
-  const fullName = hero?.title || "Freelancer Digital";
+  const fullName = userName || hero?.title || "Freelancer Digital";
 
   return (
     <>
@@ -182,8 +185,11 @@ export default function Template6({ userId, categories, projects }: TemplateProp
           letter-spacing: -.01em;
         }
         .template-6-wrapper .section-sub {
-          font-size: 1rem; color: var(--muted);
-          max-width: 580px; margin-top: 12px; line-height: 1.75;
+          font-size: 1rem; 
+          color: var(--muted);
+          /* max-width: 580px;  */
+          margin-top: 12px; 
+          line-height: 1.75;
         }
 
         .template-6-wrapper nav {
@@ -583,13 +589,17 @@ S
           background: var(--cream);
         }
         .template-6-wrapper .contact-grid {
-          display: grid; grid-template-columns: 1fr 1fr;
+          display: grid; 
+          /* grid-template-columns: 1fr 1fr; */
           gap: 56px; align-items: center;
         }
         .template-6-wrapper .contact-info h2 { margin-bottom: 12px }
         .template-6-wrapper .contact-info .section-sub { margin-bottom: 36px }
         .template-6-wrapper .contact-items {
-          display: flex; flex-direction: column; gap: 18px;
+          display: flex; 
+          flex-direction: row; 
+          justify-content: center;
+          gap: 18px;
         }
         .template-6-wrapper .contact-item {
           display: flex; align-items: center; gap: 16px;
@@ -835,11 +845,13 @@ S
               <div className="hero-img-box">
                 <div className="hero-chip c1">
                   <div className="chip-icon">⭐</div>
-                  <div><strong>4.9/5.0</strong><br /><small className="muted" style={{fontWeight: 400}}>Avaliação média</small></div>
+                  <SatisfiedClients about={about || undefined}/>
+                  {/* <div><strong>4.9/5.0</strong><br /><small className="muted" style={{fontWeight: 400}}>Avaliação média</small></div> */}
                 </div>
-                <div className="hero-chip c2">
-                  <div className="chip-icon">✅</div>
-                  <div><strong>+120 projetos</strong><br /><small className="muted" style={{fontWeight: 400}}>Entregues com sucesso</small></div>
+                <div className="hero-chip c2 text-left" >
+                  <div className="chip-icon" >✅</div>
+                  <ProjectsDelivered style={{fontWeight: "400 !important"}} about={about || undefined}/>
+                  {/* <div><strong>+120 projetos</strong><br /><small className="muted" style={{fontWeight: 400}}>Entregues com sucesso</small></div> */}
                 </div>
                 <img src={hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="Hero" />
               </div>
@@ -874,7 +886,13 @@ S
           <div className="about-grid">
             <div className="about-img-wrap reveal-l">
               <div className="about-img-card">
-                <UserAvatar user={{ name: fullName, image: hero?.backgroundImage }} size="xl" className="w-full h-auto max-h-[520px] object-cover rounded-t-[var(--r3)]" />
+                <Image
+                  src={userImage || hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"}
+                  alt={fullName}
+                  className="w-full h-auto max-h-[520px] object-cover rounded-t-[var(--r3)]"
+                  width={600}
+                  height={800}
+                />
                 <div className="about-name-tag">
                   <div>
                     <strong>{fullName}</strong><br />
@@ -1089,8 +1107,8 @@ S
           <div className="hiw-grid">
             <div className="reveal-l">
               <div className="badge">Diferenciais</div>
-              <h2 className="section-title">Dê o primeiro passo para um projeto <em style={{color: 'var(--olive)'}}>mais equilibrado</em></h2>
-              <p className="section-sub">Transforme sua presença digital com escolhas conscientes e um acompanhamento que realmente faz sentido para o seu negócio.</p>
+              <h2 className="section-title">Dê o primeiro passo para uma rotina de trabalho <em style={{color: 'var(--olive)'}}>mais equilibrada</em></h2>
+              <p className="section-sub">Transforme seus projetos com escolhas conscientes e um acompanhamento que realmente traz resultados para o seu dia a dia.</p>
               <a href="#contact" className="btn-primary" style={{marginTop: '28px'}}>Agendar consulta agora →</a>
             </div>
             <div className="hiw-cards reveal-r">
@@ -1122,8 +1140,8 @@ S
         <div className="container">
           <div className="cta-inner reveal">
             <div>
-              <h2>Dê o primeiro passo para uma presença digital mais equilibrada</h2>
-              <p>Transforme seu negócio com escolhas conscientes e um acompanhamento que realmente traz resultado para a sua rotina.</p>
+              <h2>Rumo a uma rotina mais produtiva e sustentável</h2>
+              <p>Evolua sua forma de trabalhar com decisões mais conscientes e um suporte que gera resultados reais no seu dia a dia.</p>
             </div>
             <a href="#contact" className="btn-white">Agendar consulta agora →</a>
           </div>
@@ -1135,8 +1153,8 @@ S
           <div className="contact-grid">
             <div className="contact-info reveal-l">
               <div className="badge">Entre em contato</div>
-              <h2 className="section-title">Vamos conversar<br />sobre o seu <span className="olive">projeto</span></h2>
-              <p className="section-sub">Respondo em até 24 horas. Escolha o canal que preferir para iniciarmos nossa conversa.</p>
+              <h2 className="section-title" style={{textAlign: 'center'}}>Vamos conversar<br />sobre o seu <span className="olive">projeto</span></h2>
+              <p className="section-sub"  style={{textAlign: 'center'}}>Respondo em até 24 horas. Escolha o canal que preferir para iniciarmos nossa conversa.</p>
               <div className="contact-items" style={{marginTop: '28px'}}>
                 {[
                   ...(contact?.whatsapp ? [{ icon: "📞", text: contact.whatsapp, sub: "WhatsApp disponível" }] : []),
@@ -1160,7 +1178,9 @@ S
                     </div>
                   </div>
                 ))}
-                <div className="contact-btns" style={{display: 'flex', gap: '12px', marginTop: '32px', flexWrap: 'wrap'}}>
+                
+              </div>
+              <div className="contact-btns" style={{display: 'flex',justifyContent: 'center', gap: '12px', marginTop: '32px', flexWrap: 'wrap'}}>
                   <button
                     onClick={() => setIsContactModalOpen(true)}
                     className="btn-primary"
@@ -1178,9 +1198,8 @@ S
                     </a>
                   )}
                 </div>
-              </div>
             </div>
-            <div className="reveal-r">
+            {/* <div className="reveal-r">
               <div className="chat-mock">
                 <div className="chat-header">
                   <div className="chat-avatar">
@@ -1202,7 +1221,7 @@ S
                   <div className="send-btn">➤</div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

@@ -966,7 +966,6 @@ position: relative;
       </nav>
 
       <section id="hero">
-        <h1>TEMPLATE 1</h1>
         <div className="container">
           <div className="hero-grid">
             <div className="hero-copy reveal">

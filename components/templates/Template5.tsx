@@ -194,7 +194,7 @@ useEffect(() => {
     'JavaScript': '📜',
   };
 
-  console.log("Current About State:", about);
+  /* console.log("Current About State:", about); */
   return (
     <div className="template-converted-wrapper" data-theme={theme}>
       <style dangerouslySetInnerHTML={{
