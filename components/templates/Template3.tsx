@@ -9,16 +9,27 @@ import { ProjectsSection } from "@/components/projects-section";
 import { UserAvatar } from "@/components/ui/user-avatar";
 import { formatName } from "@/lib/utils";
 import DOMPurify from "isomorphic-dompurify";
+import { ContactSection } from "@/components/contact-section";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface TemplateProps {
   userId: string;
   categories: Category[];
   projects: Project[];
+  userImage?: string;
+  userName?: string;
 }
 
-export default function Template3({ userId, categories, projects }: TemplateProps) {
+export default function Template3({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
+  const [contact, setContact] = useState<any>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,6 +38,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
         const endpoints = [
           { key: 'hero', url: `/api/hero?userId=${userId}` },
           { key: 'about', url: `/api/about?userId=${userId}` },
+          { key: 'contact', url: `/api/contact/settings?userId=${userId}` },
         ];
 
         const results = await Promise.all(
@@ -45,10 +57,11 @@ export default function Template3({ userId, categories, projects }: TemplateProp
           })
         );
 
-        const [heroData, aboutData] = results;
+        const [heroData, aboutData, contactData] = results;
 
         if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        if (contactData && contactData._id) setContact(contactData);
       } catch (error) {
         console.error("Critical error fetching template data:", error);
       } finally {
@@ -84,8 +97,9 @@ export default function Template3({ userId, categories, projects }: TemplateProp
   const fullName = hero?.title || "Freelancer Digital";
 
   return (
-    <div className="template-3-wrapper">
-      <style dangerouslySetInnerHTML={{ __html: `
+    <>
+      <div className="template-3-wrapper">
+        <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Nunito+Sans:wght@300;400;500;600;700&display=swap');
 
         :root {
@@ -752,7 +766,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
               </h1>
               <p>{hero?.subtitle || "Um parceiro freelancer dedicado a transformar sua presença digital — seja com design impactante, código sólido ou campanhas que realmente vendem."}</p>
               <div className="hero-btns">
-                <a href="#contact" className="btn-primary">Agendar uma conversa →</a>
+                <button onClick={() => setIsContactModalOpen(true)} className="btn-primary">Agendar uma conversa →</button>
                 <a href="#services" className="btn-outline">Conhecer serviços</a>
               </div>
             </div>
@@ -774,11 +788,21 @@ export default function Template3({ userId, categories, projects }: TemplateProp
         <div className="hero-stripe">
           <div className="container">
             <div className="stripe-inner">
-              <div className="stripe-item"><span className="stripe-dot"></span>Design UI/UX Profissional</div>
-              <div className="stripe-item"><span className="stripe-dot"></span>Desenvolvimento Web</div>
-              <div className="stripe-item"><span className="stripe-dot"></span>Marketing de Performance</div>
-              <div className="stripe-item"><span className="stripe-dot"></span>Identidade Visual</div>
-              <div className="stripe-item"><span className="stripe-dot"></span>Gestão de Tráfego Pago</div>
+              {about?.features && about.features.length > 0 ? (
+                about.features.map((f, i) => (
+                  <div className="stripe-item" key={i}>
+                    <span className="stripe-dot"></span>{f.title}
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="stripe-item"><span className="stripe-dot"></span>Design UI/UX Profissional</div>
+                  <div className="stripe-item"><span className="stripe-dot"></span>Desenvolvimento Web</div>
+                  <div className="stripe-item"><span className="stripe-dot"></span>Marketing de Performance</div>
+                  <div className="stripe-item"><span className="stripe-dot"></span>Identidade Visual</div>
+                  <div className="stripe-item"><span className="stripe-dot"></span>Gestão de Tráfego Pago</div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -789,7 +813,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
           <div className="about-grid">
             <div className="about-img-wrap reveal-l">
               <div className="about-img-card">
-                <UserAvatar user={{ name: fullName, image: hero?.backgroundImage }} size="xl" className="w-full h-auto max-h-[520px] object-cover rounded-t-[var(--r3)]" />
+                <UserAvatar user={{ name: userName || fullName, image: userImage || hero?.backgroundImage }} size="xl" className="w-full h-auto max-h-[520px] object-cover rounded-t-[var(--r3)]" />
                 <div className="about-name-tag">
                   <div>
                     <strong>{fullName}</strong><br />
@@ -817,7 +841,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
                   <div><strong>Orientações claras e práticas</strong><br /><small className="muted">Instruções simples e aplicáveis ao dia a dia, sem jargão técnico desnecessário.</small></div>
                 </li>
               </ul>
-              <a href="#contact" className="btn-primary">Falar comigo →</a>
+              <button onClick={() => setIsContactModalOpen(true)} className="btn-primary">Falar comigo →</button>
             </div>
           </div>
         </div>
@@ -955,7 +979,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
                   </div>
                 ))}
               </div>
-              <a href="#contact" className="btn-primary" style={{marginTop: '20px', width: '100%', justifyContent: 'center'}}>Agendar consulta</a>
+              <button onClick={() => setIsContactModalOpen(true)} className="btn-primary" style={{marginTop: '20px', width: '100%', justifyContent: 'center'}}>Agendar consulta</button>
             </div>
           </div>
         </div>
@@ -968,7 +992,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
               <div className="badge">Diferenciais</div>
               <h2 className="section-title">Dê o primeiro passo para um projeto <em style={{color: 'var(--olive)'}}>mais equilibrado</em></h2>
               <p className="section-sub">Transforme sua presença digital com escolhas conscientes e um acompanhamento que realmente faz sentido para o seu negócio.</p>
-              <a href="#contact" className="btn-primary" style={{marginTop: '28px'}}>Agendar consulta agora →</a>
+              <button onClick={() => setIsContactModalOpen(true)} className="btn-primary" style={{marginTop: '28px'}}>Agendar consulta agora →</button>
             </div>
             <div className="hiw-cards reveal-r">
               {[
@@ -1002,7 +1026,21 @@ export default function Template3({ userId, categories, projects }: TemplateProp
               <h2>Dê o primeiro passo para uma presença digital mais equilibrada</h2>
               <p>Transforme seu negócio com escolhas conscientes e um acompanhamento que realmente traz resultado para a sua rotina.</p>
             </div>
-            <a href="#contact" className="btn-white">Agendar consulta agora →</a>
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              <button onClick={() => setIsContactModalOpen(true)} className="btn-white">
+                Agendar consulta agora →
+              </button>
+              {contact?.whatsapp && (
+                <a
+                  href={`https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-white"
+                >
+                  WhatsApp
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -1016,17 +1054,41 @@ export default function Template3({ userId, categories, projects }: TemplateProp
               <p className="section-sub">Respondo em até 24 horas. Escolha o canal que preferir para iniciarmos nossa conversa.</p>
               <div className="contact-items" style={{marginTop: '28px'}}>
                 {[
-                  { icon: "📞", text: "(00) 00000-0000", sub: "WhatsApp disponível" },
-                  { icon: "✉️", text: "contato@freelancer.com", sub: "Resposta em até 24h" },
-                  { icon: "📍", text: "Atendimento online e presencial", sub: "Global / Remoto" },
+                  {
+                    icon: "📞",
+                    text: contact?.whatsapp || "(00) 00000-0000",
+                    sub: "WhatsApp disponível",
+                    href: contact?.whatsapp ? `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}` : "#"
+                  },
+                  {
+                    icon: "✉️",
+                    text: contact?.email || "contato@freelancer.com",
+                    sub: "Resposta em até 24h",
+                    href: contact?.email ? `mailto:${contact.email}` : "#"
+                  },
+                  {
+                    icon: "📍",
+                    text: contact?.address && (contact.address.street || contact.address.city || contact.address.state)
+                      ? [contact.address.street, contact.address.city, contact.address.state].filter(Boolean).join(", ")
+                      : "Atendimento online e presencial",
+                    sub: "Global / Remoto",
+                    href: null
+                  },
                 ].map((item, i) => (
-                  <div className="contact-item" key={i}>
+                  <a
+                    href={item.href || undefined}
+                    target={item.href && item.href.includes('wa.me') ? "_blank" : undefined}
+                    rel={item.href && item.href.includes('wa.me') ? "noopener noreferrer" : undefined}
+                    className="contact-item"
+                    key={i}
+                    style={{ cursor: item.href ? 'pointer' : 'default', textDecoration: 'none' }}
+                  >
                     <div className="contact-icon">{item.icon}</div>
                     <div>
                       <span>{item.text}</span>
                       <small>{item.sub}</small>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>
@@ -1034,7 +1096,7 @@ export default function Template3({ userId, categories, projects }: TemplateProp
               <div className="chat-mock">
                 <div className="chat-header">
                   <div className="chat-avatar">
-                    <UserAvatar user={{ name: fullName, image: hero?.backgroundImage }} size="sm" />
+                    <UserAvatar user={{ name: userName || fullName, image: userImage || hero?.backgroundImage }} size="sm" />
                   </div>
                   <div>
                     <div className="chat-hname">{fullName}</div>
@@ -1090,5 +1152,14 @@ export default function Template3({ userId, categories, projects }: TemplateProp
         </div>
       </footer>
     </div>
+    <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+      <DialogContent className="max-w-full md:max-w-4xl h-full max-h-screen p-0 overflow-hidden">
+        <DialogHeader className="hidden">
+          <DialogTitle>Contato</DialogTitle>
+        </DialogHeader>
+        <ContactSection userId={userId} compact />
+      </DialogContent>
+    </Dialog>
+  </>
   );
 }

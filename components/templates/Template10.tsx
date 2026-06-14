@@ -6,21 +6,33 @@ import { About } from "@/types/about";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import DOMPurify from "isomorphic-dompurify";
+import Image from "next/image";
 import { ProjectsSection } from "@/components/projects-section";
 import { FeatureDetailsModal } from "@/components/feature-details-modal";
+import { ContactSection } from "@/components/contact-section";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface TemplateProps {
   userId: string;
   categories: Category[];
   projects: Project[];
+  userImage?: string;
+  userName?: string;
 }
 
-export default function Template10({ userId, categories, projects }: TemplateProps) {
+export default function Template10({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
+  const [contact, setContact] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedFeature, setSelectedFeature] = useState<About["features"][0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -28,6 +40,7 @@ export default function Template10({ userId, categories, projects }: TemplatePro
         const endpoints = [
           { key: 'hero', url: `/api/hero?userId=${userId}` },
           { key: 'about', url: `/api/about?userId=${userId}` },
+          { key: 'contact', url: `/api/contact/settings?userId=${userId}` },
         ];
 
         const results = await Promise.all(
@@ -46,10 +59,11 @@ export default function Template10({ userId, categories, projects }: TemplatePro
           })
         );
 
-        const [heroData, aboutData] = results;
+        const [heroData, aboutData, contactData] = results;
 
         if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        if (contactData && contactData._id) setContact(contactData);
       } catch (error) {
         console.error("Critical error fetching template data:", error);
       } finally {
@@ -434,7 +448,7 @@ export default function Template10({ userId, categories, projects }: TemplatePro
         .template-10-wrapper .card-num {
           font-family: var(--font-display);
           font-size: 52px;
-          color: rgba(0,229,255,0.15);
+          color: rgba(250, 234, 146, 0.15);
           line-height: 1;
           margin-bottom: 20px;
         }
@@ -558,6 +572,17 @@ export default function Template10({ userId, categories, projects }: TemplatePro
         .template-10-wrapper .atend-card-icon { font-size: 32px; }
         .template-10-wrapper .atend-card h3 { font-size: 18px; font-weight: 600; }
         .template-10-wrapper .atend-card p { font-size: 14px; color: var(--gray-text); line-height: 1.65; }
+        
+        .template-10-wrapper #contact-form-wrapper { 
+          padding: 8px 
+        }
+        .template-10-wrapper #contact-form-wrapper input{ 
+          padding: 8px 
+        }
+        .template-10-wrapper #contact-form-wrapper textarea{ 
+          padding: 8px 
+        }
+        
         .template-10-wrapper .cta-section {
           padding: 80px;
           background: linear-gradient(135deg, #120d00 0%, #543e00 50%, #120d00 100%);
@@ -716,6 +741,7 @@ export default function Template10({ userId, categories, projects }: TemplatePro
         .template-10-wrapper #projects .group {
           background: var(--gray-dark) !important;
           border: 1px solid var(--gray-light) !important;
+          border-radius: 20px !important;
         }
         .template-10-wrapper #projects .group:hover {
           border-color: var(--cyan) !important;
@@ -745,6 +771,9 @@ export default function Template10({ userId, categories, projects }: TemplatePro
           background: var(--gray-dark) !important;
           border: 1px solid rgba(255,215,8,0.3) !important;
           color: var(--cyan) !important;
+        }
+        .template-10-wrapper #card-projects-wrapper {
+          padding: 0 !important;
         }
 
         @media (max-width: 900px) {
@@ -829,8 +858,14 @@ export default function Template10({ userId, categories, projects }: TemplatePro
 
       <section className="sobre" id="sobre">
         <div className="sobre-photo">
-          <div className="sobre-photo-badge">{hero?.title || "Pablo Azevedo"}<br />Profissional</div>
-          <img src={hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="About" />
+          <div className="sobre-photo-badge">{hero?.title || (userName || "Pablo Azevedo")}<br />Profissional</div>
+          <Image
+            src={userImage || hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"}
+            alt={userName || "About"}
+            className="w-full h-auto max-w-[420px] aspect-auto object-cover"
+            width={600}
+            height={800}
+          />
         </div>
         <div className="sobre-content">
           <div className="section-tag">Sobre Mim</div>
@@ -885,7 +920,7 @@ export default function Template10({ userId, categories, projects }: TemplatePro
           {categories.length > 0 ? (
             categories.map((cat, i) => (
               <div className="card" key={cat._id || i}>
-                <div className="card-num">{String(i + 1).padStart(2, "0")}</div>
+                <div className="card-num"><em>{String(i + 1).padStart(2, "0")}</em></div>
                 <div className="card-icon">◉</div>
                 <h3>{cat.name}</h3>
                 <p>{cat.description || "Especialista nesta categoria com foco em alta performance e resultados."}</p>
@@ -985,7 +1020,27 @@ export default function Template10({ userId, categories, projects }: TemplatePro
           <h2>Dê o primeiro passo<br />para o seu <span>sucesso</span></h2>
           <p>Transforme seus objetivos em realidade com um acompanhamento profissional que realmente faz a diferença.</p>
         </div>
-        <a href="#contato" className="btn-primary" style={{ fontSize: "13px", padding: "14px 28px" }}>▶ Agendar Agora</a>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+          onClick={() => setIsContactModalOpen(true)}
+          className="btn-primary"
+          style={{ fontSize: "13px", padding: "14px 28px", cursor: 'pointer' }}
+        >
+          ▶ Agendar Agora
+        </button>
+        {contact?.whatsapp && (
+            <a
+              href={`https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              style={{ fontSize: "13px", padding: "14px 28px", background: "#25D366", color: "white" }}
+            >
+              📱 WhatsApp
+            </a>
+          )}
+        </div>
+        
       </section>
 
       <section className="contato" id="contato">
@@ -993,25 +1048,29 @@ export default function Template10({ userId, categories, projects }: TemplatePro
           <div className="section-tag">Contato</div>
           <h2 className="section-title">Fale com<br /><span>{hero?.title?.split(" ")[0] || "Pablo"}</span></h2>
           <div className="contato-list">
-            <a href="https://wa.me/5500000000000" className="contato-item" target="_blank" rel="noopener noreferrer">
+            <a href={contact?.whatsapp ? `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}` : "#"} className="contato-item" target="_blank" rel="noopener noreferrer">
               <div className="ci-icon">📱</div>
               <div className="ci-text">
                 <strong>WhatsApp</strong>
-                <span>(00) 00000-0000</span>
+                <span>{contact?.whatsapp || "(00) 00000-0000"}</span>
               </div>
             </a>
-            <a href="mailto:pablo@email.com" className="contato-item">
+            <a href={contact?.email ? `mailto:${contact.email}` : "#"} className="contato-item">
               <div className="ci-icon">✉</div>
               <div className="ci-text">
                 <strong>E-mail</strong>
-                <span>pablo@email.com</span>
+                <span>{contact?.email || "pablo@email.com"}</span>
               </div>
             </a>
             <div className="contato-item" style={{ cursor: "default" }}>
               <div className="ci-icon">📍</div>
               <div className="ci-text">
                 <strong>Localização</strong>
-                <span>Atendimento Online e Presencial</span>
+                <span>
+                  {contact?.address && (contact.address.street || contact.address.city || contact.address.state)
+                    ? [contact.address.street, contact.address.city, contact.address.state].filter(Boolean).join(", ")
+                    : "Atendimento Online e Presencial"}
+                </span>
               </div>
             </div>
           </div>
@@ -1020,10 +1079,16 @@ export default function Template10({ userId, categories, projects }: TemplatePro
         <div className="whatsapp-mockup">
           <div className="wa-header">
             <div className="wa-avatar">
-              <img src={hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="Avatar" />
+              <Image
+                src={userImage || hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"}
+                alt="Avatar"
+                width={40}
+                height={40}
+                className="w-full h-full object-cover object-position-top"
+              />
             </div>
             <div>
-              <div className="wa-name">{hero?.title || "Pablo Azevedo"}</div>
+              <div className="wa-name">{userName || hero?.title || "Pablo Azevedo"}</div>
               <div className="wa-status">● Online agora</div>
             </div>
           </div>
@@ -1064,6 +1129,14 @@ export default function Template10({ userId, categories, projects }: TemplatePro
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
       />
+      <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Entre em Contato</DialogTitle>
+          </DialogHeader>
+          <ContactSection userId={userId} compact />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

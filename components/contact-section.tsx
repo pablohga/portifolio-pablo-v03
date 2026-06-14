@@ -66,7 +66,10 @@ export function ContactSection({ userId, compact }: ContactSectionProps) {
             className="relative group"
           >
             {!compact && <div className="absolute -inset-4 bg-gradient-to-tr from-[#5221e6]/20 to-transparent rounded-3xl blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500" />}
-            <div className={`relative rounded-3xl overflow-hidden border border-border/50 shadow-2xl ${compact ? "aspect-square max-w-[200px] mx-auto md:mx-0" : "aspect-square"}`}>
+            <div id="contact-image-wrapper"
+              className={`relative rounded-3xl overflow-hidden border border-border/50 shadow-2xl w-full aspect-square max-w-sm mx-auto md:max-w-full`}
+              style={{ width: "100%" }}
+            >
               <Image
                 id="contact-image"
                 src={contactImage?.imageUrl || "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"}

@@ -8,6 +8,13 @@ import { Category } from "@/types/category";
 import DOMPurify from "isomorphic-dompurify";
 import { ProjectsSection } from "@/components/projects-section";
 import { FeatureDetailsModal } from "@/components/feature-details-modal";
+import { ContactSection } from "@/components/contact-section";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { UserAvatar } from "../ui/user-avatar";
 import Image from "next/image";
 
@@ -22,9 +29,11 @@ interface TemplateProps {
 export default function Template2({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
+  const [contact, setContact] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedFeature, setSelectedFeature] = useState<About["features"][0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const fullName = hero?.title || "Freelancer Digital";
 
   useEffect(() => {
@@ -33,6 +42,7 @@ export default function Template2({ userId, categories, projects, userImage, use
         const endpoints = [
           { key: 'hero', url: `/api/hero?userId=${userId}` },
           { key: 'about', url: `/api/about?userId=${userId}` },
+          { key: 'contact', url: `/api/contact/settings?userId=${userId}` },
         ];
 
         const results = await Promise.all(
@@ -51,10 +61,11 @@ export default function Template2({ userId, categories, projects, userImage, use
           })
         );
 
-        const [heroData, aboutData] = results;
+        const [heroData, aboutData, contactData] = results;
 
         if (heroData && heroData._id) setHero(heroData);
         if (aboutData && aboutData._id) setAbout(aboutData);
+        if (contactData && contactData._id) setContact(contactData);
       } catch (error) {
         console.error("Critical error fetching template data:", error);
       } finally {
@@ -1007,7 +1018,26 @@ export default function Template2({ userId, categories, projects, userImage, use
           <h2>Dê o primeiro passo<br />para o seu <span>sucesso</span></h2>
           <p>Transforme seus objetivos em realidade com um acompanhamento profissional que realmente faz a diferença.</p>
         </div>
-        <a href="#contato" className="btn-primary" style={{ fontSize: "13px", padding: "14px 28px" }}>▶ Agendar Agora</a>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setIsContactModalOpen(true)}
+            className="btn-primary"
+            style={{ fontSize: "13px", padding: "14px 28px", cursor: 'pointer' }}
+          >
+            ▶ Agendar Agora
+          </button>
+          {contact?.whatsapp && (
+            <a
+              href={`https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+              style={{ fontSize: "13px", padding: "14px 28px", background: "#25D366", color: "white" }}
+            >
+              📱 WhatsApp
+            </a>
+          )}
+        </div>
       </section>
 
       <section className="contato" id="contato">
@@ -1015,25 +1045,29 @@ export default function Template2({ userId, categories, projects, userImage, use
           <div className="section-tag">Contato</div>
           <h2 className="section-title">Fale com<br /><span>{hero?.title?.split(" ")[0] || "Pablo"}</span></h2>
           <div className="contato-list">
-            <a href="https://wa.me/5500000000000" className="contato-item" target="_blank" rel="noopener noreferrer">
+            <a href={contact?.whatsapp ? `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}` : "#"} className="contato-item" target="_blank" rel="noopener noreferrer">
               <div className="ci-icon">📱</div>
               <div className="ci-text">
                 <strong>WhatsApp</strong>
-                <span>(00) 00000-0000</span>
+                <span>{contact?.whatsapp || "(00) 00000-0000"}</span>
               </div>
             </a>
-            <a href="mailto:pablo@email.com" className="contato-item">
+            <a href={contact?.email ? `mailto:${contact.email}` : "#"} className="contato-item">
               <div className="ci-icon">✉</div>
               <div className="ci-text">
                 <strong>E-mail</strong>
-                <span>pablo@email.com</span>
+                <span>{contact?.email || "pablo@email.com"}</span>
               </div>
             </a>
             <div className="contato-item" style={{ cursor: "default" }}>
               <div className="ci-icon">📍</div>
               <div className="ci-text">
                 <strong>Localização</strong>
-                <span>Atendimento Online e Presencial</span>
+                <span>
+                  {contact?.address && (contact.address.street || contact.address.city || contact.address.state)
+                    ? [contact.address.street, contact.address.city, contact.address.state].filter(Boolean).join(", ")
+                    : "Atendimento Online e Presencial"}
+                </span>
               </div>
             </div>
           </div>
@@ -1042,10 +1076,10 @@ export default function Template2({ userId, categories, projects, userImage, use
         <div className="whatsapp-mockup">
           <div className="wa-header">
             <div className="wa-avatar">
-              <img src={hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="Avatar" />
+              <img src={userImage || hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="Avatar" />
             </div>
             <div>
-              <div className="wa-name">{hero?.title || "Pablo Azevedo"}</div>
+              <div className="wa-name">{userName || hero?.title || "Freelancer"}</div>
               <div className="wa-status">● Online agora</div>
             </div>
           </div>
@@ -1086,6 +1120,14 @@ export default function Template2({ userId, categories, projects, userImage, use
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
       />
+      <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Entre em Contato</DialogTitle>
+          </DialogHeader>
+          <ContactSection userId={userId} compact />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
