@@ -176,14 +176,14 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         </div>
-                        <div className="p-10">
+                        <div id="card-projects-content" className="p-10">
                           <h3 className="text-xl font-bold mb-2 group-hover:text-[#5221e6] transition-colors duration-300">
                             {project.title}
                           </h3>
                           <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
                             {project.description}
                           </p>
-                          <div className="flex gap-2 flex-wrap">
+                          <div id="card-projects-tags" className="flex gap-2 flex-wrap">
                             {project.tech.map((tech, techIndex) => (
                               <span
                                 key={techIndex}

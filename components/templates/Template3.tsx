@@ -648,10 +648,16 @@ export default function Template3({ userId, categories, projects, userImage, use
           text-align: center !important;
         }
         .template-3-wrapper #projects [role="tablist"] {
+        width: max-content; margin: 32px auto 48px; display: flex; align-items: center; gap: 12px;
           background: var(--white) !important;
           border: 1px solid var(--border) !important;
           color: var(--text) !important;
-          box-shadow: 0 4px 12px rgba(0,0,0,.03) !important;
+        }
+        .template-3-wrapper #projects [role="tablist"] button{
+          padding: 10px 18px; 
+          border: none; 
+          background: transparent; 
+          cursor: pointer;
         }
         .template-3-wrapper #projects [role="tab"][data-state="active"] {
           background: var(--olive) !important;
@@ -666,7 +672,7 @@ export default function Template3({ userId, categories, projects, userImage, use
           border-radius: var(--r2) !important;
         }
         .template-3-wrapper #projects .group:hover {
-          border-color: var(--olive) !important;
+          /* border-color: var(--olive) !important; */
           box-shadow: 0 8px 24px rgba(46,93,58,.1) !important;
         }
         .template-3-wrapper #projects .group h3 {
@@ -676,12 +682,23 @@ export default function Template3({ userId, categories, projects, userImage, use
         .template-3-wrapper #projects .group h3:hover {
           color: var(--olive) !important;
         }
-        .template-3-wrapper #projects .group span {
-          background: var(--oliveL) !important;
+        .template-3-wrapper #projects .group div {
+          background: white !important;
           color: var(--olive) !important;
-          border: 1px solid var(--oliveG) !important;
+          /* border: 1px solid var(--oliveG) !important;
           font-size: 11px !important;
-          font-weight: 600 !important;
+          font-weight: 600 !important; */
+        }
+        .template-3-wrapper #projects, #card-projects-content {
+          background: white !important;
+          padding: 24px !important;
+          
+        }
+        .template-3-wrapper #projects, #card-projects-content h3{
+          padding: 14px;
+        }
+        .template-3-wrapper #projects, #card-projects-tags{
+          margin: 14px;
         }
         .template-3-wrapper #projects button:disabled {
           opacity: 0.5;
