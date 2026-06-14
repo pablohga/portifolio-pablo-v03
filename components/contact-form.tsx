@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,19 +20,23 @@ import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 
+
+
 interface ContactFormProps {
   userId?: string;
 }
 
-const contactFormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
 
 export function ContactForm({ userId }: ContactFormProps) {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+
+  const contactFormSchema = z.object({
+    name: z.string().min(2, t("ContactForm.validation.name")),
+    email: z.string().email(t("ContactForm.validation.email")),
+    message: z.string().min(10, t("ContactForm.validation.message")),
+  });
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
@@ -41,6 +46,7 @@ export function ContactForm({ userId }: ContactFormProps) {
       message: "",
     },
   });
+
 
   async function onSubmit(values: z.infer<typeof contactFormSchema>) {
     try {
@@ -55,16 +61,16 @@ export function ContactForm({ userId }: ContactFormProps) {
       if (!response.ok) throw new Error();
 
       toast({
-        title: "Success",
-        description: "Your message has been sent successfully!",
+        title: t("ContactForm.successTitle"),
+        description: t("ContactForm.successDesc"),
         variant: "success",
       });
-      
+
       form.reset();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again later.",
+        title: t("ContactForm.errorTitle"),
+        description: t("ContactForm.errorDesc"),
         variant: "destructive",
       });
     } finally {
@@ -87,9 +93,9 @@ export function ContactForm({ userId }: ContactFormProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t("ContactForm.name")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Seu nome/Your name" {...field} />
+                    <Input placeholder={t("ContactForm.namePlaceholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,9 +107,9 @@ export function ContactForm({ userId }: ContactFormProps) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("ContactForm.email")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="john@example.com" {...field} />
+                    <Input placeholder={t("ContactForm.emailPlaceholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,10 +121,10 @@ export function ContactForm({ userId }: ContactFormProps) {
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message</FormLabel>
+                  <FormLabel>{t("ContactForm.message")}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Your message here..."
+                      placeholder={t("ContactForm.messagePlaceholder")}
                       className="min-h-[120px]"
                       {...field}
                     />
@@ -134,10 +140,10 @@ export function ContactForm({ userId }: ContactFormProps) {
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                "Sending..."
+                t("ContactForm.sending")
               ) : (
                 <>
-                  Send Message
+                  {t("ContactForm.submit")}
                   <Send className="ml-2 h-4 w-4" />
                 </>
               )}

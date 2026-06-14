@@ -275,6 +275,25 @@
       "detailedAnalytics": "Detailed Analytics",
       "financialReports": "Financial Reports",
       "financialNotifications": "Financial Notifications"
+    },
+    "ContactForm": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "john@example.com",
+      "messagePlaceholder": "Your message here...",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "successTitle": "Success",
+      "successDesc": "Your message has been sent successfully!",
+      "errorTitle": "Error",
+      "errorDesc": "Failed to send message. Please try again later.",
+      "validation": {
+        "name": "Name must be at least 2 characters",
+        "email": "Invalid email address",
+        "message": "Message must be at least 10 characters"
+      }
     }
   },
   

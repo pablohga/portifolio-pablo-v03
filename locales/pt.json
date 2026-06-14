@@ -278,6 +278,25 @@
       "detailedAnalytics": "Análise Detalhada",
       "financialReports": "Relatórios Financeiros",
       "financialNotifications": "Notificações Financeiras"
+    },
+    "ContactForm": {
+      "name": "Nome",
+      "email": "Email",
+      "message": "Mensagem",
+      "namePlaceholder": "Seu nome",
+      "emailPlaceholder": "john@example.com",
+      "messagePlaceholder": "Sua mensagem aqui...",
+      "submit": "Enviar Mensagem",
+      "sending": "Enviando...",
+      "successTitle": "Sucesso",
+      "successDesc": "Sua mensagem foi enviada com sucesso!",
+      "errorTitle": "Erro",
+      "errorDesc": "Falha ao enviar mensagem. Por favor, tente novamente mais tarde.",
+      "validation": {
+        "name": "O nome deve ter pelo menos 2 caracteres",
+        "email": "Endereço de email inválido",
+        "message": "A mensagem deve ter pelo menos 10 caracteres"
+      }
     }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",

@@ -219,6 +219,20 @@ export default function Template8({ userId, categories, projects, userImage, use
           background: radial-gradient(ellipse 70% 60% at 70% 40%, rgba(0,212,192,.09) 0%, transparent 70%);
           pointer-events: none;
         }
+        .template-8-wrapper #hero #experience-time #satisfied-clients #projects-delivered {
+          font-family: 'Syne', sans-serif;
+          font-family: Inter, sans-serif;
+          font-size: 12px;
+          color: rgb(161, 161, 170);
+          weight: 400;
+        }
+        .template-8-wrapper #projects-delivered {
+          font-family: 'Syne', sans-serif;
+          font-family: Inter, sans-serif;
+          font-size: 12px;
+          color: rgb(84, 84, 255) !important;
+          weight: 400 !important;
+        }
         .template-8-wrapper .hero-grid {
           display: grid;
           grid-template-columns: 1fr 1.25fr;
