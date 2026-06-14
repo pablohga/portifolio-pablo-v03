@@ -186,6 +186,7 @@ export function ProjectsSection({ userId, initialCategories = [], initialProject
                           <div id="card-projects-tags" className="flex gap-2 flex-wrap">
                             {project.tech.map((tech, techIndex) => (
                               <span
+                                id="card-projects-tags-item"
                                 key={techIndex}
                                 className="px-2.5 py-0.5 bg-[#5221e6]/10 text-[#5221e6] rounded-full text-xs font-medium border border-[#5221e6]/20"
                               >

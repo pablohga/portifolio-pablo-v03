@@ -659,6 +659,24 @@ export default function Template3({ userId, categories, projects, userImage, use
           background: transparent; 
           cursor: pointer;
         }
+          .template-3-wrapper #projects, #card-projects-content h3{
+          padding: 14px;
+        }
+        .template-3-wrapper #projects, #card-projects-tags{
+          margin: 14px;
+        }
+        .template-3-wrapper #card-projects-content{
+          background: White !important;
+        }
+        .template-3-wrapper #card-projects-wrapper{
+          background: none !important;
+          border: none !important;
+        }
+        .template-3-wrapper #card-projects-tags-item{
+          background: var(--oliveL) !important;
+          color: var(--olive) !important;
+          padding: 4px;
+        }
         .template-3-wrapper #projects [role="tab"][data-state="active"] {
           background: var(--olive) !important;
           color: #fff !important;
@@ -673,7 +691,7 @@ export default function Template3({ userId, categories, projects, userImage, use
         }
         .template-3-wrapper #projects .group:hover {
           /* border-color: var(--olive) !important; */
-          box-shadow: 0 8px 24px rgba(46,93,58,.1) !important;
+          /* box-shadow: 0 8px 24px rgba(46,93,58,.1) !important; */
         }
         .template-3-wrapper #projects .group h3 {
           color: var(--text) !important;
@@ -682,23 +700,8 @@ export default function Template3({ userId, categories, projects, userImage, use
         .template-3-wrapper #projects .group h3:hover {
           color: var(--olive) !important;
         }
-        .template-3-wrapper #projects .group div {
-          background: white !important;
-          color: var(--olive) !important;
-          /* border: 1px solid var(--oliveG) !important;
-          font-size: 11px !important;
-          font-weight: 600 !important; */
-        }
-        .template-3-wrapper #projects, #card-projects-content {
-          background: white !important;
-          padding: 24px !important;
-          
-        }
-        .template-3-wrapper #projects, #card-projects-content h3{
-          padding: 14px;
-        }
-        .template-3-wrapper #projects, #card-projects-tags{
-          margin: 14px;
+        .template-3-wrapper #card-projects .absolute.inset-0 {
+          display: none !important;
         }
         .template-3-wrapper #projects button:disabled {
           opacity: 0.5;
@@ -960,7 +963,7 @@ export default function Template3({ userId, categories, projects, userImage, use
                 about.features.map((f, i) => (
                   <div className="cv-item" key={i}>
                     <span className="ck">✓</span>
-                    <div><strong>{f.title}</strong>{f.description}</div>
+                    <div><strong>{f.title}</strong><span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(f.description) }} /></div>
                   </div>
                 ))
               ) : (
