@@ -86,7 +86,7 @@ export default function Template8({ userId, categories, projects, userImage, use
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center text-gray-500 font-mono text-xs uppercase tracking-widest">
-        Loading Template...
+        Loading Protfolio...
       </div>
     );
   }
@@ -219,19 +219,23 @@ export default function Template8({ userId, categories, projects, userImage, use
           background: radial-gradient(ellipse 70% 60% at 70% 40%, rgba(0,212,192,.09) 0%, transparent 70%);
           pointer-events: none;
         }
-        .template-8-wrapper #hero #experience-time #satisfied-clients #projects-delivered {
-          font-family: 'Syne', sans-serif;
-          font-family: Inter, sans-serif;
-          font-size: 12px;
-          color: rgb(161, 161, 170);
-          weight: 400;
-        }
+        .template-8-wrapper #experience-time,
+        .template-8-wrapper #satisfied-clients,
         .template-8-wrapper #projects-delivered {
-          font-family: 'Syne', sans-serif;
-          font-family: Inter, sans-serif;
-          font-size: 12px;
-          color: rgb(84, 84, 255) !important;
-          weight: 400 !important;
+          font-family: 'Inter', sans-serif !important;
+          font-size: 12px !important;
+          color: rgb(161, 161, 170) !important;
+        }
+        .template-8-wrapper #projects-delivered,
+        .template-8-wrapper #projects-delivered > div {
+          color: rgb(46, 46, 46) !important;
+        }
+        .template-8-wrapper #experience-time > div,
+        .template-8-wrapper #satisfied-clients > div,
+        .template-8-wrapper #projects-delivered > div {
+          font-family: 'Inter', sans-serif !important;
+          font-weight: 400 !important;
+          color: rgb(46, 46, 46) !important;
         }
         .template-8-wrapper .hero-grid {
           display: grid;

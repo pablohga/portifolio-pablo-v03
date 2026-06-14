@@ -86,7 +86,7 @@ export default function Template1({ userId, categories, projects, userImage, use
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center text-white font-mono text-xs uppercase tracking-widest">
-        Loading Template...
+        Loading Protfolio...
       </div>
     );
   }

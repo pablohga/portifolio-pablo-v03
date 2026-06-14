@@ -8,19 +8,24 @@ import { Category } from "@/types/category";
 import DOMPurify from "isomorphic-dompurify";
 import { ProjectsSection } from "@/components/projects-section";
 import { FeatureDetailsModal } from "@/components/feature-details-modal";
+import { UserAvatar } from "../ui/user-avatar";
+import Image from "next/image";
 
 interface TemplateProps {
   userId: string;
   categories: Category[];
   projects: Project[];
+  userImage?: string;
+  userName?: string;
 }
 
-export default function Template2({ userId, categories, projects }: TemplateProps) {
+export default function Template2({ userId, categories, projects, userImage, userName }: TemplateProps) {
   const [hero, setHero] = useState<Hero | null>(null);
   const [about, setAbout] = useState<About | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedFeature, setSelectedFeature] = useState<About["features"][0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const fullName = hero?.title || "Freelancer Digital";
 
   useEffect(() => {
     async function fetchData() {
@@ -78,7 +83,7 @@ export default function Template2({ userId, categories, projects }: TemplateProp
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center text-white font-mono text-xs uppercase tracking-widest">
-        Loading Template...
+        Loading Protfolio...
       </div>
     );
   }
@@ -214,7 +219,10 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           text-decoration: none;
           transition: border-color 0.2s, background 0.2s;
         }
-        .template-2-wrapper .btn-ghost:hover { background: rgba(0,229,255,0.08); border-color: var(--cyan); }
+        .template-2-wrapper .btn-ghost:hover { 
+          background: rgba(0,229,255,0.08); 
+          border-color: var(--cyan); 
+        }
         .template-2-wrapper .hero-right {
           position: relative;
           overflow: hidden;
@@ -319,12 +327,16 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           top: -12px; left: -12px;
           width: calc(100% - 40px);
           height: calc(100% - 40px);
-          border: 1px solid rgba(0,229,255,0.25);
+          /* border: 1px solid rgba(0,229,255,0.25); */
           pointer-events: none;
+        }
+        .template-2-wrapper .sobre-photo::before img {
+          object-fit: cover;
+          border-radius: 50%;
         }
         .template-2-wrapper .sobre-photo-badge {
           position: absolute;
-          bottom: -20px;
+          bottom: -40px;
           right: 20px;
           background: var(--cyan);
           color: var(--black);
@@ -691,6 +703,9 @@ export default function Template2({ userId, categories, projects }: TemplateProp
           color: var(--white) !important;
           padding: 100px 0 !important;
         }
+        .template-2-wrapper #card-projects-wrapper {
+          padding: 0px 0 !important;
+        }
         .template-2-wrapper #projects h2 {
           font-family: var(--font-display) !important;
           color: var(--white) !important;
@@ -829,15 +844,22 @@ export default function Template2({ userId, categories, projects }: TemplateProp
 
       <section className="sobre" id="sobre">
         <div className="sobre-photo">
-          <div className="sobre-photo-badge">{hero?.title || "Pablo Azevedo"}<br />Profissional</div>
-          <img src={hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"} alt="About" />
+          <div className="sobre-photo-badge">{hero?.title || "O Seu Freelancer"}<br />Profissional</div>
+          <Image
+            src={userImage || hero?.backgroundImage || "https://images.unsplash.com/photo-1497366216548-375260702979?auto=format&fit=crop&w=1000&q=80"}
+            alt={fullName}
+            className="w-full h-auto max-h-[520px] object-cover rounded-t-[var(--r3)]"
+            width={600}
+            height={800}
+          />
+          
         </div>
         <div className="sobre-content">
           <div className="section-tag">Sobre Mim</div>
           <h2 className="section-title">Atendimento <span>focado</span><br />nos seus resultados</h2>
           <div
             className="sobre-desc"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.description || "Sou Pablo Azevedo, profissional com anos de experiência no mercado. Meu trabalho é entregar resultados reais, com comprometimento, estratégia e uma abordagem personalizada para cada cliente.") }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.description || "Sou o seu Freelancer, profissional com anos de experiência no mercado. Meu trabalho é entregar resultados reais, com comprometimento, estratégia e uma abordagem personalizada para cada cliente.") }}
           />
           <div className="sobre-features">
             {about?.features?.map((feature, i) => {
