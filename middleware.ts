@@ -24,16 +24,17 @@ const authMiddleware = withAuth(
   }
 );
 
-export default async function middleware(req: any) {
+export default async function middleware(req: any, event: any) {
   const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
 
   if (req.nextUrl.pathname.startsWith("/api")) {
     if (isRateLimited(ip)) {
       return new NextResponse("Too Many Requests", { status: 429 });
     }
+    return NextResponse.next();
   }
 
-  return authMiddleware(req);
+  return authMiddleware(req, event);
 }
 
 export const config = {

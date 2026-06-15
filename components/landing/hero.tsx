@@ -66,7 +66,7 @@ export function HeroSection({ dark }: { dark: boolean }) {
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="max-w-2xl">
           <Reveal>
-            <h1 className={`font-poppins text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6 transition-all duration-700 ${
+            <h1 className={`font-poppins text-xl sm:text-2xl md:text-3xl lg:text-3xl font-bold leading-[1.05] mb-6 transition-all duration-700 ${
               dark ? "text-white" : "text-[#1E2A3A]"
             }`}>
               Pare de perder clientes

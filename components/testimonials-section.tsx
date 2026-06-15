@@ -39,10 +39,10 @@ export function TestimonialsSection({
       }
     }
 
-    if (!initialTestimonials.length) {
+    if (!initialTestimonials || initialTestimonials.length === 0) {
       fetchTestimonials();
     }
-  }, [userId, initialTestimonials]);
+  }, [userId]);
 
   if (isLoading) {
     return (
