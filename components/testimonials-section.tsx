@@ -12,6 +12,7 @@ interface TestimonialsSectionProps {
   initialTestimonials?: Testimonial[];
   title?: string;
   subtitle?: string;
+  dark?: boolean;
 }
 
 export function TestimonialsSection({
