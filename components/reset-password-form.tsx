@@ -48,8 +48,8 @@ export function ResetPasswordForm() {
     console.log("🔐 Nova senha:", values.password);
   
     try {
-      const response = await fetch("/api/auth/reset-password", {
-        method: "POST",
+      const response = await fetch("/api/users/reset-password", {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: values.password, token }),
       });

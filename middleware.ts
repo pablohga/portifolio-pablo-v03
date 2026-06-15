@@ -1,7 +1,8 @@
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { isRateLimited } from "./lib/rate-limit";
 
-export default withAuth(
+const authMiddleware = withAuth(
   function middleware(req) {
     // If the user is authenticated and trying to access auth pages,
     // redirect them to dashboard
@@ -23,6 +24,18 @@ export default withAuth(
   }
 );
 
+export default async function middleware(req: any) {
+  const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
+
+  if (req.nextUrl.pathname.startsWith("/api")) {
+    if (isRateLimited(ip)) {
+      return new NextResponse("Too Many Requests", { status: 429 });
+    }
+  }
+
+  return authMiddleware(req);
+}
+
 export const config = {
-  matcher: ["/dashboard/:path*", "/auth/:path*"],
+  matcher: ["/dashboard/:path*", "/auth/:path*", "/api/:path*"],
 };

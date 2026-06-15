@@ -18,7 +18,7 @@ export function RecoverPasswordForm() {
 
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/recover-password", {
+      const response = await fetch("/api/users/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
