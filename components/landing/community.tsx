@@ -4,12 +4,12 @@ import { DARK, LIGHT } from "@/constants/theme";
 import { Reveal } from "@/components/ui/reveal";
 
 const FEATURED_PORTFOLIOS = [
-  { name: "Ana Silva", role: "UI/UX Designer", image: "https://images.unsplash.com/photo-1507003211169-186a95359742?w=400&h=300&fit=crop", category: "Design" },
-  { name: "Lucas Costa", role: "Frontend Developer", image: "https://images.unsplash.com/photo-1498050108241-ab65da3446d5?w=400&h=300&fit=crop", category: "Dev" },
-  { name: "Beatriz Rocha", role: "Brand Strategist", image: "https://images.unsplash.com/photo-148736625C88-E3953a7c67a6?w=400&h=300&fit=crop", category: "Branding" },
-  { name: "Gabriel Lima", role: "Fullstack Engineer", image: "https://images.unsplash.com/photo-1519389971654-97C74d7602b8?w=400&h=300&fit=crop", category: "Dev" },
-  { name: "Carla Mendes", role: "Motion Designer", image: "https://images.unsplash.com/photo-1550745165-9bc098f04669?w=400&h=300&fit=crop", category: "Motion" },
-  { name: "Felipe Dias", role: "Product Designer", image: "https://images.unsplash.com/photo-1531427186611-0057c287e8e7?w=400&h=300&fit=crop", category: "Product" },
+  { name: "Ana Silva", role: "UI/UX Designer", image: "/images/landing-page-images/ana silva.jpeg", category: "Design" },
+  { name: "Lucas Costa", role: "Frontend Developer", image: "/images/landing-page-images/lucas costa.jpeg", category: "Dev" },
+  { name: "Beatriz Rocha", role: "Brand Strategist", image: "/images/landing-page-images/beatriz rocha.jpeg", category: "Branding" },
+  { name: "Gabriel Lima", role: "Fullstack Engineer", image: "/images/landing-page-images/Gabriel Lima.jpeg", category: "Dev" },
+  { name: "Carla Mendes", role: "Motion Designer", image: "/images/landing-page-images/carla mendes.jpeg", category: "Motion" },
+  { name: "Felipe Dias", role: "Product Designer", image: "/images/landing-page-images/felipe dias.jpeg", category: "Product" },
 ];
 
 export function CommunitySection({ dark }: { dark: boolean }) {
