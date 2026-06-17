@@ -14,8 +14,16 @@ const authMiddleware = withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        // Only require auth for dashboard routes
+        // Only require auth for dashboard routes and protected API routes
         if (req.nextUrl.pathname.startsWith("/dashboard")) {
+          return !!token;
+        }
+        if (req.nextUrl.pathname.startsWith("/api")) {
+          // Public API routes
+          const publicRoutes = ["/api/auth", "/api/contact", "/api/stripe/webhook", "/api/check-slug"];
+          const isPublic = publicRoutes.some(route => req.nextUrl.pathname.startsWith(route));
+          if (isPublic) return true;
+
           return !!token;
         }
         return true;
@@ -31,7 +39,7 @@ export default async function middleware(req: any, event: any) {
     if (isRateLimited(ip)) {
       return new NextResponse("Too Many Requests", { status: 429 });
     }
-    return NextResponse.next();
+    // Let the authMiddleware handle the authentication check for APIs
   }
 
   return authMiddleware(req, event);
