@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,12 +26,14 @@ import { SEO } from "@/types/seo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useSEOData } from "@/hooks/use-seo-data";
+import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 const seoSchema = z.object({
   title: z.string().min(10, "Title must be at least 10 characters"),
   description: z.string().min(50, "Description must be at least 50 characters").max(160, "Description must not exceed 160 characters"),
   keywords: z.string().min(3, "Add at least one keyword"),
-  ogImage: z.string().url("Must be a valid URL"),
+  ogImage: z.string().optional(),
 });
 
 interface SEODialogProps {
@@ -42,13 +44,15 @@ interface SEODialogProps {
 }
 
 export function SEODialog({
-  userId,
+  userId = "",
   open,
   onOpenChange,
   onSubmit,
 }: SEODialogProps) {
   const { seo, isLoading } = useSEOData(userId);
-  
+  const [isUploading, setIsUploading] = useState(false);
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof seoSchema>>({
     resolver: zodResolver(seoSchema),
     defaultValues: {
@@ -69,6 +73,47 @@ export function SEODialog({
       });
     }
   }, [seo, form]);
+
+  async function handleImageUpload(file: File) {
+    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
+    const newFileName = `${userId}-${file.name.split(".")[0].replace(/\s+/g, "")[0]}-${timestamp}.${file.type.split("/")[1]}`;
+    const renamedFile = new File([file], newFileName, { type: file.type });
+
+    const formData = new FormData();
+    formData.append("file", renamedFile);
+    formData.append("upload_preset", "user-projects-imgs");
+    formData.append("folder", `/${userId}`);
+
+    try {
+      setIsUploading(true);
+      const res = await fetch("https://api.cloudinary.com/v1_1/dxqsqcw5p/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.secure_url) {
+        form.setValue("ogImage", data.secure_url);
+
+        toast({
+          title: "Success",
+          description: "Image uploaded successfully!",
+          variant: "success",
+        });
+      } else {
+        throw new Error("Error uploading the image.");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while uploading the image.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  }
 
   function handleSubmit(values: z.infer<typeof seoSchema>) {
     onSubmit({
@@ -191,12 +236,30 @@ export function SEODialog({
               name="ogImage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Open Graph Image URL</FormLabel>
+                  <FormLabel>Open Graph Image</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="https://example.com/og-image.jpg"
-                      {...field}
-                    />
+                    <div className="space-y-2">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            handleImageUpload(file);
+                          }
+                        }}
+                        disabled={isUploading}
+                      />
+                      {field.value && (
+                        <Image
+                          src={field.value}
+                          alt="Open Graph preview"
+                          className="w-full max-h-48 object-cover rounded-md"
+                          height={120}
+                          width={80}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormDescription>
                     Recommended size: 1200x630 pixels
@@ -206,7 +269,7 @@ export function SEODialog({
               )}
             />
 
-            <Button type="submit">Save SEO Settings</Button>
+            <Button type="submit" disabled={isUploading}>Save SEO Settings</Button>
           </form>
         </Form>
       </DialogContent>

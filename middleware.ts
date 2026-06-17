@@ -1,48 +1,49 @@
-import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 import { isRateLimited } from "./lib/rate-limit";
 
-const authMiddleware = withAuth(
-  function middleware(req) {
-    // If the user is authenticated and trying to access auth pages,
-    // redirect them to dashboard
-    if (req.nextUrl.pathname.startsWith("/auth/") && req.nextauth.token) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
+export default async function middleware(req: any) {
+  const { pathname } = req.nextUrl;
+
+  // 1. Absolute bypass for NextAuth internal routes to prevent redirect loops
+  if (pathname.startsWith("/api/auth")) {
     return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Only require auth for dashboard routes and protected API routes
-        if (req.nextUrl.pathname.startsWith("/dashboard")) {
-          return !!token;
-        }
-        if (req.nextUrl.pathname.startsWith("/api")) {
-          // Public API routes
-          const publicRoutes = ["/api/auth", "/api/contact", "/api/stripe/webhook", "/api/check-slug"];
-          const isPublic = publicRoutes.some(route => req.nextUrl.pathname.startsWith(route));
-          if (isPublic) return true;
-
-          return !!token;
-        }
-        return true;
-      },
-    },
   }
-);
 
-export default async function middleware(req: any, event: any) {
-  const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
-
-  if (req.nextUrl.pathname.startsWith("/api")) {
+  // 2. Rate limiting for all APIs
+  if (pathname.startsWith("/api")) {
+    const ip = req.ip || req.headers.get("x-forwarded-for") || "unknown";
     if (isRateLimited(ip)) {
-      return new NextResponse("Too Many Requests", { status: 429 });
+      return NextResponse.json({ error: "Too Many Requests" }, { status: 429 });
     }
-    // Let the authMiddleware handle the authentication check for APIs
   }
 
-  return authMiddleware(req, event);
+  // 3. Authentication logic using getToken
+  const token = await getToken({ req });
+
+  // Protected Dashboard routes
+  if (pathname.startsWith("/dashboard")) {
+    if (!token) {
+      return NextResponse.redirect(new URL("/auth/signin", req.url));
+    }
+  }
+
+  // Protected API routes
+  if (pathname.startsWith("/api")) {
+    const publicRoutes = ["/api/contact", "/api/stripe/webhook", "/api/check-slug", "/api/testimonials"];
+    const isPublic = publicRoutes.some(route => pathname.startsWith(route));
+
+    if (!isPublic && !token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
+
+  // Redirect authenticated users away from auth pages
+  if (pathname.startsWith("/auth/") && token) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

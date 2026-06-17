@@ -30,8 +30,13 @@ export function TestimonialsSection({
         setIsLoading(true);
         const url = userId ? `/api/testimonials?userId=${userId}` : "/api/testimonials";
         const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
-        setTestimonials(data);
+        if (Array.isArray(data)) {
+          setTestimonials(data);
+        } else {
+          console.error("Expected array but got:", data);
+        }
       } catch (error) {
         console.error("Failed to fetch testimonials:", error);
       } finally {
