@@ -54,7 +54,13 @@ export async function generateMetadata({ params }: UserPortfolioPageProps): Prom
 
   const seo = await getUserSEO(user._id.toString());
 
+  // Resolve base URL for metadataBase (Metadata.metadataBase expects a URL)
+  const host = await import("next/headers").then(h => h.headers().get("host") || "localhost:3000");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const metadataBase = new URL(`${protocol}://${host}`);
+
   return {
+    metadataBase,
     title: seo?.title || `${user.name} - Portfolio`,
     description:
       seo?.description || `${user.name}'s portfolio showcasing their projects and skills`,

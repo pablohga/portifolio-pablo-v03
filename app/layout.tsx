@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-/* import { Inter } from "next/font/google"; */
 import { Montserrat, Oxanium } from 'next/font/google';
 // @ts-ignore: allow importing global CSS without type declarations
 import "./globals.css";
@@ -9,6 +8,7 @@ import { AuthProvider } from "@/components/auth-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { headers } from "next/headers";
 import LanguageProvider from "@/components/LanguageProvider";
+import Script from "next/script";
 
 const montserrat = Montserrat({ 
   weight: ['400', '600'],
@@ -43,9 +43,12 @@ async function getSystemSEOData() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSystemSEOData();
-    /* console.log('seo?.title',seo?.title) */
+  const host = headers().get("host") ?? "localhost:3000";
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const metadataBase = new URL(`${protocol}://${host}`);
+
   return {
-    
+    metadataBase: metadataBase,
     title: seo?.title || "Portify - Your Free Online Portfolio - Your Portfolio, Your Identity",
     description:
       seo?.description ||
@@ -101,6 +104,32 @@ export default async function RootLayout({
             </ThemeProvider>
           </LanguageProvider>
         </AuthProvider>
+            <img src="//sstatic1.histats.com/0.gif?5033768&101" alt="cool hit counter" style={{ border: 0 }} />
+        <Script id="histats-tracking" strategy="afterInteractive">
+          {`
+            var _Hasync= _Hasync|| [];
+            _Hasync.push(['Histats.start', '1,5033768,4,0,0,0,00010000']);
+            _Hasync.push(['Histats.fasi', '1']);
+            _Hasync.push(['Histats.track_hits', '']);
+            (function() {
+              var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+              hs.src = ('//s10.histats.com/js15_as.js');
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+            })();
+          `}
+        </Script>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9203W3HFCG"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9203W3HFCG');
+          `}
+        </Script>
       </body>
     </html>
   );
