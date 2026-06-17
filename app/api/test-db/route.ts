@@ -13,8 +13,6 @@ async function updateTestUser() {
     { email: "phga.bkp1@gmail.com" },
     { $set: { resetToken: hashedToken, resetTokenExpiry: expiryDate } }
   );
-
-  console.log("🔑 Test token criado:", resetToken);
 }
 
 updateTestUser();

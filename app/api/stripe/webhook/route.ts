@@ -77,8 +77,6 @@ async function sendPaymentFailedNotification(userEmail: string, invoice: Stripe.
         dueDate: invoice.due_date ? new Date(invoice.due_date * 1000) : undefined,
       },
     });
-
-    console.log(`Notificação de pagamento falho criada para ${userEmail}`);
   } catch (error) {
     console.error("Error creating payment failed notification:", error);
   }

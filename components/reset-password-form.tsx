@@ -36,17 +36,13 @@ export function ResetPasswordForm() {
   });
 
   async function onSubmit(values: { password: string; confirmPassword: string }) {
-    console.log("📩 Enviando requisição para redefinir senha...");
-  
+
     if (!token) {
       console.error("❌ Erro: Token ausente na URL!");
       toast({ title: "Error", description: "Invalid or missing token.", variant: "destructive" });
       return;
     }
-  
-    console.log("🆔 Token sendo enviado:", token);
-    console.log("🔐 Nova senha:", values.password);
-  
+
     try {
       const response = await fetch("/api/users/reset-password", {
         method: "PUT",
@@ -55,8 +51,7 @@ export function ResetPasswordForm() {
       });
   
       const data = await response.json();
-      console.log("📨 Resposta da API:", data);
-  
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to reset password");
       }

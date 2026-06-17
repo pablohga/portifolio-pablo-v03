@@ -54,7 +54,6 @@ export async function POST(request: Request) {
       role: "user",
       subscriptionTier: plan || "free", // Set subscriptionTier based on incoming plan
     });
-    console.log("user:", user);
     // Attempt to send a welcome email, log the error if it fails
     try {
       await sendWelcomeEmail(email, name);
