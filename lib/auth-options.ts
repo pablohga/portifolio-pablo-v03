@@ -145,10 +145,11 @@ export const authOptions: NextAuthOptions = {
       const fiveMinutes = 5 * 60 * 1000;
       if (token.sub && (!token.fetchedAt || Date.now() - (token.fetchedAt as number) > fiveMinutes)) {
         await dbConnect();
-        const dbUser = await User.findById(token.sub).select('subscriptionTier role');
+        const dbUser = await User.findById(token.sub).select('subscriptionTier role slug');
         if (dbUser) {
           token.subscriptionTier = dbUser.subscriptionTier;
           token.role = dbUser.role;
+          token.slug = dbUser.slug;
           token.fetchedAt = Date.now();
         }
       }
