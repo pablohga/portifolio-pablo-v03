@@ -41,3 +41,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+app/page_dev.tsx
+.gitignore
+app/page_old1.tsx
+app/page_original.tsx
+app/page-new.tsx

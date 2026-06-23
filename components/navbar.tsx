@@ -310,13 +310,13 @@ export default function Navbar() {
                   boxShadow: `0 0 16px rgba(166,231,255,0.3)`,
                 }}>Cadastrar-se</Link>
             </div>
-            <button onClick={toggleMenu} style={{
-              background: "none", border: "none", cursor: "pointer", display: "none",
-              color: c.textPrimary, padding: 4,
-            }} className="mobile-menu-btn">
-              <Icon d={isMenuOpen ? ICONS.close : ICONS.menu} size={22} color={c.textPrimary} />
-            </button>
           </div>
+          <button onClick={toggleMenu} style={{
+            background: "none", border: "none", cursor: "pointer", display: "none",
+            color: c.textPrimary, padding: 4,
+          }} className="mobile-menu-btn">
+            <Icon d={isMenuOpen ? ICONS.close : ICONS.menu} size={22} color={c.textPrimary} />
+          </button>
         </div>
 
         {isMenuOpen && (

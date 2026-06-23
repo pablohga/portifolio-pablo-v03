@@ -60,7 +60,7 @@ export function FeaturesSection({ dark }: { dark: boolean }) {
   const c = dark ? DARK : LIGHT;
 
   return (
-    <section className={`py-24 px-4 sm:px-6 lg:px-8 ${dark ? "bg-[#1E1F25]" : "bg-white"}`}>
+    <section id="features" className={`py-24 px-4 sm:px-6 lg:px-8 ${dark ? "bg-[#1E1F25]" : "bg-white"}`}>
       <div className="max-w-7xl mx-auto">
         <Reveal>
           <div className="text-center mb-16">
