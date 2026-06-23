@@ -30,7 +30,7 @@ export default async function middleware(req: any) {
 
   // Protected API routes
   if (pathname.startsWith("/api")) {
-    const publicRoutes = ["/api/contact", "/api/stripe/webhook", "/api/check-slug", "/api/testimonials"];
+    const publicRoutes = ["/api/contact", "/api/stripe/webhook", "/api/check-slug", "/api/testimonials", "/api/payment-plans", "/api/stripe/create-checkout-session"];
     const isPublic = publicRoutes.some(route => pathname.startsWith(route));
 
     if (!isPublic && !token) {
