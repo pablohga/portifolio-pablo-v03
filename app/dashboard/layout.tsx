@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { DashboardLayoutWrapper } from "@/components/dashboard/layout-wrapper";
 
 export default async function DashboardLayout({
   children,
@@ -13,8 +14,8 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <DashboardLayoutWrapper>
       {children}
-    </div>
+    </DashboardLayoutWrapper>
   );
 }

@@ -1,11 +1,12 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Plus, ExternalLink, Users, Home, UserCircle, DollarSign, Star } from "lucide-react";
+import { Plus, ExternalLink, Users, Home, UserCircle, DollarSign, Star, Settings } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { ProjectDialog } from "@/components/project-dialog";
 import { CategoryDialog } from "@/components/category-dialog";
@@ -21,7 +22,6 @@ import { Category } from "@/types/category";
 import { Testimonial } from "@/types/testimonial";
 import { formatName } from "@/lib/utils";
 import { SubscriptionBadge } from "@/components/subscription-badge";
-import { Settings } from "lucide-react";
 import Link from "next/link";
 import {
   AlertDialog,
@@ -39,7 +39,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import { TemplateProvider } from "@/components/template-context";
 import { TemplateSelector } from "@/components/template-selector";
-/* import { fetchSubscritionByEmail } from "@/lib/stripe"; */
 
 interface DashboardContentProps {
   userId: string;
@@ -62,11 +61,12 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab");
   const { firstName, lastName } = formatName(session?.user?.name);
   const { toast } = useToast();
   const userEmail = session?.user?.email as string
   const { t, ready } = useTranslation();
-
 
   useEffect(() => {
       Promise.all([
@@ -77,6 +77,22 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     ]).finally(() => setIsLoading(false));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (currentTab === 'hero') setIsHeroDialogOpen(true);
+    if (currentTab === 'about') setIsAboutDialogOpen(true);
+    if (currentTab === 'seo') setIsSEODialogOpen(true);
+    if (currentTab === 'contact') setIsContactSettingsDialogOpen(true);
+    if (currentTab === 'categories') {
+      setSelectedCategory(null);
+      setIsCategoryDialogOpen(true);
+    }
+    if (currentTab === 'projects') setIsProjectDialogOpen(true);
+    if (currentTab === 'testimonials') {
+      setSelectedTestimonial(null);
+      setIsTestimonialDialogOpen(true);
+    }
+  }, [currentTab]);
 
   if (!ready) {
     return <p>Loading...</p>;
@@ -208,16 +224,15 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   async function handleUpdateSEO(data: any) {
     try {
       setIsLoading(true);
-  
-      // Include the userId in the payload
+
       const response = await fetch("/api/seo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, userId: session?.user?.id }),
       });
-  
+
       if (!response.ok) throw new Error("Failed to update SEO settings");
-  
+
       toast({
         title: "Success",
         description: "SEO settings updated successfully",
@@ -359,7 +374,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
         title: "Success",
         description: "Project updated successfully",
         variant: "success",
-       });
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -424,16 +439,16 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     if (!data._id) {
       throw new Error("Category ID is required for updating.");
     }
-  
+
     try {
       const res = await fetch(`/api/categories/${data._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-  
+
       if (!res.ok) throw new Error();
-  
+
       await fetchCategories();
       toast({
         title: "Success",
@@ -482,79 +497,30 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   return (
     <TemplateProvider>
-      <div className="container mx-auto py-20 max-w-[960px]">
-        
-        <div className="mb-8 space-y-4">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
-              <Link 
-                href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
-                className="inline-flex items-center text-primary hover:underline"
-              >
-                {t("Dashboard.ViewYourPortfolio")}
-                <ExternalLink className="ml-1 h-4 w-4" />
-              </Link>
-            </div>
-            <div className="flex flex-col gap-4 md:flex-row md:items-center">
-              <Button variant="outline" asChild>
-                <Link href="/dashboard/profile" className="inline-flex items-center gap-2">
-                  <Settings className="h-4 w-4" />
-                  {t("Dashboard.ProfileSettings")}
-                </Link>
-              </Button>
-              <div className="text-lg font-medium">
+      <div className="space-y-12">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
+            <Link
+              href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
+              className="inline-flex items-center text-primary hover:underline"
+            >
+              {t("Dashboard.ViewYourPortfolio")}
+              <ExternalLink className="ml-1 h-4 w-4" />
+            </Link>
+          </div>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+            <div className="text-lg font-medium">
               {t("Dashboard.Welcome")}, {firstName} <span className="text-primary">{lastName}</span>
-              </div>
-                <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
             </div>
+            <SubscriptionBadge tier={session?.user?.subscriptionTier || 'free'} />
           </div>
-          <div className="flex flex-wrap gap-4">
-            <Button onClick={() => setIsHeroDialogOpen(true)}>
-              {t("Dashboard.EditHeroBannerSection")}
-            </Button>
-            <Button onClick={() => setIsAboutDialogOpen(true)}>
-              {t("Dashboard.EditSectionAboutYou")}
-            </Button>
-            <Button onClick={() => setIsSEODialogOpen(true)}>
-              {t("Dashboard.EditSeoSettings")}
-            </Button>
-            <Button onClick={() => setIsContactSettingsDialogOpen(true)}>
-              {t("Dashboard.EditContactSettings")}
-            </Button>
-            {session?.user?.subscriptionTier === 'premium' && (
-              <Button asChild>
-                <Link href="/dashboard/clients" className="inline-flex items-center gap-2">
-                  <UserCircle className="h-4 w-4" />
-                  {t("Dashboard.ManageCustomers")}
-                </Link>
-              </Button>
-            )}
-            {session?.user?.role === 'admin' && (
-              <>
-                <Button onClick={() => setIsHomeEditorOpen(true)}>
-                  <Home className="mr-2 h-4 w-4" />
-                  {t("Dashboard.HomePageEdit")}
-                </Button>
-                <Button onClick={() => setIsPaymentPlansOpen(true)}>
-                  <DollarSign className="mr-2 h-4 w-4" />
-                  {t("Dashboard.PaymentPlans")}
-                </Button>
-                <Button asChild>
-                  <Link href="/dashboard/users" className="inline-flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    {t("Dashboard.ManagePortifyUsers")}
-                  </Link>
-                </Button>
-              </>
-            )}
-          </div>
-          
-          <div  className="my-10">
-            <TemplateSelector/>
-          </div>
-          
         </div>
+
+        <div className="my-10">
+          <TemplateSelector/>
+        </div>
+
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">
@@ -568,7 +534,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               {t("Dashboard.AddCategories")}
             </Button>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-s3 gap-6">
             {categories.map((category) => (
               <Card key={category._id}>
                 <CardContent className="pt-6">
@@ -576,7 +542,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                     <div>
                       <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
                       {category.description && (
-                        <div 
+                        <div
                           className="text-muted-foreground prose prose-sm dark:prose-invert"
                           dangerouslySetInnerHTML={{ __html: category.description }}
                         />
@@ -628,7 +594,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             ))}
           </div>
         </div>
-        
+
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">
@@ -825,3 +791,4 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     </TemplateProvider>
   );
 }
+
