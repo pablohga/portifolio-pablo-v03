@@ -49,8 +49,11 @@
       "Portfolio": "Portfólio",
       "PortfolioSettings": "Configurações do Portfólio",
       "ManageCategories": "Gerenciar Categorias",
+      "EditCategories": "Editar Categorias",
       "ManageProjects": "Gerenciar Projetos",
-      "ManageTestimonials": "Gerenciar Testemunhos"
+      "EditProjects": "Editar Projetos",
+      "ManageTestimonials": "Gerenciar Testemunhos",
+      "Logout": "Sair"
     },
     "HeroSection": {
       "title": "Crie seu portfólio profissional sem gastar nada",

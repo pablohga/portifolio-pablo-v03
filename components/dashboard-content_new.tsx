@@ -343,7 +343,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     <TemplateProvider>
       <div className="space-y-12">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-2">
+          <div className=" pt-5 space-y-2">
             <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
             <Link
               href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}

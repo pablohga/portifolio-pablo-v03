@@ -111,15 +111,15 @@ export function Sidebar({ userSlug }: { userSlug?: string }) {
   };
 
   return (
-    <aside className="flex flex-col h-full bg-card border-r border-border transition-all duration-300 w-64 overflow-y-auto">
-      <div className="p-6 mb-4">
+    <aside className="pt-4 flex flex-col h-full bg-card border-r border-border transition-all duration-300 w-64 overflow-y-auto">
+      {/* <div className="p-6 mb-4">
         <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground">
             P
           </div>
           <span>Portify</span>
         </div>
-      </div>
+      </div> */}
 
       <nav className="flex-1 px-4 space-y-6">
         <div>
