@@ -346,7 +346,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
             <Link
-              href={\`/\${session?.user?.slug?.toLowerCase().replace(/\\s+/g, '-')}\`}
+              href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
               className="inline-flex items-center text-primary hover:underline"
             >
               {t("Dashboard.ViewYourPortfolio")}
@@ -466,10 +466,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                         <p className="text-xs text-muted-foreground">{proj.year}</p>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => setEditingProjectId(proj.id)}>
+                        <Button variant="outline" size="sm" onClick={() => proj.id && setEditingProjectId(proj.id)}>
                           <Pencil className="h-3 w-3 mr-1" /> Edit
                         </Button>
-                        <Button variant="destructive" size="sm" onClick={() => handleDeleteProject(proj.id)}>
+                        <Button variant="destructive" size="sm" onClick={() => proj.id && handleDeleteProject(proj.id)}>
                           <Trash2 className="h-3 w-3 mr-1" /> Delete
                         </Button>
                       </div>
@@ -523,7 +523,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                     key={proj.id}
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDeleteProject(proj.id)}
+                    onClick={() => proj.id && handleDeleteProject(proj.id)}
                    >
                      Delete {proj.title}
                    </Button>

@@ -600,7 +600,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                     key={testimonial._id}
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDeleteTestimonial(testimonial._id)}
+                    onClick={() => testimonial._id && handleDeleteTestimonial(testimonial._id)}
                    >
                      Delete {testimonial.name}
                    </Button>
