@@ -1,4 +1,5 @@
 export interface Project {
+  id: string | null;
   year: string;
   _id: string;
   title: string;

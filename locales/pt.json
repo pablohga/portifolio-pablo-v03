@@ -43,7 +43,14 @@
       "Projects": "Projetos",
       "AddProjects": "Adicionar Projetos",
       "Testimonials": "Testemunhos",
-      "AddTestimonials": "Adicionar Testemunhos"
+      "AddTestimonials": "Adicionar Testemunhos",
+      "General":"Geral",
+      "TemplateSelection": "Seleção de Template",
+      "Portfolio": "Portfólio",
+      "PortfolioSettings": "Configurações do Portfólio",
+      "ManageCategories": "Gerenciar Categorias",
+      "ManageProjects": "Gerenciar Projetos",
+      "ManageTestimonials": "Gerenciar Testemunhos"
     },
     "HeroSection": {
       "title": "Crie seu portfólio profissional sem gastar nada",

@@ -47,7 +47,6 @@ export function DashboardContent({ userId }: DashboardContentProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
-  const [editingTestimonialId, setEditingTestimonialId] = useState<string | null>(null);
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab");
@@ -107,37 +106,15 @@ export function DashboardContent({ userId }: DashboardContentProps) {
       if (!res.ok) throw new Error();
 
       await fetchTestimonials();
-      setEditingTestimonialId(null);
       toast({
         title: "Success",
-        description: "Testimonial saved successfully",
+        description: "Testimonial created successfully",
         variant: "success",
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to save testimonial",
-        variant: "destructive",
-      });
-    }
-  }
-
-  async function handleDeleteTestimonial(id: string) {
-    try {
-      const res = await fetch(`/api/testimonials/${id}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error();
-      await fetchTestimonials();
-      toast({
-        title: "Success",
-        description: "Testimonial deleted successfully",
-        variant: "success",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to delete testimonial",
+        description: "Failed to create testimonial",
         variant: "destructive",
       });
     }
@@ -283,9 +260,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
     }
   }
 
-  async function handleDeleteProject(id: string | null) {
-    if (!id) return;
-
+  async function handleDeleteProject(id: string) {
     try {
       const res = await fetch(`/api/projects/${id}`, {
         method: "DELETE",
@@ -371,7 +346,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           <div className="space-y-2">
             <h1 className="text-3xl font-bold">{t("Dashboard.title")}</h1>
             <Link
-              href={`/${session?.user?.slug?.toLowerCase().replace(/\s+/g, '-')}`}
+              href={\`/\${session?.user?.slug?.toLowerCase().replace(/\\s+/g, '-')}\`}
               className="inline-flex items-center text-primary hover:underline"
             >
               {t("Dashboard.ViewYourPortfolio")}
@@ -402,8 +377,8 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                 maxOrder={Math.max(...categories.map((c) => c.order), -1)}
               />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-{categories.map((cat) => (
-                  <div key={cat._id} className="p-4 border rounded-lg flex justify-between items-center bg-card">
+                {categories.map((cat) => (
+                  <div key={cat.id} className="p-4 border rounded-lg flex justify-between items-center bg-card">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-muted rounded-md">
                         <span className="text-xs font-medium">{cat.icon}</span>
@@ -414,10 +389,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={() => setEditingCategoryId(cat._id)}>
+                      <Button variant="outline" size="sm" onClick={() => setEditingCategoryId(cat.id)}>
                         <Pencil className="h-3 w-3 mr-1" /> Edit
                       </Button>
-                      <Button variant="destructive" size="sm" onClick={() => handleDeleteCategory(cat._id)}>
+                      <Button variant="destructive" size="sm" onClick={() => handleDeleteCategory(cat.id)}>
                         <Trash2 className="h-3 w-3 mr-1" /> Delete
                       </Button>
                     </div>
@@ -431,7 +406,7 @@ export function DashboardContent({ userId }: DashboardContentProps) {
             <div className="space-y-10">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categories.map((cat) => (
-                  <Dialog key={cat._id}>
+                  <Dialog key={cat.id}>
                     <DialogTrigger asChild>
                       <div className="p-4 border rounded-lg flex justify-between items-center bg-card cursor-pointer hover:bg-accent/50 transition-colors">
                         <div className="flex items-center gap-3">
@@ -461,13 +436,13 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                   </Dialog>
                 ))}
               </div>
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-2">
                 {categories.map((cat) => (
                    <Button
-                    key={cat._id}
+                    key={cat.id}
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDeleteCategory(cat._id)}
+                    onClick={() => handleDeleteCategory(cat.id)}
                    >
                      Delete {cat.name}
                    </Button>
@@ -484,17 +459,17 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {projects.map((proj) => (
-                  <div key={proj._id} className="p-4 border rounded-lg flex flex-col gap-3 bg-card">
+                  <div key={proj.id} className="p-4 border rounded-lg flex flex-col gap-3 bg-card">
                     <div className="flex justify-between items-start">
                       <div className="flex flex-col">
                         <p className="font-medium text-sm">{proj.title}</p>
                         <p className="text-xs text-muted-foreground">{proj.year}</p>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => setEditingProjectId(proj._id)}>
+                        <Button variant="outline" size="sm" onClick={() => setEditingProjectId(proj.id)}>
                           <Pencil className="h-3 w-3 mr-1" /> Edit
                         </Button>
-                        <Button variant="destructive" size="sm" onClick={() => handleDeleteProject(proj._id)}>
+                        <Button variant="destructive" size="sm" onClick={() => handleDeleteProject(proj.id)}>
                           <Trash2 className="h-3 w-3 mr-1" /> Delete
                         </Button>
                       </div>
@@ -545,10 +520,10 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               <div className="flex gap-2 flex-wrap">
                 {projects.map((proj) => (
                    <Button
-                    key={proj._id}
+                    key={proj.id}
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDeleteProject(proj._id)}
+                    onClick={() => handleDeleteProject(proj.id)}
                    >
                      Delete {proj.title}
                    </Button>
@@ -558,55 +533,9 @@ export function DashboardContent({ userId }: DashboardContentProps) {
           )}
 
           {currentTab === 'testimonials' && (
-            <div className="space-y-10">
-              <TestimonialEditor
-                testimonial={testimonials.find(t => t._id === editingTestimonialId)}
-                onSubmit={handleCreateTestimonial}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {testimonials.map((testimonial) => (
-                  <Dialog key={testimonial._id}>
-                    <DialogTrigger asChild>
-                      <div className="p-4 border rounded-lg flex flex-col gap-3 bg-card cursor-pointer hover:bg-accent/50 transition-colors">
-                        <div className="flex justify-between items-start">
-                          <div className="flex flex-col">
-                            <p className="font-medium text-sm">{testimonial.name}</p>
-                            <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                          </div>
-                          <Button variant="outline" size="sm">
-                            <Pencil className="h-3 w-3 mr-1" /> Edit
-                          </Button>
-                        </div>
-                        <div className="text-xs text-muted-foreground line-clamp-3 italic">
-                          "{testimonial.text}"
-                        </div>
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>Edit Testimonial</DialogTitle>
-                      </DialogHeader>
-                      <TestimonialEditor
-                        testimonial={testimonial}
-                        onSubmit={handleCreateTestimonial}
-                      />
-                    </DialogContent>
-                  </Dialog>
-                ))}
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                {testimonials.map((testimonial) => (
-                   <Button
-                    key={testimonial._id}
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDeleteTestimonial(testimonial._id)}
-                   >
-                     Delete {testimonial.name}
-                   </Button>
-                ))}
-              </div>
-            </div>
+            <TestimonialEditor
+              onSubmit={handleCreateTestimonial}
+            />
           )}
           {currentTab === 'seo' && <SEOEditorComponent userId={userId} onSubmit={handleUpdateSEO} />}
           {currentTab === 'contact' && <ContactSettingsEditor userId={userId} onSubmit={handleUpdateContactSettings} />}

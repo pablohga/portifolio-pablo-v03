@@ -133,46 +133,67 @@ export function Sidebar({ userSlug }: { userSlug?: string }) {
               icon={User}
               active={isActive("/dashboard/profile")}
             />
-            <SidebarItem
-              title={t("Dashboard.TemplateSelection")}
-              href="/dashboard?tab=template"
-              icon={Layout}
-              active={isActive("/dashboard?tab=template") || ["hero", "about"].includes(currentTab || "")}
-            >
-              <SubItem title={t("Dashboard.EditHeroBannerSection")} href="/dashboard?tab=hero" />
-              <SubItem title={t("Dashboard.EditSectionAboutYou")} href="/dashboard?tab=about" />
-            </SidebarItem>
-            <SidebarItem
-              title={t("Dashboard.EditSeoSettings")}
-              href="/dashboard?tab=seo"
-              icon={Search}
-              active={isActive("/dashboard?tab=seo")}
-            />
-            <SidebarItem
-              title={t("Dashboard.EditContactSettings")}
-              href="/dashboard?tab=contact"
-              icon={Mail}
-              active={isActive("/dashboard?tab=contact")}
-            />
           </div>
         </div>
 
         <div>
           <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-            {t("Dashboard.Manage")}
+            {t("Dashboard.Portfolio")}
           </p>
           <div className="space-y-1">
             <SidebarItem
-              title={t("Dashboard.ManagePortfolio")}
-              href="/dashboard"
-              icon={Folder}
-              active={isActive("/dashboard") || ["categories", "projects", "testimonials"].includes(currentTab || "")}
+              title={t("Dashboard.TemplateSelection")}
+              href="/dashboard?tab=templates"
+              icon={Layout}
+              active={isActive("/dashboard?tab=templates") || ["hero", "about"].includes(currentTab || "")}
             >
-              <SubItem title={t("Dashboard.AddCategories")} href="/dashboard?tab=categories" />
-              <SubItem title={t("Dashboard.AddProjects")} href="/dashboard?tab=projects" />
-              <SubItem title={t("Dashboard.AddTestimonials")} href="/dashboard?tab=testimonials" />
+              <SubItem title={t("Dashboard.TemplateSelection")} href="/dashboard?tab=templates" />
+              <SubItem title={t("Dashboard.EditHeroBannerSection")} href="/dashboard?tab=hero" />
+              <SubItem title={t("Dashboard.EditSectionAboutYou")} href="/dashboard?tab=about" />
             </SidebarItem>
+
+            <SidebarItem
+              title={t("Dashboard.ManageCategories")}
+              href="/dashboard?tab=categories-add"
+              icon={Folder}
+              active={isActive("/dashboard?tab=categories-add") || ["categories-add", "categories-edit"].includes(currentTab || "")}
+            >
+              <SubItem title={t("Dashboard.AddCategories")} href="/dashboard?tab=categories-add" />
+              <SubItem title={t("Dashboard.EditCategories")} href="/dashboard?tab=categories-edit" />
+            </SidebarItem>
+
+            <SidebarItem
+              title={t("Dashboard.ManageProjects")}
+              href="/dashboard?tab=projects-add"
+              icon={Layout}
+              active={isActive("/dashboard?tab=projects-add") || ["projects-add", "projects-edit"].includes(currentTab || "")}
+            >
+              <SubItem title={t("Dashboard.AddProjects")} href="/dashboard?tab=projects-add" />
+              <SubItem title={t("Dashboard.EditProjects")} href="/dashboard?tab=projects-edit" />
+            </SidebarItem>
+
+            <SidebarItem
+              title={t("Dashboard.AddTestimonials")}
+              href="/dashboard?tab=testimonials"
+              icon={User}
+              active={isActive("/dashboard?tab=testimonials")}
+            />
           </div>
+        </div>
+
+        <div className="space-y-1">
+          <SidebarItem
+            title={t("Dashboard.EditSeoSettings")}
+            href="/dashboard?tab=seo"
+            icon={Search}
+            active={isActive("/dashboard?tab=seo")}
+          />
+          <SidebarItem
+            title={t("Dashboard.EditContactSettings")}
+            href="/dashboard?tab=contact"
+            icon={Mail}
+            active={isActive("/dashboard?tab=contact")}
+          />
         </div>
       </nav>
 
@@ -182,7 +203,7 @@ export function Sidebar({ userSlug }: { userSlug?: string }) {
           className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground transition-colors"
           asChild
         >
-          <Link href={userSlug ? `/${userSlug.toLowerCase().replace(/\\s+/g, '-')}` : "#"}>
+          <Link href={userSlug ? `/${userSlug.toLowerCase().replace(/\s+/g, '-')}` : "#"}>
             <ExternalLink className="h-4 w-4" />
             <span>{t("Dashboard.ViewYourPortfolio")}</span>
           </Link>
