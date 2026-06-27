@@ -484,7 +484,15 @@ export function DashboardContent({ userId }: DashboardContentProps) {
               />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {projects.map((proj) => (
-                  <div key={proj._id} className="p-4 border rounded-lg flex flex-col gap-3 bg-card">
+                  <div key={proj._id} className="p-4 border rounded-lg flex flex-col gap-3 bg-card h-full">
+                    <div className="relative w-full h-32 rounded-md overflow-hidden bg-muted">
+                      <Image
+                        src={proj.image}
+                        alt={proj.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                     <div className="flex justify-between items-start">
                       <div className="flex flex-col">
                         <p className="font-medium text-sm">{proj.title}</p>
@@ -568,17 +576,25 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                   <Dialog key={testimonial._id}>
                     <DialogTrigger asChild>
                       <div className="p-4 border rounded-lg flex flex-col gap-3 bg-card cursor-pointer hover:bg-accent/50 transition-colors">
-                        <div className="flex justify-between items-start">
-                          <div className="flex flex-col">
-                            <p className="font-medium text-sm">{testimonial.name}</p>
-                            <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                        <div className="flex items-center gap-3">
+                          <div className="relative w-12 h-12 rounded-full overflow-hidden border bg-muted shrink-0">
+                            <Image
+                              src={testimonial.image}
+                              alt={testimonial.name}
+                              fill
+                              className="object-cover"
+                            />
                           </div>
-                          <Button variant="outline" size="sm">
+                          <div className="flex flex-col overflow-hidden">
+                            <p className="font-medium text-sm truncate">{testimonial.name}</p>
+                            <p className="text-xs text-muted-foreground truncate">{testimonial.role}</p>
+                          </div>
+                          <Button variant="outline" size="sm" className="ml-auto">
                             <Pencil className="h-3 w-3 mr-1" /> Edit
                           </Button>
                         </div>
-                        <div className="text-xs text-muted-foreground line-clamp-3 italic">
-                          "{testimonial.text}"
+                        <div className="text-xs text-muted-foreground line-clamp-3 italic mt-2">
+                          &quot;{testimonial.text}&quot;
                         </div>
                       </div>
                     </DialogTrigger>
