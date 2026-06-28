@@ -523,6 +523,14 @@ export function DashboardContent({ userId }: DashboardContentProps) {
                   <Dialog key={proj.id}>
                     <DialogTrigger asChild>
                       <div className="p-4 border rounded-lg flex flex-col gap-3 bg-card cursor-pointer hover:bg-accent/50 transition-colors">
+                        <div className="relative w-full h-32 rounded-md overflow-hidden bg-muted">
+                          <Image
+                            src={proj.image}
+                            alt={proj.title}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                         <div className="flex justify-between items-start">
                           <div className="flex flex-col">
                             <p className="font-medium text-sm">{proj.title}</p>
