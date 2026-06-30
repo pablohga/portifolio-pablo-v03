@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from "react-i18next";
 
 const clientSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -52,6 +53,7 @@ export function ClientDialog({
   onOpenChange,
   onSubmit,
 }: ClientDialogProps) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -74,6 +76,42 @@ export function ClientDialog({
     },
   });
 
+  useEffect(() => {
+    if (client) {
+      form.reset({
+        name: client.name,
+        email: client.email,
+        phone: client.phone || "",
+        whatsapp: client.whatsapp || "",
+        document: client.document || "",
+        address: {
+          street: client.address?.street || "",
+          city: client.address?.city || "",
+          state: client.address?.state || "",
+          zipCode: client.address?.zipCode || "",
+          country: client.address?.country || "",
+        },
+        observation: client.observation || "",
+      });
+    } else {
+      form.reset({
+        name: "",
+        email: "",
+        phone: "",
+        whatsapp: "",
+        document: "",
+        address: {
+          street: "",
+          city: "",
+          state: "",
+          zipCode: "",
+          country: "",
+        },
+        observation: "",
+      });
+    }
+  }, [client, form]);
+
   async function handleSubmit(values: z.infer<typeof clientSchema>) {
     try {
       setIsLoading(true);
@@ -89,8 +127,8 @@ export function ClientDialog({
       if (!response.ok) throw new Error();
 
       toast({
-        title: "Success",
-        description: `Client ${client?._id ? "updated" : "created"} successfully`,
+        title: t("ClientDialog.successTitle"),
+        description: t(`ClientDialog.successMessage_${client?._id ? "update" : "create"}`),
         variant: "success",
       });
 
@@ -99,8 +137,8 @@ export function ClientDialog({
       form.reset();
     } catch (error) {
       toast({
-        title: "Error",
-        description: `Failed to ${client?._id ? "update" : "create"} client`,
+        title: t("ClientDialog.errorTitle"),
+        description: t(`ClientDialog.errorMessage_${client?._id ? "update" : "create"}`),
         variant: "destructive",
       });
     } finally {
@@ -113,7 +151,7 @@ export function ClientDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {client?._id ? "Edit Client" : "Add Client"}
+            {client?._id ? t("ClientDialog.editClient") : t("ClientDialog.addClient")}
           </DialogTitle>
         </DialogHeader>
 
@@ -125,7 +163,7 @@ export function ClientDialog({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>{t("ClientDialog.name")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -139,7 +177,7 @@ export function ClientDialog({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("ClientDialog.email")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -153,7 +191,7 @@ export function ClientDialog({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel>{t("ClientDialog.phone")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -167,7 +205,7 @@ export function ClientDialog({
                 name="whatsapp"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>WhatsApp</FormLabel>
+                    <FormLabel>{t("ClientDialog.whatsapp")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -181,7 +219,7 @@ export function ClientDialog({
                 name="document"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Document</FormLabel>
+                    <FormLabel>{t("ClientDialog.document")}</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -192,14 +230,14 @@ export function ClientDialog({
             </div>
 
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Address</h3>
+              <h3 className="text-lg font-semibold">{t("ClientDialog.address")}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="address.street"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Street</FormLabel>
+                      <FormLabel>{t("ClientDialog.street")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -213,7 +251,7 @@ export function ClientDialog({
                   name="address.city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>City</FormLabel>
+                      <FormLabel>{t("ClientDialog.city")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -227,7 +265,7 @@ export function ClientDialog({
                   name="address.state"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>State</FormLabel>
+                      <FormLabel>{t("ClientDialog.state")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -241,7 +279,7 @@ export function ClientDialog({
                   name="address.zipCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>ZIP Code</FormLabel>
+                      <FormLabel>{t("ClientDialog.zipCode")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -255,7 +293,7 @@ export function ClientDialog({
                   name="address.country"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Country</FormLabel>
+                      <FormLabel>{t("ClientDialog.country")}</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -271,7 +309,7 @@ export function ClientDialog({
               name="observation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Observation</FormLabel>
+                  <FormLabel>{t("ClientDialog.observation")}</FormLabel>
                   <FormControl>
                     <Textarea {...field} />
                   </FormControl>
@@ -281,7 +319,7 @@ export function ClientDialog({
             />
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Saving..." : "Save Client"}
+              {isLoading ? t("ClientDialog.saving") : t("ClientDialog.saveClient")}
             </Button>
           </form>
         </Form>

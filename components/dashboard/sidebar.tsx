@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   User,
   Layout,
@@ -14,7 +15,9 @@ import {
   ChevronDown,
   ChevronRight,
   Menu,
-  X
+  X,
+  Users,
+  CreditCard
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -37,7 +40,6 @@ function SidebarItem({ title, href, icon: Icon, active, onClick, children }: Sid
   return (
     <div className="space-y-1">
       <div
-        onClick={() => hasChildren && setIsOpen(!isOpen)}
         className={cn(
           "group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer",
           active
@@ -53,16 +55,19 @@ function SidebarItem({ title, href, icon: Icon, active, onClick, children }: Sid
           )}
           onClick={(e) => {
             if (hasChildren) {
-              // If it has children, we might want to prevent default and just toggle
-              // But the user requested links, so we'll let it navigate and toggle.
+              e.preventDefault();
+              setIsOpen(!isOpen);
             }
           }}
         >
           <Icon className="h-4 w-4" />
-          <span>{title}</span>
+          <span className="flex-1">{title}</span>
         </Link>
         {hasChildren && (
-          <div className="ml-2">
+          <div className="ml-2" onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}>
             {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
           </div>
         )}
@@ -97,6 +102,7 @@ function SubItem({ title, href }: { title: string; href: string }) {
 }
 
 export function Sidebar({ userSlug }: { userSlug?: string }) {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab");
@@ -194,6 +200,30 @@ export function Sidebar({ userSlug }: { userSlug?: string }) {
             icon={Mail}
             active={isActive("/dashboard?tab=contact")}
           />
+          {session?.user?.subscriptionTier === "premium" && (
+            <>
+              <SidebarItem
+                title="Gerenciador de Cliente"
+                href="/dashboard/clients"
+                icon={Users}
+                active={isActive("/dashboard/clients")}
+              />
+              <SidebarItem
+                title="Gerenciador Financeiro"
+                href="/dashboard/finance"
+                icon={CreditCard}
+                active={isActive("/dashboard/finance")}
+              />
+            </>
+          )}
+          {session?.user?.role === "admin" && (
+            <SidebarItem
+              title="Gerenciar Usuários"
+              href="/dashboard/users"
+              icon={User}
+              active={isActive("/dashboard/users")}
+            />
+          )}
         </div>
       </nav>
 

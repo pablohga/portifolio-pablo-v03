@@ -21,6 +21,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Client {
   _id: string;
@@ -39,17 +40,18 @@ interface ClientTableProps {
 }
 
 export function ClientTable({ clients, onView, onEdit, onDelete }: ClientTableProps) {
+  const { t } = useTranslation();
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>WhatsApp</TableHead>
-            <TableHead>Document</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("ClientTable.name")}</TableHead>
+            <TableHead>{t("ClientTable.email")}</TableHead>
+            <TableHead>{t("ClientTable.phone")}</TableHead>
+            <TableHead>{t("ClientTable.whatsapp")}</TableHead>
+            <TableHead>{t("ClientTable.document")}</TableHead>
+            <TableHead>{t("ClientTable.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -91,19 +93,18 @@ export function ClientTable({ clients, onView, onEdit, onDelete }: ClientTablePr
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Client</AlertDialogTitle>
+                        <AlertDialogTitle>{t("ClientTable.deleteClient")}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete this client? This action
-                          cannot be undone.
+                          {t("ClientTable.deleteConfirm")}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t("ClientTable.deleteCancel")}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => onDelete(client._id)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                          Delete
+                          {t("ClientTable.deleteAction")}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -115,7 +116,7 @@ export function ClientTable({ clients, onView, onEdit, onDelete }: ClientTablePr
           {clients.length === 0 && (
             <TableRow>
               <TableCell colSpan={6} className="text-center">
-                No clients found
+                {t("ClientTable.noClientsFound")}
               </TableCell>
             </TableRow>
           )}

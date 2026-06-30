@@ -132,7 +132,6 @@
           ],
           "buttonText": "Começar Grátis"
         },
-        
         {
           "name": "Premium",
           "price": "79.90",
@@ -209,40 +208,40 @@
       "error": "Erro",
       "errorDescription": "Falha ao processar a solicitação de atualização"
     },
-      "Testimonials": {
+    "Testimonials": {
       "title": "Amado por Freelancers",
       "subtitle": "Únete a miles de freelancers exitosos que transformaron su presencia en línea.",
       "testimonial1": "Esta plataforma me ayudó a conseguir más clientes que nunca. Las plantillas de portafolio son hermosas y las opciones de personalización son infinitas.",
       "testimonial2": "Configurar mi portafolio fue muy fácil. Las funciones de SEO mejoraron significativamente mi visibilidad en línea.",
-      "testimonial3": "La mejor inversión que hice para mi carrera como freelancer. Mi portafolio se ve profesional y atrae clientes de alta calidad."
+      "testimonial3": "La mejor inversión que hice para mi carrera como freelancer. Mi portfólio se ve profesional y atrae clientes de alta calidad."
     },
     "FAQ": {
-    "title": "Perguntas Frequentes",
-    "subtitle": "Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.",
-    "question1": "Quais são as limitações do plano gratuito?",
-    "answer1": "O plano gratuito permite criar até 3 categorias, com 3 projetos em cada categoria. Você terá acesso a todas as funcionalidades básicas do portfólio, incluindo personalização, SEO e domínio personalizado.",
-    "question2": "Como funciona o plano Pagante?",
-    "answer2": "O plano Pagante remove todas as limitações de categorias e projetos. Você pode criar quantas categorias desejar e adicionar quantos projetos precisar. Além disso, tem acesso a temas premium e analytics avançado.",
-    "question3": "O que está incluído no plano Premium?",
-    "answer3": "O plano Premium inclui todas as funcionalidades do plano Pagante, mais acesso ao sistema de gestão de clientes, gestão financeira, curso exclusivo sobre carreira freelancer, mentoria em grupo e comunidade VIP.",
-    "question4": "Posso mudar de plano depois?",
-    "answer4": "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Ao fazer upgrade, você terá acesso imediato a todas as funcionalidades do novo plano.",
-    "question5": "Como funciona o curso de carreira freelancer?",
-    "answer5": "O curso é exclusivo para assinantes Premium e inclui módulos sobre precificação, gestão de projetos, marketing pessoal, captação de clientes e muito mais. O conteúdo é atualizado regularmente."
-  },
-  "CTA": {
-    "title": "Comece a Criar Seu Portfólio Gratuito Hoje",
-    "subtitle": "Junte-se a milhares de freelancers que estão mostrando seu trabalho e atraindo melhores clientes com nossa plataforma.",
-    "buttonText": "Criar Seu Portfólio",
-    "feature1": "100% Grátis",
-    "feature2": "Sem Cartão de Crédito",
-    "feature3": "Configure em Minutos"
-  },
-  "ClientList": {
-    "title": "Clientes",
-    "addClient": "Adicionar Cliente"
-  },
-  "ServiceList": {
+      "title": "Perguntas Frequentes",
+      "subtitle": "Tire suas dúvidas sobre nossos planos e funcionalidades. Se precisar de mais informações, nossa equipe está sempre disponível para ajudar.",
+      "question1": "Quais são as limitações do plano gratuito?",
+      "answer1": "O plano gratuito permite criar até 3 categorias, com 3 projetos em cada categoria. Você terá acesso a todas as funcionalidades básicas do portfólio, incluindo personalização, SEO e domínio personalizado.",
+      "question2": "Como funciona o plano Pagante?",
+      "answer2": "O plano Pagante remove todas as limitações de categorias e projetos. Você pode criar quantas categorias desejar e adicionar quantos projetos precisar. Além disso, tem acesso a temas premium e analytics avançado.",
+      "question3": "O que está incluído no plano Premium?",
+      "answer3": "O plano Premium inclui todas as funcionalidades do plano Pagante, mais acesso ao sistema de gestão de clientes, gestão financeira, curso exclusivo sobre carreira freelancer, mentoria em grupo e comunidade VIP.",
+      "question4": "Posso mudar de plano depois?",
+      "answer4": "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. Ao fazer upgrade, você terá acesso imediato a todas as funcionalidades do novo plano.",
+      "question5": "Como funciona o curso de carreira freelancer?",
+      "answer5": "O curso é exclusivo para assinantes Premium e inclui módulos sobre precificação, gestão de projetos, marketing pessoal, captação de clientes e muito mais. O conteúdo é atualizado regularmente."
+    },
+    "CTA": {
+      "title": "Comece a Criar Seu Portfólio Gratuito Hoje",
+      "subtitle": "Junte-se a milhares de freelancers que estão mostrando seu trabalho e atraindo melhores clientes com nossa plataforma.",
+      "buttonText": "Criar Seu Portfólio",
+      "feature1": "100% Grátis",
+      "feature2": "Sem Cartão de Crédito",
+      "feature3": "Configure em Minutos"
+    },
+    "ClientList": {
+      "title": "Clientes",
+      "addClient": "Adicionar Cliente"
+    },
+    "ServiceList": {
       "title": "Serviços",
       "addService": "Adicionar Serviço",
       "noServicesFound": "Nenhum serviço encontrado",
@@ -276,18 +275,107 @@
       "servicesReport": "Relatório de Serviços",
       "productivityReport": "Relatório de Produtividade"
     },
+    "ClientManagement": {
+      "title": "Gestão de Clientes",
+      "tabs": {
+        "clients": "Clientes",
+        "services": "Serviços",
+        "expenses": "Despesas",
+        "financial": "Visão Financeira",
+        "reports": "Relatórios"
+      }
+    },
     "FinancialOverview": {
       "totalRevenue": "Receita Total",
       "pendingPayments": "Pagamentos Pendentes",
       "completedProjects": "Projetos Concluídos",
+      "completedProjectsDesc": "Total de projetos concluídos",
       "activeProjects": "Projetos Ativos",
+      "activeProjectsDesc": "Atualmente em progresso",
       "overview": "Visão Geral",
       "analytics": "Análise",
       "reports": "Relatórios",
       "notifications": "Notificações",
       "detailedAnalytics": "Análise Detalhada",
       "financialReports": "Relatórios Financeiros",
-      "financialNotifications": "Notificações Financeiras"
+      "financialNotifications": "Notificações Financeiras",
+      "averageEarningsExpenses": "Média de Ganhos e Despesas",
+      "totalExpenses": "Despesas totais",
+      "fromLastMonth": "em relação ao mês passado",
+      "placeholderAnalytics": "Análises detalhadas serão implementadas aqui",
+      "placeholderReports": "Relatórios financeiros serão implementados aqui",
+      "placeholderNotifications": "Notificações financeiras e alertas serão implementados aqui"
+    },
+    "ClientTable": {
+      "name": "Nome",
+      "email": "Email",
+      "phone": "Telefone",
+      "whatsapp": "WhatsApp",
+      "document": "Documento",
+      "actions": "Ações",
+      "deleteClient": "Excluir Cliente",
+      "deleteConfirm": "Tem certeza de que deseja excluir este cliente? Esta ação não pode ser desfeita.",
+      "deleteCancel": "Cancelar",
+      "deleteAction": "Excluir",
+      "noClientsFound": "Nenhum cliente encontrado"
+    },
+    "ClientDetails": {
+      "contactInformation": "Informações de Contato",
+      "email": "Email",
+      "phone": "Telefone",
+      "whatsapp": "WhatsApp",
+      "document": "Documento",
+      "address": "Endereço",
+      "street": "Rua",
+      "city": "Cidade",
+      "state": "Estado",
+      "zipCode": "CEP",
+      "country": "País",
+      "observation": "Observação",
+      "pendingServices": "Serviços Pendentes",
+      "completedServices": "Serviços Concluídos",
+      "noPendingServices": "Nenhum serviço pendente",
+      "noCompletedServices": "Nenhum serviço concluído",
+      "value": "Valor",
+      "started": "Iniciado em",
+      "completed": "Concluído em"
+    },
+    "Services": {
+      "status": {
+        "pending": "Pendente",
+        "in_progress": "Em Progresso",
+        "completed": "Concluído",
+        "cancelled": "Cancelado"
+      },
+      "paymentStatus": {
+        "pending": "Pendente",
+        "partial": "Parcial",
+        "paid": "Pago"
+      }
+    },
+    "ClientDialog": {
+      "successTitle": "Sucesso",
+      "successMessage_update": "Cliente atualizado com sucesso",
+      "successMessage_create": "Cliente criado com sucesso",
+      "errorTitle": "Erro",
+      "errorMessage_update": "Falha ao atualizar cliente",
+      "errorMessage_create": "Falha ao criar cliente",
+      "editClient": "Editar Cliente",
+      "addClient": "Adicionar Cliente",
+      "name": "Nome",
+      "email": "Email",
+      "phone": "Telefone",
+      "whatsapp": "WhatsApp",
+      "document": "Documento",
+      "address": "Endereço",
+      "street": "Rua",
+      "city": "Cidade",
+      "state": "Estado",
+      "zipCode": "CEP",
+      "country": "País",
+      "observation": "Observação",
+      "saving": "Salvando...",
+      "saveClient": "Salvar Cliente"
     },
     "ContactForm": {
       "name": "Nome",
@@ -310,7 +398,6 @@
     }
   },
   "welcomeMessage": "Bem-vindo ao Portify!",
-  
   "dashboard": "Painel",
   "login": "Entrar"
 }

@@ -87,7 +87,7 @@ export function ExpenseDialog({ expense, open, onOpenChange, onSubmit }: Expense
       form.reset({
         title:               expense.title,
         category:            expense.category,
-        amount:              expense.amount.toString(),
+        amount:              expense.amount?.toString() || "",
         date:                expense.date ? new Date(expense.date) : new Date(),
         paymentMethod:       expense.paymentMethod,
         paymentStatus:       expense.paymentStatus,

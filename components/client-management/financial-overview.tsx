@@ -160,7 +160,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
             </div>
             <p className="text-xs text-muted-foreground">
               {monthlyGrowth >= 0 ? "+" : ""}
-              {monthlyGrowth.toFixed(1)}% from last month
+              {monthlyGrowth.toFixed(1)}% {t("FinancialOverview.fromLastMonth")}
             </p>
           </CardContent>
         </Card>
@@ -186,14 +186,14 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Completed Projects
+              {t("FinancialOverview.completedProjects")}
             </CardTitle>
             <TrendingDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.completedProjects}</div>
             <p className="text-xs text-muted-foreground">
-              All time completed projects
+              {t("FinancialOverview.completedProjectsDesc")}
             </p>
           </CardContent>
         </Card>
@@ -205,7 +205,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.activeProjects}</div>
-            <p className="text-xs text-muted-foreground">Currently in progress</p>
+            <p className="text-xs text-muted-foreground">{t("FinancialOverview.activeProjectsDesc")}</p>
           </CardContent>
         </Card>
       </div>
@@ -229,7 +229,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Detailed analytics will be implemented here
+                {t("FinancialOverview.placeholderAnalytics")}
               </p>
               <PerformanceAnalysis userId={userId}/>
             </CardContent>
@@ -243,7 +243,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Financial reports will be implemented here
+                {t("FinancialOverview.placeholderReports")}
               </p>
             </CardContent>
           </Card>
@@ -256,7 +256,7 @@ export function FinancialOverview({ userId }: FinancialOverviewProps) {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Financial notifications and alerts will be implemented here
+                {t("FinancialOverview.placeholderNotifications")}
               </p>
             </CardContent>
           </Card>

@@ -110,8 +110,12 @@ export function ExpenseList({ userId }: ExpenseListProps) {
   }
 
   // Totalizadores do cabeçalho
-  const totalPago    = expenses.filter(e => e.paymentStatus === "paid").reduce((s, e) => s + e.amount, 0);
-  const totalPendente = expenses.filter(e => e.paymentStatus === "pending").reduce((s, e) => s + e.amount, 0);
+  const totalPago = expenses
+    .filter((e) => e.paymentStatus === "paid")
+    .reduce((s, e) => s + (Number(e.amount) || 0), 0);
+  const totalPendente = expenses
+    .filter((e) => e.paymentStatus === "pending")
+    .reduce((s, e) => s + (Number(e.amount) || 0), 0);
   const fmt = (v: number) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v);
 
   if (isLoading) return <div>Carregando...</div>;

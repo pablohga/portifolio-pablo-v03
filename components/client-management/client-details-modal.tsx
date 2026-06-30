@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatName } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTranslation } from "react-i18next";
 
 interface Service {
   _id: string;
@@ -52,6 +53,7 @@ export function ClientDetailsModal({
   open,
   onOpenChange,
 }: ClientDetailsModalProps) {
+  const { t } = useTranslation();
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { firstName, lastName } = formatName(client?.name);
@@ -104,25 +106,25 @@ export function ClientDetailsModal({
         <div className="grid grid-cols-2 gap-4 mb-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Contact Information</CardTitle>
+              <CardTitle className="text-lg">{t("ClientDetails.contactInformation")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               <p>
-                <span className="font-medium">Email:</span> {client.email}
+                <span className="font-medium">{t("ClientDetails.email")}:</span> {client.email}
               </p>
               {client.phone && (
                 <p>
-                  <span className="font-medium">Phone:</span> {client.phone}
+                  <span className="font-medium">{t("ClientDetails.phone")}:</span> {client.phone}
                 </p>
               )}
               {client.whatsapp && (
                 <p>
-                  <span className="font-medium">WhatsApp:</span> {client.whatsapp}
+                  <span className="font-medium">{t("ClientDetails.whatsapp")}:</span> {client.whatsapp}
                 </p>
               )}
               {client.document && (
                 <p>
-                  <span className="font-medium">Document:</span> {client.document}
+                  <span className="font-medium">{t("ClientDetails.document")}:</span> {client.document}
                 </p>
               )}
             </CardContent>
@@ -130,35 +132,35 @@ export function ClientDetailsModal({
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Address</CardTitle>
+              <CardTitle className="text-lg">{t("ClientDetails.address")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
               {client.address?.street && (
                 <p>
-                  <span className="font-medium">Street:</span>{" "}
+                  <span className="font-medium">{t("ClientDetails.street")}:</span>{" "}
                   {client.address.street}
                 </p>
               )}
               {client.address?.city && (
                 <p>
-                  <span className="font-medium">City:</span> {client.address.city}
+                  <span className="font-medium">{t("ClientDetails.city")}:</span> {client.address.city}
                 </p>
               )}
               {client.address?.state && (
                 <p>
-                  <span className="font-medium">State:</span>{" "}
+                  <span className="font-medium">{t("ClientDetails.state")}:</span>{" "}
                   {client.address.state}
                 </p>
               )}
               {client.address?.zipCode && (
                 <p>
-                  <span className="font-medium">ZIP Code:</span>{" "}
+                  <span className="font-medium">{t("ClientDetails.zipCode")}:</span>{" "}
                   {client.address.zipCode}
                 </p>
               )}
               {client.address?.country && (
                 <p>
-                  <span className="font-medium">Country:</span>{" "}
+                  <span className="font-medium">{t("ClientDetails.country")}:</span>{" "}
                   {client.address.country}
                 </p>
               )}
@@ -169,7 +171,7 @@ export function ClientDetailsModal({
         {client.observation && (
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle className="text-lg">Observation</CardTitle>
+              <CardTitle className="text-lg">{t("ClientDetails.observation")}</CardTitle>
             </CardHeader>
             <CardContent>
               <p>{client.observation}</p>
@@ -179,8 +181,8 @@ export function ClientDetailsModal({
 
         <Tabs defaultValue="pending" className="w-full">
           <TabsList>
-            <TabsTrigger value="pending">Pending Services</TabsTrigger>
-            <TabsTrigger value="completed">Completed Services</TabsTrigger>
+            <TabsTrigger value="pending">{t("ClientDetails.pendingServices")}</TabsTrigger>
+            <TabsTrigger value="completed">{t("ClientDetails.completedServices")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="pending">
@@ -188,7 +190,7 @@ export function ClientDetailsModal({
               <div className="space-y-4">
                 {pendingServices.length === 0 ? (
                   <p className="text-center text-muted-foreground py-4">
-                    No pending services
+                    {t("ClientDetails.noPendingServices")}
                   </p>
                 ) : (
                   pendingServices.map((service) => (
@@ -202,7 +204,7 @@ export function ClientDetailsModal({
                             </p>
                           </div>
                           <div className="flex gap-2">
-                            <Badge variant="outline">{service.status}</Badge>
+                            <Badge variant="outline">{t(`Services.status.${service.status}`)}</Badge>
                             <Badge
                               variant={
                                 service.paymentStatus === "paid"
@@ -212,13 +214,13 @@ export function ClientDetailsModal({
                                   : "destructive"
                               }
                             >
-                              {service.paymentStatus}
+                              {t(`Services.paymentStatus.${service.paymentStatus}`)}
                             </Badge>
                           </div>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span>
-                            Value:{" "}
+                            {t("ClientDetails.value")}:{" "}
                             {new Intl.NumberFormat("pt-BR", {
                               style: "currency",
                               currency: "BRL",
@@ -226,7 +228,7 @@ export function ClientDetailsModal({
                           </span>
                           {service.startDate && (
                             <span>
-                              Started:{" "}
+                              {t("ClientDetails.started")}:{" "}
                               {new Date(service.startDate).toLocaleDateString()}
                             </span>
                           )}
@@ -244,7 +246,7 @@ export function ClientDetailsModal({
               <div className="space-y-4">
                 {completedServices.length === 0 ? (
                   <p className="text-center text-muted-foreground py-4">
-                    No completed services
+                    {t("ClientDetails.noCompletedServices")}
                   </p>
                 ) : (
                   completedServices.map((service) => (
@@ -258,7 +260,7 @@ export function ClientDetailsModal({
                             </p>
                           </div>
                           <div className="flex gap-2">
-                            <Badge variant="outline">{service.status}</Badge>
+                            <Badge variant="outline">{t(`Services.status.${service.status}`)}</Badge>
                             <Badge
                               variant={
                                 service.paymentStatus === "paid"
@@ -268,13 +270,13 @@ export function ClientDetailsModal({
                                   : "destructive"
                               }
                             >
-                              {service.paymentStatus}
+                              {t(`Services.paymentStatus.${service.paymentStatus}`)}
                             </Badge>
                           </div>
                         </div>
                         <div className="flex justify-between text-sm">
                           <span>
-                            Value:{" "}
+                            {t("ClientDetails.value")}:{" "}
                             {new Intl.NumberFormat("pt-BR", {
                               style: "currency",
                               currency: "BRL",
@@ -282,7 +284,7 @@ export function ClientDetailsModal({
                           </span>
                           {service.endDate && (
                             <span>
-                              Completed:{" "}
+                              {t("ClientDetails.completed")}:{" "}
                               {new Date(service.endDate).toLocaleDateString()}
                             </span>
                           )}

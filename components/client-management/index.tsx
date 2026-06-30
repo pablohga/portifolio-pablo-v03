@@ -7,23 +7,26 @@ import { ServiceList } from "./service-list";
 import { ExpenseList } from "./expense-list";
 import { FinancialOverview } from "./financial-overview";
 import { ReportsSection } from "./reports/reports-section";
+import { useTranslation } from "react-i18next";
 
 interface ClientManagementProps {
   userId: string;
+  defaultTab?: string;
 }
 
-export function ClientManagement({ userId }: ClientManagementProps) {
+export function ClientManagement({ userId, defaultTab = "clients" }: ClientManagementProps) {
+  const { t } = useTranslation();
   return (
     <div className="container mx-auto py-20 max-w-[960px]">
-      <h1 className="text-3xl font-bold mb-8">Client Management</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("ClientManagement.title")}</h1>
 
-      <Tabs defaultValue="clients" className="w-full">
+      <Tabs defaultValue={defaultTab} className="w-full">
         <TabsList className="grid w-full grid-cols-5 mb-8 font-bold">
-          <TabsTrigger className="font-bold" value="clients">Clients</TabsTrigger>
-          <TabsTrigger className="font-bold" value="services">Services</TabsTrigger>
-          <TabsTrigger className="font-bold" value="expenses">Expenses</TabsTrigger>
-          <TabsTrigger className="font-bold" value="financial">Financial Overview</TabsTrigger>
-          <TabsTrigger className="font-bold" value="reports">Reports</TabsTrigger>
+          <TabsTrigger className="font-bold" value="clients">{t("ClientManagement.tabs.clients")}</TabsTrigger>
+          <TabsTrigger className="font-bold" value="services">{t("ClientManagement.tabs.services")}</TabsTrigger>
+          <TabsTrigger className="font-bold" value="expenses">{t("ClientManagement.tabs.expenses")}</TabsTrigger>
+          <TabsTrigger className="font-bold" value="financial">{t("ClientManagement.tabs.financial")}</TabsTrigger>
+          <TabsTrigger className="font-bold" value="reports">{t("ClientManagement.tabs.reports")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="clients">

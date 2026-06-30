@@ -10,6 +10,7 @@ import { ExternalLink, Settings, Trash2, Pencil } from "lucide-react";
 import { Project } from "@/types/project";
 import { Category } from "@/types/category";
 import { Testimonial } from "@/types/testimonial";
+import { SUBSCRIPTION_LIMITS, SubscriptionTier } from "@/types/subscription";
 import { formatName } from "@/lib/utils";
 import { SubscriptionBadge } from "@/components/subscription-badge";
 import Link from "next/link";
@@ -259,6 +260,20 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   async function handleCreateProject(data: Partial<Project>) {
     try {
+      const tier = (session?.user?.subscriptionTier as SubscriptionTier) || 'free';
+
+      if (tier === 'free') {
+        const projectsInCategory = projects.filter(p => p.category === data.category).length;
+        if (projectsInCategory >= SUBSCRIPTION_LIMITS.free.maxProjectsPerCategory) {
+          toast({
+            title: "Limit Reached",
+            description: `Free tier allows only ${SUBSCRIPTION_LIMITS.free.maxProjectsPerCategory} projects per category. Please upgrade your plan.`,
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
       const res = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -308,6 +323,17 @@ export function DashboardContent({ userId }: DashboardContentProps) {
 
   async function handleCreateCategory(data: Partial<Category>) {
     try {
+      const tier = (session?.user?.subscriptionTier as SubscriptionTier) || 'free';
+
+      if (tier === 'free' && !editingCategoryId && categories.length >= SUBSCRIPTION_LIMITS.free.maxCategories) {
+        toast({
+          title: "Limit Reached",
+          description: `Free tier allows only ${SUBSCRIPTION_LIMITS.free.maxCategories} categories. Please upgrade your plan.`,
+          variant: "destructive",
+        });
+        return;
+      }
+
       const res = await fetch("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

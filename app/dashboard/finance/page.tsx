@@ -5,7 +5,7 @@ import { ClientManagement } from "@/components/client-management";
 // Força a rota a ser dinâmica
 export const dynamic = 'force-dynamic';
 
-export default async function ClientsPage() {
+export default async function FinancePage() {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -16,5 +16,5 @@ export default async function ClientsPage() {
     redirect("/dashboard/upgrade");
   }
 
-  return <ClientManagement userId={user._id.toString()} defaultTab="clients" />;
+  return <ClientManagement userId={user._id.toString()} defaultTab="financial" />;
 }

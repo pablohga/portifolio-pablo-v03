@@ -8,6 +8,7 @@ import { DARK, LIGHT } from "@/constants/theme";
 import { HeroSection } from "@/components/landing/hero";
 import { HowItWorksSection } from "@/components/landing/how-it-works";
 import { FeaturesSection } from "@/components/landing/features";
+import { TemplatesSection } from "@/components/landing/templates-section";
 import { CommunitySection } from "@/components/landing/community";
 import { TestimonialsWrapper } from "@/components/landing/testimonials";
 import { PricingSection } from "@/components/landing/pricing";
@@ -58,6 +59,7 @@ export default function PortifyLanding() {
       <HeroSection dark={dark} />
       <HowItWorksSection dark={dark} />
       <FeaturesSection dark={dark} />
+      <TemplatesSection dark={dark} />
       <CommunitySection dark={dark} />
       <TestimonialsWrapper dark={dark} />
       <PricingSection dark={dark} />
