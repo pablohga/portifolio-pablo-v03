@@ -97,7 +97,7 @@ export default async function RootLayout({
       <body className={`${montserrat.className}`}>
         <AuthProvider>
           <LanguageProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
               <Navbar />
               {children}
               <Toaster />
