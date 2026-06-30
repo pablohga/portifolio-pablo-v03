@@ -66,29 +66,39 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
 
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           {/* Templates Grid */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-4">
-            {TEMPLATES.map((template, index) => (
-              <div
-                key={template.name}
-                className={cn(
-                  "group relative rounded-xl overflow-hidden border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl",
-                  dark ? "border-white/10 bg-white/5 hover:border-primary/50" : "border-black/5 bg-slate-50 hover:border-primary/50"
-                )}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className="aspect-[4/3] relative overflow-hidden">
-                  <Image
-                    src={template.image}
-                    alt={template.name}
-                    fill
-                    className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <span className="text-white text-sm font-medium">{template.name}</span>
+          <div className="lg:col-span-7 space-y-8">
+            <div className="relative aspect-video rounded-2xl overflow-hidden border shadow-2xl transition-all duration-500">
+              <Image
+                src="/images/image_templates.jpeg"
+                alt="Templates Showcase"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {TEMPLATES.map((template, index) => (
+                <div
+                  key={template.name}
+                  className={cn(
+                    "group relative rounded-xl overflow-hidden border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl",
+                    dark ? "border-white/10 bg-white/5 hover:border-primary/50" : "border-black/5 bg-slate-50 hover:border-primary/50"
+                  )}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="aspect-[4/3] relative overflow-hidden">
+                    <Image
+                      src={template.image}
+                      alt={template.name}
+                      fill
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <span className="text-white text-sm font-medium">{template.name}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Advantages List */}
