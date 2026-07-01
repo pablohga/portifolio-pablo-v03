@@ -89,7 +89,7 @@ export function PerformanceAnalysis({ userId }: FinancialOverviewProps) {
   return (
     <Card className="p-4">
       <CardHeader>
-        <CardTitle className="text-xl">📊 Análise de Desempenho Financeiro</CardTitle>
+        <CardTitle className="text-xl">Análise de Desempenho Financeiro</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
         

@@ -10,6 +10,7 @@ import { TransactionsList } from "./transactions-list";
 import { Download } from "lucide-react";
 import { useAnalyticsData } from "@/hooks/use-analytics-data";
 import { useAnalyticsFilters } from "@/hooks/use-analytics-filters";
+import { useTranslation } from "react-i18next";
 import { Service } from "@/types/service";
 
 interface AnalyticsSectionProps {
@@ -17,6 +18,7 @@ interface AnalyticsSectionProps {
 }
 
 export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
+  const { t } = useTranslation();
   const { services, clients, isLoading } = useAnalyticsData(userId);
   const {
     dateRange,
@@ -55,10 +57,10 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
           />
           <Select value={selectedClient} onValueChange={setSelectedClient}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select client" />
+              <SelectValue placeholder={t("ReportsSection.selectClient")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Clients</SelectItem>
+              <SelectItem value="all">{t("ReportsSection.allClients")}</SelectItem>
               {clients.map(client => (
                 <SelectItem key={client._id} value={client._id}>
                   {client.name}
@@ -68,33 +70,33 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
           </Select>
           <Select value={selectedStatus} onValueChange={setSelectedStatus}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Service status" />
+              <SelectValue placeholder={t("ReportsSection.serviceStatus")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="all">{t("ReportsSection.allStatus")}</SelectItem>
+              <SelectItem value="pending">{t("ReportsSection.pending")}</SelectItem>
+              <SelectItem value="in_progress">{t("ReportsSection.inProgress")}</SelectItem>
+              <SelectItem value="completed">{t("ReportsSection.completed")}</SelectItem>
+              <SelectItem value="cancelled">{t("ReportsSection.cancelled")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleExportPDF}>
             <Download className="mr-2 h-4 w-4" />
-            Export PDF
+            {t("ReportsSection.exportPDF")}
           </Button>
           <Button variant="outline" onClick={handleExportExcel}>
             <Download className="mr-2 h-4 w-4" />
-            Export Excel
+            {t("ReportsSection.exportExcel")}
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Revenue by Month</CardTitle>
+            <CardTitle>{t("FinancialOverview.revenueByMonth")}</CardTitle>
           </CardHeader>
           <CardContent>
             <RevenueChart services={filteredServices} />
@@ -103,7 +105,7 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Revenue Distribution</CardTitle>
+            <CardTitle>{t("FinancialOverview.revenueDistribution")}</CardTitle>
           </CardHeader>
           <CardContent>
             <DistributionChart services={filteredServices} clients={clients} />
@@ -112,7 +114,7 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Payment Trends</CardTitle>
+            <CardTitle>{t("FinancialOverview.paymentTrends")}</CardTitle>
           </CardHeader>
           <CardContent>
             <TrendChart services={filteredServices} />
@@ -122,7 +124,7 @@ export function AnalyticsSection({ userId }: AnalyticsSectionProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
+          <CardTitle>{t("FinancialOverview.recentTransactions")}</CardTitle>
         </CardHeader>
         <CardContent>
           <TransactionsList services={filteredServices} clients={clients} />

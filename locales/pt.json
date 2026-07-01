@@ -304,7 +304,11 @@
       "fromLastMonth": "em relação ao mês passado",
       "placeholderAnalytics": "Análises detalhadas serão implementadas aqui",
       "placeholderReports": "Relatórios financeiros serão implementados aqui",
-      "placeholderNotifications": "Notificações financeiras e alertas serão implementados aqui"
+      "placeholderNotifications": "Notificações financeiras e alertas serão implementados aqui",
+      "revenueByMonth": "Receita por Mês",
+      "revenueDistribution": "Distribuição de Receita",
+      "paymentTrends": "Tendências de Pagamento",
+      "recentTransactions": "Transações Recentes"
     },
     "ClientTable": {
       "name": "Nome",

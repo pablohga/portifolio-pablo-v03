@@ -14,6 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import { formatCurrency } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface FinancialReportProps {
   userId: string;
@@ -42,6 +43,7 @@ export function FinancialReport({
   selectedClient,
   selectedStatus,
 }: FinancialReportProps) {
+  const { t } = useTranslation();
   const [data, setData] = useState<FinancialSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -69,11 +71,11 @@ export function FinancialReport({
   }, [userId, dateRange, selectedClient, selectedStatus]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("Common.loading")}</div>;
   }
 
   if (!data) {
-    return <div>No data available</div>;
+    return <div>{t("Common.noData")}</div>;
   }
 
   return (
@@ -81,7 +83,7 @@ export function FinancialReport({
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Total Received</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("FinancialReport.totalReceived")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -92,7 +94,7 @@ export function FinancialReport({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Total Pending</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("FinancialReport.totalPending")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -104,7 +106,7 @@ export function FinancialReport({
         <Card>
           <CardHeader>
             <CardTitle className="text-sm font-medium">
-              Average Monthly Revenue
+              {t("FinancialReport.averageMonthlyRevenue")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -120,7 +122,7 @@ export function FinancialReport({
 
       <Card>
         <CardHeader>
-          <CardTitle>Monthly Revenue</CardTitle>
+          <CardTitle>{t("FinancialReport.monthlyRevenue")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[300px]">
@@ -144,7 +146,7 @@ export function FinancialReport({
 
       <Card>
         <CardHeader>
-          <CardTitle>Pending Payments</CardTitle>
+          <CardTitle>{t("FinancialReport.pendingPayments")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -156,7 +158,7 @@ export function FinancialReport({
                 <div>
                   <div className="font-medium">{payment.clientName}</div>
                   <div className="text-sm text-muted-foreground">
-                    Due: {new Date(payment.dueDate).toLocaleDateString()}
+                    {t("FinancialReport.dueDate")}: {new Date(payment.dueDate).toLocaleDateString()}
                   </div>
                 </div>
                 <div className="font-bold">{formatCurrency(payment.amount)}</div>
