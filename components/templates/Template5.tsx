@@ -1866,7 +1866,7 @@ useEffect(() => {
         {/* <img src="==" alt="Portify" /> */}
         <Link href={'/'} className="justify-center">
           <Logo
-          alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
+          alterIcon="/images/logo_nova_txt_g_dark.png"
           alterH={80}
           alterW={120}/>
         </Link>

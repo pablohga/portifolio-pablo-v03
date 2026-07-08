@@ -237,8 +237,8 @@ useEffect(() => {
           --text-primary: var(--text-primary-dark);
           --text-secondary: var(--text-secondary-dark);
           --nav-bg: rgba(9,14,26,0.92);
-          --logo-src: url("https://agenciaaimagic.com.br/portify/logo_nova_txt_m_dark.png");
-          --hero-img: url("https://agenciaaimagic.com.br/portify/hero_img_dark.png");
+          --logo-src: url("/images/logo_nova_txt_m_dark.png");
+          --hero-img: url("/images/hero_img_dark.png");
         }
 
         [data-theme="light"] {
@@ -249,8 +249,8 @@ useEffect(() => {
           --text-primary: var(--text-primary-light);
           --text-secondary: var(--text-secondary-light);
           --nav-bg: rgba(245,242,236,0.92);
-          --logo-src: url("https://agenciaaimagic.com.br/portify/logo_nova_txt_g_light.png");
-          --hero-img: url("https://agenciaaimagic.com.br/portify/hero_img_light.png");
+          --logo-src: url("/images/logo_nova_txt_g_light.png");
+          --hero-img: url("/images/hero_img_light.png");
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1433,7 +1433,7 @@ useEffect(() => {
     <nav>
       <Link href={'/'} className="justify-center">
         <Logo
-        alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
+        alterIcon="/images/logo_nova_txt_g_dark.png"
         alterH={80}
         alterW={120}/>
       </Link>
@@ -1866,7 +1866,7 @@ useEffect(() => {
         {/* <img src="==" alt="Portify" /> */}
         <Link href={'/'} className="justify-center">
           <Logo
-          alterIcon="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
+          alterIcon="/images/logo_nova_txt_g_dark.png"
           alterH={80}
           alterW={120}/>
         </Link>

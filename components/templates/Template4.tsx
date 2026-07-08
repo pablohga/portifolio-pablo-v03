@@ -1259,7 +1259,7 @@ export default function Template1({ userId, categories, projects, userImage, use
         <div className="container">
           <div className="instructor-grid">
             <div className="instructor-img reveal">
-              <img src={userImage || "https://agenciaaimagic.com.br/portify/no-image.jpg"} alt="Instructor" />
+              <img src={userImage || "/images/no-image.jpg"} alt="Instructor" />
             </div>
             <div className="instructor-copy reveal">
               <div className="badge">Seu parceiro de jornada</div>

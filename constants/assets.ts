@@ -1,7 +1,7 @@
-export const HERO_DARK = "https://agenciaaimagic.com.br/portify/hero_img_dark.png"
-export const HERO_LIGHT = "https://agenciaaimagic.com.br/portify/hero_img_light.png"
-export const LOGO_DARK = "https://agenciaaimagic.com.br/portify/logo_nova_txt_m_dark.png"
-export const LOGO_LIGHT = "https://agenciaaimagic.com.br/portify/logo_nova_txt_g_light.png"
+export const HERO_DARK = "/images/hero_img_dark.png"
+export const HERO_LIGHT = "/images/hero_img_light.png"
+export const LOGO_DARK = "/images/logo_nova_txt_m_dark.png"
+export const LOGO_LIGHT = "/images/logo_nova_txt_g_light.png"
 
 export const ICONS = {
   free: "M12 2L2 7l10 5 10-5-zM2 17l10 5 10-5M2 12l10 5 10-5",
