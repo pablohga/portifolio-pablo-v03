@@ -64,7 +64,7 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
 
   return (
   <section
-    style={{ backgroundImage: `url(${theme === 'light' ? 'https://agenciaaimagic.com.br/portify/hero_img_home-light.png' : 'https://agenciaaimagic.com.br/portify/hero_img_home.png'})` }}
+    style={{ backgroundImage: `url(${theme === 'light' ? '/images/hero_img_home-light.png' : '/images/hero_img_home.png'})` }}
     className="relative min-h-screen flex items-center justify-left overflow-hidden bg-cover bg-center w-full"
   >
     <div className="absolute inset-0 bg-grid-white/10" />
@@ -76,9 +76,6 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center justify-center gap-2 mb-6">
-              {/* <span className="text-primary font-semibold">
-                <span dangerouslySetInnerHTML={{ __html: dataSubtitle }} />
-              </span> */}
               <p
               className="text-xl text-muted-foreground max-w-2xl mx-auto"
               dangerouslySetInnerHTML={{
@@ -87,10 +84,6 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
             </div>
             <h1 className=" text-4xl md:text-6xl font-bold mb-6 text-[#A2D9F7] bg-clip-text to-primary/70 drop-shadow-lg"
             dangerouslySetInnerHTML={{ __html: t("HeroSection.title") }} />
-              {/* <span dangerouslySetInnerHTML={{ __html: dataTitle }} /> */}
-              {/* {t("HeroSection.title")} */}
-            {/* </h1> */}
-            {/* remover */}
             <p
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
             dangerouslySetInnerHTML={{
@@ -98,20 +91,17 @@ const heroContent = defaultHeroContent; // Garantir que há um fallback caso `da
             }} suppressHydrationWarning={true}/>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            {/* <span dangerouslySetInnerHTML={{ __html: dataDescription }} /> */}
             {t("HeroSection.description")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="text-lg px-8" asChild>
                 <Link href={data?.buttonLink || "/auth/register"}>
-                  {/* <div dangerouslySetInnerHTML={{ __html: dataButtonText }} /> */}
                   {t("HeroSection.button")}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              {/*  Throw your amazing portfolio site totally free.No hidden rates, no credit card - only pure value for freelancers. */}
               {t("HeroSection.text")}
             </p>
           </motion.div>

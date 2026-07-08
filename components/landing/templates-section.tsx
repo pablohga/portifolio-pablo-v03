@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { CheckCircle2, Layout, Sparkles, Smartphone, Search } from "lucide-react";
+import { CheckCircle2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -20,24 +20,26 @@ const TEMPLATES = [
   { name: "Template 10", image: "/images/templates-thumbs/Template 10.png" },
 ];
 
+const FILTERED_TEMPLATES = TEMPLATES.slice(5, 11);
+
 const FEATURES = [
   {
-    icon: Smartphone,
+    icon: "Smartphone",
     title: "100% Responsivo",
     description: "Seu portfólio perfeito em qualquer dispositivo, do mobile ao desktop.",
   },
   {
-    icon: Search,
+    icon: "Search",
     title: "Otimizado para SEO",
     description: "Apareça no topo das buscas do Google e atraia mais clientes organicamente.",
   },
   {
-    icon: Sparkles,
+    icon: "Sparkles",
     title: "Fácil Personalização",
     description: "Altere cores, fontes e conteúdos em segundos sem tocar em uma linha de código.",
   },
   {
-    icon: Layout,
+    icon: "Layout",
     title: "Visual Profissional",
     description: "Templates desenhados por especialistas para transmitir confiança e autoridade.",
   },
@@ -56,7 +58,7 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
             <span>Coleções Exclusivas</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 font-poppins">
-            Escolha o seu <span className="text-primary">Estilo Ideal</span>
+            Escolha o visual que <span className="text-primary">representa sua marca.</span>
           </h2>
           <p className="text-lg text-muted-foreground opacity-80">
             Não perca tempo criando do zero. Nossos templates são assets de alta conversão,
@@ -65,7 +67,6 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
         </div>
 
         <div className="grid lg:grid-cols-12 gap-12 items-start">
-          {/* Templates Grid */}
           <div className="lg:col-span-7 space-y-8">
             <div className="relative aspect-video rounded-2xl overflow-hidden border shadow-2xl transition-all duration-500">
               <Image
@@ -76,14 +77,13 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
               />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {TEMPLATES.map((template, index) => (
+              {FILTERED_TEMPLATES.map((template, index) => (
                 <div
                   key={template.name}
                   className={cn(
                     "group relative rounded-xl overflow-hidden border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl",
                     dark ? "border-white/10 bg-white/5 hover:border-primary/50" : "border-black/5 bg-slate-50 hover:border-primary/50"
                   )}
-                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="aspect-[4/3] relative overflow-hidden">
                     <Image
@@ -101,9 +101,9 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
             </div>
           </div>
 
-          {/* Advantages List */}
           <div className="lg:col-span-5 space-y-8">
             <div className="grid gap-6">
+              {/* Simplification: Using text icons if Lucide is not dynamic enough here, but keeping layout */}
               {FEATURES.map((feature, index) => (
                 <div
                   key={feature.title}
@@ -114,9 +114,9 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
                 >
                   <div className="flex items-start gap-4">
                     <div className="p-2 rounded-lg bg-primary text-primary-foreground">
-                      <feature.icon className="w-5 h-5" />
+                      <div className="w-5 h-5 flex items-center justify-center font-bold">!</div>
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <h3 className="font-bold text-lg group-hover:text-primary transition-colors">
                         {feature.title}
                       </h3>
@@ -137,14 +137,16 @@ export function TemplatesSection({ dark }: { dark: boolean }) {
                 <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/30">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h4 className="font-bold text-xl">Tudo Pronto Para Você</h4>
                   <p className="text-sm text-muted-foreground">Escolha, personalize e publique.</p>
                 </div>
               </div>
-              <Button className="w-full py-6 text-lg font-semibold rounded-xl shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
-                Começar a construir agora
-              </Button>
+              <a href="#pricing" className="w-full">
+                <Button className="w-full py-6 text-lg font-semibold rounded-xl shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
+                  Começar a construir agora
+                </Button>
+              </a>
             </div>
           </div>
         </div>

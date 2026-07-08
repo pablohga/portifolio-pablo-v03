@@ -1,52 +1,49 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { CTASection as CTASectionType } from "@/types/home";
-import { useTranslation } from "react-i18next";
+import { Reveal } from "@/components/ui/reveal";
 
-interface CTASectionProps {
-  data?: CTASectionType;
-}
-
-export function CTASection({ data }: CTASectionProps) {
-
-  const { t, ready } = useTranslation();
-  
-  // FIX QUANDO ESTIVER COM TODAS AS LINGUAGENS NO BANCO DE DADOS
-  const title = /* data?.title || */ t("CTA.title");
-  const subtitle = /* data?.subtitle || */ t("CTA.subtitle");
-  const buttonText = /* data?.buttonText || */ t("CTA.buttonText");
-  const features = /* data?.features || */ [t("CTA.feature1"), t("CTA.feature2"), t("CTA.feature3")];
-
+export function CTASection({ dark }: { dark: boolean }) {
   return (
-    <section className="py-20 bg-primary/5">
-      <div className="container px-4 mx-auto max-w-[960px]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <h2 className="text-4xl font-bold mb-4">
-            {title}
+    <section className={`py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden ${
+      dark ? "bg-[#1E1F25]" : "bg-blue-600"
+    }`}>
+      {/* Decorative Glow */}
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-3xl opacity-20 pointer-events-none ${
+        dark ? "bg-blue-400" : "bg-white"
+      }`} />
+
+      <div className="max-w-3xl mx-auto text-center relative z-10">
+        <Reveal>
+          <div className={`inline-block px-4 py-1 rounded-full text-xs font-medium mb-6 border ${
+            dark ? "bg-[#A6E7FF]/10 border-[#A6E7FF]/20 text-[#A6E7FF]" : "bg-white/20 border-white/30 text-white"
+          }`}>
+            Sua Carreira Não Pode Esperar
+          </div>
+          <h2 className={`font-poppins text-4xl md:text-6xl font-bold mb-6 leading-tight ${
+            dark ? "text-white" : "text-white"
+          }`}>
+            Construa Seu Futuro <br />
+            <span className={dark ? "text-[#A6E7FF]" : "text-blue-200"}>Hoje Mesmo</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            {subtitle}
+          <p className={`font-inter text-lg mb-10 leading-relaxed ${
+            dark ? "text-slate-400" : "text-blue-100"
+          }`}>
+            Junte-se a mais de 10.000 profissionais que pararam de ser invisíveis e começaram a atrair os melhores clientes do mercado.
           </p>
-          <Button
-            size="lg"
-            className="text-lg px-8"
+          <a
+            href="#pricing"
+            className={`inline-flex items-center justify-center px-10 py-4 rounded-xl font-poppins font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 ${
+              dark
+                ? "bg-gradient-to-r from-[#A6E7FF] to-[#7EDCFF] text-slate-900 shadow-xl shadow-blue-500/20"
+                : "bg-white text-blue-600 shadow-xl shadow-black/10"
+            }`}
           >
-            {buttonText}
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-          <p className="mt-4 text-sm text-primary-foreground/80">
-            {features.join(" • ")}
+            Criar Meu Portfólio Grátis →
+          </a>
+          <p className={`mt-6 font-inter text-xs ${dark ? "text-slate-500" : "text-blue-200"}`}>
+            Sem cartão de crédito · Configuração em 5 minutos · 100% Grátis para começar
           </p>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

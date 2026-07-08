@@ -6,13 +6,17 @@ import { LOGO_DARK, LOGO_LIGHT } from "@/constants/assets";
 import { DARK, LIGHT } from "@/constants/theme";
 
 import { HeroSection } from "@/components/landing/hero";
+import { SolutionSection } from "@/components/landing/solution-section";
+import { UpdateSection } from "@/components/landing/update-section";
+import { VideoSection } from "@/components/landing/video-section";
 import { HowItWorksSection } from "@/components/landing/how-it-works";
 import { FeaturesSection } from "@/components/landing/features";
 import { TemplatesSection } from "@/components/landing/templates-section";
 import { CommunitySection } from "@/components/landing/community";
 import { TestimonialsWrapper } from "@/components/landing/testimonials";
 import { PricingSection } from "@/components/landing/pricing";
-import { FAQSection, CTASection } from "@/components/landing/faq";
+import { FAQSection } from "@/components/landing/faq";
+import { CTASection } from "@/components/landing/cta-section";
 
 function Footer({ dark }: { dark?: boolean }) {
   const c = dark ? DARK : LIGHT;
@@ -57,12 +61,20 @@ export default function PortifyLanding() {
       `}</style>
 
       <HeroSection dark={dark} />
+      <SolutionSection dark={dark} />
+      <CTASection dark={dark} />
+      <UpdateSection dark={dark} />
+      <VideoSection dark={dark} />
       <HowItWorksSection dark={dark} />
       <FeaturesSection dark={dark} />
+      <CTASection dark={dark} />
       <TemplatesSection dark={dark} />
+      <CTASection dark={dark} />
       <CommunitySection dark={dark} />
       <TestimonialsWrapper dark={dark} />
+      <CTASection dark={dark} />
       <PricingSection dark={dark} />
+      <CTASection dark={dark} />
       <FAQSection dark={dark} />
       <CTASection dark={dark} />
       <Footer dark={dark} />

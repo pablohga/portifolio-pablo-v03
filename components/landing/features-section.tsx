@@ -94,8 +94,8 @@ export function FeaturesSection({ data }: FeaturesSectionProps) {
   const features = defaultFeatures;
 
   const bgImage = theme === 'light'
-    ? 'https://agenciaaimagic.com.br/portify/hero_footer-light.png'
-    : 'https://agenciaaimagic.com.br/portify/hero_footer.png';
+    ? '/images/hero_footer-light.png'
+    : '/images/hero_footer.png';
 
   return (
     <section

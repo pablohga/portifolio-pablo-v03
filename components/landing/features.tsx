@@ -1,64 +1,22 @@
 "use client";
 
 import { DARK, LIGHT } from "@/constants/theme";
-import { ICONS } from "@/constants/assets";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "./icons";
+import { ICONS } from "@/constants/assets";
 
-const FEATURES = {
-  growth: [
-    {
-      title: "SEO de Alta Performance",
-      desc: "Seja encontrado pelos clientes certos com nossas tags otimizadas e indexação acelerada.",
-      icon: ICONS.seo,
-      size: "large",
-    },
-    {
-      title: "Domínio Personalizado",
-      desc: "Aumente sua autoridade com seu próprio endereço web.",
-      icon: ICONS.templates,
-      size: "small",
-    },
-  ],
-  management: [
-    {
-      title: "CRM de Freelancers",
-      desc: "Gerencie seus leads e clientes em um único lugar, sem precisar de planilhas complexas.",
-      icon: ICONS.clients,
-      size: "medium",
-    },
-    {
-      title: "Gestão Financeira",
-      desc: "Acompanhe seus ganhos e despesas em tempo real.",
-      icon: ICONS.finance,
-      size: "small",
-    },
-    {
-      title: "Controle de Projetos",
-      desc: "Defina prazos, marcos e organize suas entregas com eficiência.",
-      icon: ICONS.projects,
-      size: "small",
-    },
-  ],
-  speed: [
-    {
-      title: "Setup em 5 Minutos",
-      desc: "Escolha um template, adicione seus projetos e esteja online instantaneamente.",
-      icon: ICONS.fast,
-      size: "medium",
-    },
-    {
-      title: "Hospedagem Segura",
-      desc: "Seus dados protegidos com infraestrutura de nível empresarial.",
-      icon: ICONS.secure,
-      size: "small",
-    },
-  ],
-};
+const FEATURES = [
+  { title: "Publicação em segundos", desc: "Coloque seu portfólio no ar instantaneamente sem complicações.", icon: ICONS.fast },
+  { title: "Responsivo", desc: "Experiência impecável em qualquer tela, do celular ao desktop.", icon: ICONS.templates },
+  { title: "SEO", desc: "Otimizado para que seus clientes te encontrem facilmente no Google.", icon: ICONS.seo },
+  { title: "Editor simples", desc: "Altere tudo intuitivamente sem precisar de código.", icon: ICONS.projects },
+  { title: "Galeria ilimitada", desc: "Exiba todos os seus melhores trabalhos sem restrições.", icon: ICONS.clients },
+  { title: "WhatsApp integrado", desc: "Receba orçamentos diretamente no seu celular.", icon: ICONS.finance },
+  { title: "Domínio personalizado", desc: "Sua marca com seu próprio endereço web profissional.", icon: ICONS.templates },
+  { title: "Depoimentos", desc: "Converta visitantes em clientes com provas sociais reais.", icon: ICONS.secure },
+];
 
 export function FeaturesSection({ dark }: { dark: boolean }) {
-  const c = dark ? DARK : LIGHT;
-
   return (
     <section id="features" className={`py-24 px-4 sm:px-6 lg:px-8 ${dark ? "bg-[#1E1F25]" : "bg-white"}`}>
       <div className="max-w-7xl mx-auto">
@@ -82,36 +40,10 @@ export function FeaturesSection({ dark }: { dark: boolean }) {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Growth Column */}
-          <div className="space-y-6">
-            <h3 className={`font-poppins font-bold text-lg mb-4 flex items-center gap-2 ${dark ? "text-slate-300" : "text-slate-700"}`}>
-              <span className="w-2 h-2 rounded-full bg-blue-500" /> Crescimento
-            </h3>
-            {FEATURES.growth.map((f, i) => (
-              <FeatureCard key={i} feature={f} dark={dark} />
-            ))}
-          </div>
-
-          {/* Management Column */}
-          <div className="space-y-6">
-            <h3 className={`font-poppins font-bold text-lg mb-4 flex items-center gap-2 ${dark ? "text-slate-300" : "text-slate-700"}`}>
-              <span className="w-2 h-2 rounded-full bg-purple-500" /> Gestão
-            </h3>
-            {FEATURES.management.map((f, i) => (
-              <FeatureCard key={i} feature={f} dark={dark} />
-            ))}
-          </div>
-
-          {/* Speed Column */}
-          <div className="space-y-6">
-            <h3 className={`font-poppins font-bold text-lg mb-4 flex items-center gap-2 ${dark ? "text-slate-300" : "text-slate-700"}`}>
-              <span className="w-2 h-2 rounded-full bg-green-500" /> Agilidade
-            </h3>
-            {FEATURES.speed.map((f, i) => (
-              <FeatureCard key={i} feature={f} dark={dark} />
-            ))}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {FEATURES.map((f, i) => (
+            <FeatureCard key={i} feature={f} dark={dark} />
+          ))}
         </div>
       </div>
     </section>
@@ -120,18 +52,18 @@ export function FeaturesSection({ dark }: { dark: boolean }) {
 
 function FeatureCard({ feature, dark }: { feature: any; dark: boolean }) {
   return (
-    <Reveal>
-      <div className={`p-6 rounded-2xl border transition-all duration-300 group ${
+    <Reveal delay={0}>
+      <div className={`p-8 rounded-3xl border transition-all duration-300 group ${
         dark
           ? "bg-[#2A2B31] border-slate-700 hover:border-[#A6E7FF]/30 hover:bg-[#2A2B31]/80"
-          : "bg-white border-slate-200 hover:border-blue-300 hover:shadow-md"
+          : "bg-white border-slate-200 hover:border-blue-300 hover:shadow-xl"
       }`}>
-        <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 transition-colors ${
+        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 ${
           dark ? "bg-[#A6E7FF]/10 text-[#A6E7FF]" : "bg-blue-50 text-blue-600"
         }`}>
-          <Icon d={feature.icon} size={20} />
+          <Icon d={feature.icon} size={28} />
         </div>
-        <h4 className={`font-poppins font-semibold mb-2 ${dark ? "text-white" : "text-slate-900"}`}>
+        <h4 className={`font-poppins font-bold text-lg mb-3 ${dark ? "text-white" : "text-slate-900"}`}>
           {feature.title}
         </h4>
         <p className={`font-inter text-sm leading-relaxed ${dark ? "text-slate-400" : "text-slate-600"}`}>

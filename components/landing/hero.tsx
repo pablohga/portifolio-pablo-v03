@@ -66,51 +66,41 @@ export function HeroSection({ dark }: { dark: boolean }) {
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="max-w-2xl">
           <Reveal>
-            <h1 className={`font-poppins text-xl sm:text-2xl md:text-3xl lg:text-3xl font-bold leading-[1.05] mb-6 transition-all duration-700 ${
+            <h1 className={`font-poppins text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-6 transition-all duration-700 ${
               dark ? "text-white" : "text-[#1E2A3A]"
             }`}>
-              Pare de perder clientes
-              <br />
+              Seu portfólio profissional <br />
               <span className="inline-block bg-gradient-to-br from-[#A6E7FF] to-[#7EDCFF] bg-clip-text text-transparent">
-                {" "}com um portfólio amador
+                pronto em menos de 5 minutos.
               </span>
-              <br />
-              Crie sua presença digital hoje
             </h1>
           </Reveal>
 
           <Reveal delay={200}>
             <p className={`font-inter text-lg leading-relaxed mb-10 max-w-lg ${dark ? "text-slate-300" : "text-slate-600"}`}>
-              Construa um portfólio profissional que comanda autoridade e converte visitantes em leads qualificados. Sem custos ocultos, sem mensalidades e 100% grátis para começar.
+              Conquiste mais clientes, transmita autoridade e envie um link que vende por você.
             </p>
           </Reveal>
 
-          <div className="flex flex-wrap items-center gap-4 mb-12">
+          <div className="flex flex-wrap items-center gap-4 mb-8">
             <Reveal delay={400}>
               <CTAButton primary large href="#pricing">
-                Comece Grátis Agora →
+                Criar meu portfólio grátis
               </CTAButton>
-            </Reveal>
-            <Reveal delay={500}>
-              <a href="#pricing" className={`font-poppins text-sm font-medium transition-colors hover:text-primary ${
-                dark ? "text-slate-400" : "text-slate-500"
-              }`}>
-                Ver Planos
-              </a>
             </Reveal>
           </div>
 
           {/* Trust Bar */}
           <Reveal delay={600}>
-            <div className={`flex flex-wrap items-center gap-8 ${dark ? "text-white" : "text-slate-900"}`}>
+            <div className={`flex flex-wrap items-center gap-6 ${dark ? "text-white" : "text-slate-900"}`}>
               {[
-                { val: "10k+", label: "Freelancers" },
-                { val: "4.9★", label: "Avaliação" },
-                { val: "Grátis", label: "Para sempre" },
+                { label: "Sem cartão" },
+                { label: "Publicação imediata" },
+                { label: "Plano gratuito para sempre" },
               ].map((stat, i) => (
-                <div key={i} className="flex flex-col">
-                  <span className="font-poppins text-xl md:text-2xl font-bold">{stat.val}</span>
-                  <span className="font-inter text-xs text-slate-500">{stat.label}</span>
+                <div key={i} className="flex items-center gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span className="font-inter text-sm font-medium opacity-80">{stat.label}</span>
                 </div>
               ))}
             </div>

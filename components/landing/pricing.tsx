@@ -92,7 +92,7 @@ export function PricingSection({ dark }: { dark: boolean }) {
                 </div>
 
                 <a
-                  href="#"
+                  href="/auth/register"
                   className={`w-full flex items-center justify-center py-3 rounded-xl font-poppins font-semibold transition-all duration-300 mb-8 ${
                     plan.featured
                       ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30"

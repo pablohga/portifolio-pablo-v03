@@ -7,7 +7,7 @@ export default function Loading() {
         {/* Logo — dark mode (fundo escuro) */}
         <div className="logo-wrapper logo-dark">
           <Image
-            src="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_dark.png"
+            src="/images/logo_nova_txt_g_dark.png"
             alt="Portify"
             width={180}
             height={52}
@@ -19,7 +19,7 @@ export default function Loading() {
         {/* Logo — light mode (fundo claro) */}
         <div className="logo-wrapper logo-light">
           <Image
-            src="https://agenciaaimagic.com.br/portify/logo_nova_txt_g_ligth.png"
+            src="/images/logo_nova_txt_g_ligth.png"
             alt="Portify"
             width={180}
             height={52}
