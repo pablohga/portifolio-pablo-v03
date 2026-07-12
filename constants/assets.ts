@@ -1,5 +1,7 @@
-export const HERO_DARK = "/images/hero_img_dark.png"
-export const HERO_LIGHT = "/images/hero_img_light.png"
+export const HERO_DARK = "/images/hero_img_dark-b.png"
+export const HERO_LIGHT = "/images/hero_img_light-b.png"
+export const HERO_FOOTER_DARK = "/images/hero_footer_b.png"
+export const HERO_FOOTER_LIGHT = "/images/hero_footer_b.png"
 export const LOGO_DARK = "/images/logo_nova_txt_m_dark.png"
 export const LOGO_LIGHT = "/images/logo_nova_txt_g_light.png"
 
