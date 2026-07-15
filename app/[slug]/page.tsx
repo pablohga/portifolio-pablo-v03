@@ -19,6 +19,8 @@ import Template7 from "@/components/templates/Template7";
 import Template8 from "@/components/templates/Template8";
 import Template9 from "@/components/templates/Template9";
 import Template10 from "@/components/templates/Template10";
+import Template11 from "@/components/templates/Template11";
+import Template12 from "@/components/templates/Template12";
 
 interface UserPortfolioPageProps {
   params: {
@@ -138,6 +140,12 @@ export default async function UserPortfolioPage({
       break;
     case "template10":
       TemplateComponent = Template10;
+      break;
+    case "template11":
+      TemplateComponent = Template11;
+      break;
+    case "template12":
+      TemplateComponent = Template12;
       break;
     default:
       TemplateComponent = null;

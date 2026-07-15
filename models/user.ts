@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   /* portfolioTemplate: { type: String, enum: ["default", "template1", "template2", "template3"], default: "default" }, */
   portfolioTemplate: {
     type: String,
-    enum: ["default", "template1", "template2", "template3", "template4", "template5", "template6", "template7", "template8", "template9", "template10"],
+    enum: ["default", "template1", "template2", "template3", "template4", "template5", "template6", "template7", "template8", "template9", "template10", "template11", "template12"],
     default: "default"
   },
   createdAt: { type: Date, default: Date.now },
@@ -36,33 +36,32 @@ const userSchema = new mongoose.Schema({
 });
 
 // Middleware para validar e normalizar o slug antes de salvar
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (this: any, next: any) {
   // Garante que o portfolioTemplate seja válido (evita erro de enum com string vazia)
   if (!this.portfolioTemplate) {
     this.portfolioTemplate = "default";
   }
 
   if (!this.slug || this.isModified("name") || this.isNew) {
-    if (!this.slug) {
-      const baseSlug = this.name
-        ?.toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "");
-      if (!baseSlug) {
-        return next(new Error("Nome inválido para gerar o slug."));
-      }
+    const baseSlug = this.name
+      ?.toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
 
-      let uniqueSlug = baseSlug;
-      let count = 1;
-
-      // Garante que o slug seja único
-      while (await mongoose.models.User.findOne({ slug: uniqueSlug })) {
-        uniqueSlug = `${baseSlug}-${count}`;
-        count++;
-      }
-
-      this.slug = uniqueSlug;
+    if (!baseSlug) {
+      return next(new Error("Nome inválido para gerar o slug."));
     }
+
+    let uniqueSlug = baseSlug;
+    let count = 1;
+
+    // Garante que o slug seja único
+    while (await (this.constructor as mongoose.Model<any>).findOne({ slug: uniqueSlug, _id: { $ne: this._id } })) {
+      uniqueSlug = `${baseSlug}-${count}`;
+      count++;
+    }
+
+    this.slug = uniqueSlug;
   }
   next();
 });

@@ -19,12 +19,13 @@ const templates = [
   { id: "template8", name: "Template 8" },
   { id: "template9", name: "Template 9" },
   { id: "template10", name: "Template 10" },
+  { id: "template11", name: "Template 11" },
+  { id: "template12", name: "Template 12" }
 ];
 
 export function TemplateSelector() {
   const { template, setTemplate } = useTemplate();
-  const [selectedTemplate, setSelectedTemplate] = useState<"default" | "template1" | "template2" | "template3" | "template4" | "template5" | "template6" | "template7" | "template8" | "template9" | "template10">(template);
-  /* const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>(template); */
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>(template);
   const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
@@ -70,7 +71,7 @@ export function TemplateSelector() {
                   name="template"
                   value={t.id}
                   checked={selectedTemplate === t.id}
-                  onChange={() => setSelectedTemplate(t.id as any)}
+                  onChange={() => setSelectedTemplate(t.id as TemplateType)}
                   className="form-radio"
                 />
                 <span className="text-sm font-medium">{t.name}</span>

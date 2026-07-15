@@ -72,7 +72,7 @@ export function HeroB({ dark }: { dark?: boolean }) {
             alt="Background"
             fill
             priority
-            className="object-cover object-center object-top"
+            className="object-cover object-top"
           />
         </div>
 

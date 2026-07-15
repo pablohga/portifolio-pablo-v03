@@ -44,7 +44,9 @@ export async function POST(request: NextRequest) {
     "template7", 
     "template8", 
     "template9", 
-    "template10"
+    "template10",
+    "template11",
+    "template12"
   ].includes(template)) {
     return NextResponse.json({ error: "Invalid template" }, { status: 400 });
   }
