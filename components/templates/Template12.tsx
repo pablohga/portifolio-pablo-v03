@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import * as LucideIcons from "lucide-react";
 import { Hero } from "@/types/hero";
 import { About } from "@/types/about";
 import { Project } from "@/types/project";
@@ -338,12 +337,6 @@ export default function Template12({ userId, categories, projects, userImage, us
           cursor: pointer;
         }
         .template12-wrapper .t12-menu-btn svg { width: 14px; height: 14px; }
-        .template12-wrapper .t12-desktop-menu { display: none; }
-
-        @media (min-width: 881px) {
-          .template12-wrapper .t12-desktop-menu { display: flex; align-items: center; gap: 32px; }
-          .template12-wrapper .t12-mobile-only { display: none !important; }
-        }
 
         .template12-wrapper .t12-mobile-panel {
           position: fixed; inset: 0; z-index: 200;
@@ -366,21 +359,39 @@ export default function Template12({ userId, categories, projects, userImage, us
         .template12-wrapper .t12-hero { padding: 36px 0 10px; }
         .template12-wrapper .t12-hero-grid {
           display: grid;
-          grid-template-columns: 1.1fr 0.9fr;
-          gap: 56px;
+          grid-template-columns: 1fr 1.05fr;
+          gap: 40px;
           align-items: start;
         }
-        .template12-wrapper .t12-eyebrow {
-          font-family: 'Fraunces', serif;
-          font-style: italic;
-          font-size: 22px;
-          margin-bottom: 6px;
+        .template12-wrapper .t12-eyebrow-plain {
+          font-family: 'Inter', sans-serif;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 16px;
+          margin-bottom: 10px;
           color: var(--ink);
         }
-        .template12-wrapper .t12-hero h1 { font-size: clamp(2.6rem, 5vw, 4rem); margin-bottom: 22px; }
-        .template12-wrapper .t12-hero h1 .t12-serif { font-size: 0.72em; display: block; }
+        .template12-wrapper .t12-eyebrow-plain strong { font-weight: 700; }
+
+        .template12-wrapper .t12-hero-title {
+          margin-bottom: 22px;
+        }
+        .template12-wrapper .t12-hero-title span {
+          display: block;
+        }
+        .template12-wrapper .t12-title-a,
+        .template12-wrapper .t12-title-c {
+          font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+        }
+        .template12-wrapper .t12-title-b.t12-serif {
+          font-size: clamp(2rem, 4vw, 3.2rem);
+          font-weight: 500;
+          margin: -0.05em 0;
+        }
+        .template12-wrapper .t12-title-c { font-weight: 400; }
+
         .template12-wrapper .t12-lede {
-          max-width: 440px;
+          max-width: 420px;
           font-size: 16px;
           line-height: 1.65;
           color: var(--ink-soft);
@@ -412,18 +423,30 @@ export default function Template12({ userId, categories, projects, userImage, us
         }
         .template12-wrapper .t12-cta .t12-circle svg { width: 15px; height: 15px; }
 
+        .template12-wrapper .t12-hero-visual {
+          display: flex;
+          align-items: flex-start;
+          gap: 18px;
+        }
         .template12-wrapper .t12-photo-col {
           position: relative;
-          display: flex;
-          justify-content: flex-end;
-          align-items: flex-start;
+          flex: 1 1 auto;
+          min-width: 0;
+        }
+        .template12-wrapper .t12-photo-backdrop {
+          position: absolute;
+          top: -22px; left: -24px; right: 20px; bottom: -22px;
+          background: var(--panel2);
+          border-radius: 24px 24px 220px 220px;
+          z-index: 0;
         }
         .template12-wrapper .t12-photo-frame {
-          border-radius: 0 0 200px 200px;
+          border-radius: 20px 20px 200px 200px;
           overflow: hidden;
           aspect-ratio: 3/3.6;
           background: var(--panel2);
           position: relative;
+          z-index: 1;
         }
         .template12-wrapper .t12-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
         .template12-wrapper .t12-photo-tag {
@@ -441,25 +464,26 @@ export default function Template12({ userId, categories, projects, userImage, us
         .template12-wrapper .t12-photo-tag strong { display: block; font-size: 0.85rem; }
         .template12-wrapper .t12-photo-tag span { color: var(--ink-soft); font-size: 0.7rem; }
 
-        .template12-wrapper .t12-stats {
+        .template12-wrapper .t12-stats-vertical {
+          flex: 0 0 auto;
+          width: 100px;
           display: flex;
-          gap: 22px 34px;
-          flex-wrap: wrap;
-          padding-top: 26px;
-          border-top: 1px solid var(--line);
-          margin-top: 30px;
+          flex-direction: column;
+          gap: 30px;
+          padding-top: 8px;
+          text-align: right;
         }
         .template12-wrapper .t12-stat-num {
           font-family: 'Anton', sans-serif;
-          font-size: 30px;
+          font-size: 28px;
           line-height: 1;
         }
         .template12-wrapper .t12-stat-label {
-          font-size: 11px;
+          font-size: 10.5px;
           color: var(--ink-faint);
           margin-top: 4px;
           text-transform: uppercase;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.02em;
         }
 
         /* ---------- FEATURES / SERVICES ---------- */
@@ -494,7 +518,6 @@ export default function Template12({ userId, categories, projects, userImage, us
           border-left: none;
         }
         .template12-wrapper .t12-feature:first-child { padding-left: 0; border-left: none; }
-        .template12-wrapper .t12-feature-icon { margin-bottom: 14px; color: var(--ink); }
         .template12-wrapper .t12-feature h3 {
           font-size: 12.5px;
           font-weight: 700;
@@ -848,8 +871,9 @@ export default function Template12({ userId, categories, projects, userImage, us
         @media (max-width: 880px) {
           .template12-wrapper .t12-wrap { padding: 0 22px; }
           .template12-wrapper .t12-hero-grid { grid-template-columns: 1fr; gap: 30px; }
-          .template12-wrapper .t12-photo-col { order: -1; max-width: 280px; margin: 0 auto; }
-          .template12-wrapper .t12-stats { justify-content: center; text-align: center; }
+          .template12-wrapper .t12-hero-visual { order: -1; max-width: 340px; margin: 0 auto; }
+          .template12-wrapper .t12-stats-vertical { width: 84px; gap: 20px; }
+          .template12-wrapper .t12-stat-num { font-size: 22px; }
           .template12-wrapper .t12-features-grid { grid-template-columns: repeat(2, 1fr); gap: 26px 20px; }
           .template12-wrapper .t12-feature { border-left: none; padding-left: 0; }
           .template12-wrapper .t12-tools-grid { grid-template-columns: repeat(2, 1fr); }
@@ -868,14 +892,6 @@ export default function Template12({ userId, categories, projects, userImage, us
         <header className="t12-header">
           <div className="t12-header-row">
             <div className="t12-brand"><span className="t12-dot"></span><span>{fullName}</span></div>
-            <nav className="t12-desktop-menu">
-              <ul className="t12-nav-links" style={{ display: 'flex', gap: 32 }}>
-                <li><a href="#servicos">Serviços</a></li>
-                <li><a href="#portfolio">Portfólio</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#depoimentos">Depoimentos</a></li>
-              </ul>
-            </nav>
             <div className="t12-header-actions">
               <button
                 className="t12-theme-btn"
@@ -884,20 +900,12 @@ export default function Template12({ userId, categories, projects, userImage, us
               >
                 {theme === 'dark' ? '☀️' : '🌙'}
               </button>
-              <button className="t12-menu-btn t12-mobile-only" onClick={() => setIsMenuOpen(true)}>
+              <button className="t12-menu-btn" onClick={() => setIsMenuOpen(true)}>
                 MENU
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
                   <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
                 </svg>
               </button>
-              <a href="#contato" className="t12-menu-btn" style={{ display: 'none' }}>Contato</a>
-              <a
-                href="#contato"
-                className="t12-menu-btn"
-                onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); }}
-              >
-                Contato
-              </a>
             </div>
           </div>
         </header>
@@ -917,9 +925,11 @@ export default function Template12({ userId, categories, projects, userImage, us
         <section className="t12-hero" id="hero">
           <div className="t12-hero-grid">
             <div className="t12-hero-copy t12-reveal" ref={addReveal}>
-              <p className="t12-eyebrow">Olá, eu sou <span>{fullName.split(' ')[0]}</span>,</p>
-              <h1 className="t12-display">
-                Freelancer <span className="t12-serif">Design &amp; Código</span> Sob Medida
+              <p className="t12-eyebrow-plain">Olá, eu sou <strong>{fullName.split(' ')[0]}</strong>,</p>
+              <h1 className="t12-display t12-hero-title">
+                <span className="t12-title-a">Freelancer</span>
+                <span className="t12-title-b t12-serif">Design &amp; Código</span>
+                <span className="t12-title-c">Sob Medida</span>
               </h1>
               <p className="t12-lede">
                 {(() => {
@@ -945,32 +955,36 @@ export default function Template12({ userId, categories, projects, userImage, us
               </button>
             </div>
 
-            <div className="t12-photo-col t12-reveal" ref={addReveal}>
-              <div className="t12-photo-frame">
-                <img src={hero?.backgroundImage || userImage} alt={fullName} />
+            <div className="t12-hero-visual t12-reveal" ref={addReveal}>
+              <div className="t12-photo-col">
+                <div className="t12-photo-backdrop" aria-hidden="true"></div>
+                <div className="t12-photo-frame">
+                  <img src={hero?.backgroundImage || userImage} alt={fullName} />
+                  
+                </div>
                 <div className="t12-photo-tag">
-                  <span>⚡</span>
-                  <div>
-                    <strong>Disponível</strong>
-                    <span>Para novos projetos</span>
+                    <span>⚡</span>
+                    <div>
+                      <strong>Disponível</strong>
+                      <span>Para novos projetos</span>
+                    </div>
                   </div>
+              </div>
+
+              <div className="t12-stats-vertical">
+                <div className="t12-stat-v">
+                  <div className="t12-stat-num"><ExperienceTime about={about || undefined} dark={theme === 'dark'} /></div>
+                  <div className="t12-stat-label">Anos de Experiência</div>
+                </div>
+                <div className="t12-stat-v">
+                  <div className="t12-stat-num"><ProjectsDelivered about={about || undefined} dark={theme === 'dark'} /></div>
+                  <div className="t12-stat-label">Projetos Entregues</div>
+                </div>
+                <div className="t12-stat-v">
+                  <div className="t12-stat-num"><SatisfiedClients about={about || undefined} dark={theme === 'dark'} /></div>
+                  <div className="t12-stat-label">Satisfação dos Clientes</div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="t12-stats t12-reveal" ref={addReveal}>
-            <div>
-              <div className="t12-stat-num"><ProjectsDelivered about={about || undefined} dark={theme === 'dark'} /></div>
-              <div className="t12-stat-label">Projetos Entregues</div>
-            </div>
-            <div>
-              <div className="t12-stat-num"><SatisfiedClients about={about || undefined} dark={theme === 'dark'} /></div>
-              <div className="t12-stat-label">Satisfação dos Clientes</div>
-            </div>
-            <div>
-              <div className="t12-stat-num"><ExperienceTime about={about || undefined} dark={theme === 'dark'} /></div>
-              <div className="t12-stat-label">Anos de Experiência</div>
             </div>
           </div>
         </section>
@@ -983,10 +997,8 @@ export default function Template12({ userId, categories, projects, userImage, us
           </div>
           <div className="t12-features-grid">
             {about?.features?.map((service, idx) => {
-              const Icon = (LucideIcons as any)[service.icon] || LucideIcons.Layout;
               return (
                 <div className="t12-feature t12-reveal" key={idx} ref={addReveal}>
-                  <div className="t12-feature-icon"><Icon size={22} /></div>
                   <h3>{service.title}</h3>
                   <div style={{ fontSize: '13px', lineHeight: '1.6', color: 'var(--ink-faint)' }}>
                     {(() => {

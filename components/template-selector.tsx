@@ -20,7 +20,12 @@ const templates = [
   { id: "template9", name: "Template 9" },
   { id: "template10", name: "Template 10" },
   { id: "template11", name: "Template 11" },
-  { id: "template12", name: "Template 12" }
+  { id: "template12", name: "Template 12" },
+  { id: "template13", name: "Template 13" },
+  { id: "template14", name: "Template 14" },
+  { id: "template15", name: "Template 15" },
+  { id: "template16", name: "Template 16" },
+  { id: "template17", name: "Template 17" }
 ];
 
 export function TemplateSelector() {

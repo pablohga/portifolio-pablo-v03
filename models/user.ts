@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   /* portfolioTemplate: { type: String, enum: ["default", "template1", "template2", "template3"], default: "default" }, */
   portfolioTemplate: {
     type: String,
-    enum: ["default", "template1", "template2", "template3", "template4", "template5", "template6", "template7", "template8", "template9", "template10", "template11", "template12"],
+    enum: ["default", "template1", "template2", "template3", "template4", "template5", "template6", "template7", "template8", "template9", "template10", "template11", "template12", "template13", "template14", "template15", "template16", "template17"],
     default: "default"
   },
   createdAt: { type: Date, default: Date.now },

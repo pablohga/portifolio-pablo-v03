@@ -31,7 +31,7 @@ const testimonialSchema = z.object({
 
 interface TestimonialEditorProps {
   testimonial?: Testimonial;
-  onSubmit: (data: Testimonial) => void;
+  onSubmit: (data: Testimonial) => Promise<void>;
 }
 
 export function TestimonialEditor({
@@ -72,11 +72,21 @@ export function TestimonialEditor({
     }
   }, [testimonial, form]);
 
-  function handleSubmit(values: z.infer<typeof testimonialSchema>) {
-    onSubmit({
+  async function handleSubmit(values: z.infer<typeof testimonialSchema>) {
+    await onSubmit({
       ...testimonial,
       ...values,
     } as Testimonial);
+
+    if (!testimonial) {
+      form.reset({
+        name: "",
+        role: "",
+        image: "",
+        stars: 5,
+        text: "",
+      });
+    }
   }
 
   return (

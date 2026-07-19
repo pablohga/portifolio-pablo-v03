@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
-export type TemplateType = "default" | "template1" | "template2" | "template3" | "template4" | "template5" | "template6" | "template7" | "template8" | "template9" | "template10" | "template11"  | "template12";
+export type TemplateType = "default" | "template1" | "template2" | "template3" | "template4" | "template5" | "template6" | "template7" | "template8" | "template9" | "template10" | "template11"  | "template12" | "template13" | "template14" | "template15" | "template16" | "template17";
 
 interface TemplateContextProps {
   template: TemplateType;
