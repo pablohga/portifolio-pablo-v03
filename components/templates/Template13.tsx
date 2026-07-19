@@ -20,7 +20,45 @@ import Link from "next/link";
 import Image from "next/image";
 import DOMPurify from "isomorphic-dompurify";
 
+const ExpandableText = ({ text, title, className }: { text: string, title: string, className?: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const plainText = text.replace(/<[^>]*>/g, ' ');
+  const words = plainText.trim().split(/\s+/);
+
+  if (words.length <= 80) {
+    return <div className={className} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} />;
+  }
+
+  const truncated = words.slice(0, 80).join(' ') + '...';
+
+  return (
+    <>
+      <div className={className}>
+        <div className="opacity-80">{truncated}</div>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-[var(--cyan)] text-[#020817] px-2 py-0.5 rounded text-[10px] font-bold uppercase mt-2 hover:brightness-110 transition-all cursor-pointer inline-block"
+        >
+          Mais...
+        </button>
+      </div>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-[#071228] text-white border-[var(--border)]">
+          <DialogHeader>
+            <DialogTitle className="text-white font-display uppercase">{title}</DialogTitle>
+          </DialogHeader>
+          <div
+            className="text-sm leading-relaxed text-[var(--muted)]"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
+
 interface TemplateProps {
+
   userId: string;
   categories: Category[];
   projects: Project[];
@@ -1343,7 +1381,7 @@ export default function Template13({ userId, categories, projects, userImage, us
                 <div className="t13-orbit" aria-hidden="true" />
                 <div className="t13-portrait-card">
                   {profileImage ? (
-                    <img src={profileImage} alt={fullName} />
+                    <Image src={profileImage} alt={fullName} width={310} height={350} />
                   ) : (
                     <div className="t13-portrait-fallback">{fullName.charAt(0)}</div>
                   )}
@@ -1372,29 +1410,11 @@ export default function Template13({ userId, categories, projects, userImage, us
                       <div className="t13-service-icon"><Icon size={30} /></div>
                       <h3>{service.title}</h3>
                       <div className="t13-service-desc">
-                        {isLong ? (
-                          <>
-                            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(truncatedText) }} />
-                            <button
-                              className="t13-more-btn"
-                              onClick={() => setSelectedService(service)}
-                              style={{
-                                background: 'none',
-                                border: 'none',
-                                color: 'var(--cyan)',
-                                cursor: 'pointer',
-                                fontSize: '0.8rem',
-                                fontWeight: '700',
-                                marginTop: '8px',
-                                padding: 0
-                              }}
-                            >
-                              Mais...
-                            </button>
-                          </>
-                        ) : (
-                          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(rawDesc) }} />
-                        )}
+                        <ExpandableText
+                          text={rawDesc}
+                          title={service.title}
+                          className="opacity-80"
+                        />
                       </div>
                     </article>
                   );
@@ -1475,7 +1495,7 @@ export default function Template13({ userId, categories, projects, userImage, us
               <div className="t13-testimonials-grid">
                 {visibleTestimonials.slice(0, 3).map((testimonial, idx) => (
                   <article className="t13-testimonial" style={{ "--tilt": `${idx === 1 ? 1.2 : idx === 2 ? -1.1 : 0}deg` } as React.CSSProperties} key={testimonial._id || idx}>
-                    <div className="t13-quote">"</div>
+                    <div className="t13-quote">&quot;</div>
                     <p>{testimonial.text}</p>
                     <div className="t13-author">
                       {testimonial.image ? (
@@ -1498,7 +1518,7 @@ export default function Template13({ userId, categories, projects, userImage, us
                 <div className="t13-about-media">
                   <div className="t13-about-photo">
                     {profileImage ? (
-                      <img src={profileImage} alt={fullName} />
+                      <Image src={profileImage} alt={fullName} width={310} height={350} />
                     ) : (
                       <div className="t13-portrait-fallback">{fullName.charAt(0)}</div>
                     )}
@@ -1513,14 +1533,10 @@ export default function Template13({ userId, categories, projects, userImage, us
                     className="t13-section-title"
                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(about?.title || "Sobre Mim") }}
                   />
-                  <div
+                  <ExpandableText
+                    text={about?.description || "Atuo na criacao de experiencias digitais completas para profissionais e empresas que querem se posicionar melhor, vender com mais clareza e transmitir autoridade em cada ponto de contato."}
+                    title="Sobre Mim"
                     className="t13-about-text"
-                    dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(
-                        about?.description ||
-                        "Atuo na criacao de experiencias digitais completas para profissionais e empresas que querem se posicionar melhor, vender com mais clareza e transmitir autoridade em cada ponto de contato."
-                      ),
-                    }}
                   />
                   <div className="t13-chip-list">
                     {(sortedTech.length > 0 ? sortedTech : ["Branding", "Web Design", "UX/UI", "Automacoes"]).slice(0, 8).map((tech) => (

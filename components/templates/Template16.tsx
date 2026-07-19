@@ -1087,7 +1087,7 @@ export default function Template16({ userId, categories, projects, userImage, us
         <SquareField variant="hero" />
         <div className="hero-content">
           <h1 className="hero-name">{fullName}</h1>
-          <p className="hero-tagline" dangerouslySetInnerHTML={{ __html: hero?.title2 || "Design que impacta.<br/>Desenvolvimento que transforma." }} />
+          <p className="hero-tagline" dangerouslySetInnerHTML={{ __html: hero?.title || "Design que impacta.<br/>Desenvolvimento que transforma." }} />
           <div className="hero-badge-strip">
             {hero?.subtitle || "Soluções digitais de alto desempenho. Foco em resultados e crescimento."}
           </div>
@@ -1106,10 +1106,12 @@ export default function Template16({ userId, categories, projects, userImage, us
 
         <div className="hero-visual">
           <div className="hero-photo-wrap">
-            <img
-              src={hero?.backgroundImage || userImage}
+            <Image
+              src={hero?.backgroundImage || userImage || ''}
               alt={fullName}
               className="hero-photo"
+              width={380}
+              height={507}
             />
             <div className="hero-photo-tag2">
               <span>⭐ 5.0 · 120+ Avaliações</span>

@@ -941,10 +941,12 @@ export default function Template15({ userId, categories, projects, userImage, us
         </div>
 
         <div className="t15-hero-photo-wrap">
-          <img
-            src={hero?.backgroundImage || userImage}
+          <Image
+            src={(hero?.backgroundImage || userImage) as string}
             alt={fullName}
             className="t15-hero-photo"
+            width={500}
+            height={625}
           />
         </div>
       </section>
@@ -1121,7 +1123,7 @@ export default function Template15({ userId, categories, projects, userImage, us
             <div className="t15-testimonials-grid">
               {testimonials.map((testimonial, idx) => (
                 <div className="t15-testimonial-card" key={testimonial._id || idx}>
-                  <div className="t15-testimonial-quote">"</div>
+                  <div className="t15-testimonial-quote">&quot;</div>
                   <p className="t15-testimonial-text">{testimonial.text}</p>
                   <div className="t15-testimonial-author">
                     <div className="t15-author-avatar">

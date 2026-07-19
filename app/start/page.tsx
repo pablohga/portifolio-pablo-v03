@@ -14,7 +14,7 @@ export default function StartPage() {
       <ComingSoonSection />
       <TestimonialsSection />
       <FAQSection />
-      <CTASection />
+      <CTASection dark={false} />
     </div>
   );
 }

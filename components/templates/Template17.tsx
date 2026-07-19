@@ -944,10 +944,12 @@ export default function Template17({ userId, categories, projects, userImage, us
         <div className="t17-hero-visual">
           <div className="t17-photo-block">
             <div className="t17-photo-pink-bg"></div>
-            <img
-              src={hero?.backgroundImage || userImage}
+            <Image
+              src={hero?.backgroundImage || userImage || ""}
               alt={fullName}
               className="t17-hero-photo"
+              width={500}
+              height={625}
             />
           </div>
           <div className="t17-photo-info-row">
