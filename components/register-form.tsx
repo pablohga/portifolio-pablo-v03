@@ -44,6 +44,8 @@ interface RegisterFormProps {
 export function RegisterForm({ initialEmail, initialPlan, onComplete }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSlugAvailable, setIsSlugAvailable] = useState<boolean | null>(null);
+  const [isCheckingSlug, setIsCheckingSlug] = useState(false);
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -58,8 +60,14 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
     },
   });
 
+  const firstName = form.watch("firstName");
+  const lastName = form.watch("lastName");
+  const slug = form.watch("slug");
+
+
   // Verificar disponibilidade do slug
   async function checkSlugAvailability(slug: string) {
+    setIsCheckingSlug(true);
     try {
       const response = await fetch("/api/check-slug", {
         method: "POST",
@@ -71,29 +79,43 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
     } catch (error) {
       console.error("Failed to check slug availability:", error);
       setIsSlugAvailable(null);
+    } finally {
+      setIsCheckingSlug(false);
     }
   }
 
   // Atualizar slug automaticamente baseado em firstName e lastName
   useEffect(() => {
-    const firstName = form.watch("firstName");
-    const lastName = form.watch("lastName");
+    if (isSlugManuallyEdited) return;
 
     if (firstName || lastName) {
-      const generatedSlug = `${firstName.trim()}-${lastName.trim()}`
+      const generatedSlug = `${(firstName || "").trim()}-${(lastName || "").trim()}`
         .toLowerCase()
         .replace(/\s+/g, "-") // Substitui espaços por hífens
         .replace(/[^a-z0-9-]/g, ""); // Remove caracteres inválidos
 
-      if (!form.getValues("slug")) {
-        form.setValue("slug", generatedSlug); // Auto preencher apenas se vazio
+      if (generatedSlug !== slug) {
+        form.setValue("slug", generatedSlug);
       }
     }
-  }, [form.watch("firstName"), form.watch("lastName")]);
+  }, [firstName, lastName, slug, isSlugManuallyEdited]);
 
-  // Checar slug ao clicar fora do campo
+  // Verificar disponibilidade do slug com debounce
+  useEffect(() => {
+    if (!slug) {
+      setIsSlugAvailable(null);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      await checkSlugAvailability(slug);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [slug]);
+
+  // Mantido para compatibilidade ou trigger manual se necessário
   const handleSlugBlur = async () => {
-    const slug = form.getValues("slug");
     if (slug) {
       await checkSlugAvailability(slug);
     }
@@ -240,10 +262,17 @@ export function RegisterForm({ initialEmail, initialPlan, onComplete }: Register
                       <Input
                         placeholder="john-doe"
                         {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          setIsSlugManuallyEdited(true);
+                        }}
                         onBlur={handleSlugBlur} // Checar slug ao sair do campo
                       />
                     </FormControl>
                     <FormMessage />
+                    {isCheckingSlug && (
+                      <p className="text-muted-foreground text-sm italic">Verificando disponibilidade...</p>
+                    )}
                     {isSlugAvailable === false && (
                       <p className="text-red-500 text-sm">Slug is already taken.</p>
                     )}

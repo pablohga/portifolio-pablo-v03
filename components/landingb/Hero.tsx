@@ -95,7 +95,8 @@ export function HeroB({ dark }: { dark?: boolean }) {
             </h1>
             <p className={`text-lg md:text-xl mb-10 max-w-2xl mx-auto ${dark ? "text-slate-400" : "text-slate-600"}`}>
               Crie um portfólio profissional em minutos. Sem código, sem complicações.
-              Apenas você e sua arte, apresentados da maneira que o mundo deve ver.
+              Apenas você e sua arte, apresentados da maneira que o mundo deve ver. 
+              E ainda gerencie seus clientes, finanças e projetos em um só lugar.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
               <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-full transition-all hover:scale-105">
