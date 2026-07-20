@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { HeroB } from "@/components/landingb/Hero";
 import { FeaturesB } from "@/components/landingb/Features";
 import { TemplateGalleryB } from "@/components/landingb/TemplateGallery";
+import { BusinessSuiteB } from "@/components/landingb/BusinessSuiteB";
 import { PricingB } from "@/components/landingb/Pricing";
 import { FAQB } from "@/components/landingb/FAQ";
 import { FooterB } from "@/components/landingb/FooterB";
@@ -26,6 +27,7 @@ export default function LandingB() {
       <HeroB dark={dark} />
       <FeaturesB dark={dark} />
       <TemplateGalleryB dark={dark} />
+      <BusinessSuiteB dark={dark} />
       <PricingB dark={dark} />
       <FAQB dark={dark} />
       <FooterB dark={dark} />

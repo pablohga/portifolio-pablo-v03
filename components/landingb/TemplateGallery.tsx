@@ -6,12 +6,12 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 const templates = [
-  { name: "Modernista", category: "Arquitetura", image: "https://images.unsplash.com/photo-1486406146941-c380322032d2?q=80&w=600&auto=format&fit=crop" },
-  { name: "Minimal", category: "Design Gráfico", image: "https://images.unsplash.com/photo-1550684371-d5c67843236b?q=80&w=600&auto=format&fit=crop" },
-  { name: "Vivid", category: "Fotografia", image: "https://images.unsplash.com/photo-1470071459604-1b060166d8f5?q=80&w=600&auto=format&fit=crop" },
-  { name: "Sleek", category: "UI/UX Design", image: "https://images.unsplash.com/photo-1586717732096-b9c250bbd832?q=80&w=600&auto=format&fit=crop" },
-  { name: "Classic", category: "Ilustração", image: "https://images.unsplash.com/photo-1541963463532-d68292cda440?q=80&w=600&auto=format&fit=crop" },
-  { name: "Bold", category: "Moda", image: "https://images.unsplash.com/photo-1490481612814-a693d31c6d92?q=80&w=600&auto=format&fit=crop" },
+  { name: "Modernista", category: "Arquitetura", image: "/images/landing-page-images/template_modernista.png" },
+  { name: "Minimal", category: "Design Gráfico", image: "/images/landing-page-images/template_minimalista.png" },
+  { name: "Vivid", category: "Fotografia", image: "/images/landing-page-images/template_vivid.jpeg" },
+  { name: "Sleek", category: "UI/UX Design", image: "/images/landing-page-images/template_sleek.png" },
+  { name: "Classic", category: "Ilustração", image: "/images/landing-page-images/tempalte_classic.png" },
+  { name: "Bold", category: "Moda", image: "/images/landing-page-images/template_bold.jpeg" },
 ];
 
 export function TemplateGalleryB({ dark }: { dark?: boolean }) {
@@ -45,7 +45,7 @@ export function TemplateGalleryB({ dark }: { dark?: boolean }) {
                 src={t.image}
                 alt={t.name}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             </div>

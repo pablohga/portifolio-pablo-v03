@@ -8,15 +8,15 @@ import Link from "next/link";
 import { HERO_DARK, HERO_FOOTER_DARK, HERO_FOOTER_LIGHT, HERO_LIGHT } from "@/constants/assets";
 
 const PortfolioGrid = () => {
-  const bigImage = "/images/templates-thumbs/Template 1.png";
+  const bigImage = "/images/templates-thumbs/Template 5.png";
 
   const smallImages = [
-    "/images/templates-thumbs/Template 1.png",
-    "/images/templates-thumbs/Template 2.png",
-    "/images/templates-thumbs/Template 3.png",
+    "/images/templates-thumbs/Template 8.png",
+    "/images/templates-thumbs/Template 9.png",
+    "/images/templates-thumbs/Template 13.png",
+    "/images/templates-thumbs/Template 15.png",
+    "/images/templates-thumbs/Template 17.png",
     "/images/templates-thumbs/Template 4.png",
-    "/images/templates-thumbs/Template 5.png",
-    "/images/templates-thumbs/Template 6.png",
   ];
 
   return (
